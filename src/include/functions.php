@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.5.7');
+define('IMMOTOOL_SCRIPT_VERSION', '1.5.9');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 // Parameter, allgemein
@@ -165,8 +165,8 @@ class immotool_functions {
       $pageHeader .= '<link rel="alternate" type="application/atom+xml" title="Atom-Feed" href="feed_atom.php?' . IMMOTOOL_PARAM_LANG . '=' . $languageCode . '" />' . "\n";
 
     // Footer
-    $pageFooter = 'powered by <a href="http://www.openestate.org" target="_blank">OpenEstate</a>';
-    $pageFooter .= '<br/>v' . IMMOTOOL_SCRIPT_VERSION . ', built in ' . $buildTime . 's';
+    $pageFooter = 'v' . IMMOTOOL_SCRIPT_VERSION . ', built in ' . number_format($buildTime, '3') . 's';
+    $pageFooter .= '<br/>powered by <a href="http://openestate.org" target="_blank">OpenEstate</a>';
 
     // Weitere Link-Parameter
     $linkParams = '';
@@ -336,7 +336,7 @@ class immotool_functions {
       return null;
     }
     if (!isset($GLOBALS['immotool_translations'][$code]) || !is_array($GLOBALS['immotool_translations'][$code])) {
-      @include($file);
+      include($file);
       if (!isset($GLOBALS['immotool_translations'][$code]) || !is_array($GLOBALS['immotool_translations'][$code])) {
         return null;
       }
@@ -439,7 +439,7 @@ class immotool_functions {
       return null;
     }
     if (!isset($GLOBALS['immotool_objects'][$id]) || !is_array($GLOBALS['immotool_objects'][$id])) {
-      @include($file);
+      include($file);
       if (!isset($GLOBALS['immotool_objects'][$id]) || !is_array($GLOBALS['immotool_objects'][$id])) {
         return null;
       }
@@ -486,7 +486,7 @@ class immotool_functions {
       return null;
     }
     if (!isset($GLOBALS['immotool_terms']) || !is_array($GLOBALS['immotool_terms'])) {
-      @include($file);
+      include($file);
       if (!isset($GLOBALS['immotool_terms']) || !is_array($GLOBALS['immotool_terms'])) {
         return null;
       }
@@ -508,7 +508,7 @@ class immotool_functions {
       return null;
     }
     if (!isset($GLOBALS['immotool_texts'][$id]) || !is_array($GLOBALS['immotool_texts'][$id])) {
-      @include($file);
+      include($file);
       if (!isset($GLOBALS['immotool_texts'][$id]) || !is_array($GLOBALS['immotool_texts'][$id])) {
         return null;
       }
@@ -879,10 +879,11 @@ class immotool_functions {
    * @param string $wrapType Art der eingebundenen Seite
    * @param string $wrapperScriptUrl URL zum umgebenden Script
    * @param string $immotoolBaseUrl URL zum ImmoTool-Export
-   * @param array $stylesheets
+   * @param array $stylesheets Liste mit verwendeten Stylesheets
+   * @param array $hiddenParams Key-Value-Paar mit zusätzlichen Parametern
    * @return string HTML-Code der 'gewrappten' Seite
    */
-  function wrap_page(&$page, $wrapType, $wrapperScriptUrl, $immotoolBaseUrl, $stylesheets) {
+  function wrap_page(&$page, $wrapType, $wrapperScriptUrl, $immotoolBaseUrl, $stylesheets, $hiddenParams = null) {
     // Stylesheets importieren
     $header = '';
     if (is_array($stylesheets) && count($stylesheets) > 0) {
@@ -903,24 +904,37 @@ class immotool_functions {
       $header .= "\n" . $galleryHandler->getHeader();
     }
 
+    // Haupt-URL ohne Parameter ermitteln
+    $pos = strpos($wrapperScriptUrl, '?');
+    $wrapperBaseUrl = ($pos !== false) ? substr($wrapperScriptUrl, 0, $pos) : $wrapperScriptUrl;
+    $sep = ($pos !== false) ? '&amp;' : '?';
+
+    // Zusätzliche Hidden-Parameter zur Verwendung in Formularen vorbereiten
+    $hiddenInputs = '';
+    if (is_array($hiddenParams)) {
+      foreach ($hiddenParams as $key => $value) {
+        $hiddenInputs .= '<input type="hidden" name="' . $key . '" value="' . $value . '"/>';
+      }
+    }
+
     // Ersetzungen
     $replacements = array(
       // Inhalt des BODY-Tags ermitteln
       '/(.*)<body([^>]*)>(.*)<\/body>(.*)/is' => '<div\2>' . $header . '\3</div>',
       // Verlinkungen innerhalb der aktuellen Seite
-      '/<a([^>]*)href="\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=' . $wrapType . '&amp;\2"',
+      '/<a([^>]*)href="\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=' . $wrapType . '&amp;\2"',
       // index.php => Links
-      '/<a([^>]*)href="index\.php"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=index"',
-      '/<a([^>]*)href="index\.php\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=index&amp;\2"',
+      '/<a([^>]*)href="index\.php"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=index"',
+      '/<a([^>]*)href="index\.php\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=index&amp;\2"',
       // index.php => Formulare
-      //'/<form([^>]*)action="index\.php"/is' => '<form\1action="'.$wrapperScriptUrl.'?wrap=index"',
-      '/<form([^>]*)action="index\.php([^"]*)"([^>]*)>/is' => '<form\1action="' . $wrapperScriptUrl . '\2"\3><input type="hidden" name="wrap" value="index"/>',
+      //'/<form([^>]*)action="index\.php"/is' => '<form\1action="'.$wrapperScriptUrl.$sep.'wrap=index"',
+      '/<form([^>]*)action="index\.php([^"]*)"([^>]*)>/is' => '<form\1action="' . $wrapperBaseUrl . '\2"\3><input type="hidden" name="wrap" value="index"/>' . $hiddenInputs,
       // expose.php => Links
-      '/<a([^>]*)href="expose\.php"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=expose"',
-      '/<a([^>]*)href="expose\.php\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=expose&amp;\2"',
+      '/<a([^>]*)href="expose\.php"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=expose"',
+      '/<a([^>]*)href="expose\.php\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=expose&amp;\2"',
       // expose.php => Formulare
-      //'/<form([^>]*)action="expose\.php([^"]*)"/is' => '<form\1action="'.$wrapperScriptUrl.'?wrap=expose\2"',
-      '/<form([^>]*)action="expose\.php([^"]*)"([^>]*)>/is' => '<form\1action="' . $wrapperScriptUrl . '\2"\3><input type="hidden" name="wrap" value="expose"/>',
+      //'/<form([^>]*)action="expose\.php([^"]*)"/is' => '<form\1action="'.$wrapperScriptUrl.$sep.'wrap=expose\2"',
+      '/<form([^>]*)action="expose\.php([^"]*)"([^>]*)>/is' => '<form\1action="' . $wrapperBaseUrl . '\2"\3><input type="hidden" name="wrap" value="expose"/>' . $hiddenInputs,
       // captcha.php
       '/<img([^>]*)src="captcha\.php"/is' => '<img\1src="' . $immotoolBaseUrl . 'captcha.php"',
       '/<img([^>]*)src="captcha\.php\?([^"]*)"/is' => '<img\1src="' . $immotoolBaseUrl . 'captcha.php?\2"',

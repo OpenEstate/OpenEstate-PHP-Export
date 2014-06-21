@@ -43,7 +43,7 @@ class immotool_expose {
 
     // Ansprechpartner darstellen
     $showContactPerson = null;
-    if (is_array($object['contact']) && count($object['contact']) > 0) {
+    if ($setup->ShowContactPerson === true && is_array($object['contact']) && count($object['contact']) > 0) {
       $showContactPerson = $translations['labels']['estate.contact.person'];
 
       // Anschrift
@@ -84,7 +84,7 @@ class immotool_expose {
 
     // Kontaktformular kann nicht dargestellt werden
     $showContactForm = null;
-    if (!is_string($object['mail']) || !$setup->ShowContactForm) {
+    if (!is_string($object['mail']) || $setup->ShowContactForm !== true) {
       immotool_functions::replace_var('CONTACT_RESULT', null, $output);
     }
 
@@ -691,12 +691,13 @@ if ($viewMode == 'tabular') {
       if (count($object['media']) <= 0)
         continue;
     }
-    /* if ($v=='contact') {
-      if (!is_array($object['contact'])) continue;
-      if (count($object['contact'])<=0) continue;
-      if (!$setup->ShowContactForm) continue;
-      if (!is_string($object['mail'])) continue;
-      } */
+    if ($v == 'contact') {
+      if ($setup->ShowContactForm !== true && $setup->ShowContactPerson !== true)
+        continue;
+      //if (!is_array($object['contact'])) continue;
+      //if (count($object['contact'])<=0) continue;
+      //if (!is_string($object['mail'])) continue;
+    }
     if ($v == 'terms') {
       if (!$setup->ShowTerms)
         continue;
@@ -730,12 +731,12 @@ else {
     }
 
     // Abschnitt: Kontaktformular
-    else if ($v == 'contact') {
+    else if ($v == 'contact' && ($setup->ShowContactForm === true || $setup->ShowContactPerson === true)) {
       $viewContent .= immotool_expose::contact($object, $setup, $translations, $lang);
     }
 
     // Abschnitt: AGB
-    else if ($v == 'terms' && $setup->ShowTerms) {
+    else if ($v == 'terms' && $setup->ShowTerms === true) {
       $viewContent .= immotool_expose::terms($setup, $translations, $lang);
     }
 

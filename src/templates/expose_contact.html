@@ -9,6 +9,7 @@
     {CONTACT_MOBILE_VALUE.}<li><div>{CONTACT_MOBILE_TITLE}:</div>{CONTACT_MOBILE_VALUE}</li>{.CONTACT_MOBILE_VALUE}
     {CONTACT_FAX_VALUE.}<li><div>{CONTACT_FAX_TITLE}:</div>{CONTACT_FAX_VALUE}</li>{.CONTACT_FAX_VALUE}
   </ul></div>{.CONTACT_PERSON}
+  {CONTACT_FORM_SUBMIT.}
   <a name="form"></a>
   <h3>{CONTACT_FORM_TITLE}</h3>
   <form action="expose.php#form" method="post" id="openestate_expose_contact_form">
@@ -21,7 +22,7 @@
           </div>
         </td>
       </tr>{.CONTACT_RESULT}
-      {CONTACT_FORM_SUBMIT.}<tr>
+      <tr>
         <td class="col1{CONTACT_FORM_NAME_ERROR}">
           <label for="openestate_expose_contact_form_name">{CONTACT_FORM_NAME}</label>
         </td>
@@ -140,8 +141,8 @@ document.write( '&nbsp;<a href="#" onclick="return refresh_captcha();">{CONTACT_
           <input type="hidden" name="{PARAM_LANG}" value="{LANGUAGE_CODE}" />
           <input type="hidden" name="{PARAM_CAT}" value="{CATEGORY}" />
         </td>
-      </tr>{.CONTACT_FORM_SUBMIT}
-    </table>
+      </tr>
+    </table>{.CONTACT_FORM_SUBMIT}
   </form>
   <div>&nbsp;</div>
 </div>
