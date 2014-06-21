@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.5.3');
+define('IMMOTOOL_SCRIPT_VERSION', '1.5.7');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 // Parameter, allgemein
@@ -212,6 +212,19 @@ class immotool_functions {
   }
 
   /**
+   * Alter einer Datei prüfen
+   * @param string $file Pfad der zu prüfenden Datei
+   * @param int $maxLifetime maximale Lebenszeit der Datei in Sekunden
+   * @return bool Liefert true, wenn die Datei noch nicht die maximale Lebenszeit überschritten hat
+   */
+  function check_file_age($file, $maxLifetime) {
+    if (!is_file($file))
+      return false;
+    $fileTime = filemtime($file) + $maxLifetime;
+    return $fileTime > time();
+  }
+
+  /**
    * Umwandlung einer Ausgabe in einen anderen Zeichensatz.
    * @param string $input Eingabe
    * @param string $targetEncoding Zeichensatz
@@ -219,7 +232,7 @@ class immotool_functions {
    */
   function encode(&$input, $targetEncoding) {
 
-    if (!function_exists('mb_detect_encoding'))
+    if (!function_exists('mb_detect_encoding') || !function_exists('iconv'))
       return $input;
 
     // Zeichensatz der Ausgabe ermitteln
@@ -362,6 +375,7 @@ class immotool_functions {
   function setup_phpmailer(&$mailer, &$setup) {
     // Mailer konfigurieren
     $mailer->IsHTML(false);
+    $mailer->CharSet = 'UTF-8';
     $mailer->From = immotool_functions::encode_mail($setup->MailFrom);
     $mailer->FromName = $setup->MailFromName;
     if (is_string($setup->MailToCC) && strlen(trim($setup->MailToCC)) > 0)
@@ -689,17 +703,18 @@ class immotool_functions {
    * @param array $filters Gewählte Filterkriterien
    * @param int $totalCount Überhabevariable für die Anzahl der Inserate (ohne Seitendarstellung)
    * @param string $lang Gewählte Sprache
+   * @param int $maxLifeTime Maximale Lebensdauer von Cache-Dateien in Sekunden.
    * @param array $favIds Array mit ID's der vorgemerkten Inserate
    * @return array Liste mit ID's der Immobilien auf der angeforderten Seite
    */
-  function list_objects($pageNumber, $elementsPerPage, $orderBy, $orderDir, $filters, &$totalCount, $lang, $favIds = null) {
+  function list_objects($pageNumber, $elementsPerPage, $orderBy, $orderDir, $filters, &$totalCount, $lang, $maxLifeTime, $favIds) {
     // ID's der Inserate ermitteln
     $ids = null;
     if (is_string($orderBy)) {
       $orderObj = immotool_functions::get_order($orderBy);
       if ($orderObj == null)
         die('unknown order: ' . $orderBy);
-      if ($orderObj != null && $orderObj->readOrRebuild()) {
+      if ($orderObj != null && $orderObj->readOrRebuild($maxLifeTime)) {
         $items = $orderObj->getItems($lang);
         if (!is_array($items))
           die('empty order: ' . $orderBy);
@@ -731,7 +746,7 @@ class immotool_functions {
       if (!is_string($filterValue) || strlen($filterValue) == 0)
         continue;
       $filterObj = immotool_functions::get_filter($filter);
-      if ($filterObj == null || !$filterObj->readOrRebuild())
+      if ($filterObj == null || !$filterObj->readOrRebuild($maxLifeTime))
         continue;
       $items = $filterObj->getItems($filterValue);
       if (is_array($items)) {

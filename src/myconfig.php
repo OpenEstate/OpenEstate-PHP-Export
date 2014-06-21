@@ -39,6 +39,7 @@ class immotool_myconfig {
     //$config->DefaultLanguage = 'en';
     //$config->AdditionalStylesheet = '';
     //$config->ShowLanguageSelection = false;
+    //$config->CacheLifeTime = 86400;
   }
 
   /**

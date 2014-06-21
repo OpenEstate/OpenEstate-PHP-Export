@@ -47,7 +47,7 @@ if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR]) && is_string($_REQUEST[IMM
       time() + 60 * 60 * 24 * 365, // expires after 30 days
       '/', // path
       '', // domain
-      false                                            // secure
+      false // secure
   );
 }
 
@@ -143,7 +143,7 @@ $pageTitle = ($view == 'fav') ? $translations['labels']['title.fav'] : $translat
 $totalCount = 0;
 $listing = immotool_functions::read_template('listing.html');
 $favIds = ($view == 'fav') ? $_SESSION['immotool']['favs'] : null;
-$result = immotool_functions::list_objects($page, $elementsPerPage, $orderBy, $orderDir, $filters, $totalCount, $lang, $favIds);
+$result = immotool_functions::list_objects($page, $elementsPerPage, $orderBy, $orderDir, $filters, $totalCount, $lang, $setup->CacheLifeTime, $favIds);
 $counter = 0;
 foreach ($result as $resultId) {
   $counter++;

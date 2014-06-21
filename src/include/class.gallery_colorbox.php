@@ -100,7 +100,27 @@ $(document).ready(function(){
       $title = '';
     else
       $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-    return '<a href="' . $file . '" rel="title" title="' . $title . '"><img src="' . $thumb . '" alt="" title="' . $title . '" border="0"/></a>';
+    $html = '<a href="' . $file . '" rel="title" title="' . $title . '"><img src="' . $thumb . '" alt="" title="' . $title . '" border="0"/></a>';
+
+    // Weitere Galeriebilder versteckt anzeigen,
+    // um bei Klick auf das Titelbild eine Galerie-Navigation zu ermöglichen.
+    $object = immotool_functions::get_object($objectId);
+    if (is_array($object) && isset($object['images']) && is_array($object['images'])) {
+      $html .= '<div style="visibility:hidden; position:absolute;">';
+      foreach ($object['images'] as $img) {
+        if ($img['name'] == $image['name'])
+          continue;
+        $file = 'data/' . $objectId . '/' . $img['name'];
+        $title = $img['title'][$lang];
+        if (!is_string($title))
+          $title = '';
+        else
+          $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
+        $html .= '<a href="' . $file . '" rel="title" title="' . $title . '">&nbsp;</a>';
+      }
+      $html .= '</div>';
+    }
+    return $html;
   }
 
   /**

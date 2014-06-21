@@ -66,7 +66,7 @@ class ImmoToolFilter_ausstattung extends ImmoToolFilter {
    */
   function getWidget($selectedValue, $lang, &$translations, &$setup) {
     $widget = '';
-    if (!$this->readOrRebuild() || !is_array($this->items))
+    if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
       return $widget;
 
     // Optionen in der Auswahlbox ermitteln

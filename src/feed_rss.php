@@ -34,7 +34,11 @@ include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 include(IMMOTOOL_BASE_PATH . 'data/language.php');
 if (session_id() == '')
   session_start();
-header('Content-Type: application/rss+xml; charset=utf-8');
+$debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
+if ($debugMode)
+  header('Content-Type: text/html; charset=utf-8');
+else
+  header('Content-Type: text/xml; charset=utf-8');
 
 // Konfiguration ermitteln
 $setup = new immotool_setup_feeds();
@@ -51,12 +55,22 @@ $lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $trans
 if (!is_array($translations))
   die('Can\'t load translations!');
 
+// Titel ermitteln
+$feedTitle = htmlentities($translations['labels']['title']);
+
 // Cache-Datei des Feeds
 $feedFile = IMMOTOOL_BASE_PATH . 'cache/feed.rss_' . $lang . '.xml';
-if (is_file($feedFile)) {
-  $feed = immotool_functions::read_file($feedFile);
-  echo $feed;
-  return;
+if (!$debugMode && is_file($feedFile)) {
+  if (!immotool_functions::check_file_age($feedFile, $setup->CacheLifeTime)) {
+    // abgelaufene Cache-Datei entfernen
+    unlink($feedFile);
+  }
+  else {
+    // Feed aus Cache-Datei erzeugen
+    $feed = immotool_functions::read_file($feedFile);
+    echo $feed;
+    return;
+  }
 }
 
 // URL des Feed-Skriptes ermitteln
@@ -73,18 +87,37 @@ $feedStamp = date('D, d M Y H:i:s T');
 $feed = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 $feed .= '<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">' . "\n";
 $feed .= '  <channel>' . "\n";
-$feed .= '    <title>' . $translations['labels']['title'] . '</title>' . "\n";
+$feed .= '    <title>' . $feedTitle . '</title>' . "\n";
 $feed .= '    <link>' . $feedUrl . '</link>' . "\n";
-$feed .= '    <description>' . $translations['labels']['title'] . '</description>' . "\n";
+$feed .= '    <description>' . $feedTitle . '</description>' . "\n";
 $feed .= '    <language>' . $lang . '</language>' . "\n";
-$feed .= '    <copyright>' . $translations['labels']['title'] . '</copyright>' . "\n";
+$feed .= '    <copyright>' . $feedTitle . '</copyright>' . "\n";
 $feed .= '    <pubDate>' . $feedStamp . '</pubDate>' . "\n";
 $feed .= '    <lastBuildDate>' . $feedStamp . '</lastBuildDate>' . "\n";
 $feed .= '    <generator>OpenEstate-ImmoTool, PHP-Export v' . IMMOTOOL_SCRIPT_VERSION . '</generator>' . "\n";
-$feed .= '    <dc:creator>' . $translations['labels']['title'] . '</dc:creator>' . "\n";
+$feed .= '    <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
 $feed .= '    <dc:date>' . $feedStamp . '</dc:date>' . "\n";
 $feed .= '    <dc:language>' . $lang . '</dc:language>' . "\n";
-$feed .= '    <dc:rights>' . $translations['labels']['title'] . '</dc:rights>' . "\n";
+$feed .= '    <dc:rights>' . $feedTitle . '</dc:rights>' . "\n";
+
+if ($debugMode) {
+  echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+  echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">';
+  echo '  <head>';
+  echo '    <title>RSS-Feed Debugger</title>';
+  echo '    <meta http-equiv="Content-Language" content="de" />';
+  echo '    <meta http-equiv="pragma" content="no-cache" />';
+  echo '    <meta http-equiv="cache-control" content="no-cache" />';
+  echo '    <meta http-equiv="expires" content="0" />';
+  echo '    <meta http-equiv="imagetoolbar" content="no" />';
+  echo '    <meta name="MSSmartTagsPreventParsing" content="true" />';
+  echo '    <meta name="generator" content="OpenEstate-ImmoTool" />';
+  echo '    <link rel="stylesheet" href="style.php" />';
+  echo '    <meta name="robots" content="noindex,follow" />';
+  echo '  </head>';
+  echo '  <body>';
+  echo '  <h2>RSS-Feed Debugger</h2>';
+}
 
 // absteigende Sortierung, nach Datum der letzten Änderung
 $ids = array();
@@ -105,8 +138,17 @@ $counter = 0;
 foreach ($stamps as $stamp) {
   foreach ($ids[$stamp] as $id) {
     $object = immotool_functions::get_object($id);
-    if (!is_array($object))
+    if ($debugMode)
+      echo '<h3 style="margin-top:1em;margin-bottom:0;"><a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '">property #' . $id . '</a></h3>';
+    if (!is_array($object)) {
+      if ($debugMode)
+        echo '&gt; NOT FOUND<br/>';
       continue;
+    }
+
+    $objectTexts = immotool_functions::get_text($id);
+    if (!is_array($objectTexts))
+      $objectTexts = array();
 
     // Exposé-URL ermitteln
     $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
@@ -120,7 +162,6 @@ foreach ($stamps as $stamp) {
 
     // Zusammenfassung ermitteln
     $objectSummary = '';
-    $objectTexts = immotool_functions::get_text($id);
     if (isset($objectTexts['kurz_beschr'][$lang]))
       $objectSummary = $objectTexts['kurz_beschr'][$lang];
     else if (isset($objectTexts['objekt_beschr'][$lang]))
@@ -135,22 +176,38 @@ foreach ($stamps as $stamp) {
     $feed .= '      <description><![CDATA[' . $objectSummary . ']]></description>' . "\n";
     $feed .= '      <pubDate>' . date('D, d M Y H:i:s T', $stamp) . '</pubDate>' . "\n";
     $feed .= '      <guid isPermaLink="false">' . $objectUrl . '</guid>' . "\n";
-    $feed .= '      <dc:creator>' . $translations['labels']['title'] . '</dc:creator>' . "\n";
+    $feed .= '      <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
     $feed .= '    </item>' . "\n";
+
+    if ($debugMode)
+      echo '&gt; OK<br/>';
 
     // ggf. abbrechen, wenn das Maximum für Feed-Einträge erreicht ist
     $counter++;
-    if (is_numeric($setup->RssFeedLimit) && $setup->RssFeedLimit > 0 && $setup->RssFeedLimit <= $counter)
+    if (is_numeric($setup->RssFeedLimit) && $setup->RssFeedLimit > 0 && $setup->RssFeedLimit <= $counter) {
+      if ($debugMode)
+        echo '&gt; STOP, reached limit of ' . $setup->RssFeedLimit . ' entries<br/>';
       break;
+    }
   }
 }
 $feed .= '  </channel>';
 $feed .= '</rss>';
 
-// Feed cachen
-$fh = fopen($feedFile, 'w') or die('can\'t write file: ' . $feedFile);
-fwrite($fh, $feed);
-fclose($fh);
+// Debug-Ausgabe des Feeds
+if ($debugMode) {
+  echo '<h2>Generated XML</h2>';
+  echo '<pre>' . htmlentities($feed) . '</pre>';
+  echo '</body></html>';
+}
 
-// Feed ausgeben
-echo $feed;
+// normale Ausgabe des Feeds
+else {
+  // Feed cachen
+  $fh = fopen($feedFile, 'w') or die('can\'t write file: ' . $feedFile);
+  fwrite($fh, $feed);
+  fclose($fh);
+
+  // Feed ausgeben
+  echo $feed;
+}

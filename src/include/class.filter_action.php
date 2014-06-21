@@ -65,7 +65,7 @@ class ImmoToolFilter_action extends ImmoToolFilter {
    */
   function getWidget($selectedValue, $lang, &$translations, &$setup) {
     $widget = '';
-    if (!$this->readOrRebuild() || !is_array($this->items))
+    if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
       return $widget;
     $sortedActions = array();
     foreach (array_keys($this->items) as $action) {

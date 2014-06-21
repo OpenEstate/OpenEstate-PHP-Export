@@ -67,7 +67,7 @@ class ImmoToolFilter_region extends ImmoToolFilter {
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
   function getWidget($selectedValue, $lang, &$translations, &$setup) {
-    if (!$this->readOrRebuild())
+    if (!$this->readOrRebuild($setup->CacheLifeTime))
       return null;
     $widget = '';
     $options = array_keys($this->items);

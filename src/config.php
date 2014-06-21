@@ -191,6 +191,18 @@ class immotool_setup {
    */
   var $Categories = array();
 
+  /**
+   * Lebensdauer von Cache-Dateien.
+   * Eine im Cache-Verzeichnis abgelegte Dateien wird nach einem bestimmten
+   * Zeitraum verworfen und neu erzeugt. Die Dauer der Gültigkeit einer
+   * Cache-Datei wird in Sekunden erfasst.
+   * Beispiel:
+   * $CacheLifeTime = 3600; // eine Stunde
+   * $CacheLifeTime = 86400; // ein Tag
+   * @var int
+   */
+  var $CacheLifeTime = 10800;
+
 }
 
 /**
