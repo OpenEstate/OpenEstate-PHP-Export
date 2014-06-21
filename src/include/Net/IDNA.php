@@ -1,5 +1,4 @@
 <?php
-
 // {{{ license
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=marker: */
@@ -21,9 +20,7 @@
 // | USA.                                                                 |
 // +----------------------------------------------------------------------+
 //
-
 // }}}
-
 
 /**
  * Encode/decode Internationalized Domain Names.
@@ -34,65 +31,63 @@
  * @package Net
  * @version $Id: IDNA.php 284681 2009-07-24 04:24:27Z clockwerx $
  */
+class Net_IDNA {
 
-class Net_IDNA
-{
-    // {{{ factory
-    /**
-     * Attempts to return a concrete IDNA instance for either php4 or php5.
-     *
-     * @param  array  $params   Set of paramaters
-     * @return object IDNA      The newly created concrete Log instance, or an
-     *                          false on an error.
-     * @access public
+  // {{{ factory
+  /**
+   * Attempts to return a concrete IDNA instance for either php4 or php5.
+   *
+   * @param  array  $params   Set of paramaters
+   * @return object IDNA      The newly created concrete Log instance, or an
+   *                          false on an error.
+   * @access public
+   */
+  function getInstance($params = array()) {
+    $version = explode('.', phpversion());
+    $handler = ((int) $version[0] > 4) ? 'php5' : 'php4';
+    $class = 'Net_IDNA_' . $handler;
+    $classfile = IMMOTOOL_BASE_PATH . 'include/Net/IDNA/' . $handler . '.php';
+
+    /*
+     * Attempt to include our version of the named class, but don't treat
+     * a failure as fatal.  The caller may have already included their own
+     * version of the named class.
      */
-    function getInstance($params = array())
-    {
-        $version   = explode( '.', phpversion() );
-        $handler   = ((int)$version[0] > 4) ? 'php5' : 'php4';
-        $class     = 'Net_IDNA_' . $handler;
-        $classfile = IMMOTOOL_BASE_PATH . 'include/Net/IDNA/' . $handler . '.php';
+    @include_once $classfile;
 
-        /*
-         * Attempt to include our version of the named class, but don't treat
-         * a failure as fatal.  The caller may have already included their own
-         * version of the named class.
-         */
-        @include_once $classfile;
-
-        /* If the class exists, return a new instance of it. */
-        if (class_exists($class)) {
-            return new $class($params);
-        }
-
-        return false;
+    /* If the class exists, return a new instance of it. */
+    if (class_exists($class)) {
+      return new $class($params);
     }
-    // }}}
 
-    // {{{ singleton
-    /**
-     * Attempts to return a concrete IDNA instance for either php4 or php5,
-     * only creating a new instance if no IDNA instance with the same
-     * parameters currently exists.
-     *
-     * @param  array  $params   Set of paramaters
-     * @return object IDNA      The newly created concrete Log instance, or an
-     *                          false on an error.
-     * @access public
-     */
-    function singleton($params = array())
-    {
-        static $instances;
-        if (!isset($instances)) {
-            $instances = array();
-        }
+    return false;
+  }
 
-        $signature = serialize($params);
-        if (!isset($instances[$signature])) {
-            $instances[$signature] = Net_IDNA::getInstance($params);
-        }
-
-        return $instances[$signature];
+  // }}}
+  // {{{ singleton
+  /**
+   * Attempts to return a concrete IDNA instance for either php4 or php5,
+   * only creating a new instance if no IDNA instance with the same
+   * parameters currently exists.
+   *
+   * @param  array  $params   Set of paramaters
+   * @return object IDNA      The newly created concrete Log instance, or an
+   *                          false on an error.
+   * @access public
+   */
+  function singleton($params = array()) {
+    static $instances;
+    if (!isset($instances)) {
+      $instances = array();
     }
-    // }}}
+
+    $signature = serialize($params);
+    if (!isset($instances[$signature])) {
+      $instances[$signature] = Net_IDNA::getInstance($params);
+    }
+
+    return $instances[$signature];
+  }
+
+  // }}}
 }

@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Darstellung der Exposé-Ansicht
+ * Website-Export, Darstellung der Exposé-Ansicht.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
@@ -302,25 +302,22 @@ else if ($view == 'contact') {
 
       // Mailversand vorbereiten
       else {
-        $mailer = immotool_functions::get_mailer($setup);
-        $mailer->AddAddress(immotool_functions::get_mail_adress($object['mail']));
-        $mailer->AddReplyTo(immotool_functions::get_mail_adress($contact['email']), $contact['name']);
 
         // Vorlage für Mailtext ermitteln
+        $mailBody = null;
+        $mailSubject = null;
         $mailTemplates = array('expose_contact_' . $lang . '.txt', 'expose_contact.txt');
-        $found = false;
         foreach ($mailTemplates as $mailTemplate) {
           if (!is_file(IMMOTOOL_BASE_PATH . 'templates/' . $mailTemplate))
             continue;
-          $found = true;
           $lines = file(IMMOTOOL_BASE_PATH . 'templates/' . $mailTemplate);
-          $mailer->Subject = $lines[0];
-          $mailer->Body = '';
+          $mailSubject = $lines[0];
+          $mailBody = '';
           for ($i = 1; $i < count($lines); $i++) {
-            $mailer->Body .= rtrim($lines[$i], "\r\n") . PHP_EOL;
+            $mailBody .= rtrim($lines[$i], "\r\n") . PHP_EOL;
           }
         }
-        if (!$found) {
+        if (is_null($mailBody) || is_null($mailSubject)) {
           immotool_functions::replace_var(
               'CONTACT_RESULT', $translations['errors']['cantSendMail.templateNotFound'], $viewContent);
           $replacement['{CONTACT_RESULT_TITLE}'] = $translations['errors']['cantSendMail'];
@@ -328,6 +325,7 @@ else if ($view == 'contact') {
             $replacement['{CONTACT_FORM_' . strtoupper($key) . '_VALUE}'] = htmlentities($contact[$key]);
         }
         else {
+
           // Inhalte in Mailtext übernehmen
           $requestUrl = (strtolower($_SERVER['HTTPS']) == 'on') ? 'https://' : 'http://';
           $requestUrl .= $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'];
@@ -347,29 +345,30 @@ else if ($view == 'contact') {
             '{REQUEST_TIME}' => date('r'),
             '{REQUEST_IP}' => $_SERVER['REMOTE_ADDR'],
           );
-          $mailer->Body = str_replace(array_keys($mailReplacement), array_values($mailReplacement), $mailer->Body);
-          $mailer->Subject = str_replace(array_keys($mailReplacement), array_values($mailReplacement), $mailer->Subject);
-        }
 
-        // Fehler beim Mailversand
-        if (!$mailer->Send()) {
-          $replacement['{CONTACT_RESULT_TITLE}'] = $translations['errors']['cantSendMail'];
-          foreach (array_keys($contact) as $key)
-            $replacement['{CONTACT_FORM_' . strtoupper($key) . '_VALUE}'] = htmlentities($contact[$key]);
-          immotool_functions::replace_var(
-              'CONTACT_RESULT', $translations['errors']['cantSendMail.mailWasNotSend'] . '<hr/>' . $mailer->ErrorInfo, $viewContent);
-        }
+          $mailBody = str_replace(array_keys($mailReplacement), array_values($mailReplacement), $mailBody);
+          $mailSubject = str_replace(array_keys($mailReplacement), array_values($mailReplacement), $mailSubject);
+          $mailResult = immotool_functions::send_mail($setup, $mailSubject, $mailBody, $object['mail'], $contact['email'], $contact['name']);
 
-        // Mailversand erfolgreich durchgeführt
-        else {
-          $showContactForm = null;
-          $replacement['{CONTACT_RESULT_TITLE}'] = $translations['labels']['estate.contact.form.submitted'];
-          immotool_functions::replace_var(
-              'CONTACT_RESULT', $translations['labels']['estate.contact.form.submitted.message'], $viewContent);
+          // Mailversand erfolgreich durchgeführt
+          if ($mailResult === true) {
+            $showContactForm = null;
+            $replacement['{CONTACT_RESULT_TITLE}'] = $translations['labels']['estate.contact.form.submitted'];
+            immotool_functions::replace_var(
+                'CONTACT_RESULT', $translations['labels']['estate.contact.form.submitted.message'], $viewContent);
+          }
+
+          // Fehler beim Mailversand
+          else {
+            $replacement['{CONTACT_RESULT_TITLE}'] = $translations['errors']['cantSendMail'];
+            foreach (array_keys($contact) as $key)
+              $replacement['{CONTACT_FORM_' . strtoupper($key) . '_VALUE}'] = htmlentities($contact[$key]);
+            immotool_functions::replace_var(
+                'CONTACT_RESULT', $translations['errors']['cantSendMail.mailWasNotSend'] . '<hr/>' . $mailResult, $viewContent);
+          }
         }
       }
     }
-
     $viewContent = str_replace(array_keys($replacement), array_values($replacement), $viewContent);
   }
   immotool_functions::replace_var('CONTACT_FORM', $showContactForm, $viewContent);
@@ -449,5 +448,12 @@ immotool_functions::replace_var('ADRESS2_VALUE', $adressLine2, $pageContent);
 
 // Ausgabe erzeugen
 $buildTime = microtime() - $startup;
-header("Content-Type: text/html; charset=utf-8");
-echo immotool_functions::build_page('expose', $lang, $mainTitle, $pageTitle, $pageContent, $buildTime, $setup->AdditionalStylesheet, $setup->ShowLanguageSelection, $robots, '&amp;' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=' . $view);
+$output = immotool_functions::build_page('expose', $lang, $mainTitle, $pageTitle, $pageContent, $buildTime, $setup->AdditionalStylesheet, $setup->ShowLanguageSelection, $robots, '&amp;' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=' . $view);
+if (is_string($setup->Charset) && strlen(trim($setup->Charset)) > 0) {
+  //die( 'encode: ' . $setup->Charset );
+  $output = immotool_functions::encode($output, $setup->Charset);
+}
+if (is_string($setup->ContentType) && strlen(trim($setup->ContentType)) > 0) {
+  header('Content-Type: ' . $setup->ContentType);
+}
+echo $output;

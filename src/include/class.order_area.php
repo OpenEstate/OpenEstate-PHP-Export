@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Sortierung nach Fläche
+ * Website-Export, Sortierung nach Fläche.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org

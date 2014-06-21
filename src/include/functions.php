@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Hilfsfunktionen
+ * Website-Export, Hilfsfunktionen.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.2');
+define('IMMOTOOL_SCRIPT_VERSION', '1.3');
 
 // Parameter, allgemein
 if (!defined('IMMOTOOL_PARAM_LANG'))
@@ -53,6 +53,8 @@ if (!defined('IMMOTOOL_PARAM_INDEX_FILTER_CLEAR'))
   define('IMMOTOOL_PARAM_INDEX_FILTER_CLEAR', 'clearFilters');
 if (!defined('IMMOTOOL_PARAM_INDEX_VIEW'))
   define('IMMOTOOL_PARAM_INDEX_VIEW', 'view');
+if (!defined('IMMOTOOL_PARAM_INDEX_MODE'))
+  define('IMMOTOOL_PARAM_INDEX_MODE', 'mode');
 
 // Parameter, expose.php
 if (!defined('IMMOTOOL_PARAM_EXPOSE_ID'))
@@ -123,23 +125,34 @@ class immotool_functions {
       '{PARAM_INDEX_FILTER}' => IMMOTOOL_PARAM_INDEX_FILTER,
       '{PARAM_INDEX_FILTER_CLEAR}' => IMMOTOOL_PARAM_INDEX_FILTER_CLEAR,
       '{PARAM_INDEX_VIEW}' => IMMOTOOL_PARAM_INDEX_VIEW,
+      '{PARAM_INDEX_MODE}' => IMMOTOOL_PARAM_INDEX_MODE,
       '{PARAM_EXPOSE_ID}' => IMMOTOOL_PARAM_EXPOSE_ID,
       '{PARAM_EXPOSE_VIEW}' => IMMOTOOL_PARAM_EXPOSE_VIEW,
       '{PARAM_EXPOSE_IMG}' => IMMOTOOL_PARAM_EXPOSE_IMG,
       '{PARAM_EXPOSE_CONTACT}' => IMMOTOOL_PARAM_EXPOSE_CONTACT,
       '{PARAM_EXPOSE_CAPTCHA}' => IMMOTOOL_PARAM_EXPOSE_CAPTCHA,
     );
-    $output = str_replace(array_keys($replacements), array_values($replacements), $page);
-    return immotool_functions::fix_encoding($output);
+    return str_replace(array_keys($replacements), array_values($replacements), $page);
   }
 
   /**
-   * Umwandlung eines Strings zu UTF-8, wenn dies nicht bereits vorliegt.
+   * Umwandlung einer Ausgabe in einen anderen Zeichensatz.
    */
-  function fix_encoding(&$input) {
-    $encoding = strtoupper(mb_detect_encoding($input));
-    return ($encoding == 'UTF-8' && mb_check_encoding($input, 'UTF-8')) ?
-        $input : utf8_encode($input);
+  function encode(&$input, $targetEncoding) {
+    /* return ($encoding=='UTF-8' && mb_check_encoding($input,'UTF-8'))?
+      $input: utf8_encode($input); */
+
+    // Zeichensatz der Ausgabe ermitteln
+    $sourceEncoding = strtoupper(mb_detect_encoding($input));
+    if ($sourceEncoding === false)
+      return $input;
+
+    // Kodierung der Ausgabe ggf. umwandeln
+    if (strtoupper(trim($sourceEncoding)) == strtoupper(trim($targetEncoding))) {
+      return $input;
+    }
+    return iconv(
+        strtoupper(trim($sourceEncoding)), strtoupper(trim($targetEncoding)) . '//TRANSLIT', $input);
   }
 
   /**
@@ -208,24 +221,32 @@ class immotool_functions {
    * @param object $setup Konfiguration
    * @return object PHP-Mailer
    */
-  function get_mailer(&$setup) {
+  function get_phpmailer(&$setup) {
+
     // Instanz des PHPMailers erzeugen
-    $mailer = null;
-    if (is_callable(array('immotool_myconfig', 'load_mailer')))
-      $mailer = immotool_myconfig::load_mailer($setup);
     if (!class_exists('PHPMailer'))
       include_once(IMMOTOOL_BASE_PATH . 'include/class.phpmailer.php');
-    if (!is_object($mailer))
-      $mailer = new PHPMailer();
+    $mailer = new PHPMailer();
 
     // Mailer konfigurieren
+    immotool_functions::setup_phpmailer($mailer, $setup);
+    return $mailer;
+  }
+
+  /**
+   * Konfiguriert einen Mailer aus der Konfiguration.
+   * @param object $setup Konfiguration
+   * @return object PHP-Mailer
+   */
+  function setup_phpmailer(&$mailer, &$setup) {
+    // Mailer konfigurieren
     $mailer->IsHTML(false);
-    $mailer->From = immotool_functions::get_mail_adress($setup->MailFrom);
+    $mailer->From = immotool_functions::encode_mail($setup->MailFrom);
     $mailer->FromName = $setup->MailFromName;
     if (is_string($setup->MailToCC) && strlen(trim($setup->MailToCC)) > 0)
-      $mailer->AddCC(immotool_functions::get_mail_adress($setup->MailToCC));
+      $mailer->AddCC(immotool_functions::encode_mail($setup->MailToCC));
     if (is_string($setup->MailToBCC) && strlen(trim($setup->MailToBCC)) > 0)
-      $mailer->AddBCC(immotool_functions::get_mail_adress($setup->MailToBCC));
+      $mailer->AddBCC(immotool_functions::encode_mail($setup->MailToBCC));
     if ($setup->MailMethod != 'default') {
       $mailer->Mailer = $setup->MailMethod;
       $mailer->Sendmail = $setup->MailSendmailPath;
@@ -245,7 +266,7 @@ class immotool_functions {
    * @param string $email Mailadresse
    * @return umgewandelte Mailadresse
    */
-  function get_mail_adress($email) {
+  function encode_mail($email) {
     if (!isset($GLOBALS['immotool_idna']) || !is_object($GLOBALS['immotool_idna'])) {
       include_once( IMMOTOOL_BASE_PATH . 'include/Net/IDNA.php' );
       $GLOBALS['immotool_idna'] = Net_IDNA::getInstance();
@@ -511,6 +532,38 @@ class immotool_functions {
     return $result;
   }
 
+  /**
+   * Send a mail.
+   */
+  function send_mail(&$setup, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
+
+    // Mailversand über ein externes Framework
+    if (is_callable(array('immotool_myconfig', 'send_mail'))) {
+      $result = immotool_myconfig::send_mail($setup, $subject, $body, $mailToAdress, $replyToAdress, $replyToName);
+      if (!is_null($result))
+        return $result;
+    }
+
+    // Mailversand über den lokalen PHP-Mailer
+    $mailer = immotool_functions::get_phpmailer($setup);
+    return immotool_functions::send_mail_via_phpmailer($mailer, $subject, $body, $mailToAdress, $replyToAdress, $replyToName);
+  }
+
+  /**
+   * Send a mail via PHPMailer.
+   */
+  function send_mail_via_phpmailer(&$mailer, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
+
+    // Mailversand via PHP-Mailer
+    $mailer->Body = $body;
+    $mailer->Subject = $subject;
+    $mailer->AddAddress(immotool_functions::encode_mail($mailToAdress));
+    $mailer->AddReplyTo(immotool_functions::encode_mail($replyToAdress), $replyToName);
+    if ($mailer->Send())
+      return true;
+    return $mailer->ErrorInfo;
+  }
+
   function read_file($file) {
     return file_get_contents($file);
   }
@@ -566,12 +619,14 @@ class immotool_functions {
       '/<a([^>]*)href="index\.php"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=index"',
       '/<a([^>]*)href="index\.php\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=index&amp;\2"',
       // index.php => Formulare
-      '/<form([^>]*)action="index\.php"/is' => '<form\1action="' . $wrapperScriptUrl . '?wrap=index"',
+      //'/<form([^>]*)action="index\.php"/is' => '<form\1action="'.$wrapperScriptUrl.'?wrap=index"',
+      '/<form([^>]*)action="index\.php([^"]*)"([^>]*)>/is' => '<form\1action="' . $wrapperScriptUrl . '\2"\3><input type="hidden" name="wrap" value="index"/>',
       // expose.php => Links
       '/<a([^>]*)href="expose\.php"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=expose"',
       '/<a([^>]*)href="expose\.php\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=expose&amp;\2"',
       // expose.php => Formulare
-      '/<form([^>]*)action="expose\.php([^"]*)"/is' => '<form\1action="' . $wrapperScriptUrl . '?wrap=expose\2"',
+      //'/<form([^>]*)action="expose\.php([^"]*)"/is' => '<form\1action="'.$wrapperScriptUrl.'?wrap=expose\2"',
+      '/<form([^>]*)action="expose\.php([^"]*)"([^>]*)>/is' => '<form\1action="' . $wrapperScriptUrl . '\2"\3><input type="hidden" name="wrap" value="expose"/>',
       // captcha.php
       '/<img([^>]*)src="captcha\.php"/is' => '<img\1src="' . $immotoolBaseUrl . 'captcha.php"',
       '/<img([^>]*)src="captcha\.php\?([^"]*)"/is' => '<img\1src="' . $immotoolBaseUrl . 'captcha.php?\2"',

@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Darstellung einer Captcha-Grafik
+ * Website-Export, Darstellung einer Captcha-Grafik.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org

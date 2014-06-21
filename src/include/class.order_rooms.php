@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Sortierung nach Zimmerzahl
+ * Website-Export, Sortierung nach Zimmerzahl.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org

@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Filter nach Vermarktungsart
+ * Website-Export, Filter nach Vermarktungsart.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
