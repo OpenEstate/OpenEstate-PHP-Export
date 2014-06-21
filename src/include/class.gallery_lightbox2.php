@@ -20,7 +20,7 @@
  * Website-Export, JS-Galerie, basierend auf Lightbox2.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @link http://www.huddletogether.com/projects/lightbox2/
  */
@@ -37,6 +37,30 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery {
    * @var bool
    */
   var $CompleteHeader = true;
+
+  /**
+   * Pfad zum Prototype-Javascript
+   * @var string
+   */
+  var $PrototypeScript = 'include/lightbox2/js/prototype.js';
+
+  /**
+   * Pfad zum Scriptaculous-Javascript
+   * @var string
+   */
+  var $ScriptaculousScript = 'include/lightbox2/js/scriptaculous.js?load=effects,builder';
+
+  /**
+   * Pfad zum Lightbox-Javascript
+   * @var string
+   */
+  var $LightboxScript = 'include/lightbox2/js/lightbox.js';
+
+  /**
+   * Pfad zum Lightbox-Stylesheet
+   * @var string
+   */
+  var $LightboxStyle = 'include/lightbox2/css/lightbox.css';
 
   /**
    * Liefert HTML-Code zur Darstellung eines Fotos in der Galerie.
@@ -80,28 +104,61 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery {
    * @return string HTML-Code
    */
   function getHeader() {
-    $fullHeader = '';
-    if ($this->CompleteHeader) {
-      $fullHeader .= '<script type="text/javascript" src="include/lightbox2/js/prototype.js"></script>' . "\n";
-      $fullHeader .= '<script type="text/javascript" src="include/lightbox2/js/scriptaculous.js?load=effects,builder"></script>';
+    $header = array();
+
+    // include Prototype
+    if (is_string($this->PrototypeScript)) {
+      $header[] = '<script type="text/javascript" src="' . $this->PrototypeScript . '"></script>';
     }
-    return $fullHeader . '
-<script type="text/javascript">
+
+    // include Scriptaculous
+    if (is_string($this->ScriptaculousScript)) {
+      $header[] = '<script type="text/javascript" src="' . $this->ScriptaculousScript . '"></script>';
+    }
+
+    // init Lightbox
+    $options = $this->getHeaderOptions();
+    if (!is_array($options))
+      $options = array();
+    $headerOptions = array();
+    foreach ($options as $key => $value)
+      $headerOptions[] = $key . ': ' . $value;
+    $header[] = '<script type="text/javascript">
 <!--
 LightboxOptions = Object.extend({
-    fileLoadingImage: \'./img/lightbox2/loading.gif\',
-    fileBottomNavCloseImage: \'./img/lightbox2/closelabel.gif\',
-    overlayOpacity: 0.5,
-    animate: true,
-    resizeSpeed: 7,
-    borderSize: 10,
-    labelImage: "Image",
-    labelOf: "of"
+  ' . implode(",\n  ", $headerOptions) . '
 }, window.LightboxOptions || {});
--->
-</script>
-<script type="text/javascript" src="include/lightbox2/js/lightbox.js"></script>
-<link rel="stylesheet" href="include/lightbox2/css/lightbox.css" type="text/css" media="screen" />';
+//-->
+</script>';
+
+    // include Lightbox
+    if (is_string($this->LightboxScript)) {
+      $header[] = '<script type="text/javascript" src="' . $this->LightboxScript . '"></script>';
+    }
+
+    // include Lightbox stylesheet
+    if (is_string($this->LightboxStyle)) {
+      $header[] = '<link rel="stylesheet" href="' . $this->LightboxStyle . '" type="text/css" media="screen" />';
+    }
+
+    return implode("\n", $header);
+  }
+
+  /**
+   * Liefert ein Array mit Konfigurations-Werten der Lightbox-Galerie.
+   * @return array Lightbox-Konfiguration
+   */
+  function getHeaderOptions() {
+    return array(
+      'fileLoadingImage' => '"./img/lightbox2/loading.gif"',
+      'fileBottomNavCloseImage' => '"./img/lightbox2/closelabel.gif"',
+      'overlayOpacity' => '0.5',
+      'animate' => 'true',
+      'resizeSpeed' => '8',
+      'borderSize' => '10',
+      'labelImage' => '"Image"',
+      'labelOf' => '"of"',
+    );
   }
 
   /**
@@ -120,11 +177,11 @@ LightboxOptions = Object.extend({
 
     // ggf. das Titelbild dynamisch skalieren
     if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
-      $img = 'data/' . $objectId . '/img_0.jpg';
+      $img = 'data/' . $objectId . '/' . $image['name'];
       if (!is_file(IMMOTOOL_BASE_PATH . $img))
         return null;
       $thumb = 'img.php?id=' . $objectId .
-          '&amp;img=img_0.jpg' .
+          '&amp;img=' . $image['name'] .
           '&amp;x=' . $this->exposeSetup->TitleImageSize[0] .
           '&amp;y=' . $this->exposeSetup->TitleImageSize[1];
     }

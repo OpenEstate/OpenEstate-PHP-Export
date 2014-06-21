@@ -20,7 +20,7 @@
  * Website-Export, JS-Galerie, basierend auf Colorbox.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @link http://colorpowered.com/colorbox/
  */
@@ -33,10 +33,22 @@ require_once( IMMOTOOL_BASE_PATH . 'include/class.gallery.php' );
 class ImmoToolGallery_colorbox extends ImmoToolGallery {
 
   /**
-   * Header inkl. Abhängigkeiten erzeugen.
-   * @var bool
+   * Pfad zum JQuery-Javascript
+   * @var string
    */
-  var $CompleteHeader = true;
+  var $JQueryScript = 'include/colorbox/jquery.min.js';
+
+  /**
+   * Pfad zum Colorbox-Javascript
+   * @var string
+   */
+  var $ColorboxScript = 'include/colorbox/jquery.colorbox-min.js';
+
+  /**
+   * Pfad zum Colorbox-Stylesheet
+   * @var string
+   */
+  var $ColorboxStyle = 'include/colorbox/colorbox.css';
 
   /**
    * Liefert HTML-Code zur Darstellung eines Fotos in der Galerie.
@@ -80,21 +92,51 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
    * @return string HTML-Code
    */
   function getHeader() {
-    $fullHeader = '';
-    if ($this->CompleteHeader) {
-      $fullHeader .= '<script type="text/javascript" src="include/colorbox/jquery.min.js"></script>';
+    $header = array();
+
+    // include JQuery
+    if (is_string($this->JQueryScript)) {
+      $header[] = '<script type="text/javascript" src="' . $this->JQueryScript . '"></script>';
     }
-    return $fullHeader . '
-<script type="text/javascript" src="include/colorbox/jquery.colorbox.js"></script>
-<script type="text/javascript">
+
+    // include Colorbox
+    if (is_string($this->ColorboxScript)) {
+      $header[] = '<script type="text/javascript" src="' . $this->ColorboxScript . '"></script>';
+    }
+
+    // init Colorbox
+    $options = $this->getHeaderOptions();
+    if (!is_array($options))
+      $options = array();
+    $headerOptions = array();
+    foreach ($options as $key => $value)
+      $headerOptions[] = $key . ': ' . $value;
+    $header[] = '<script type="text/javascript">
 <!--
 $(document).ready(function(){
-  $("a[rel=\'gallery\']").colorbox({transition:"fade"});
-  $("a[rel=\'title\']").colorbox({transition:"fade"});
+  $("a[rel=\'gallery\']").colorbox(' . implode(', ', $headerOptions) . ');
+  $("a[rel=\'title\']").colorbox(' . implode(', ', $headerOptions) . ');
 });
--->
-</script>
-<link rel="stylesheet" href="include/colorbox/colorbox.css" type="text/css" media="screen" />';
+//-->
+</script>';
+
+    // include Colorbox stylesheet
+    if (is_string($this->ColorboxStyle)) {
+      $header[] = '<link rel="stylesheet" href="' . $this->ColorboxStyle . '" type="text/css" media="screen" />';
+    }
+
+    return implode("\n", $header);
+  }
+
+  /**
+   * Liefert ein Array mit Konfigurations-Werten der Colorbox-Galerie.
+   * @return array Colorbox-Konfiguration
+   */
+  function getHeaderOptions() {
+    return array(
+        //'transition' => '"fade"',
+        //'speed' => '350',
+    );
   }
 
   /**
@@ -113,11 +155,11 @@ $(document).ready(function(){
 
     // ggf. das Titelbild dynamisch skalieren
     if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
-      $img = 'data/' . $objectId . '/img_0.jpg';
+      $img = 'data/' . $objectId . '/' . $image['name'];
       if (!is_file(IMMOTOOL_BASE_PATH . $img))
         return null;
       $thumb = 'img.php?id=' . $objectId .
-          '&amp;img=img_0.jpg' .
+          '&amp;img=' . $image['name'] .
           '&amp;x=' . $this->exposeSetup->TitleImageSize[0] .
           '&amp;y=' . $this->exposeSetup->TitleImageSize[1];
     }

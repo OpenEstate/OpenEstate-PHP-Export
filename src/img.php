@@ -18,10 +18,9 @@
 
 /**
  * Website-Export, Skalierung & Beschneidung der Objekt-Bilder auf eine vorgegebene Größe.
- * $Id: img.php 945 2011-06-30 19:57:49Z andy $
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -31,8 +30,10 @@ if (!defined('IMMOTOOL_BASE_PATH'))
   define('IMMOTOOL_BASE_PATH', '');
 if (!extension_loaded('gd'))
   die('It seems like GD is not installed!');
+ob_start();
 include(IMMOTOOL_BASE_PATH . 'config.php');
 include(IMMOTOOL_BASE_PATH . 'include/functions.php');
+ob_end_clean();
 
 // Konfiguration ermitteln
 $setup = new immotool_setup();
@@ -40,8 +41,10 @@ if (is_callable(array('immotool_myconfig', 'load_config_default')))
   immotool_myconfig::load_config_default($setup);
 
 // Bild ermitteln
-if (!isset($_REQUEST['id']) || !is_numeric($_REQUEST['id']))
+if (!isset($_REQUEST['id']) || !is_string($_REQUEST['id']))
   die('No id defined!');
+if (strpos($_REQUEST['id'], '..') !== false)
+  die('Invalid image defined!');
 if (!isset($_REQUEST['img']) || !is_string($_REQUEST['img']))
   die('No image defined!');
 if (strpos($_REQUEST['img'], '..') !== false)

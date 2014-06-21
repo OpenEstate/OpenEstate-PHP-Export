@@ -20,7 +20,7 @@
  * Website-Export, Darstellung des Atom-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -118,82 +118,107 @@ if ($debugMode) {
   echo '  <h2>Atom-Feed Debugger</h2>';
 }
 
-// absteigende Sortierung, nach Datum der letzten Änderung
+// ID's der darzustellenden Immobilien gemäß Sortierung ermitteln
 $ids = array();
-foreach (immotool_functions::list_available_objects() as $id) {
-  $stamp = immotool_functions::get_object_stamp($id);
-  if ($stamp == null)
-    $stamp = 0;
+$orderBy = @$setup->OrderBy;
+$orderDir = @$setup->OrderDir;
+$orderObj = (is_string($orderBy)) ?
+    immotool_functions::get_order($orderBy) : null;
 
-  if (!isset($ids[$stamp]))
-    $ids[$stamp] = array();
-  $ids[$stamp][] = $id;
+// gewählte Sortierung durchführen
+if ($orderObj != null && $orderObj->readOrRebuild($setup->CacheLifeTime)) {
+  $items = $orderObj->getItems($lang);
+  if (!is_array($items))
+    die('empty order: ' . $orderBy);
+  if (is_array($items)) {
+    if ($orderDir == 'desc')
+      $ids = array_reverse($items);
+    else
+      $ids = $items;
+  }
 }
-$stamps = array_keys($ids);
-rsort($stamps, SORT_NUMERIC);
+
+// absteigende Sortierung, nach Datum der letzten Änderung
+else {
+  $items = array();
+  foreach (immotool_functions::list_available_objects() as $id) {
+    $stamp = immotool_functions::get_object_stamp($id);
+    if ($stamp == null)
+      $stamp = 0;
+
+    if (!isset($items[$stamp]))
+      $items[$stamp] = array();
+    $items[$stamp][] = $id;
+  }
+  $stamps = array_keys($items);
+  rsort($stamps, SORT_NUMERIC);
+  foreach ($stamps as $stamp) {
+    foreach ($items[$stamp] as $id) {
+      $ids[] = $id;
+    }
+  }
+}
 
 // Immobilien in den Feed schreiben
 $counter = 0;
-foreach ($stamps as $stamp) {
-  foreach ($ids[$stamp] as $id) {
-    $object = immotool_functions::get_object($id);
+foreach ($ids as $id) {
+  $object = immotool_functions::get_object($id);
+  if ($debugMode)
+    echo '<h3 style="margin-top:1em;margin-bottom:0;"><a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '">property #' . $id . '</a></h3>';
+  if (!is_array($object)) {
     if ($debugMode)
-      echo '<h3 style="margin-top:1em;margin-bottom:0;"><a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '">property #' . $id . '</a></h3>';
-    if (!is_array($object)) {
-      if ($debugMode)
-        echo '&gt; NOT FOUND<br/>';
-      continue;
-    }
+      echo '&gt; NOT FOUND<br/>';
+    continue;
+  }
+  $objectStamp = immotool_functions::get_object_stamp($id);
+  $objectTexts = immotool_functions::get_text($id);
+  if (!is_array($objectTexts))
+    $objectTexts = array();
 
-    $objectTexts = immotool_functions::get_text($id);
-    if (!is_array($objectTexts))
-      $objectTexts = array();
+  // Exposé-URL ermitteln
+  $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
 
-    // Exposé-URL ermitteln
-    $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
+  // Titel ermitteln
+  $objectTitle = $object['title'][$lang];
+  if (isset($object['nr']))
+    $objectTitle = $object['nr'] . ' » ' . $objectTitle;
+  else
+    $objectTitle = '#' . $id . ' » ' . $objectTitle;
 
-    // Titel ermitteln
-    $objectTitle = $object['title'][$lang];
-    if (isset($object['nr']))
-      $objectTitle = $object['nr'] . ' » ' . $objectTitle;
-    else
-      $objectTitle = '#' . $id . ' » ' . $objectTitle;
+  // Zusammenfassung ermitteln
+  $objectSummary = '';
+  if (isset($objectTexts['kurz_beschr'][$lang]))
+    $objectSummary = $objectTexts['kurz_beschr'][$lang];
+  else if (isset($objectTexts['objekt_beschr'][$lang]))
+    $objectSummary = $objectTexts['objekt_beschr'][$lang];
+  else
+    $objectSummary = $object['title'][$lang];
 
-    // Zusammenfassung ermitteln
-    $objectSummary = '';
-    if (isset($objectTexts['kurz_beschr'][$lang]))
-      $objectSummary = $objectTexts['kurz_beschr'][$lang];
-    else if (isset($objectTexts['objekt_beschr'][$lang]))
-      $objectSummary = $objectTexts['objekt_beschr'][$lang];
-    else
-      $objectSummary = $object['title'][$lang];
+  // Immobilie in den Feed eintragen
+  $feed .= '  <entry>' . "\n";
+  $feed .= '    <id>' . $objectUrl . '</id>' . "\n";
+  $feed .= '    <link href="' . $objectUrl . '" />' . "\n";
+  $feed .= '    <title>' . htmlspecialchars($objectTitle) . '</title>' . "\n";
+  $feed .= '    <author>' . "\n";
+  $feed .= '      <name>' . $feedTitle . '</name>' . "\n";
+  $feed .= '    </author>' . "\n";
+  $feed .= '    <summary type="text"><![CDATA[' . $objectSummary . ']]></summary>' . "\n";
+  if (!is_null($objectStamp))
+    $feed .= '    <updated>' . gmdate('Y-m-d\TH:i:s\Z', $objectStamp) . '</updated>' . "\n";
+  else
+    $feed .= '    <updated>' . $feedStamp . '</updated>' . "\n";
+  $feed .= '    <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
+  $feed .= '  </entry>' . "\n";
 
-    // Immobilie in den Feed eintragen
-    $feed .= '  <entry>' . "\n";
-    $feed .= '    <id>' . $objectUrl . '</id>' . "\n";
-    $feed .= '    <link href="' . $objectUrl . '" />' . "\n";
-    $feed .= '    <title>' . htmlspecialchars($objectTitle) . '</title>' . "\n";
-    $feed .= '    <author>' . "\n";
-    $feed .= '      <name>' . $feedTitle . '</name>' . "\n";
-    $feed .= '    </author>' . "\n";
-    $feed .= '    <summary type="text"><![CDATA[' . $objectSummary . ']]></summary>' . "\n";
-    if (!is_null($stamp))
-      $feed .= '    <updated>' . gmdate('Y-m-d\TH:i:s\Z', $stamp) . '</updated>' . "\n";
-    else
-      $feed .= '    <updated>' . $feedStamp . '</updated>' . "\n";
-    $feed .= '    <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
-    $feed .= '  </entry>' . "\n";
+  if ($debugMode)
+    echo '&gt; OK<br/>';
 
+  // ggf. abbrechen, wenn das Maximum für Feed-Einträge erreicht ist
+  $counter++;
+  if (is_numeric($setup->AtomFeedLimit) && $setup->AtomFeedLimit > 0 && $setup->AtomFeedLimit <= $counter) {
     if ($debugMode)
-      echo '&gt; OK<br/>';
-
-    // ggf. abbrechen, wenn das Maximum für Feed-Einträge erreicht ist
-    $counter++;
-    if (is_numeric($setup->AtomFeedLimit) && $setup->AtomFeedLimit > 0 && $setup->AtomFeedLimit <= $counter) {
-      if ($debugMode)
-        echo '&gt; STOP, reached limit of ' . $setup->AtomFeedLimit . ' entries<br/>';
-      break;
-    }
+      echo '&gt; STOP, reached limit of ' . $setup->AtomFeedLimit . ' entries<br/>';
+    break;
   }
 }
 $feed .= '</feed>';

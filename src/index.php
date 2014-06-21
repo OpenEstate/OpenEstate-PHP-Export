@@ -20,7 +20,7 @@
  * Website-Export, Darstellung der Inseratsübersicht.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -44,7 +44,7 @@ if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR]) && is_string($_REQUEST[IMM
   setcookie(
       'immotool_favs', // name
       '', // value
-      time() + 60 * 60 * 24 * 365, // expires after 30 days
+      time() + 60 * 60 * 24 * 365, // expires after 365 days
       '/', // path
       '', // domain
       false // secure
@@ -170,12 +170,13 @@ foreach ($result as $resultId) {
 
   // Dynamisch verkleinertes Titelbild ausliefern
   if ($setup->DynamicImageScaling === true && extension_loaded('gd')) {
-    $img = 'data/' . $object['id'] . '/img_0.jpg';
-    if (!is_file(IMMOTOOL_BASE_PATH . $img)) {
+    $img = (isset($object['images'][0]['name'])) ?
+        'data/' . $object['id'] . '/' . $object['images'][0]['name'] : null;
+    if ($img == null || !is_file(IMMOTOOL_BASE_PATH . $img)) {
       immotool_functions::replace_var('IMAGE', null, $listingEntry);
     }
     else {
-      $imgScaleScript = 'img.php?id=' . $object['id'] . '&amp;img=img_0.jpg';
+      $imgScaleScript = 'img.php?id=' . $object['id'] . '&amp;img=' . $object['images'][0]['name'];
       if ($mode == 'gallery')
         $imgScaleScript .= '&amp;x=' . $setup->GalleryImageSize[0] . '&amp;y=' . $setup->GalleryImageSize[1];
       else
@@ -186,13 +187,13 @@ foreach ($result as $resultId) {
 
   // Titelbild direkt ausliefern
   else {
-    $img = 'data/' . $object['id'] . '/';
+    $img = null;
     if ($mode == 'gallery')
-      $img .= 'title.jpg';
-    else
-      $img .= 'img_0.thumb.jpg';
+      $img = 'data/' . $object['id'] . '/title.jpg';
+    else if (isset($object['images'][0]['thumb']))
+      $img = 'data/' . $object['id'] . '/' . $object['images'][0]['thumb'];
 
-    if (is_file(IMMOTOOL_BASE_PATH . $img))
+    if ($img != null && is_file(IMMOTOOL_BASE_PATH . $img))
       immotool_functions::replace_var('IMAGE', $img, $listingEntry);
     else
       immotool_functions::replace_var('IMAGE', null, $listingEntry);
@@ -252,7 +253,7 @@ foreach ($result as $resultId) {
 
   immotool_functions::replace_var('LINK_EXPOSE', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'], $listingEntry);
   immotool_functions::replace_var('LINK_EXPOSE_TEXT', $translations['labels']['link.expose.view'], $listingEntry);
-  immotool_functions::replace_var('LINK_FAV', '?' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view, $listingEntry);
+  immotool_functions::replace_var('LINK_FAV', '?' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view . '&amp;' . IMMOTOOL_PARAM_INDEX_MODE . '=' . $mode, $listingEntry);
   immotool_functions::replace_var('LINK_FAV_TEXT', $favTitle, $listingEntry);
   immotool_functions::replace_var('LINK_CONTACT', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=contact', $listingEntry);
   immotool_functions::replace_var('LINK_CONTACT_TEXT', $translations['labels']['link.expose.contact'], $listingEntry);
@@ -277,6 +278,7 @@ if ($totalCount == 0) {
 
 // Seitennavigation
 $pagination = '<ul>';
+$paginationDefaultParams = IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view . '&amp;' . IMMOTOOL_PARAM_INDEX_MODE . '=' . $mode . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang;
 $maxPageNumber = ceil($totalCount / $elementsPerPage);
 if ($maxPageNumber > 1) {
   $start = $page - 4;
@@ -286,24 +288,24 @@ if ($maxPageNumber > 1) {
   if ($end > $maxPageNumber)
     $end = $maxPageNumber;
   if ($start > 1) {
-    $pagination .= '<li><a href="?' . IMMOTOOL_PARAM_INDEX_PAGE . '=1&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '">1</a></li>';
+    $pagination .= '<li><a href="?' . IMMOTOOL_PARAM_INDEX_PAGE . '=1&amp;' . $paginationDefaultParams . '">1</a></li>';
     if ($start > 2)
       $pagination .= '<li>...</li>';
   }
   for ($i = $start; $i <= $end; $i++) {
     $class = ($page == $i) ? 'class="selected"' : '';
-    $pagination .= '<li ' . $class . '><a href="?' . IMMOTOOL_PARAM_INDEX_PAGE . '=' . $i . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '">' . $i . '</a></li>';
+    $pagination .= '<li ' . $class . '><a href="?' . IMMOTOOL_PARAM_INDEX_PAGE . '=' . $i . '&amp;' . $paginationDefaultParams . '">' . $i . '</a></li>';
   }
   if ($end < $maxPageNumber) {
     if (($end + 1) < $maxPageNumber)
       $pagination .= '<li>...</li>';
-    $pagination .= '<li><a href="?' . IMMOTOOL_PARAM_INDEX_PAGE . '=' . $maxPageNumber . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '">' . $maxPageNumber . '</a></li>';
+    $pagination .= '<li><a href="?' . IMMOTOOL_PARAM_INDEX_PAGE . '=' . $maxPageNumber . '&amp;' . $paginationDefaultParams . '">' . $maxPageNumber . '</a></li>';
   }
 }
 else {
   $pagination .= '<li>&nbsp;</li>';
 }
-$pagination .= '<li ' . (($view == 'fav') ? 'class="selected"' : '') . ' style="float:right;"><a href="?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['tab.fav'] . '</a></li>';
+$pagination .= '<li ' . (($view == 'fav') ? 'class="selected"' : '') . ' style="float:right;"><a href="?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav&amp;' . IMMOTOOL_PARAM_INDEX_MODE . '=' . $mode . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['tab.fav'] . '</a></li>';
 $pagination .= '<li ' . (($view == 'index') ? 'class="selected"' : '') . ' style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['tab.index'] . '</a></li>';
 $pagination .= '</ul>';
 
@@ -386,6 +388,7 @@ $replacement = array(
   '{ALT_VIEW_TABLE}' => $translations['labels']['view.table'],
   '{PAGINATION}' => $pagination,
   '{VIEW}' => $view,
+  '{MODE}' => $mode,
   '{ENTRIES}' => '',
 );
 $pageContent = str_replace(array_keys($replacement), array_values($replacement), $listing);
