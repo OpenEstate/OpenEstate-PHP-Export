@@ -35,9 +35,9 @@ class ImmoToolFilter_moebliert extends ImmoToolFilter {
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $moebliert = (isset($object['attributes']['ausstattung']['moebliert']['value'])) ?
+    $value = (isset($object['attributes']['ausstattung']['moebliert']['value'])) ?
         $object['attributes']['ausstattung']['moebliert']['value'] : null;
-    if (!is_string($moebliert) && strtolower($moebliert) != 'ja' && strtolower($moebliert) != 'teil')
+    if (!is_string($value) && strtolower($value) != 'ja' && strtolower($value) != 'teil')
       return;
     if (!isset($items['1']) || !is_array($items['1']))
       $items['1'] = array();
@@ -55,7 +55,8 @@ class ImmoToolFilter_moebliert extends ImmoToolFilter {
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.moebliert'])) ? $translations['labels']['estate.moebliert'] : null;
+    $title = (isset($translations['labels']['openestate.moebliert'])) ?
+        $translations['labels']['openestate.moebliert'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 

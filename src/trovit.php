@@ -32,7 +32,8 @@ if (!defined('IMMOTOOL_BASE_PATH'))
 include(IMMOTOOL_BASE_PATH . 'config.php');
 include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 include(IMMOTOOL_BASE_PATH . 'data/language.php');
-session_start();
+if (session_id() == '')
+  session_start();
 header("Content-Type: text/xml; charset=utf-8");
 
 // Konfiguration ermitteln

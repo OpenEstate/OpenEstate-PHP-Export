@@ -45,7 +45,8 @@ class ImmoToolOrder_area extends ImmoToolOrder {
    * Titel der Sortierung, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.area'])) ? $translations['labels']['estate.area'] : null;
+    $title = (isset($translations['labels']['estate.area'])) ?
+        $translations['labels']['estate.area'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 
@@ -54,7 +55,8 @@ class ImmoToolOrder_area extends ImmoToolOrder {
    */
   function sort_field(&$object, $lang) {
     foreach ($this->lookupFields as $field) {
-      $value = (isset($object['attributes']['flaechen'][$field]['value'])) ? $object['attributes']['flaechen'][$field]['value'] : null;
+      $value = (isset($object['attributes']['flaechen'][$field]['value'])) ?
+          $object['attributes']['flaechen'][$field]['value'] : null;
       if (is_numeric($value))
         return $value;
     }

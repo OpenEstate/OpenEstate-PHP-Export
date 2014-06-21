@@ -2,7 +2,7 @@
 <div id="openestate_expose">
   <div id="openestate_expose_menu_top">{EXPOSE_MENU}</div>
   <div id="openestate_expose_header">
-    {IMAGE.}<div id="openestate_expose_header_image"><a href="expose.php?{PARAM_EXPOSE_ID}={ID}&amp;{PARAM_EXPOSE_VIEW}=gallery&amp;{PARAM_EXPOSE_IMG}=1#img"><img src="{IMAGE}" alt="" border="0"/></a></div>{.IMAGE}
+    {IMAGE.}<div id="openestate_expose_header_image">{IMAGE}</div>{.IMAGE}
     <h2>{TITLE}</h2>
     <ul>
       <li><div>{ID_TITLE}:</div>{ID_VALUE}</li>
@@ -14,11 +14,8 @@
     </ul>
   </div>
   <div id="openestate_expose_view">
-    <div id="openestate_expose_view_menu">{VIEW_MENU}</div>
-    <div id="openestate_expose_view_content">
-      <h2>{VIEW_TITLE}</h2>
-      {VIEW_CONTENT}
-    </div>
+    {VIEW_MENU.}<div id="openestate_expose_view_menu">{VIEW_MENU}</div>{.VIEW_MENU}
+    <div id="openestate_expose_view_content">{VIEW_CONTENT}</div>
   </div>
   <div id="openestate_expose_menu_bottom">{EXPOSE_MENU}</div>
   <div id="openestate_expose_footer">

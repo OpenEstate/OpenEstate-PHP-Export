@@ -42,7 +42,8 @@ class ImmoToolOrder_rooms extends ImmoToolOrder {
    * Titel der Sortierung, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.rooms'])) ? $translations['labels']['estate.rooms'] : null;
+    $title = (isset($translations['labels']['estate.rooms'])) ?
+        $translations['labels']['estate.rooms'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 

@@ -41,7 +41,8 @@ define('CAPTCHA_SIZE_FONT', 25);
 define('CAPTCHA_VARIABLE', 'captchacode');
 if (is_string($_REQUEST['sess']) && strlen($_REQUEST['sess']) > 0)
   session_name($_REQUEST['sess']);
-session_start();
+if (session_id() == '')
+  session_start();
 
 // zufällige TTF Schriftart ermitteln
 $fonts = immotool_functions::list_directory(CAPTCHA_FONT_PATH);

@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Sortierung nach Stadt.
+ * Website-Export, HTML-Galerie.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
@@ -27,40 +27,16 @@
 if (!defined('IN_WEBSITE'))
   exit;
 
-require_once( IMMOTOOL_BASE_PATH . 'include/class.order.php' );
+require_once( IMMOTOOL_BASE_PATH . 'include/class.gallery.php' );
 
-class ImmoToolOrder_city extends ImmoToolOrder {
+class ImmoToolGallery_html extends ImmoToolGallery {
 
   /**
-   * Name des Filters.
+   * Name der Galerie.
+   * @return string Name
    */
   function getName() {
-    return 'city';
-  }
-
-  /**
-   * Titel der Sortierung, abhängig von der Sprache.
-   */
-  function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.city'])) ?
-        $translations['labels']['estate.city'] : null;
-    return is_string($title) ? $title : $this->getName();
-  }
-
-  /**
-   * Liefert das Sortierungsfeld eines Objektes.
-   */
-  function sort_field(&$object, $lang) {
-    return (isset($object['adress']['city'])) ?
-        $object['adress']['city'] : null;
-  }
-
-  /**
-   * Liefert das Sortierungs-Flag
-   * siehe http://www.php.net/manual/en/function.sort.php
-   */
-  function sort_flag() {
-    return SORT_STRING;
+    return 'html';
   }
 
 }
