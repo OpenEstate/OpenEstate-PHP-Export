@@ -1,0 +1,19 @@
+<div id="openestate_header"><h1>{PAGE_TITLE}</h1></div>
+<div id="openestate_listing">
+  <div id="openestate_listing_pagination_top">{PAGINATION}</div>
+  <div class="openestate_clear"></div>
+  {MENU.}<div id="openestate_listing_menu">
+    <form action="index.php" method="get" style="margin:0;">
+      <div class="openestate_listing_buttons">
+        <input type="hidden" name="view" value="{VIEW}" />
+        <input class="openestate_search_button" type="submit" name="submit" value="" title="Search" />
+        <input class="openestate_cancel_button" type="submit" name="reset" value="" title="Reset" />
+      </div>
+      {MENU}
+      <div class="openestate_clear" style="float:none;"></div>
+    </form>
+  </div>{.MENU}
+{ENTRIES}
+  <div id="openestate_listing_pagination_bottom">{PAGINATION}</div>
+  <div class="openestate_clear"></div>
+</div>

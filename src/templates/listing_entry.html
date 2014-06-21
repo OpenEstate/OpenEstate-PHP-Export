@@ -1,0 +1,29 @@
+<div class="openestate_listing_entry {BG}">
+  <h2><a href="expose.php?{PARAM_EXPOSE_ID}={ID}">{TITLE}</a></h2>
+  {IMAGE.}<div class="image"><a href="expose.php?{PARAM_EXPOSE_ID}={ID}"><img src="{IMAGE}" alt="" border="0"/></a></div>{.IMAGE}
+  <div class="col_1">
+    <ul>
+      {TYPE.}<li>{TYPE}</li>{.TYPE}
+      {ACTION.}<li>{ACTION}</li>{.ACTION}
+      <li>{POSTAL} {CITY}</li>
+      {COUNTRY.}<li>{COUNTRY}</li>{.COUNTRY}
+    </ul>
+  </div>
+  <div class="col_2">
+    <ul>
+      {FLAECHEN_1.}<li>{FLAECHEN_1_TITLE}: {FLAECHEN_1}</li>{.FLAECHEN_1}
+      {FLAECHEN_2.}<li>{FLAECHEN_2_TITLE}: {FLAECHEN_2}</li>{.FLAECHEN_2}
+      {PREISE_1.}<li>{PREISE_1_TITLE}: {PREISE_1}</li>{.PREISE_1}
+      {PREISE_2.}<li>{PREISE_2_TITLE}: {PREISE_2}</li>{.PREISE_2}
+    </ul>
+  </div>
+  <div class="options">
+    <ul>
+      {LINK_EXPOSE.}<li><a href="{LINK_EXPOSE}">{LINK_EXPOSE_TEXT}</a></li>{.LINK_EXPOSE}
+      {LINK_PDF.}<li><a href="{LINK_PDF}" target="_blank">{LINK_PDF_TEXT}</a></li>{.LINK_PDF}
+      {LINK_FAV.}<li><a href="{LINK_FAV}" rel="nofollow">{LINK_FAV_TEXT}</a></li>{.LINK_FAV}
+      {LINK_CONTACT.}<li><a href="{LINK_CONTACT}">{LINK_CONTACT_TEXT}</a></li>{.LINK_CONTACT}
+    </ul>
+  </div>
+  <div class="openestate_clear"></div>
+</div>
