@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Filter nach Region / Bundesland.
+ * Website-Export, Filter nach Sonderangeboten.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
@@ -29,37 +29,34 @@ if (!defined('IN_WEBSITE'))
 
 require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
 
-class ImmoToolFilter_region extends ImmoToolFilter {
+class ImmoToolFilter_sonderangebot extends ImmoToolFilter {
 
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $value = (isset($object['adress']['region'])) ?
-        $object['adress']['region'] : null;
-    if (!is_string($value))
+    $value = (isset($object['attributes']['preise']['sonderangebot']['value'])) ?
+        $object['attributes']['preise']['sonderangebot']['value'] : null;
+    if (!is_bool($value) || $value == false)
       return;
-    $value = trim($value);
-    if (strlen($value) == 0)
-      return;
-    if (!isset($items[$value]) || !is_array($items[$value]))
-      $items[$value] = array();
-    $items[$value][] = $object['id'];
+    if (!isset($items['1']) || !is_array($items['1']))
+      $items['1'] = array();
+    $items['1'][] = $object['id'];
   }
 
   /**
    * Name des Filters.
    */
   function getName() {
-    return 'region';
+    return 'sonderangebot';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.region'])) ?
-        $translations['labels']['estate.region'] : null;
+    $title = (isset($translations['labels']['openestate.sonderangebot'])) ?
+        $translations['labels']['openestate.sonderangebot'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 
@@ -67,21 +64,11 @@ class ImmoToolFilter_region extends ImmoToolFilter {
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
   function getWidget($selectedValue, $lang, &$translations, &$setup) {
-    if (!$this->readOrRebuild())
-      return null;
-    $widget = '';
-    $options = array_keys($this->items);
-    asort($options);
-    if (is_array($options) && count($options) > 0) {
-      $by = $this->getTitle($translations, $lang);
-      $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
-      $widget .= '<option value="">[ ' . $by . ' ]</option>';
-      foreach ($options as $city) {
-        $selected = ($selectedValue == $city) ? 'selected="selected"' : '';
-        $widget .= '<option value="' . $city . '" ' . $selected . '>' . $city . '</option>';
-      }
-      $widget .= '</select>';
-    }
+    $checked = ($selectedValue == '1') ? 'checked="checked"' : '';
+    $widget = '<div class="nowrap">';
+    $widget .= '<input id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']" value="1" type="checkbox" ' . $checked . '/>';
+    $widget .= '<label for="filter_' . $this->getName() . '">' . $this->getTitle($translations, $lang) . '</label>';
+    $widget .= '</div>';
     return $widget;
   }
 

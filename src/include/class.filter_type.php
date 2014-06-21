@@ -56,7 +56,8 @@ class ImmoToolFilter_type extends ImmoToolFilter {
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.type'])) ? $translations['labels']['estate.type'] : null;
+    $title = (isset($translations['labels']['estate.type'])) ?
+        $translations['labels']['estate.type'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 
@@ -67,10 +68,12 @@ class ImmoToolFilter_type extends ImmoToolFilter {
     $widget = '';
     if (!$this->readOrRebuild() || !is_array($this->items))
       return $widget;
-    //$sortedTypes = $translations['openestate']['types'];
     $sortedTypes = array();
-    foreach (array_keys($this->items) as $type)
-      $sortedTypes[$type] = $translations['openestate']['types'][$type];
+    foreach (array_keys($this->items) as $type) {
+      $txt = isset($translations['openestate']['types'][$type]) ?
+          $translations['openestate']['types'][$type] : null;
+      $sortedTypes[$type] = is_string($txt) ? $txt : $type;
+    }
     asort($sortedTypes);
     if (is_array($sortedTypes) && count($sortedTypes) > 0) {
       $by = $this->getTitle($translations, $lang);

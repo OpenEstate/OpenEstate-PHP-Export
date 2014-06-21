@@ -3,8 +3,12 @@
   {GALLERY_THUMBNAILS.}<div id="openestate_expose_gallery_thumbnails">
     {GALLERY_THUMBNAILS}
   </div>{.GALLERY_THUMBNAILS}
-  <div id="openestate_expose_gallery_image">
+  {GALLERY_IMAGE.}<div id="openestate_expose_gallery_image">
     {GALLERY_IMAGE_TEXT.}<h3>{GALLERY_IMAGE_TEXT}</h3>{.GALLERY_IMAGE_TEXT}
-    {GALLERY_IMAGE.}<img src="{GALLERY_IMAGE}" alt="" border="0" />{.GALLERY_IMAGE}
-  </div>
+    <img src="{GALLERY_IMAGE}" alt="" border="0" />
+  </div>{.GALLERY_IMAGE}
+  {NOSCRIPT_GALLERY_IMAGE.}<noscript><div id="openestate_expose_gallery_image">
+    {GALLERY_IMAGE_TEXT.}<h3>{GALLERY_IMAGE_TEXT}</h3>{.GALLERY_IMAGE_TEXT}
+    <img src="{NOSCRIPT_GALLERY_IMAGE}" alt="" border="0" />
+  </div></noscript>{.NOSCRIPT_GALLERY_IMAGE}
 </div>

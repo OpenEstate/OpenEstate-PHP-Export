@@ -32,7 +32,8 @@ if (!defined('IMMOTOOL_BASE_PATH'))
 include(IMMOTOOL_BASE_PATH . 'config.php');
 include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 include(IMMOTOOL_BASE_PATH . 'data/language.php');
-session_start();
+if (session_id() == '')
+  session_start();
 
 // Konfiguration ermitteln
 $setup = new immotool_setup_index();
@@ -42,17 +43,18 @@ immotool_functions::init($setup);
 
 // Übersetzungen ermitteln
 $translations = null;
-$lang = immotool_functions::init_language($_REQUEST[IMMOTOOL_PARAM_LANG], $setup->DefaultLanguage, $translations);
+$lang = (isset($_REQUEST[IMMOTOOL_PARAM_LANG])) ? $_REQUEST[IMMOTOOL_PARAM_LANG] : null;
+$lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $translations);
 if (!is_array($translations))
   die('Can\'t load translations!');
 
 // Ansicht ermitteln
-$view = $_REQUEST[IMMOTOOL_PARAM_INDEX_VIEW];
+$view = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_VIEW])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_VIEW] : null;
 if ($view != 'fav')
   $view = 'index';
 
 // Modus ermitteln
-$mode = $_REQUEST[IMMOTOOL_PARAM_INDEX_MODE];
+$mode = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_MODE])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_MODE] : null;
 if (!is_string($mode) || strlen($mode) <= 0)
   $mode = $_SESSION['immotool']['mode'];
 if ($mode != 'gallery' && $mode != 'entry')
@@ -61,20 +63,23 @@ $_SESSION['immotool']['mode'] = $mode;
 
 // Sortierung & Filterkriterien ignorieren und aus der Session entfernen
 $reset = false;
-if (is_string($_REQUEST[IMMOTOOL_PARAM_INDEX_RESET])) {
+if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_RESET]) && is_string($_REQUEST[IMMOTOOL_PARAM_INDEX_RESET])) {
   $reset = true;
   unset($_SESSION['immotool']['orderBy']);
   unset($_SESSION['immotool']['orderDir']);
   unset($_SESSION['immotool']['filter']);
   unset($_SESSION['immotool']['page']);
-  unset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER]);
-  unset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER]);
-  unset($_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE]);
+  if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER]))
+    unset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER]);
+  if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER]))
+    unset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER]);
+  if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE]))
+    unset($_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE]);
 }
 
 // Seitenzahl ermitteln
 $elementsPerPage = $setup->ElementsPerPage;
-$page = $_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE];
+$page = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE] : null;
 if (!is_numeric($page) || $page <= 0) {
   $page = $_SESSION['immotool']['page'];
   if (!is_numeric($page) || $page <= 0)
@@ -83,7 +88,8 @@ if (!is_numeric($page) || $page <= 0) {
 $_SESSION['immotool']['page'] = $page;
 
 // Sortierung ermitteln
-$order = explode('-', $_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER]);
+$order = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER] : '';
+$order = explode('-', $order);
 $orderBy = $order[0];
 $orderDir = $order[1];
 if (!is_string($orderBy) || trim($orderBy) == '') {
@@ -102,8 +108,9 @@ $_SESSION['immotool']['orderDir'] = $orderDir;
 // Filterkriterien ermitteln
 $filters = array();
 if ($view != 'fav') {
-  $filters = $_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER];
-  if ($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER_CLEAR] == '1') {
+  $filters = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER] : null;
+  $filterClear = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER_CLEAR])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER_CLEAR] : null;
+  if ($filterClear == '1') {
     $_SESSION['immotool']['filter'] = array();
     if (!is_array($filters))
       $filters = array();
@@ -314,7 +321,8 @@ if ((is_array($setup->OrderOptions) && count($setup->OrderOptions) > 0) ||
         $filterObj = immotool_functions::get_filter($key);
         if (!is_object($filterObj))
           continue;
-        $filterWidget = $filterObj->getWidget($filters[$key], $lang, $translations, $setup);
+        $filterVal = (isset($filters[$key])) ? $filters[$key] : null;
+        $filterWidget = $filterObj->getWidget($filterVal, $lang, $translations, $setup);
         if (!is_string($filterWidget) || strlen($filterWidget) == 0)
           continue;
         $showMenu .= '<div class="listing_filter">';
@@ -333,10 +341,11 @@ $replacement = array(
   '{ENTRIES}' => '',
 );
 $pageContent = str_replace(array_keys($replacement), array_values($replacement), $listing);
+$pageHeader = '';
 
 // Ausgabe erzeugen
 $buildTime = microtime() - $startup;
-$output = immotool_functions::build_page('index', $lang, $mainTitle, $pageTitle, $pageContent, $buildTime, $setup->AdditionalStylesheet, $setup->ShowLanguageSelection, $robots);
+$output = immotool_functions::build_page('index', $lang, $mainTitle, $pageTitle, $pageHeader, $pageContent, $buildTime, $setup->AdditionalStylesheet, $setup->ShowLanguageSelection, $robots);
 if (is_string($setup->Charset) && strlen(trim($setup->Charset)) > 0) {
   //die( 'encode from '.mb_detect_encoding($output).' to ' . $setup->Charset );
   $output = immotool_functions::encode($output, $setup->Charset);

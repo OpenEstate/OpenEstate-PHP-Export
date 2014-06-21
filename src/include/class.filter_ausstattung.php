@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Filter nach Region / Bundesland.
+ * Website-Export, Filter nach Ausstattungsart.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
@@ -29,19 +29,17 @@ if (!defined('IN_WEBSITE'))
 
 require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
 
-class ImmoToolFilter_region extends ImmoToolFilter {
+class ImmoToolFilter_ausstattung extends ImmoToolFilter {
 
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $value = (isset($object['adress']['region'])) ?
-        $object['adress']['region'] : null;
+    $value = isset($object['attributes']['ausstattung']['ausstattung_art']['value']) ?
+        $object['attributes']['ausstattung']['ausstattung_art']['value'] : null;
     if (!is_string($value))
       return;
-    $value = trim($value);
-    if (strlen($value) == 0)
-      return;
+    $value = strtolower($value);
     if (!isset($items[$value]) || !is_array($items[$value]))
       $items[$value] = array();
     $items[$value][] = $object['id'];
@@ -51,15 +49,15 @@ class ImmoToolFilter_region extends ImmoToolFilter {
    * Name des Filters.
    */
   function getName() {
-    return 'region';
+    return 'ausstattung';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.region'])) ?
-        $translations['labels']['estate.region'] : null;
+    $title = (isset($translations['labels']['openestate.ausstattung'])) ?
+        $translations['labels']['openestate.ausstattung'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 
@@ -67,18 +65,27 @@ class ImmoToolFilter_region extends ImmoToolFilter {
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
   function getWidget($selectedValue, $lang, &$translations, &$setup) {
-    if (!$this->readOrRebuild())
-      return null;
     $widget = '';
-    $options = array_keys($this->items);
-    asort($options);
-    if (is_array($options) && count($options) > 0) {
+    if (!$this->readOrRebuild() || !is_array($this->items))
+      return $widget;
+
+    // Optionen in der Auswahlbox ermitteln
+    $options = array('einfach', 'normal', 'gehoben', 'luxus');
+    $values = array();
+    foreach ($options as $o) {
+      $txt = (isset($translations['labels']['openestate.ausstattung.' . $o])) ?
+          $translations['labels']['openestate.ausstattung.' . $o] : null;
+      $values[$o] = is_string($txt) ? $txt : $o;
+    }
+
+    // HTML-Code zur Auswahlbox erzeugen
+    if (is_array($values) && count($values) > 0) {
       $by = $this->getTitle($translations, $lang);
       $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
       $widget .= '<option value="">[ ' . $by . ' ]</option>';
-      foreach ($options as $city) {
-        $selected = ($selectedValue == $city) ? 'selected="selected"' : '';
-        $widget .= '<option value="' . $city . '" ' . $selected . '>' . $city . '</option>';
+      foreach ($values as $value => $txt) {
+        $selected = ($selectedValue == $value) ? 'selected="selected"' : '';
+        $widget .= '<option value="' . $value . '" ' . $selected . '>' . $txt . '</option>';
       }
       $widget .= '</select>';
     }

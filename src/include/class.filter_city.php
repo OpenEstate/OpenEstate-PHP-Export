@@ -35,15 +35,16 @@ class ImmoToolFilter_city extends ImmoToolFilter {
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $city = (isset($object['adress']['city'])) ? $object['adress']['city'] : null;
-    if (!is_string($city))
+    $value = (isset($object['adress']['city'])) ?
+        $object['adress']['city'] : null;
+    if (!is_string($value))
       return;
-    $city = trim($city);
-    if (strlen($city) == 0)
+    $value = trim($value);
+    if (strlen($value) == 0)
       return;
-    if (!isset($items[$city]) || !is_array($items[$city]))
-      $items[$city] = array();
-    $items[$city][] = $object['id'];
+    if (!isset($items[$value]) || !is_array($items[$value]))
+      $items[$value] = array();
+    $items[$value][] = $object['id'];
   }
 
   /**
@@ -57,7 +58,8 @@ class ImmoToolFilter_city extends ImmoToolFilter {
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.city'])) ? $translations['labels']['estate.city'] : null;
+    $title = (isset($translations['labels']['estate.city'])) ?
+        $translations['labels']['estate.city'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 

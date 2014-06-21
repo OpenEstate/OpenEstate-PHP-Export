@@ -42,7 +42,8 @@ class ImmoToolOrder_price extends ImmoToolOrder {
    * Titel der Sortierung, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.price'])) ? $translations['labels']['estate.price'] : null;
+    $title = (isset($translations['labels']['estate.price'])) ?
+        $translations['labels']['estate.price'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 

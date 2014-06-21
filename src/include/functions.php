@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.3');
+define('IMMOTOOL_SCRIPT_VERSION', '1.4');
 
 // Parameter, allgemein
 if (!defined('IMMOTOOL_PARAM_LANG'))
@@ -74,9 +74,27 @@ $GLOBALS['immotool_texts'] = array();
 if (is_file(IMMOTOOL_BASE_PATH . 'myconfig.php'))
   include( IMMOTOOL_BASE_PATH . 'myconfig.php' );
 
+/**
+ * Hilfsfunktionen des ImmoTool PHP-Exports.
+ */
 class immotool_functions {
 
-  function build_page($pageId, $languageCode, $mainTitle, $pageTitle, &$pageContent, $buildTime, $addonStylesheet, $showLanguageSelection = true, $robots = 'index,follow', $linkParam = '') {
+  /**
+   * Erzeugung einer Seite.
+   * @param string $pageId ID der Seite
+   * @param string $languageCode Gewählte Sprache
+   * @param string $mainTitle Haupttitel
+   * @param string $pageTitle Untertitel
+   * @param string $pageHeader HTML-Code, der im head-Bereich der Seite eingefügt wird.
+   * @param string $pageContent HTML-Code, der im body-Bereich der Seite eingefügt wird.
+   * @param string $buildTime Dauer der Erzeugung
+   * @param string $addonStylesheet URL des zusätzlichen Stylesheets.
+   * @param string $showLanguageSelection Sprachauswahl darstellen.
+   * @param string $robots verwendete robots-Einstellungen
+   * @param string $linkParam zusätzliche Parameter für Links, z.B. in der Sprachauswahl
+   * @return string HTML-Code der erzeugten Seite
+   */
+  function build_page($pageId, $languageCode, $mainTitle, $pageTitle, $pageHeader, &$pageContent, $buildTime, $addonStylesheet, $showLanguageSelection = true, $robots = 'index,follow', $linkParam = '') {
     $page = immotool_functions::read_template('global.html');
 
     // Sprachauswahl
@@ -97,9 +115,13 @@ class immotool_functions {
     immotool_functions::replace_var('LANGUAGE_SELECTION', $languageSelection, $page);
 
     // zusätzlicher Stylesheet
-    $pageHeader = '';
-    if (is_string($addonStylesheet) && strlen(trim($addonStylesheet)) > 0)
+    if (!is_string($pageHeader))
+      $pageHeader = '';
+    if (is_string($addonStylesheet) && strlen(trim($addonStylesheet)) > 0) {
+      if (strlen($pageHeader) > 0)
+        $pageHeader .= "\n";
       $pageHeader .= '<link rel="stylesheet" href="' . htmlentities(trim($addonStylesheet)) . '" />' . "\n";
+    }
 
     // Footer
     $pageFooter = 'powered by <a href="http://www.openestate.org" target="_blank">OpenEstate</a>';
@@ -137,10 +159,14 @@ class immotool_functions {
 
   /**
    * Umwandlung einer Ausgabe in einen anderen Zeichensatz.
+   * @param string $input Eingabe
+   * @param string $targetEncoding Zeichensatz
+   * @return string Ausgabe
    */
   function encode(&$input, $targetEncoding) {
-    /* return ($encoding=='UTF-8' && mb_check_encoding($input,'UTF-8'))?
-      $input: utf8_encode($input); */
+
+    if (!function_exists('mb_detect_encoding'))
+      return $input;
 
     // Zeichensatz der Ausgabe ermitteln
     $sourceEncoding = strtoupper(mb_detect_encoding($input));
@@ -157,6 +183,8 @@ class immotool_functions {
 
   /**
    * Erzeugt eine Filter-Instanz.
+   * @param string $name Name des Filters
+   * @return object Filter-Objekt
    */
   function get_filter($name) {
     $file = IMMOTOOL_BASE_PATH . 'include/class.filter_' . strtolower($name) . '.php';
@@ -234,7 +262,8 @@ class immotool_functions {
   }
 
   /**
-   * Konfiguriert einen Mailer aus der Konfiguration.
+   * Konfiguriert einen PHP-Mailer aus der Konfiguration.
+   * @param object $mailer Instanz des PHP-Mailers
    * @param object $setup Konfiguration
    * @return object PHP-Mailer
    */
@@ -275,8 +304,24 @@ class immotool_functions {
   }
 
   /**
+   * Erzeugt eine Galerie-Instanz.
+   * @param string $name Name der Galerie
+   * @return object Galerie-Objekt
+   */
+  function get_gallery($name) {
+    $file = IMMOTOOL_BASE_PATH . 'include/class.gallery_' . strtolower($name) . '.php';
+    if (!is_file($file))
+      return null;
+    $orderClass = 'ImmoToolGallery_' . strtolower($name);
+    if (!class_exists($orderClass))
+      require_once( $file );
+    eval('$gallery = new ' . $orderClass . '();');
+    return $gallery;
+  }
+
+  /**
    * Liefert die Daten eines Objektes.
-   * @param int $id ID des Objektes
+   * @param string $id ID des Objektes
    * @return array mit Objektdaten, oder null wenn unbekannt
    */
   function get_object($id = null) {
@@ -298,6 +343,8 @@ class immotool_functions {
 
   /**
    * Erzeugt eine Sortierungs-Instanz.
+   * @param string $name Name der Sortierung
+   * @return object Sortierungs-Objekt
    */
   function get_order($name) {
     $file = IMMOTOOL_BASE_PATH . 'include/class.order_' . strtolower($name) . '.php';
@@ -312,7 +359,7 @@ class immotool_functions {
 
   /**
    * Liefert die AGB des Anbieters.
-   * @return array mit AGB, oder null wenn unbekannt
+   * @return array AGB-Array, oder null wenn unbekannt
    */
   function get_terms() {
     $file = IMMOTOOL_BASE_PATH . 'data/terms.php';
@@ -330,7 +377,7 @@ class immotool_functions {
 
   /**
    * Liefert die Texte eines Objektes.
-   * @param int $id ID des Objektes
+   * @param string $id ID des Objektes
    * @return array mit Objekttexten, oder null wenn unbekannt
    */
   function get_text($id = null) {
@@ -350,6 +397,10 @@ class immotool_functions {
     return $GLOBALS['immotool_texts'][$id];
   }
 
+  /**
+   * Allgemeine Initialisierungen.
+   * @param object $setup Konfiguration
+   */
   function init(&$setup) {
     // Session initialisieren
     if (!isset($_SESSION['immotool']) || !is_array($_SESSION['immotool'])) {
@@ -387,7 +438,7 @@ class immotool_functions {
     }
 
     // ggf. die Standard-Zeitzone für Datumsformatierungen setzen
-    $tz = $_SERVER['TZ'];
+    $tz = (isset($_SERVER['TZ'])) ? $_SERVER['TZ'] : null;
     if (is_string($setup->Timezone) && strlen($setup->Timezone) > 0)
       $tz = $setup->Timezone;
     if (function_exists('date_default_timezone_set') && is_string($tz) && strlen($tz) > 0) {
@@ -395,6 +446,13 @@ class immotool_functions {
     }
   }
 
+  /**
+   * Sprache initialisieren.
+   * @param string $requestedLanguage angeforderte Sprache
+   * @param string $defaultLanguage Standard-Sprache
+   * @param array $translations Container, zur Übergabe der Übersetzungen
+   * @return string verwendeter Sprachcode
+   */
   function init_language($requestedLanguage, $defaultLanguage, &$translations) {
     // Übersetzungen ermitteln
     $lang = $requestedLanguage;
@@ -419,11 +477,20 @@ class immotool_functions {
     return in_array($code, immotool_functions::get_language_codes(), false);
   }
 
+  /**
+   * Prüfung, ob eine Immobilie als Favorit vorgemerkt ist.
+   * @param string $favId ID der Immobilie
+   * @return bool true, wenn eine Vormerkung vorliegt
+   */
   function has_favourite($favId) {
     $pos = array_search($favId, $_SESSION['immotool']['favs']);
     return $pos !== false;
   }
 
+  /**
+   * Liefert die Namen der verfügbaren Filter.
+   * @return array Namen der verfügbaren Filter
+   */
   function list_available_filters() {
     $dir = IMMOTOOL_BASE_PATH . 'include/';
     $filters = array();
@@ -442,6 +509,10 @@ class immotool_functions {
     return $filters;
   }
 
+  /**
+   * Liefert die ID's der verfügbaren Immobilien.
+   * @return array ID's der verfügbaren Immobilien
+   */
   function list_available_objects() {
     $dir = IMMOTOOL_BASE_PATH . 'data/';
     $ids = array();
@@ -458,6 +529,11 @@ class immotool_functions {
     return $ids;
   }
 
+  /**
+   * Hilfsfunktion zum Lesen eines Verzeichnisses.
+   * @param string $directory Pfad zum Verzeichnis
+   * @return array Namen der Dateien / Unterordner des Verzeichnisses
+   */
   function list_directory($directory) {
     $results = array();
     $handler = opendir($directory);
@@ -469,6 +545,18 @@ class immotool_functions {
     return $results;
   }
 
+  /**
+   * Liefert ID's zur Seitendarstellung des Immobilienbestandes.
+   * @param int $pageNumber Seitenzahl
+   * @param int $elementsPerPage Einträge pro Seite
+   * @param string $orderBy Name des Sortierkriteriums
+   * @param string $orderDir Richtung der Sortierung (asc / desc)
+   * @param array $filters Gewählte Filterkriterien
+   * @param int $totalCount Überhabevariable für die Anzahl der Inserate (ohne Seitendarstellung)
+   * @param string $lang Gewählte Sprache
+   * @param array $favIds Array mit ID's der vorgemerkten Inserate
+   * @return array Liste mit ID's der Immobilien auf der angeforderten Seite
+   */
   function list_objects($pageNumber, $elementsPerPage, $orderBy, $orderDir, $filters, &$totalCount, $lang, $favIds = null) {
     // ID's der Inserate ermitteln
     $ids = null;
@@ -533,7 +621,14 @@ class immotool_functions {
   }
 
   /**
-   * Send a mail.
+   * Mailversand durchführen.
+   * @param object $setup Konfiguration
+   * @param string $subject Betreff
+   * @param string $body Text
+   * @param string $mailToAdress E-Mail des Empfängers
+   * @param string $replyToAdress E-Mail des Antwortempfängers
+   * @param string $replyToName Name des Antwortempfängers
+   * @return mixed Im Erfolgsfall 'true', sonst eine Fehlermeldung
    */
   function send_mail(&$setup, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
 
@@ -550,7 +645,14 @@ class immotool_functions {
   }
 
   /**
-   * Send a mail via PHPMailer.
+   * Mailversand via PHP-Mailer.
+   * @param object $mailer PHP-Mailer
+   * @param string $subject Betreff
+   * @param string $body Text
+   * @param string $mailToAdress E-Mail des Empfängers
+   * @param string $replyToAdress E-Mail des Antwortempfängers
+   * @param string $replyToName Name des Antwortempfängers
+   * @return mixed Im Erfolgsfall 'true', sonst eine Fehlermeldung
    */
   function send_mail_via_phpmailer(&$mailer, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
 
@@ -564,21 +666,42 @@ class immotool_functions {
     return $mailer->ErrorInfo;
   }
 
+  /**
+   * Hilfsfunktion zum Lesen einer Datei.
+   * @param string $file Pfad zur Datei
+   * @return string Inhalt der Datei
+   */
   function read_file($file) {
     return file_get_contents($file);
   }
 
+  /**
+   * Hilfsfunktion zum Lesen einer Datei aus dem Template-Verzeichnis.
+   * @param string $file Name der Datei im Template-Verzeichnis
+   * @return string Inhalt der Datei
+   */
   function read_template($file) {
     return immotool_functions::read_file(IMMOTOOL_BASE_PATH . 'templates/' . $file);
   }
 
+  /**
+   * URL's in einem Text mit HTML-Links ersetzen.
+   * @param string $text Eingabetext
+   * @return string Ausgabetext
+   */
   function replace_links(&$text) {
     $replacements = array(
-      '#(https?|ftps?|mailto):\/\/([&;:=\.\/\?\w]+)#i' => '<a href="\1://\2" target="_blank" rel="follow">\1://\2</a>',
+      '#(https?|ftps?|mailto):\/\/([&;:=\.\/\-\?\w]+)#i' => '<a href="\1://\2" target="_blank" rel="follow">\1://\2</a>',
     );
     return preg_replace(array_keys($replacements), array_values($replacements), $text);
   }
 
+  /**
+   * Hilfsfunktion zum Ersetzen eines Platzhalters in einem Text.
+   * @param string $varName Name der Platzhalter-Variablen
+   * @param string $value Wert im einzufügenden Platzhalter
+   * @param string $src Eingabetext
+   */
   function replace_var($varName, $value, &$src) {
     $posBegin = strpos($src, '{' . $varName . '.}');
     $posEnd = strpos($src, '{.' . $varName . '}');
@@ -599,20 +722,41 @@ class immotool_functions {
     }
   }
 
+  /**
+   * Hilfsfunktion zum 'wrappen' einer erzeugten Webseite.
+   * Diese Funktion wird von den PHP-Wrapper-Modulen verwendet.
+   * @param string $page HTML-Code der einzubindenden Seit
+   * @param string $wrapType Art der eingebundenen Seite
+   * @param string $wrapperScriptUrl URL zum umgebenden Script
+   * @param string $immotoolBaseUrl URL zum ImmoTool-Export
+   * @param array $stylesheets
+   * @return string HTML-Code der 'gewrappten' Seite
+   */
   function wrap_page(&$page, $wrapType, $wrapperScriptUrl, $immotoolBaseUrl, $stylesheets) {
     // Stylesheets importieren
-    $styles = '';
+    $header = '';
     if (is_array($stylesheets) && count($stylesheets) > 0) {
-      $styles = "\n<style type=\"text/css\">";
+      $header = "\n<style type=\"text/css\">";
       foreach ($stylesheets as $style)
-        $styles .= "\n@import \"$style\";";
-      $styles .= "\n</style>";
+        $header .= "\n@import \"$style\";";
+      $header .= "\n</style>";
+    }
+
+    // HACK: Einbindung der Galerie-Skripte in Exposés
+    if ($wrapType == 'expose') {
+      $setup = new immotool_setup_expose();
+      if (is_callable(array('immotool_myconfig', 'load_config_expose')))
+        immotool_myconfig::load_config_expose($setup);
+      $galleryHandler = immotool_functions::get_gallery($setup->GalleryHandler);
+      if (!is_object($galleryHandler))
+        $galleryHandler = immotool_functions::get_gallery('html');
+      $header .= "\n" . $galleryHandler->getHeader();
     }
 
     // Ersetzungen
     $replacements = array(
       // Inhalt des BODY-Tags ermitteln
-      '/(.*)<body([^>]*)>(.*)<\/body>(.*)/is' => '<div\2>' . $styles . '\3</div>',
+      '/(.*)<body([^>]*)>(.*)<\/body>(.*)/is' => '<div\2>' . $header . '\3</div>',
       // Verlinkungen innerhalb der aktuellen Seite
       '/<a([^>]*)href="\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . '?wrap=' . $wrapType . '&amp;\2"',
       // index.php => Links
@@ -631,11 +775,16 @@ class immotool_functions {
       '/<img([^>]*)src="captcha\.php"/is' => '<img\1src="' . $immotoolBaseUrl . 'captcha.php"',
       '/<img([^>]*)src="captcha\.php\?([^"]*)"/is' => '<img\1src="' . $immotoolBaseUrl . 'captcha.php?\2"',
       '/src=\'captcha\.php([^\']*)\'/is' => 'src=\'' . $immotoolBaseUrl . 'captcha.php\1\'',
-      // Links auf PDF-Exposés
-      '/<a([^>]*)href="data\/([^"]*)\.pdf"/is' => '<a\1href="' . $immotoolBaseUrl . 'data/\2.pdf"',
+      // Includeverzeichnis
+      '/<script([^>]*)src="include\/([^"]*)"/is' => '<script\1src="' . $immotoolBaseUrl . 'include/\2"',
+      '/<link([^>]*)href="include\/([^"]*)"/is' => '<link\1href="' . $immotoolBaseUrl . 'include/\2"',
       // Datenverzeichnis
-      '/<img([^>]*)src="img\/([^"]*)"/is' => '<img\1src="' . $immotoolBaseUrl . 'img/\2"',
+      '/<a([^>]*)href="data\/([^"]*)\.([^"]*)"/is' => '<a\1href="' . $immotoolBaseUrl . 'data/\2.\3"',
       '/<img([^>]*)src="data\/([^"]*)"/is' => '<img\1src="' . $immotoolBaseUrl . 'data/\2"',
+      // Bildverzeichnis
+      '/<img([^>]*)src="img\/([^"]*)"/is' => '<img\1src="' . $immotoolBaseUrl . 'img/\2"',
+      '/\'img\/([^\']*)\'/is' => '\'' . $immotoolBaseUrl . 'img/\1\'',
+      '/\'\.\/img\/([^\']*)\'/is' => '\'' . $immotoolBaseUrl . 'img/\1\'',
     );
     return preg_replace(array_keys($replacements), array_values($replacements), $page);
   }

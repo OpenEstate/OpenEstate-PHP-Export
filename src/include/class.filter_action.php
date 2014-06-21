@@ -35,12 +35,13 @@ class ImmoToolFilter_action extends ImmoToolFilter {
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $action = (isset($object['action'])) ? $object['action'] : null;
-    if (!is_string($action))
+    $value = (isset($object['action'])) ?
+        $object['action'] : null;
+    if (!is_string($value))
       return;
-    if (!isset($items[$action]) || !is_array($items[$action]))
-      $items[$action] = array();
-    $items[$action][] = $object['id'];
+    if (!isset($items[$value]) || !is_array($items[$value]))
+      $items[$value] = array();
+    $items[$value][] = $object['id'];
   }
 
   /**
@@ -54,7 +55,8 @@ class ImmoToolFilter_action extends ImmoToolFilter {
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.action'])) ? $translations['labels']['estate.action'] : null;
+    $title = (isset($translations['labels']['estate.action'])) ?
+        $translations['labels']['estate.action'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 
@@ -65,10 +67,11 @@ class ImmoToolFilter_action extends ImmoToolFilter {
     $widget = '';
     if (!$this->readOrRebuild() || !is_array($this->items))
       return $widget;
-    //$sortedActions = $translations['openestate']['actions'];
     $sortedActions = array();
-    foreach (array_keys($this->items) as $action)
-      $sortedActions[$action] = $translations['openestate']['actions'][$action];
+    foreach (array_keys($this->items) as $action) {
+      $sortedActions[$action] = isset($translations['openestate']['actions'][$action]) ?
+          $translations['openestate']['actions'][$action] : $action;
+    }
     asort($sortedActions);
     if (is_array($sortedActions) && count($sortedActions) > 0) {
       $by = $this->getTitle($translations, $lang);

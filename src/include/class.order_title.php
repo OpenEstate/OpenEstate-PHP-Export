@@ -42,7 +42,8 @@ class ImmoToolOrder_title extends ImmoToolOrder {
    * Titel der Sortierung, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.title'])) ? $translations['labels']['estate.title'] : null;
+    $title = (isset($translations['labels']['estate.title'])) ?
+        $translations['labels']['estate.title'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 
@@ -57,7 +58,8 @@ class ImmoToolOrder_title extends ImmoToolOrder {
    * Liefert das Sortierungsfeld eines Objektes.
    */
   function sort_field(&$object, $lang) {
-    $val = (isset($object['title'][$lang])) ? $object['title'][$lang] : null;
+    $val = (isset($object['title'][$lang])) ?
+        $object['title'][$lang] : null;
     return is_string($val) ? $val : '';
   }
 

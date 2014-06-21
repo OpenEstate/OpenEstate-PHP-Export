@@ -35,8 +35,9 @@ class ImmoToolFilter_neubau extends ImmoToolFilter {
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $alter = (isset($object['attributes']['zustand']['alter']['value'])) ? $object['attributes']['zustand']['alter']['value'] : null;
-    if (!is_string($alter) || strtolower($alter) != 'neubau')
+    $value = (isset($object['attributes']['zustand']['alter']['value'])) ?
+        $object['attributes']['zustand']['alter']['value'] : null;
+    if (!is_string($value) || strtolower($value) != 'neubau')
       return;
     if (!isset($items['1']) || !is_array($items['1']))
       $items['1'] = array();
@@ -54,7 +55,8 @@ class ImmoToolFilter_neubau extends ImmoToolFilter {
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.neubau'])) ? $translations['labels']['estate.neubau'] : null;
+    $title = (isset($translations['labels']['openestate.neubau'])) ?
+        $translations['labels']['openestate.neubau'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 
