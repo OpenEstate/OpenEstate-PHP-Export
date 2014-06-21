@@ -27,36 +27,40 @@
 // Initialisierung
 $startup = microtime();
 define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH'))
+if (!defined('IMMOTOOL_BASE_PATH')) {
   define('IMMOTOOL_BASE_PATH', '');
+}
 include(IMMOTOOL_BASE_PATH . 'config.php');
+include(IMMOTOOL_BASE_PATH . 'private.php');
 include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 include(IMMOTOOL_BASE_PATH . 'data/language.php');
-if (session_id() == '')
-  session_start();
 $debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
-if ($debugMode)
-  header('Content-Type: text/html; charset=utf-8');
-else
-  header('Content-Type: text/xml; charset=utf-8');
 
 // Konfiguration ermitteln
 $setup = new immotool_setup_feeds();
-if (is_callable(array('immotool_myconfig', 'load_config_feeds')))
+if (is_callable(array('immotool_myconfig', 'load_config_feeds'))) {
   immotool_myconfig::load_config_feeds($setup);
+}
 immotool_functions::init($setup);
-if (!$setup->PublishRssFeed)
+if (!$setup->PublishRssFeed) {
   die('RSS-Feed is disabled!');
+}
 
 // Übersetzungen ermitteln
 $translations = null;
 $lang = (isset($_REQUEST[IMMOTOOL_PARAM_LANG])) ? $_REQUEST[IMMOTOOL_PARAM_LANG] : $setup->DefaultLanguage;
 $lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $translations);
-if (!is_array($translations))
+if (!is_array($translations)) {
   die('Can\'t load translations!');
+}
 
-// Titel ermitteln
-$feedTitle = htmlspecialchars($translations['labels']['title']);
+// Header senden
+if ($debugMode) {
+  header('Content-Type: text/html; charset=utf-8');
+}
+else {
+  header('Content-Type: text/xml; charset=utf-8');
+}
 
 // Cache-Datei des Feeds
 $feedFile = IMMOTOOL_BASE_PATH . 'cache/feed.rss_' . $lang . '.xml';
@@ -74,14 +78,17 @@ if (!$debugMode && is_file($feedFile)) {
 }
 
 // URL des Feed-Skriptes ermitteln
-$feedUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
-$feedUrl .= $_SERVER['SERVER_NAME'];
-$feedUrl .= substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
-$feedUrl .= '/feed_rss.php';
+$baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
+$baseUrl .= $_SERVER['SERVER_NAME'];
+$baseUrl .= substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/')) . '/';
+$feedUrl = $baseUrl . 'feed_rss.php';
 $feedUrl .= '?' . IMMOTOOL_PARAM_LANG . '=' . $lang;
 
 // Timestamp
 $feedStamp = date('r');
+
+// Titel ermitteln
+$feedTitle = htmlspecialchars($translations['labels']['title']);
 
 // Feed erzeugen
 $feed = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -104,15 +111,14 @@ if ($debugMode) {
   echo '  <head>';
   echo '    <title>RSS-Feed Debugger</title>';
   echo '    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />';
-  echo '    <meta http-equiv="Content-Language" content="de" />';
   echo '    <meta http-equiv="pragma" content="no-cache" />';
   echo '    <meta http-equiv="cache-control" content="no-cache" />';
   echo '    <meta http-equiv="expires" content="0" />';
   echo '    <meta http-equiv="imagetoolbar" content="no" />';
   echo '    <meta name="MSSmartTagsPreventParsing" content="true" />';
   echo '    <meta name="generator" content="OpenEstate-ImmoTool" />';
-  echo '    <link rel="stylesheet" href="style.php" />';
   echo '    <meta name="robots" content="noindex,follow" />';
+  echo '    <link rel="stylesheet" href="style.php" />';
   echo '  </head>';
   echo '  <body>';
   echo '  <h2>RSS-Feed Debugger</h2>';
@@ -181,9 +187,9 @@ foreach ($ids as $id) {
   // Titel ermitteln
   $objectTitle = $object['title'][$lang];
   if (isset($object['nr']))
-    $objectTitle = $object['nr'] . ' » ' . $objectTitle;
+    $objectTitle = trim($object['nr'] . ' » ' . $objectTitle);
   else
-    $objectTitle = '#' . $id . ' » ' . $objectTitle;
+    $objectTitle = trim('#' . $id . ' » ' . $objectTitle);
 
   // Zusammenfassung ermitteln
   $objectSummary = '';
@@ -194,10 +200,19 @@ foreach ($ids as $id) {
   else
     $objectSummary = $object['title'][$lang];
 
+  // Bild ggf. einfügen
+  if ($setup->RssFeedWithImage === true) {
+    $titleImg = 'data/' . $object['id'] . '/title.jpg';
+    if (is_file(IMMOTOOL_BASE_PATH . $titleImg)) {
+      $objectSummary = '<img src="' . $baseUrl . $titleImg . '" alt="" align="left" /> ' . $objectSummary;
+    }
+  }
+
   // Immobilie in den Feed eintragen
   $feed .= '    <item>' . "\n";
   $feed .= '      <title>' . htmlspecialchars($objectTitle) . '</title>' . "\n";
   $feed .= '      <link>' . $objectUrl . '</link>' . "\n";
+  //$feed .= '      <description>' . htmlspecialchars($objectSummary) . '</description>' . "\n";
   $feed .= '      <description><![CDATA[' . $objectSummary . ']]></description>' . "\n";
   if (!is_null($objectStamp))
     $feed .= '      <pubDate>' . date('r', $objectStamp) . '</pubDate>' . "\n";
@@ -238,3 +253,4 @@ else {
   // Feed ausgeben
   echo $feed;
 }
+immotool_functions::shutdown($setup);
