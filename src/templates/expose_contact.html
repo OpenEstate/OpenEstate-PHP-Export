@@ -11,15 +11,55 @@
   </ul></div>{.CONTACT_PERSON}
   <a name="form"></a>
   {CONTACT_FORM.}<h3>{CONTACT_FORM}</h3>
+  {CONTACT_RESULT.}
+  <div id="openestate_contact_result">
+    <h3>{CONTACT_RESULT_TITLE}</h3>
+    {CONTACT_RESULT}
+  </div>
+  {.CONTACT_RESULT}
   <form action="expose.php#form" method="post" id="openestate_contact">
     <ul>
-      <li{CONTACT_FORM_NAME_ERROR}><label for="contact_name">{CONTACT_FORM_NAME}:</label><input type="text" name="{PARAM_EXPOSE_CONTACT}[name]" id="contact_name" class="field" maxlength="100" value="{CONTACT_FORM_NAME_VALUE}"/></li>
-      <li{CONTACT_FORM_EMAIL_ERROR}><label for="contact_email">{CONTACT_FORM_EMAIL}:</label><input type="text" name="{PARAM_EXPOSE_CONTACT}[email]" id="contact_email" class="field" maxlength="150" value="{CONTACT_FORM_EMAIL_VALUE}"/></li>
-      <li{CONTACT_FORM_PHONE_ERROR}><label for="contact_phone">{CONTACT_FORM_PHONE}:</label><input type="text" name="{PARAM_EXPOSE_CONTACT}[phone]" id="contact_phone" class="field" maxlength="50" value="{CONTACT_FORM_PHONE_VALUE}"/></li>
-      <li{CONTACT_FORM_MESSAGE_ERROR}><label for="contact_message">{CONTACT_FORM_MESSAGE}:</label><textarea name="{PARAM_EXPOSE_CONTACT}[message]" id="contact_message" class="field" rows="5" cols="30">{CONTACT_FORM_MESSAGE_VALUE}</textarea></li>
+      <li id="field_contact_name" {CONTACT_FORM_NAME_ERROR}>
+        <label for="contact_name">{CONTACT_FORM_NAME}</label>
+        <input type="text" name="{PARAM_EXPOSE_CONTACT}[name]" id="contact_name" class="field" maxlength="100" value="{CONTACT_FORM_NAME_VALUE}"/>
+      </li>
+      <li id="field_contact_firstname" {CONTACT_FORM_FIRSTNAME_ERROR}>
+        <label for="contact_firstname">{CONTACT_FORM_FIRSTNAME}</label>
+        <input type="text" name="{PARAM_EXPOSE_CONTACT}[firstname]" id="contact_firstname" class="field" maxlength="100" value="{CONTACT_FORM_FIRSTNAME_VALUE}"/>
+      </li>
+      <li id="field_contact_email" {CONTACT_FORM_EMAIL_ERROR}>
+        <label for="contact_email">{CONTACT_FORM_EMAIL}</label>
+        <input type="text" name="{PARAM_EXPOSE_CONTACT}[email]" id="contact_email" class="field" maxlength="150" value="{CONTACT_FORM_EMAIL_VALUE}"/>
+      </li>
+      <li id="field_contact_phone" {CONTACT_FORM_PHONE_ERROR}>
+        <label for="contact_phone">{CONTACT_FORM_PHONE}</label>
+        <input type="text" name="{PARAM_EXPOSE_CONTACT}[phone]" id="contact_phone" class="field" maxlength="50" value="{CONTACT_FORM_PHONE_VALUE}"/>
+      </li>
+      <li id="field_contact_street" {CONTACT_FORM_STREET_ERROR}>
+        <label for="contact_street">{CONTACT_FORM_STREET}</label>
+        <input type="text" name="{PARAM_EXPOSE_CONTACT}[street]" id="contact_street" class="field" maxlength="100" value="{CONTACT_FORM_STREET_VALUE}"/>
+      </li>
+      <li id="field_contact_streetnr" {CONTACT_FORM_STREETNR_ERROR}>
+        <label for="contact_streetnr">{CONTACT_FORM_STREETNR}</label>
+        <input type="text" name="{PARAM_EXPOSE_CONTACT}[streetnr]" id="contact_streetnr" class="field" maxlength="10" value="{CONTACT_FORM_STREETNR_VALUE}"/>
+      </li>
+      <li style="margin:0;padding:0;"></li>
+      <li id="field_contact_city" {CONTACT_FORM_CITY_ERROR}>
+        <label for="contact_city">{CONTACT_FORM_CITY}</label>
+        <input type="text" name="{PARAM_EXPOSE_CONTACT}[city]" id="contact_city" class="field" maxlength="100" value="{CONTACT_FORM_CITY_VALUE}"/>
+      </li>
+      <li id="field_contact_postal" {CONTACT_FORM_POSTAL_ERROR}>
+        <label for="contact_postal">{CONTACT_FORM_POSTAL}</label>
+        <input type="text" name="{PARAM_EXPOSE_CONTACT}[postal]" id="contact_postal" class="field" maxlength="10" value="{CONTACT_FORM_POSTAL_VALUE}"/>
+      </li>
+      <li style="margin:0;padding:0;"></li>
+      <li id="field_contact_message" {CONTACT_FORM_MESSAGE_ERROR}>
+        <label for="contact_message">{CONTACT_FORM_MESSAGE}</label>
+        <textarea name="{PARAM_EXPOSE_CONTACT}[message]" id="contact_message" class="field" rows="5" cols="30">{CONTACT_FORM_MESSAGE_VALUE}</textarea>
+      </li>
       {CONTACT_FORM_CAPTCHA.}
-      <li{CONTACT_FORM_CAPTCHA_ERROR}>
-        <label for="contact_captcha">{CONTACT_FORM_CAPTCHA}:</label>
+      <li id="field_contact_captcha" {CONTACT_FORM_CAPTCHA_ERROR}>
+        <label for="openestate_contact_captcha"><img src="img/required.png" alt="" title="" border="0" />&nbsp;{CONTACT_FORM_CAPTCHA}</label>
         <div id="openestate_captcha">
           <div id="openestate_captcha_img">
             <img src="captcha.php?{PARAM_CAPTCHA_SESSION}={SESSION_NAME}" alt="" id="openestate_contact_captcha_image" /><br/>
@@ -27,7 +67,7 @@
 <!--
 function refresh_captcha()
 {
-  document.getElementById('openestate_contact_captcha_image').src='captcha.php?{PARAM_CAPTCHA_SESSION}={SESSION_NAME}&time='+new Date().getTime(); 
+  document.getElementById('openestate_contact_captcha_image').src='captcha.php?{PARAM_CAPTCHA_SESSION}={SESSION_NAME}&time='+new Date().getTime();
   return false;
 }
 document.write( '&nbsp;<a href="#" onclick="return refresh_captcha();">{CONTACT_FORM_CAPTCHA_REFRESH}</a>' );
@@ -38,16 +78,22 @@ document.write( '&nbsp;<a href="#" onclick="return refresh_captcha();">{CONTACT_
         </div>
       </li>
       {.CONTACT_FORM_CAPTCHA}
+      {CONTACT_FORM_TERMS.}
+      <li id="field_contact_terms" {CONTACT_FORM_TERMS_ERROR}>
+        <img src="img/required.png" alt="" title="" border="0"/>
+        <input name="{PARAM_EXPOSE_CONTACT}[terms]" id="contact_terms" type="checkbox" value="1" {CONTACT_FORM_TERMS_ATTRIBS} />
+        <label for="contact_terms" style="display:inline; width:0; margin:0;">&nbsp;{CONTACT_FORM_TERMS}</label>
+      </li>
+      <li id="field_contact_termsarea" {CONTACT_FORM_TERMS_ERROR}>
+        <label for="contact_terms">&nbsp;</label>
+        <textarea id="contact_terms_area" class="field" rows="5" cols="30" readonly="readonly">{CONTACT_FORM_TERMS_TEXT}</textarea>
+      </li>
+      {.CONTACT_FORM_TERMS}
       <li class="buttons"><input type="submit" class="button" value="{CONTACT_FORM_SUBMIT}" /></li>
     </ul>
     <input type="hidden" name="{PARAM_EXPOSE_ID}" value="{ID}"/>
     <input type="hidden" name="{PARAM_EXPOSE_VIEW}" value="contact"/>
+    <input type="hidden" name="{PARAM_LANG}" value="{LANGUAGE_CODE}" />
   </form>{.CONTACT_FORM}
-  {CONTACT_RESULT.}
-  <div id="openestate_contact_result">
-    <h3>{CONTACT_RESULT_TITLE}</h3>
-    {CONTACT_RESULT}
-  </div>
-  {.CONTACT_RESULT}
   <div>&nbsp;</div>
 </div>

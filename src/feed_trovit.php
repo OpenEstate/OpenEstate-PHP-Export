@@ -17,10 +17,10 @@
  */
 
 /**
- * Website-Export, Darstellung des Trovit-XML-Feeds.
+ * Website-Export, Darstellung des Trovit-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009, OpenEstate.org
+ * @copyright 2009-2010, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -34,31 +34,32 @@ include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 include(IMMOTOOL_BASE_PATH . 'data/language.php');
 if (session_id() == '')
   session_start();
-header("Content-Type: text/xml; charset=utf-8");
+header('Content-Type: text/xml; charset=utf-8');
 
 // Konfiguration ermitteln
-$setup = new immotool_setup_trovit();
-if (is_callable(array('immotool_myconfig', 'load_config_trovit')))
-  immotool_myconfig::load_config_trovit($setup);
+$setup = new immotool_setup_feeds();
+if (is_callable(array('immotool_myconfig', 'load_config_feeds')))
+  immotool_myconfig::load_config_feeds($setup);
 immotool_functions::init($setup);
-if (!$setup->PublishFeed)
-  die('Trovit-XML-Feed is disabled!');
+if (!$setup->PublishTrovitFeed)
+  die('Trovit-Feed is disabled!');
 
 // Übersetzungen ermitteln
 $translations = null;
-$lang = immotool_functions::init_language($_REQUEST[IMMOTOOL_PARAM_LANG], $setup->DefaultLanguage, $translations);
+$lang = (isset($_REQUEST[IMMOTOOL_PARAM_LANG])) ? $_REQUEST[IMMOTOOL_PARAM_LANG] : $setup->DefaultLanguage;
+$lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $translations);
 if (!is_array($translations))
   die('Can\'t load translations!');
 
-// Cache-Datei des Trovit-Feeds
-$feedFile = IMMOTOOL_BASE_PATH . 'cache/trovit.' . $lang . '.xml';
+// Cache-Datei des Feeds
+$feedFile = IMMOTOOL_BASE_PATH . 'cache/feed.trovit_' . $lang . '.xml';
 if (is_file($feedFile)) {
   $feed = immotool_functions::read_file($feedFile);
   echo $feed;
   return;
 }
 
-// Trovit-Feed erzeugen
+// Feed erzeugen
 $feed = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 $feed .= '<trovit>' . "\n";
 
@@ -71,26 +72,8 @@ foreach (immotool_functions::list_available_objects() as $id) {
   if (array_search('main_wohnen', $object['type_path']) === false)
     continue;
 
-  $objectUrl = '';
-
-  // Exposé-URL aus Vorlage ermitteln
-  if (is_string($setup->ExposeUrlTemplate) && strlen($setup->ExposeUrlTemplate) > 0) {
-    $replacement = array(
-      '{ID}' => $object['id'],
-      '{LANG}' => $lang,
-    );
-    $objectUrl = str_replace(array_keys($replacement), array_values($replacement), $setup->ExposeUrlTemplate);
-  }
-
-  // Exposé-URL automatisch ermitteln
-  else {
-    $objectUrl = ($_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
-    $objectUrl .= $_SERVER['SERVER_NAME'];
-    $objectUrl .= substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
-    $objectUrl .= '/expose.php';
-    $objectUrl .= '?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'];
-    $objectUrl .= '&' . IMMOTOOL_PARAM_LANG . '=' . $lang;
-  }
+  // Exposé-URL ermitteln
+  $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate);
 
   // Immobilienart ermitteln
   $objectType = (is_string($translations['openestate']['types'][$object['type']])) ?
@@ -112,68 +95,35 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $objectPriceAttribs = '';
   if ($object['action'] == 'kauf') {
     $objectPrice = $object['attributes']['preise']['kaufpreis']['value'];
-    if ($lang == 'de')
-      $objectAction = 'Zum Verkauf';
-    else
-      $objectAction = 'For Sale';
+    $objectAction = 'For Sale';
   }
   else if ($object['action'] == 'miete') {
     $objectPrice = $object['attributes']['preise']['kaltmiete']['value'];
     $mietePro = $object['attributes']['preise']['miete_pro']['value'];
-    if ($lang == 'de') {
-      $objectAction = 'Zur Miete';
-      if ($mietePro == 'WOCHE')
-        $objectPriceAttribs = ' period="wöchentlich"';
-      else
-        $objectPriceAttribs = ' period="monatlich"';
-    }
-    else {
-      $objectAction = 'For Rent';
-      if ($mietePro == 'WOCHE')
-        $objectPriceAttribs = ' period="weekly"';
-      else
-        $objectPriceAttribs = ' period="monthly"';
-    }
+    $objectAction = 'For Rent';
+    if ($mietePro == 'WOCHE')
+      $objectPriceAttribs = ' period="weekly"';
+    else
+      $objectPriceAttribs = ' period="monthly"';
   }
   else if ($object['action'] == 'waz') {
     $objectPrice = $object['attributes']['preise']['pauschalmiete']['value'];
     $mietePro = $object['attributes']['preise']['miete_pro']['value'];
-    if ($lang == 'de') {
-      $objectAction = 'Zur Miete';
-      if ($mietePro == 'WOCHE')
-        $objectPriceAttribs = ' period="wöchentlich"';
-      else
-        $objectPriceAttribs = ' period="monatlich"';
-    }
-    else {
-      $objectAction = 'For Rent';
-      if ($mietePro == 'WOCHE')
-        $objectPriceAttribs = ' period="weekly"';
-      else
-        $objectPriceAttribs = ' period="monthly"';
-    }
+    $objectAction = 'For Rent';
+    if ($mietePro == 'WOCHE')
+      $objectPriceAttribs = ' period="weekly"';
+    else
+      $objectPriceAttribs = ' period="monthly"';
   }
   else if ($object['action'] == 'pacht') {
     $objectPrice = $object['attributes']['preise']['pacht']['value'];
-    if ($lang == 'de') {
-      $objectAction = 'Zur Miete';
-      $objectPriceAttribs = ' period="monatlich"';
-    }
-    else {
-      $objectAction = 'For Rent';
-      $objectPriceAttribs = ' period="monthly"';
-    }
+    $objectAction = 'For Rent';
+    $objectPriceAttribs = ' period="monthly"';
   }
   else if ($object['action'] == 'erbpacht') {
     $objectPrice = $object['attributes']['preise']['pacht']['value'];
-    if ($lang == 'de') {
-      $objectAction = 'Zur Miete';
-      $objectPriceAttribs = ' period="monatlich"';
-    }
-    else {
-      $objectAction = 'For Rent';
-      $objectPriceAttribs = ' period="monthly"';
-    }
+    $objectAction = 'For Rent';
+    $objectPriceAttribs = ' period="monthly"';
   }
   else {
     continue;
@@ -260,7 +210,6 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $objectLatitude = $object['adress']['latitude'];
   $objectLongitude = $object['adress']['longitude'];
 
-
   // Immobilie in den Feed eintragen
   $feed .= '  <ad>' . "\n";
   $feed .= '    <id><![CDATA[' . $object['id'] . ']]></id>' . "\n";
@@ -325,16 +274,16 @@ foreach (immotool_functions::list_available_objects() as $id) {
   //$feed .= '    <is_new><![CDATA['..']]></is_new>' . "\n";
   if (is_string($objectConditition))
     $feed .= '    <s_condition><![CDATA[' . $objectConditition . ']]></s_condition>' . "\n";
-  if (is_string($objectYear))
+  if (is_numeric($objectYear))
     $feed .= '    <year><![CDATA[' . $objectYear . ']]></year>' . "\n";
   $feed .= '  </ad>' . "\n";
 }
 $feed .= '</trovit>';
 
-// Trovit-Feed cachen
+// Feed cachen
 $fh = fopen($feedFile, 'w') or die('can\'t write file: ' . $feedFile);
 fwrite($fh, $feed);
 fclose($fh);
 
-// Trovit-Feed ausgeben
+// Feed ausgeben
 echo $feed;

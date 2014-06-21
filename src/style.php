@@ -20,7 +20,7 @@
  * Website-Export, dynamischer Stylesheet.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009, OpenEstate.org
+ * @copyright 2009-2010, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -287,6 +287,16 @@ cursor: pointer;
 {
 border: none;
 background-image: url(img/cancel.png);
+background-repeat: no-repeat;
+width: 22px;
+height: 22px;
+cursor: pointer;
+}
+
+#openestate_listing_menu input.openestate_remove_button
+{
+border: none;
+background-image: url(img/delete.png);
 background-repeat: no-repeat;
 width: 22px;
 height: 22px;
@@ -740,7 +750,7 @@ vertical-align: top;
 
 #openestate_contact textarea
 {
-height: 8em;
+height: 9em;
 }
 
 #openestate_contact input,
@@ -765,6 +775,67 @@ font-weight: bold;
 #openestate_contact li.error textarea
 {
 border: 3px solid red;
+}
+
+#openestate_contact li#field_contact_street
+{
+width:320px;
+display:inline-block;
+}
+
+#openestate_contact li#field_contact_street input
+{
+width:200px;
+}
+
+#openestate_contact li#field_contact_streetnr
+{
+width:140px;
+display:inline-block;
+text-align:right;
+}
+
+#openestate_contact li#field_contact_streetnr label
+{
+width:50px;
+}
+
+#openestate_contact li#field_contact_streetnr input
+{
+width:70px;
+}
+
+#openestate_contact li#field_contact_city
+{
+width:320px;
+display:inline-block;
+}
+
+#openestate_contact li#field_contact_city input
+{
+width:200px;
+}
+
+#openestate_contact li#field_contact_postal
+{
+width:140px;
+display:inline-block;
+text-align:right;
+}
+
+#openestate_contact li#field_contact_postal label
+{
+width:50px;
+}
+
+#openestate_contact li#field_contact_postal input
+{
+width:70px;
+}
+
+#contact_terms_area
+{
+font-family: Courier, "Courier New", monospace;
 }
 
 #openestate_captcha

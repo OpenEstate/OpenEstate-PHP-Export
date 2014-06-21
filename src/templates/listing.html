@@ -1,6 +1,6 @@
 <div id="openestate_listing_modes">
-  <a href="index.php?{PARAM_INDEX_MODE}=entry&amp;{PARAM_INDEX_VIEW}={VIEW}"><img src="img/view_table.png" alt="Table" border="0" title="Tabular view"/></a>
-  <a href="index.php?{PARAM_INDEX_MODE}=gallery&amp;{PARAM_INDEX_VIEW}={VIEW}"><img src="img/view_gallery.png" alt="Gallery" border="0" title="Gallery view"/></a>
+  <a href="index.php?{PARAM_INDEX_MODE}=entry&amp;{PARAM_INDEX_VIEW}={VIEW}&amp;{PARAM_LANG}={LANGUAGE_CODE}"><img src="img/view_table.png" alt="{ALT_VIEW_TABLE}" border="0" title="{ALT_VIEW_TABLE}"/></a>
+  <a href="index.php?{PARAM_INDEX_MODE}=gallery&amp;{PARAM_INDEX_VIEW}={VIEW}&amp;{PARAM_LANG}={LANGUAGE_CODE}"><img src="img/view_gallery.png" alt="{ALT_VIEW_GALLERY}" border="0" title="{ALT_VIEW_GALLERY}"/></a>
 </div>
 <div id="openestate_header"><h1>{PAGE_TITLE}</h1></div>
 <div id="openestate_listing">
@@ -9,9 +9,11 @@
   {MENU.}<div id="openestate_listing_menu">
     <form action="index.php" method="get" style="margin:0;">
       <div class="openestate_listing_buttons">
+        <input type="hidden" name="{PARAM_LANG}" value="{LANGUAGE_CODE}" />
         <input type="hidden" name="{PARAM_INDEX_VIEW}" value="{VIEW}" />
-        <input class="openestate_search_button" type="submit" name="submit" value="" title="Search" />
-        <input class="openestate_cancel_button" type="submit" name="{PARAM_INDEX_RESET}" value="" title="Reset" />
+        <input class="openestate_search_button" type="submit" name="submit" value="" title="{ALT_ACTION_SEARCH}" />
+        {ALT_ACTION_RESET.}<input class="openestate_cancel_button" type="submit" name="{PARAM_INDEX_RESET}" value="" title="{ALT_ACTION_RESET}" />{.ALT_ACTION_RESET}
+        {ALT_ACTION_CLEAR_FAVS.}<input class="openestate_remove_button" type="submit" name="{PARAM_INDEX_FAVS_CLEAR}" value="" title="{ALT_ACTION_CLEAR_FAVS}" onclick="return window.confirm('{QUESTION_CLEAR_FAVS}');" />{.ALT_ACTION_CLEAR_FAVS}
       </div>
       {MENU}
       <div class="openestate_clear" style="float:none;"></div>

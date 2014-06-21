@@ -20,7 +20,7 @@
  * Website-Export, Hilfsfunktionen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009, OpenEstate.org
+ * @copyright 2009-2010, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -28,8 +28,9 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.4');
-
+define('IMMOTOOL_SCRIPT_VERSION', '1.5');
+//error_reporting( E_ALL );
+//ini_set('display_errors','1');
 // Parameter, allgemein
 if (!defined('IMMOTOOL_PARAM_LANG'))
   define('IMMOTOOL_PARAM_LANG', 'lang');
@@ -51,6 +52,8 @@ if (!defined('IMMOTOOL_PARAM_INDEX_FILTER'))
   define('IMMOTOOL_PARAM_INDEX_FILTER', 'filter');
 if (!defined('IMMOTOOL_PARAM_INDEX_FILTER_CLEAR'))
   define('IMMOTOOL_PARAM_INDEX_FILTER_CLEAR', 'clearFilters');
+if (!defined('IMMOTOOL_PARAM_INDEX_FAVS_CLEAR'))
+  define('IMMOTOOL_PARAM_INDEX_FAVS_CLEAR', 'clearFavs');
 if (!defined('IMMOTOOL_PARAM_INDEX_VIEW'))
   define('IMMOTOOL_PARAM_INDEX_VIEW', 'view');
 if (!defined('IMMOTOOL_PARAM_INDEX_MODE'))
@@ -90,12 +93,18 @@ class immotool_functions {
    * @param string $buildTime Dauer der Erzeugung
    * @param string $addonStylesheet URL des zusätzlichen Stylesheets.
    * @param string $showLanguageSelection Sprachauswahl darstellen.
-   * @param string $robots verwendete robots-Einstellungen
+   * @param string $metaRobots Als Meta-Tag dargestellte Robots-Einstellungen
    * @param string $linkParam zusätzliche Parameter für Links, z.B. in der Sprachauswahl
+   * @param string $metaKeywords Als Meta-Tag dargestellte Keywords
+   * @param string $metaDescription Als Meta-Tag dargestellte Beschreibung
    * @return string HTML-Code der erzeugten Seite
    */
-  function build_page($pageId, $languageCode, $mainTitle, $pageTitle, $pageHeader, &$pageContent, $buildTime, $addonStylesheet, $showLanguageSelection = true, $robots = 'index,follow', $linkParam = '') {
+  function build_page($pageId, $languageCode, $mainTitle, $pageTitle, $pageHeader, &$pageContent, $buildTime, $addonStylesheet, $showLanguageSelection = true, $metaRobots = 'index,follow', $linkParam = '', $metaKeywords = null, $metaDescription = null) {
     $page = immotool_functions::read_template('global.html');
+    if (!is_string($pageHeader))
+      $pageHeader = '';
+    if (strlen($pageHeader) > 0)
+      $pageHeader .= "\n";
 
     // Sprachauswahl
     $languageSelection = null;
@@ -114,14 +123,39 @@ class immotool_functions {
     }
     immotool_functions::replace_var('LANGUAGE_SELECTION', $languageSelection, $page);
 
+    // META-Description
+    if (is_string($metaDescription) && strlen(trim($metaDescription)) > 0) {
+      $pageHeader .= '<meta name="description" content="' . htmlentities(trim($metaDescription)) . '" />' . "\n";
+    }
+
+    // META-Keywords
+    if (is_string($metaKeywords) && strlen(trim($metaKeywords)) > 0) {
+      $pageHeader .= '<meta name="keywords" content="' . htmlentities(trim($metaKeywords)) . '" />' . "\n";
+    }
+
+    // META-Robots
+    if (is_string($metaRobots) && strlen(trim($metaRobots)) > 0) {
+      $pageHeader .= '<meta name="robots" content="' . htmlentities(trim($metaRobots)) . '" />' . "\n";
+    }
+    else {
+      $pageHeader .= '<meta name="robots" content="index,follow" />' . "\n";
+    }
+
     // zusätzlicher Stylesheet
-    if (!is_string($pageHeader))
-      $pageHeader = '';
     if (is_string($addonStylesheet) && strlen(trim($addonStylesheet)) > 0) {
       if (strlen($pageHeader) > 0)
         $pageHeader .= "\n";
       $pageHeader .= '<link rel="stylesheet" href="' . htmlentities(trim($addonStylesheet)) . '" />' . "\n";
     }
+
+    // RSS- & Atom-Feeds ggf. einbinden
+    $feedSetup = new immotool_setup_feeds();
+    if (is_callable(array('immotool_myconfig', 'load_config_feeds')))
+      immotool_myconfig::load_config_feeds($feedSetup);
+    if ($feedSetup->PublishRssFeed)
+      $pageHeader .= '<link rel="alternate" type="application/rss+xml" title="RSS-Feed" href="feed_rss.php?' . IMMOTOOL_PARAM_LANG . '=' . $languageCode . '" />' . "\n";
+    if ($feedSetup->PublishAtomFeed)
+      $pageHeader .= '<link rel="alternate" type="application/atom+xml" title="Atom-Feed" href="feed_atom.php?' . IMMOTOOL_PARAM_LANG . '=' . $languageCode . '" />' . "\n";
 
     // Footer
     $pageFooter = 'powered by <a href="http://www.openestate.org" target="_blank">OpenEstate</a>';
@@ -136,7 +170,7 @@ class immotool_functions {
       '{PAGE_TITLE}' => $pageTitle,
       '{PAGE_FOOTER}' => $pageFooter,
       '{PAGE_HEADER}' => $pageHeader,
-      '{ROBOTS}' => $robots,
+      '{ROBOTS}' => $metaRobots, // HACK: Abwärtskompatiblität, kann demnächst entfernt werden
       '{SESSION_NAME}' => session_name(),
       '{PARAM_LANG}' => IMMOTOOL_PARAM_LANG,
       '{PARAM_FAV}' => IMMOTOOL_PARAM_FAV,
@@ -146,6 +180,7 @@ class immotool_functions {
       '{PARAM_INDEX_ORDER}' => IMMOTOOL_PARAM_INDEX_ORDER,
       '{PARAM_INDEX_FILTER}' => IMMOTOOL_PARAM_INDEX_FILTER,
       '{PARAM_INDEX_FILTER_CLEAR}' => IMMOTOOL_PARAM_INDEX_FILTER_CLEAR,
+      '{PARAM_INDEX_FAVS_CLEAR}' => IMMOTOOL_PARAM_INDEX_FAVS_CLEAR,
       '{PARAM_INDEX_VIEW}' => IMMOTOOL_PARAM_INDEX_VIEW,
       '{PARAM_INDEX_MODE}' => IMMOTOOL_PARAM_INDEX_MODE,
       '{PARAM_EXPOSE_ID}' => IMMOTOOL_PARAM_EXPOSE_ID,
@@ -179,6 +214,36 @@ class immotool_functions {
     }
     return iconv(
         strtoupper(trim($sourceEncoding)), strtoupper(trim($targetEncoding)) . '//TRANSLIT', $input);
+  }
+
+  /**
+   * Liefert die URL zu einem Exposé.
+   * @param string $id ID der Immobilie
+   * @param string $lang Zweistelliger ISO-Sprachcode
+   * @param string $urlTemplate URL-Vorlage für Exposé-Links
+   * return string URL zum Exposé
+   */
+  function get_expose_url($id, $lang, $urlTemplate = null) {
+
+    // Exposé-URL aus Vorlage ermitteln
+    if (is_string($urlTemplate) && strlen($urlTemplate) > 0) {
+      $replacement = array(
+        '{ID}' => $id,
+        '{LANG}' => $lang,
+      );
+      return str_replace(array_keys($replacement), array_values($replacement), $urlTemplate);
+    }
+
+    // Exposé-URL automatisch ermitteln
+    else {
+      $url = ($_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
+      $url .= $_SERVER['SERVER_NAME'];
+      $url .= substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
+      $url .= '/expose.php';
+      $url .= '?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id;
+      $url .= '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang;
+      return $url;
+    }
   }
 
   /**
@@ -339,6 +404,19 @@ class immotool_functions {
       }
     }
     return $GLOBALS['immotool_objects'][$id];
+  }
+
+  /**
+   * Liefert den Timestamp der letzten Änderung eines Objektes.
+   * @param string $id ID des Objektes
+   * @return int Timestamp der letzten Änderung der object.php, oder null wenn nicht ermittelbar
+   */
+  function get_object_stamp($id = null) {
+    if ($id == null || preg_match('/^\w*/i', $id) !== 1) {
+      return null;
+    }
+    $file = IMMOTOOL_BASE_PATH . 'data/' . $id . '/object.php';
+    return (is_file($file)) ? filemtime($file) : null;
   }
 
   /**

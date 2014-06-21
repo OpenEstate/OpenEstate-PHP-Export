@@ -1,0 +1,412 @@
+<?php
+/*
+ * PHP-Export scripts of OpenEstate-ImmoTool
+ * Copyright (C) 2009-2014 OpenEstate.org
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * Website-Export, Konfigurationen.
+ *
+ * @author Andreas Rudolph & Walter Wagner
+ * @copyright 2009-2010, OpenEstate.org
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ */
+
+if (!defined('IN_WEBSITE')) {
+  exit;
+}
+
+/**
+ * Allgemeine Konfiguration
+ */
+class immotool_setup {
+
+  /**
+   * Standardmäßig verwendete Sprache.
+   * Erlaubt sind ISO-Sprachcodes, für die eine Übersetzung hinterlegt ist.
+   * @var string
+   */
+  var $DefaultLanguage = 'de';
+
+  /**
+   * Zusätzlich verwendeter CSS-Stylesheet.
+   * Dies erlaubt Anpassungen am Layout, ohne bestehende Skripte zu ändern.
+   * @var string
+   */
+  var $AdditionalStylesheet = '';
+
+  /**
+   * Standardmäßig verwendete Zeitzone.
+   * Liste der unterstützten Zeitzonen: http://www.php.net/manual/de/timezones.php
+   * Wenn keine Zeitzone angegeben wurde, wird die Zeitzone des Servers verwendet.
+   * @var string
+   */
+  var $Timezone = 'Europe/Berlin';
+
+  /**
+   * Sprachauswahl anzeigen.
+   * Die automatisch erzeugte Sprachauswahl kann nach Bedarf deaktiviert werden.
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $ShowLanguageSelection = false;
+
+  /**
+   * Verwendeter Zeichensatz für erzeugte Inhalte.
+   * Erzeugte Texte werden vor der Ausgabe ggf. in diesen Zeichensatz umgewandelt.
+   * Erlaubt sind die in der PHP-Installation unterstützten Zeichensätze.
+   * @var string
+   */
+  var $Charset = 'UTF-8';
+
+  /**
+   * Verwendeter Content-Type für erzeugte Inhalte.
+   * Wenn ein Wert angegeben wurde, wird dieser Content-Type als Header in
+   * der HTTP-Response dargestellt.
+   * @var string
+   */
+  var $ContentType = 'text/html; charset=UTF-8';
+
+  /**
+   * Diese E-Mailadresse wird als Absender in den versendeten E-Mails verwendet.
+   * @var string
+   */
+  var $MailFrom = 'max@mustermann.de';
+
+  /**
+   * Diese Name wird als Absender in den versendeten E-Mails verwendet.
+   * @var string
+   */
+  var $MailFromName = 'Max Mustermann';
+
+  /**
+   * An diese E-Mailadresse wird eine Kopie der versendeten E-Mails versendet.
+   * Wenn keine Adresse hinterlegt ist, wird keine Kopie versendet.
+   * @var string
+   */
+  var $MailToCC = '';
+
+  /**
+   * An diese E-Mailadresse wird eine Blindkopie der versendeten E-Mails versendet.
+   * Wenn keine Adresse hinterlegt ist, wird keine Blindkopie versendet.
+   * @var string
+   */
+  var $MailToBCC = '';
+
+  /**
+   * Art des Mailversands.
+   * mögliche Optionen sind 'mail', 'sendmail', 'smtp'
+   * @var string
+   */
+  var $MailMethod = 'mail';
+
+  /**
+   * Pfad zum Sendmail-Programm.
+   * wenn $MailMethod='sendmail'
+   * @var string
+   */
+  var $MailSendmailPath = '/usr/sbin/sendmail';
+
+  /**
+   * Hostname für Mailversand via SMTP.
+   * wenn $MailMethod='smtp'
+   * @var string
+   */
+  var $MailSmtpHost = 'localhost';
+
+  /**
+   * Port-Nummer für Mailversand via SMTP.
+   * wenn $MailMethod='smtp'
+   * @var int
+   */
+  var $MailSmtpPort = 25;
+
+  /**
+   * Verschlüsselung des Mailversandes via SMTP.
+   * mögliche Optionen sind '', 'ssl', 'tls'
+   * wenn $MailMethod='smtp'
+   * @var string
+   */
+  var $MailSmtpSecurity = '';
+
+  /**
+   * Anmeldung am SMTP-Server.
+   * wenn $MailMethod='smtp'
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $MailSmtpAuth = false;
+
+  /**
+   * Benutzername zur Anmeldung am SMTP-Server.
+   * wenn $MailMethod='smtp' und $MailSmtpAuth=true
+   * @var string
+   */
+  var $MailSmtpAuthLogin = '';
+
+  /**
+   * Passwort zur Anmeldung am SMTP-Server.
+   * wenn $MailMethod='smtp' und $MailSmtpAuth=true
+   * @var string
+   */
+  var $MailSmtpAuthPassword = '';
+
+  /**
+   * Den SMTP-Versand im 'debug'-Modus ausführen.
+   * Dies kann hilfreich sein, um eventuelle Fehler in der Konfiguration zu finden.
+   * wenn $MailMethod='smtp'
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $MailSmtpDebug = false;
+
+  /**
+   * URL-Vorlage für Exposé-Links.
+   * Wird an verschiedenen Stellen verwendet, um Direktlinks auf ein Exposé zu erzeugen
+   * Beispiel:
+   * $ExposeUrlTemplate = 'http://www.mustermann-makler.de/immobilien/expose.php?id={ID}&lang={LANG}';
+   * @var string
+   */
+  var $ExposeUrlTemplate = null;
+
+}
+
+/**
+ * Konfiguration der Index-Ansicht
+ */
+class immotool_setup_index extends immotool_setup {
+
+  /**
+   * Anzahl der Einträge, die auf einer Index-Seite dargestellt werden
+   * @var int
+   */
+  var $ElementsPerPage = 10;
+
+  /**
+   * Verwendete Sortierungs-Optionen.
+   * @var array
+   */
+  var $OrderOptions = array('id', 'city', 'postal', 'title', 'price', 'rooms', 'area');
+
+  /**
+   * Art der Sortierung beim ersten Besuch der Index-Ansicht.
+   * Muss in $OrderOptions enthalten sein.
+   * @var string
+   */
+  var $DefaultOrderBy = 'id';
+
+  /**
+   * Richtung der Sortierung beim ersten Besuch der Index-Ansicht.
+   * 'asc' für aufsteigend, 'desc' für absteigend
+   * @var string
+   */
+  var $DefaultOrderDir = 'asc';
+
+  /**
+   * Standardmäßig als Tabelle oder Galerie darstellen.
+   * 'entry' für tabellarische Darstellung oder
+   * 'gallery' für Galerie-Darstellungen
+   * @var string
+   */
+  var $DefaultMode = 'entry';
+
+  /**
+   * Verwendete Filter-Optionen.
+   * @var array
+   */
+  var $FilterOptions = array('action', 'type', 'alter');
+
+  /**
+   * Alle verfügbaren Immobilienarten filtern.
+   * Wenn aktiviert (true), werden alle verfügbaren Immobilienarten als Filterkriterium dargestellt.
+   * Wenn nicht aktiviert (false), werden nur die verfügbaren Haupt-Immobilienarten als Filterkriterium dargestellt.
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $FilterAllEstateTypes = true;
+
+}
+
+/**
+ * Konfiguration der Exposé-Ansicht
+ */
+class immotool_setup_expose extends immotool_setup {
+
+  /**
+   * AGB's im Exposé darstellen.
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $ShowTerms = true;
+
+  /**
+   * Kontaktperson im Exposé darstellen.
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $ShowContactPerson = true;
+
+  /**
+   * Kontaktformular im Exposé darstellen.
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $ShowContactForm = true;
+
+  /**
+   * Grafischen Bestätigungscode (CAPTCHA) im Exposé-Kontaktformular darstellen.
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $ShowContactCaptcha = true;
+
+  /**
+   * Text mit rechtlichen Richtlinien im Kontaktformular bestätigen.
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $ShowContactTerms = false;
+
+  /**
+   * Pflichtfelder bei der Verarbeitung des Kontaktformulares.
+   * Felder, bei denen die Eingabe keine Pflicht ist, können aus dem Array entfernt werden.
+   * @var array
+   */
+  var $ContactRequiredFields = array('name', 'firstname', 'email', 'phone', 'street', 'streetnr', 'city', 'postal', 'message');
+
+  /**
+   * Einbindung einer externen Bildergalerie.
+   * @var string
+   */
+  var $GalleryHandler = 'colorbox';
+
+  /**
+   * Art der Darstellung.
+   * Erlaubt ist 'tabular' (=Reiterdarstellung) oder 'listing' (=hintereinander)
+   * @var string
+   */
+  var $ViewMode = 'tabular';
+
+  /**
+   * Reihenfolge der Darstellung.
+   * @var array
+   */
+  var $ViewOrder = array('details', 'texts', 'gallery', 'media', 'contact', 'terms');
+
+}
+
+/**
+ * Konfiguration des dynamischen Stylesheets
+ */
+class immotool_setup_style extends immotool_setup {
+
+  /**
+   * Allgemeine Stylesheets definieren (body, h1, h2, h3, a ...).
+   * @var bool
+   */
+  var $ShowGeneralStyles = true;
+
+  /**
+   * Allgemein verwendete Textfarbe.
+   * wenn $ShowGeneralStyles = true
+   * @var string
+   */
+  var $GeneralTextColor = '#303030';
+
+  /**
+   * Allgemein verwendete Schriftart.
+   * wenn $ShowGeneralStyles = true
+   * @var string
+   */
+  var $GeneralTextFont = 'sans-serif';
+
+  /**
+   * Allgemein verwendete Hintergrundfarbe.
+   * wenn $ShowGeneralStyles = true
+   * @var string
+   */
+  var $BodyBackgroundColor = '#ffffff';
+
+  /**
+   * Allgemein verwendete Schriftgröße.
+   * wenn $ShowGeneralStyles = true
+   * @var string
+   */
+  var $BodyFontSize = '12px';
+
+  /**
+   * Hintergrund, hell.
+   * @var string
+   */
+  var $LightBackgroundColor = '#ffffff';
+
+  /**
+   * Hintergrund, dunkel.
+   * @var string
+   */
+  var $DarkBackgroundColor = '#e6ffe6';
+
+  /**
+   * Farbwert für Umrandungen / Rahmen.
+   * @var string
+   */
+  var $BorderColor = '#6c6';
+
+}
+
+/**
+ * Konfiguration der Immobilien-Feeds.
+ */
+class immotool_setup_feeds extends immotool_setup {
+
+  /**
+   * Atom-Feed veröffentlichen.
+   * @var bool
+   */
+  var $PublishAtomFeed = true;
+
+  /**
+   * Immobiliare-Feed veröffentlichen.
+   * @var bool
+   */
+  var $PublishImmobiliareFeed = false;
+
+  /**
+   * RSS-Feed veröffentlichen.
+   * @var bool
+   */
+  var $PublishRssFeed = true;
+
+  /**
+   * Trovit-Feed veröffentlichen.
+   * @var bool
+   */
+  var $PublishTrovitFeed = false;
+
+  /**
+   * Anzahl maximaler Einträge im Atom-Feed.
+   * Zur unlimitierten Darstellung: $AtomFeedLimit = null;
+   * @var int
+   */
+  var $AtomFeedLimit = 15;
+
+  /**
+   * Anzahl maximaler Einträge im RSS-Feed.
+   * Zur unlimitierten Darstellung: $RssFeedLimit = null;
+   * @var int
+   */
+  var $RssFeedLimit = 15;
+
+}
