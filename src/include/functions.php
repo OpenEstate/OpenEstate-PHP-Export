@@ -20,7 +20,7 @@
  * Website-Export, Hilfsfunktionen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.5.9');
+define('IMMOTOOL_SCRIPT_VERSION', '1.5.13');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 // Parameter, allgemein
@@ -517,6 +517,25 @@ class immotool_functions {
   }
 
   /**
+   * Hilfsfunktion zur Ermittlung eines RGB-Farbwertes aus einem hexadezimalen
+   * Farbcode.
+   * @param string $hex Hex-Farbcode, z.B. #c0c0c0
+   * @return array Ermittelte RGB-Farbwerte als Array
+   */
+  function get_rgb_from_hex($hex) {
+    if (strlen($hex) > 0 && substr($hex, 0, 1) == '#')
+      $hex = substr($hex, 1);
+    if (strlen($hex) >= 6) {
+      return array(
+        'r' => hexdec(substr($hex, 0, 2)),
+        'g' => hexdec(substr($hex, 2, 2)),
+        'b' => hexdec(substr($hex, 4, 2)),
+      );
+    }
+    return null;
+  }
+
+  /**
    * Allgemeine Initialisierungen.
    * @param object $setup Konfiguration
    * @param string $myconfigMethod Name der einzubindenden Funktion aus myconfig.php
@@ -917,24 +936,35 @@ class immotool_functions {
       }
     }
 
+    // Inhalt des BODY-Tags ermitteln
+    $bodyStart = strpos(strtolower($page), '<body');
+    if ($bodyStart === false)
+      return '';
+    $body = substr($page, strpos($page, '>', $bodyStart) + 1);
+    $bodyEnd = strpos(strtolower($body), '</body');
+    if ($bodyEnd === false)
+      return '';
+    $body = $header . trim(substr($body, 0, $bodyEnd));
+    //die( 'body: ' . htmlentities( $body ) );
     // Ersetzungen
     $replacements = array(
       // Inhalt des BODY-Tags ermitteln
-      '/(.*)<body([^>]*)>(.*)<\/body>(.*)/is' => '<div\2>' . $header . '\3</div>',
+      //'/(.*)<body([^>]*)>(.*)<\/body>(.*)/is' => '<div\2>'.$header.'\3</div>',
       // Verlinkungen innerhalb der aktuellen Seite
       '/<a([^>]*)href="\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=' . $wrapType . '&amp;\2"',
       // index.php => Links
       '/<a([^>]*)href="index\.php"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=index"',
       '/<a([^>]*)href="index\.php\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=index&amp;\2"',
       // index.php => Formulare
-      //'/<form([^>]*)action="index\.php"/is' => '<form\1action="'.$wrapperScriptUrl.$sep.'wrap=index"',
       '/<form([^>]*)action="index\.php([^"]*)"([^>]*)>/is' => '<form\1action="' . $wrapperBaseUrl . '\2"\3><input type="hidden" name="wrap" value="index"/>' . $hiddenInputs,
       // expose.php => Links
       '/<a([^>]*)href="expose\.php"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=expose"',
       '/<a([^>]*)href="expose\.php\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=expose&amp;\2"',
       // expose.php => Formulare
-      //'/<form([^>]*)action="expose\.php([^"]*)"/is' => '<form\1action="'.$wrapperScriptUrl.$sep.'wrap=expose\2"',
       '/<form([^>]*)action="expose\.php([^"]*)"([^>]*)>/is' => '<form\1action="' . $wrapperBaseUrl . '\2"\3><input type="hidden" name="wrap" value="expose"/>' . $hiddenInputs,
+      // img.php
+      '/<img([^>]*)src="img\.php"/is' => '<img\1src="' . $immotoolBaseUrl . 'img.php"',
+      '/<img([^>]*)src="img\.php\?([^"]*)"/is' => '<img\1src="' . $immotoolBaseUrl . 'img.php?\2"',
       // captcha.php
       '/<img([^>]*)src="captcha\.php"/is' => '<img\1src="' . $immotoolBaseUrl . 'captcha.php"',
       '/<img([^>]*)src="captcha\.php\?([^"]*)"/is' => '<img\1src="' . $immotoolBaseUrl . 'captcha.php?\2"',
@@ -950,7 +980,7 @@ class immotool_functions {
       '/\'img\/([^\']*)\'/is' => '\'' . $immotoolBaseUrl . 'img/\1\'',
       '/\'\.\/img\/([^\']*)\'/is' => '\'' . $immotoolBaseUrl . 'img/\1\'',
     );
-    return preg_replace(array_keys($replacements), array_values($replacements), $page);
+    return preg_replace(array_keys($replacements), array_values($replacements), $body);
   }
 
 }

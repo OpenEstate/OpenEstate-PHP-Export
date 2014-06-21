@@ -20,7 +20,7 @@
  * Website-Export, Darstellung einer Captcha-Grafik.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -63,6 +63,9 @@ for ($i = 1; $i <= CAPTCHA_LENGTH; $i++) {
   imagettftext($image, 16, rand(-15, 15), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 69, 103, 137), $font, $sign);
 }
 $_SESSION[CAPTCHA_VARIABLE] = $string;
+
+// clean the output buffer
+ob_clean();
 
 // Captcha ausgeben
 header('Content-type: image/png');

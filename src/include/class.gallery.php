@@ -20,7 +20,7 @@
  * Website-Export, allgemeine Galerie.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -28,6 +28,8 @@ if (!defined('IN_WEBSITE'))
   exit;
 
 class ImmoToolGallery {
+
+  var $exposeSetup = null;
 
   /**
    * Liefert HTML-Code zur Darstellung der Galerie.
@@ -48,17 +50,41 @@ class ImmoToolGallery {
    * @return string HTML-Code
    */
   function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
-    if (!isset($image['thumb']) || !is_string($image['thumb']))
-      return '';
-    $thumb = 'data/' . $objectId . '/' . $image['thumb'];
+
+    // ggf. das Galeriebild dynamisch skalieren
+    if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
+      if (!isset($image['name']) || !is_string($image['name']))
+        return '';
+      $img = 'data/' . $objectId . '/' . $image['name'];
+      if (!is_file(IMMOTOOL_BASE_PATH . $img))
+        return null;
+      $thumb = 'img.php?id=' . $objectId .
+          '&amp;img=' . $image['name'] .
+          '&amp;x=' . $this->exposeSetup->GalleryImageSize[0] .
+          '&amp;y=' . $this->exposeSetup->GalleryImageSize[1];
+    }
+
+    // Galeriebild direkt ausliefern
+    else {
+      if (!isset($image['thumb']) || !is_string($image['thumb']))
+        return '';
+      $thumb = 'data/' . $objectId . '/' . $image['thumb'];
+      if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
+        return null;
+    }
+
     $class = (($index + 1) == $selectedImg) ? 'class="selected"' : '';
     $link = '?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $objectId . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=gallery&amp;' . IMMOTOOL_PARAM_EXPOSE_IMG . '=' . ($index + 1) . '#img';
-    $title = $image['title'][$lang];
+    $title = (isset($image['title'][$lang])) ? $image['title'][$lang] : '';
     if (!is_string($title))
       $title = '';
     else
       $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
     return '<li ' . $class . '><a href="' . $link . '" title="' . $title . '"><img src="' . $thumb . '" title="' . $title . '" alt="" border="0"/></a></li>';
+  }
+
+  function getHeader() {
+    return null;
   }
 
   /**
@@ -74,11 +100,27 @@ class ImmoToolGallery {
    * @return string
    */
   function getTitleImage($objectId, &$image, $lang) {
-    $thumb = 'data/' . $objectId . '/title.jpg';
-    if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
-      return null;
+
+    // ggf. das Titelbild dynamisch skalieren
+    if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
+      $img = 'data/' . $objectId . '/img_0.jpg';
+      if (!is_file(IMMOTOOL_BASE_PATH . $img))
+        return null;
+      $thumb = 'img.php?id=' . $objectId .
+          '&amp;img=img_0.jpg' .
+          '&amp;x=' . $this->exposeSetup->TitleImageSize[0] .
+          '&amp;y=' . $this->exposeSetup->TitleImageSize[1];
+    }
+
+    // Titelbild direkt ausliefern
+    else {
+      $thumb = 'data/' . $objectId . '/title.jpg';
+      if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
+        return null;
+    }
+
     $link = '?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $objectId . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=gallery&amp;' . IMMOTOOL_PARAM_EXPOSE_IMG . '=1#img';
-    $title = $image['title'][$lang];
+    $title = (isset($image['title'][$lang])) ? $image['title'][$lang] : '';
     if (!is_string($title))
       $title = '';
     else
@@ -100,6 +142,13 @@ class ImmoToolGallery {
    */
   function isSelectedImagePrinted() {
     return true;
+  }
+
+  /**
+   * Registriert die Konfiguration des aufrufenden Exposés.
+   */
+  function setExposeSetup(&$setup) {
+    $this->exposeSetup = $setup;
   }
 
 }

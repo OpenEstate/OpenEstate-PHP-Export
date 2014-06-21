@@ -20,7 +20,7 @@
  * Website-Export, dynamischer Stylesheet.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -127,15 +127,15 @@ background-color: <?php echo $setup->DarkBackgroundColor; ?>;
 
 #openestate_languages ul {
 text-align: right;
-margin: 1em 0 1em 0;
 font-weight: bold;
 border-bottom: 1px solid <?php echo $setup->BorderColor; ?>;
-list-style-type: none;
-padding: 3px 10px 3px 10px;
+list-style-type: none !important;
+padding: 3px 10px 3px 10px !important;
+margin: 1em 0 1em 0 !important;
 }
 
 #openestate_languages ul li {
-display: inline;
+display: inline !important;
 }
 
 #openestate_languages ul li a {
@@ -167,9 +167,9 @@ padding-top: 4px;
 clear: both;
 text-align: left;
 font-weight: bold;
-list-style-type: none;
-padding: 3px 10px 3px 10px;
-margin: 0.5em 0 0.5em 0;
+list-style-type: none !important;
+padding: 3px 10px 3px 10px !important;
+margin: 0.5em 0 0.5em 0 !important;
 }
 
 #openestate_listing_pagination_top ul {
@@ -182,7 +182,7 @@ border-top: 1px solid <?php echo $setup->BorderColor; ?>;
 
 #openestate_listing_pagination_top ul li,
 #openestate_listing_pagination_bottom ul li {
-display: inline;
+display: inline !important;
 }
 
 #openestate_listing_pagination_top ul li a,
@@ -325,7 +325,7 @@ border: 1px solid <?php echo $setup->BorderColor; ?>;
 
 .openestate_listing_entry .col_1 ul,
 .openestate_listing_entry .col_2 ul {
-margin: 0;
+margin: 0 !important;
 float: left;
 }
 
@@ -334,17 +334,17 @@ clear: both;
 }
 
 .openestate_listing_entry .options ul {
-margin: 0;
-padding: 0;
-padding-top: 0.5em;
-list-style-type: none;
+margin: 0 !important;
+padding: 0 !important;
+padding-top: 0.5em !important;
+list-style-type: none !important;
 text-align: left;
 }
 
 .openestate_listing_entry .options ul li {
 text-align: left;
-display: inline;
-padding-right: 0.5em;
+display: inline !important;
+padding-right: 0.5em !important;
 }
 
 
@@ -353,7 +353,7 @@ padding-right: 0.5em;
 */
 
 .openestate_listing_image {
-height:150px;
+height: auto;
 float: left;
 text-align:center;
 margin: 0.5em;
@@ -402,9 +402,9 @@ text-decoration: underline;
 }
 
 .openestate_listing_image:hover .info_box ul {
-margin:0;
-padding:0;
-padding-left:1em;
+margin:0 !important;
+padding:0 !important;
+padding-left:1em !important;
 }
 
 .openestate_listing_image:hover .info_box ul li {
@@ -416,15 +416,15 @@ clear: both;
 }
 
 .openestate_listing_image:hover .info_box div.options ul {
-margin: 0;
-padding: 0;
-padding-top: 0.5em;
-list-style-type: none;
+margin: 0 !important;
+padding: 0 !important;
+padding-top: 0.5em !important;
+list-style-type: none !important;
 text-align: left;
 }
 
 .openestate_listing_image:hover .info_box div.options ul li {
-display: block;
+display: block !important;
 text-align: left;
 float: left;
 clear: left;
@@ -441,9 +441,9 @@ margin-right: 1em;
 }
 
 #openestate_expose_header ul {
-list-style-type: none;
-padding: 0;
-margin: 0;
+list-style-type: none !important;
+padding: 0 !important;
+margin: 0 !important;
 min-width: 300px;
 }
 
@@ -453,7 +453,7 @@ letter-spacing: 1px;
 }
 
 #openestate_expose_header ul li div {
-display: inline-block;
+display: inline-block !important;
 text-align: right;
 width: 125px;
 margin-right: 0.5em;
@@ -495,9 +495,9 @@ margin-bottom: 2em;
 clear: both;
 text-align: left;
 font-weight: bold;
-list-style-type: none;
-padding: 3px 10px 3px 10px;
-margin: 0.5em 0 0.5em 0;
+list-style-type: none !important;
+padding: 3px 10px 3px 10px !important;
+margin: 0.5em 0 0.5em 0 !important;
 }
 
 #openestate_expose_menu_top ul {
@@ -510,7 +510,7 @@ border-top: 1px solid <?php echo $setup->BorderColor; ?>;
 
 #openestate_expose_menu_top ul li,
 #openestate_expose_menu_bottom ul li {
-display: inline;
+display: inline !important;
 }
 
 #openestate_expose_menu_top ul li a,
@@ -564,15 +564,15 @@ margin-bottom: 0;
 clear: both;
 text-align: left;
 font-weight: bold;
-list-style-type: none;
-padding: 3px 10px 3px 10px;
-margin: 0;
-margin-top: 1em;
 border-bottom: 1px solid <?php echo $setup->BorderColor; ?>;
+list-style-type: none !important;
+padding: 3px 10px 3px 10px !important;
+margin: 0 !important;
+margin-top: 1em !important;
 }
 
 #openestate_expose_view_menu ul li {
-display: inline;
+display: inline !important;
 }
 
 #openestate_expose_view_menu ul li a {
@@ -620,14 +620,14 @@ padding: 0.5em;
 
 #openestate_expose_gallery_thumbnails ul {
 text-align: center;
-list-style-type: none;
-padding: 0;
-margin: 0;
+list-style-type: none !important;
+padding: 0 !important;
+margin: 0 !important;
 }
 
 #openestate_expose_gallery_thumbnails ul li {
-display: inline;
 vertical-align: top;
+display: inline !important;
 }
 
 #openestate_expose_gallery_thumbnails ul li a img {
@@ -732,7 +732,9 @@ font-size: 1em;
 margin-top: 0.5em;
 }
 
-#openestate_expose_contact_form_result {
+#openestate_expose_contact_result {
+width: 100%;
+max-width: 640px;
 margin-top: 1em;
 margin-bottom: 2em;
 text-align: center;
@@ -746,10 +748,10 @@ padding-top: 0;
 * Exposéansicht, Kontaktperson
 */
 #openestate_expose_contact_person ul {
-list-style-type: none;
-padding: 0;
-margin: 0;
 min-width: 300px;
+list-style-type: none !important;
+padding: 0 !important;
+margin: 0 !important;
 }
 
 #openestate_expose_contact_person ul li {
@@ -758,7 +760,7 @@ letter-spacing: 1px;
 }
 
 #openestate_expose_contact_person ul li div {
-display: inline-block;
+display: inline-block !important;
 text-align: right;
 width: 100px;
 margin-right: 1em;

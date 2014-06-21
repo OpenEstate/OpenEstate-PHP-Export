@@ -20,7 +20,7 @@
  * Website-Export, JS-Galerie, basierend auf Lightbox2.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @link http://www.huddletogether.com/projects/lightbox2/
  */
@@ -43,11 +43,31 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery {
    * @return string HTML-Code
    */
   function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
-    if (!is_string($image['thumb']))
-      return '';
-    $thumb = 'data/' . $objectId . '/' . $image['thumb'];
+
+    // ggf. das Galeriebild dynamisch skalieren
+    if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
+      if (!isset($image['name']) || !is_string($image['name']))
+        return '';
+      $img = 'data/' . $objectId . '/' . $image['name'];
+      if (!is_file(IMMOTOOL_BASE_PATH . $img))
+        return null;
+      $thumb = 'img.php?id=' . $objectId .
+          '&amp;img=' . $image['name'] .
+          '&amp;x=' . $this->exposeSetup->GalleryImageSize[0] .
+          '&amp;y=' . $this->exposeSetup->GalleryImageSize[1];
+    }
+
+    // Galeriebild direkt ausliefern
+    else {
+      if (!isset($image['thumb']) || !is_string($image['thumb']))
+        return '';
+      $thumb = 'data/' . $objectId . '/' . $image['thumb'];
+      if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
+        return null;
+    }
+
     $file = 'data/' . $objectId . '/' . $image['name'];
-    $title = $image['title'][$lang];
+    $title = (isset($image['title'][$lang])) ? $image['title'][$lang] : '';
     if (!is_string($title))
       $title = '';
     else
@@ -97,12 +117,28 @@ LightboxOptions = Object.extend({
    * @return string
    */
   function getTitleImage($objectId, &$image, $lang) {
-    $thumb = 'data/' . $objectId . '/title.jpg';
-    if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
-      return null;
+
+    // ggf. das Titelbild dynamisch skalieren
+    if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
+      $img = 'data/' . $objectId . '/img_0.jpg';
+      if (!is_file(IMMOTOOL_BASE_PATH . $img))
+        return null;
+      $thumb = 'img.php?id=' . $objectId .
+          '&amp;img=img_0.jpg' .
+          '&amp;x=' . $this->exposeSetup->TitleImageSize[0] .
+          '&amp;y=' . $this->exposeSetup->TitleImageSize[1];
+    }
+
+    // Titelbild direkt ausliefern
+    else {
+      $thumb = 'data/' . $objectId . '/title.jpg';
+      if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
+        return null;
+    }
+
     $file = 'data/' . $objectId . '/' . $image['name'];
     $link = '?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $objectId . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=gallery&amp;' . IMMOTOOL_PARAM_EXPOSE_IMG . '=1#img';
-    $title = $image['title'][$lang];
+    $title = (isset($image['title'][$lang])) ? $image['title'][$lang] : '';
     if (!is_string($title))
       $title = '';
     else
