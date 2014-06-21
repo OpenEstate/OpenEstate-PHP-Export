@@ -20,7 +20,7 @@
  * Website-Export, Konfigurationen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -480,5 +480,18 @@ class immotool_setup_feeds extends immotool_setup {
    * @var bool
    */
   var $ExportPublicId = false;
+
+  /**
+   * Art der Sortierung in den erzeugten Feeds.
+   * @var string
+   */
+  var $OrderBy = null;
+
+  /**
+   * Richtung der Sortierung in den erzeugten Feeds.
+   * 'asc' für aufsteigend, 'desc' für absteigend
+   * @var string
+   */
+  var $OrderDir = null;
 
 }

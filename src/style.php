@@ -20,10 +20,9 @@
  * Website-Export, dynamischer Stylesheet.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-
 // Initialisierung
 define('IN_WEBSITE', 1);
 if (!defined('IMMOTOOL_BASE_PATH'))
