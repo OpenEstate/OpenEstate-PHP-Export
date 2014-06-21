@@ -23,6 +23,7 @@
  * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
+
 // Initialisierung
 define('IN_WEBSITE', 1);
 if (!defined('IMMOTOOL_BASE_PATH'))
@@ -117,6 +118,24 @@ background-color: <?php echo $setup->LightBackgroundColor; ?>;
 
 .openestate_dark {
 background-color: <?php echo $setup->DarkBackgroundColor; ?>;
+}
+
+
+/**
+* Allgemein, Fehlermeldungen
+*/
+
+#openestate_error {
+border: 1px solid <?php echo $setup->BorderColor; ?>;
+background-color: <?php echo $setup->DarkBackgroundColor; ?>;
+margin: 1em;
+padding: 1em;
+text-align: center;
+}
+
+#openestate_error h1 {
+margin: 0;
+margin-bottom: 5px;
 }
 
 
@@ -765,4 +784,17 @@ width: 100px;
 margin-right: 1em;
 font-weight: normal;
 letter-spacing: 0;
+}
+
+/**
+* Exposéansicht, Umkreiskarte
+*/
+#openestate_map {
+margin-bottom: 1em;
+}
+
+#openestate_map iframe {
+width: 100%;
+height: 500px;
+border: 1px solid <?php echo $setup->BorderColor; ?>;
 }

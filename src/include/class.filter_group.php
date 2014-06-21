@@ -67,6 +67,7 @@ class ImmoToolFilter_group extends ImmoToolFilter {
     $widget = '';
     if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
       return $widget;
+    $selectedValue = (string) $selectedValue;
     $sortedGroups = array();
     foreach (array_keys($this->items) as $group) {
       $sortedGroups[] = $group;
@@ -77,6 +78,7 @@ class ImmoToolFilter_group extends ImmoToolFilter {
       $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
       $widget .= '<option value="">[ ' . $by . ' ]</option>';
       foreach ($sortedGroups as $group) {
+        $group = (string) $group;
         $selected = ($selectedValue == $group) ? 'selected="selected"' : '';
         $widget .= '<option value="' . $group . '" ' . $selected . '>' . $group . '</option>';
       }
