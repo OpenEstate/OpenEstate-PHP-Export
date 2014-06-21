@@ -73,11 +73,6 @@ class immotool_expose {
         '{CONTACT_PHONE_TITLE}' => $translations['labels']['estate.contact.person.phone'],
         '{CONTACT_MOBILE_TITLE}' => $translations['labels']['estate.contact.person.mobile'],
         '{CONTACT_FAX_TITLE}' => $translations['labels']['estate.contact.person.fax'],
-          //'{CONTACT_FORM_NAME}' => $translations['labels']['estate.contact.form.name'],
-          //'{CONTACT_FORM_EMAIL}' => $translations['labels']['estate.contact.form.email'],
-          //'{CONTACT_FORM_PHONE}' => $translations['labels']['estate.contact.form.phone'],
-          //'{CONTACT_FORM_MESSAGE}' => $translations['labels']['estate.contact.form.message'],
-          //'{CONTACT_FORM_SUBMIT}' => $translations['labels']['estate.contact.form.submit'],
       );
       $output = str_replace(array_keys($replacement), array_values($replacement), $output);
       immotool_functions::replace_var('CONTACT_ADRESS_VALUE2', $contactAdressLine2, $output);
@@ -95,8 +90,9 @@ class immotool_expose {
 
     // Kontaktformular darstellen
     else {
-      $showContactForm = $translations['labels']['estate.contact.form'];
+      $showContactForm = $translations['labels']['estate.contact.form.submit'];
       $replacement = array(
+        '{CONTACT_FORM_TITLE}' => $translations['labels']['estate.contact.form'],
         '{CONTACT_FORM_NAME}' => $translations['labels']['estate.contact.form.name'] . ':',
         '{CONTACT_FORM_NAME_VALUE}' => '',
         '{CONTACT_FORM_NAME_ERROR}' => '',
@@ -125,7 +121,6 @@ class immotool_expose {
         '{CONTACT_FORM_MESSAGE_VALUE}' => '',
         '{CONTACT_FORM_MESSAGE_ERROR}' => '',
         '{CONTACT_FORM_MESSAGE_ATTRIBS}' => 'class="field"',
-        '{CONTACT_FORM_SUBMIT}' => $translations['labels']['estate.contact.form.submit'],
       );
 
       // Pflichtfelder markieren
@@ -238,7 +233,7 @@ class immotool_expose {
         // Die Eingaben sind unvollständig
         if (count($errors) > 0) {
           foreach ($errors as $field)
-            $replacement['{CONTACT_FORM_' . strtoupper($field) . '_ERROR}'] = ' class="error"';
+            $replacement['{CONTACT_FORM_' . strtoupper($field) . '_ERROR}'] = ' error';
 
           foreach (array_keys($contact) as $key)
             $replacement['{CONTACT_FORM_' . strtoupper($key) . '_VALUE}'] = htmlentities($contact[$key], ENT_QUOTES, 'UTF-8');
@@ -276,7 +271,7 @@ class immotool_expose {
           else {
 
             // Inhalte in Mailtext übernehmen
-            $requestUrl = immotool_functions::get_expose_url($object['id'], $lang, $setup->ExposeUrlTemplate);
+            $requestUrl = immotool_functions::get_expose_url($object['id'], $lang, $setup->ExposeUrlTemplate, false);
             $subjectId = '#' . $object['id'];
             if (is_string($object['nr']) && strlen($object['nr']) > 0)
               $subjectId .= ' / ' . $object['nr'];
@@ -317,7 +312,7 @@ class immotool_expose {
       }
       $output = str_replace(array_keys($replacement), array_values($replacement), $output);
     }
-    immotool_functions::replace_var('CONTACT_FORM', $showContactForm, $output);
+    immotool_functions::replace_var('CONTACT_FORM_SUBMIT', $showContactForm, $output);
     return $output;
   }
 
@@ -530,13 +525,9 @@ include(IMMOTOOL_BASE_PATH . 'data/language.php');
 if (session_id() == '')
   session_start();
 
-// Konfiguration ermitteln
-$setup = new immotool_setup_expose();
-if (is_callable(array('immotool_myconfig', 'load_config_expose')))
-  immotool_myconfig::load_config_expose($setup);
-
 // Initialisierungen
-immotool_functions::init($setup);
+$setup = new immotool_setup_expose();
+immotool_functions::init($setup, 'load_config_expose');
 
 // Übersetzungen ermitteln
 $translations = null;
@@ -572,14 +563,14 @@ $expose = immotool_functions::read_template('expose.html');
 
 // Hauptmenü
 $exposeMenu = '<ul>';
-$exposeMenu .= '<li class="selected"><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '">' . $pageTitle . '</a></li>';
+$exposeMenu .= '<li class="selected"><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '{DEFAULT_LINK_PARAMS}">' . $pageTitle . '</a></li>';
 $favTitle = immotool_functions::has_favourite($object['id']) ? $translations['labels']['link.expose.unfav'] : $translations['labels']['link.expose.fav'];
-$exposeMenu .= '<li><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $favTitle . '</a></li>';
+$exposeMenu .= '<li><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '{DEFAULT_LINK_PARAMS}" rel="nofollow">' . $favTitle . '</a></li>';
 $pdf = 'data/' . $object['id'] . '/' . $object['id'] . '_' . $lang . '.pdf';
 if (is_file(IMMOTOOL_BASE_PATH . $pdf))
   $exposeMenu .= '<li><a href="' . $pdf . '" target="_blank">' . $translations['labels']['link.expose.pdf'] . '</a></li>';
-$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['title.fav'] . '</a></li>';
-$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_LANG . '=' . $lang . '">' . $translations['labels']['title.index'] . '</a></li>';
+$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav{DEFAULT_LINK_PARAMS}" rel="nofollow">' . $translations['labels']['title.fav'] . '</a></li>';
+$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_INDEX_VIEW . '=index{DEFAULT_LINK_PARAMS}">' . $translations['labels']['title.index'] . '</a></li>';
 $exposeMenu .= '</ul>';
 
 // Titelbild
@@ -713,7 +704,7 @@ if ($viewMode == 'tabular') {
 
     $c = (isset($viewClass[$v]) && is_string($viewClass[$v])) ? $viewClass[$v] : '';
     $viewMenu .= '<li ' . $c . '>' .
-        '<a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=' . $v . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '">' .
+        '<a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=' . $v . '{DEFAULT_LINK_PARAMS}">' .
         $translations['labels']['estate.' . $v] . '</a></li>';
   }
   $viewMenu .= '</ul>';

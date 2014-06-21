@@ -73,14 +73,16 @@ foreach (immotool_functions::list_available_objects() as $id) {
     continue;
 
   // Exposé-URL ermitteln
-  $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate);
+  $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
 
   // Immobilienart ermitteln
   $objectType = (is_string($translations['openestate']['types'][$object['type']])) ?
       $translations['openestate']['types'][$object['type']] : $object['type'];
 
   // Inhalt ermitteln
-  $objectContent = $object['title'][$lang];
+  $objectTitle = (isset($object['title'][$lang])) ?
+      $object['title'][$lang] : '';
+  $objectContent = $objectTitle;
   foreach (immotool_functions::get_text($id) as $key => $text) {
     if ($key == 'id')
       continue;
@@ -93,36 +95,44 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $objectAction = '';
   $objectPrice = '0';
   $objectPriceAttribs = '';
+  $objectPriceHidden = isset($object['hidden_price']) && $object['hidden_price'] === true;
   if ($object['action'] == 'kauf') {
-    $objectPrice = $object['attributes']['preise']['kaufpreis']['value'];
     $objectAction = 'For Sale';
+    $objectPrice = (isset($object['attributes']['preise']['kaufpreis']['value'])) ?
+        $object['attributes']['preise']['kaufpreis']['value'] : null;
   }
   else if ($object['action'] == 'miete') {
-    $objectPrice = $object['attributes']['preise']['kaltmiete']['value'];
-    $mietePro = $object['attributes']['preise']['miete_pro']['value'];
     $objectAction = 'For Rent';
+    $objectPrice = (isset($object['attributes']['preise']['kaltmiete']['value'])) ?
+        $object['attributes']['preise']['kaltmiete']['value'] : null;
+    $mietePro = (isset($object['attributes']['preise']['miete_pro'])) ?
+        $object['attributes']['preise']['miete_pro']['value'] : null;
     if ($mietePro == 'WOCHE')
       $objectPriceAttribs = ' period="weekly"';
     else
       $objectPriceAttribs = ' period="monthly"';
   }
   else if ($object['action'] == 'waz') {
-    $objectPrice = $object['attributes']['preise']['pauschalmiete']['value'];
-    $mietePro = $object['attributes']['preise']['miete_pro']['value'];
     $objectAction = 'For Rent';
+    $objectPrice = (isset($object['attributes']['preise']['pauschalmiete']['value'])) ?
+        $object['attributes']['preise']['pauschalmiete']['value'] : null;
+    $mietePro = (isset($object['attributes']['preise']['miete_pro']['value'])) ?
+        $object['attributes']['preise']['miete_pro']['value'] : null;
     if ($mietePro == 'WOCHE')
       $objectPriceAttribs = ' period="weekly"';
     else
       $objectPriceAttribs = ' period="monthly"';
   }
   else if ($object['action'] == 'pacht') {
-    $objectPrice = $object['attributes']['preise']['pacht']['value'];
     $objectAction = 'For Rent';
+    $objectPrice = (isset($object['attributes']['preise']['pacht']['value'])) ?
+        $object['attributes']['preise']['pacht']['value'] : null;
     $objectPriceAttribs = ' period="monthly"';
   }
   else if ($object['action'] == 'erbpacht') {
-    $objectPrice = $object['attributes']['preise']['pacht']['value'];
     $objectAction = 'For Rent';
+    $objectPrice = (isset($object['attributes']['preise']['pacht']['value'])) ?
+        $object['attributes']['preise']['pacht']['value'] : null;
     $objectPriceAttribs = ' period="monthly"';
   }
   else {
@@ -130,14 +140,18 @@ foreach (immotool_functions::list_available_objects() as $id) {
   }
 
   // Preis umwandeln
-  $objectPrice = intval($objectPrice);
-  if ($objectPrice <= 0)
-    continue;
+  if ($objectPrice != null) {
+    $objectPrice = intval($objectPrice);
+    if ($objectPrice <= 0)
+      $objectPrice = null;
+  }
 
   // Fläche ermitteln
   $objectArea = null;
   foreach (array('gesamtflaeche', 'wohnflaeche', 'grundstuecksflaeche', 'lagerflaeche', 'nutzflaeche') as $area) {
-    $value = $object['attributes']['flaechen'][$field]['value'];
+    if (!isset($object['attributes']['flaechen'][$area]['value']))
+      continue;
+    $value = $object['attributes']['flaechen'][$area]['value'];
     if (is_numeric($value)) {
       $objectArea = intval($objectArea);
       if ($objectArea <= 0)
@@ -148,77 +162,93 @@ foreach (immotool_functions::list_available_objects() as $id) {
   }
 
   // Grundstücksfläche
-  $objectPlotArea = $object['attributes']['flaechen']['grundstuecksflaeche']['value'];
+  $objectPlotArea = (isset($object['attributes']['flaechen']['grundstuecksflaeche']['value'])) ?
+      $object['attributes']['flaechen']['grundstuecksflaeche']['value'] : null;
   if (!is_numeric($objectPlotArea))
     $objectPlotArea = null;
   else
     $objectPlotArea = intval($objectPlotArea);
 
   // Anzahl Zimmer ermitteln
-  $objectRooms = $object['attributes']['flaechen']['anz_zimmer']['value'];
+  $objectRooms = (isset($object['attributes']['flaechen']['anz_zimmer']['value'])) ?
+      $object['attributes']['flaechen']['anz_zimmer']['value'] : null;
   if (!is_numeric($objectRooms))
     $objectRooms = 0;
   else
     $objectRooms = intval($objectRooms);
 
   // Anzahl Badezimmer ermitteln
-  $objectBathrooms = $object['attributes']['flaechen']['anz_badezimmer']['value'];
+  $objectBathrooms = (isset($object['attributes']['flaechen']['anz_badezimmer']['value'])) ?
+      $object['attributes']['flaechen']['anz_badezimmer']['value'] : null;
   if (!is_numeric($objectBathrooms))
     $objectBathrooms = 0;
   else
     $objectBathrooms = intval($objectBathrooms);
 
   // Anzahl Zimmer ermitteln
-  $objectFloorNumber = $object['attributes']['ausstattung']['etage_gesant']['value'];
+  $objectFloorNumber = (isset($object['attributes']['ausstattung']['etage_gesamt']['value'])) ?
+      $object['attributes']['ausstattung']['etage_gesamt']['value'] : null;
   if (!is_numeric($objectFloorNumber))
     $objectFloorNumber = 0;
   else
     $objectFloorNumber = intval($objectFloorNumber);
 
   // Stellplatz ermitteln
-  $arten = $object['attributes']['flaechen']['stellplatzart']['value'];
+  $arten = (isset($object['attributes']['flaechen']['stellplatzart']['value'])) ?
+      $object['attributes']['flaechen']['stellplatzart']['value'] : null;
   $objectParking = (is_array($arten) && count($arten) > 0) ? 1 : 0;
 
   // Möblierung ermitteln
   $objectIsFurnished = null;
-  $moebliert = $object['attributes']['ausstattung']['moebliert']['value'];
+  $moebliert = (isset($object['attributes']['ausstattung']['moebliert']['value'])) ?
+      $object['attributes']['ausstattung']['moebliert']['value'] : null;
   if ($moebliert == 'JA' || $moebliert == 'TEIL')
     $objectIsFurnished = 1;
   else if ($moebliert == 'NEIN')
     $objectIsFurnished = 0;
 
   // Zustand ermitteln
-  $objectConditition = $object['attributes']['zustand']['zustand'][$lang];
+  $objectConditition = (isset($object['attributes']['zustand']['zustand'][$lang])) ?
+      $object['attributes']['zustand']['zustand'][$lang] : null;
 
   // Baujahr ermitteln
-  $objectYear = $object['attributes']['zustand']['baujahr'][$lang];
+  $objectYear = (isset($object['attributes']['zustand']['baujahr'][$lang])) ?
+      $object['attributes']['zustand']['baujahr'][$lang] : null;
 
   // Anschrift
   $objectAdress = null;
-  if (is_string($object['adress']['street'])) {
+  if (isset($object['adress']['street']) && is_string($object['adress']['street'])) {
     $objectAdress = trim($object['adress']['street']);
-    if (is_string($object['adress']['street_nr'])) {
+    if (isset($object['adress']['street_nr']) && is_string($object['adress']['street_nr'])) {
       $objectAdress .= ' ' . trim($object['adress']['street_nr']);
     }
   }
 
   // Ort & Ortsteil
-  $objectCity = $object['adress']['city'];
-  $objectCityPart = $object['adress']['city_part'];
-  $objectPostal = $object['adress']['postal'];
-  $objectRegion = $object['adress']['region'];
-  $objectLatitude = $object['adress']['latitude'];
-  $objectLongitude = $object['adress']['longitude'];
+  $objectCity = (isset($object['adress']['city'])) ?
+      $object['adress']['city'] : null;
+  $objectCityPart = (isset($object['adress']['city_part'])) ?
+      $object['adress']['city_part'] : null;
+  $objectPostal = (isset($object['adress']['postal'])) ?
+      $object['adress']['postal'] : null;
+  $objectRegion = (isset($object['adress']['region'])) ?
+      $object['adress']['region'] : null;
+  $objectLatitude = (isset($object['adress']['latitude'])) ?
+      $object['adress']['latitude'] : null;
+  $objectLongitude = (isset($object['adress']['longitude'])) ?
+      $object['adress']['longitude'] : null;
 
   // Immobilie in den Feed eintragen
   $feed .= '  <ad>' . "\n";
   $feed .= '    <id><![CDATA[' . $object['id'] . ']]></id>' . "\n";
   $feed .= '    <url><![CDATA[' . $objectUrl . ']]></url>' . "\n";
-  $feed .= '    <title><![CDATA[' . $object['title'][$lang] . ']]></title>' . "\n";
+  $feed .= '    <title><![CDATA[' . $objectTitle . ']]></title>' . "\n";
   $feed .= '    <type><![CDATA[' . $objectAction . ']]></type>' . "\n";
   $feed .= '    <agency><![CDATA[' . $translations['labels']['title'] . ']]></agency>' . "\n";
   $feed .= '    <content><![CDATA[' . $objectContent . ']]></content>' . "\n";
-  $feed .= '    <price' . $objectPriceAttribs . '><![CDATA[' . $objectPrice . ']]></price>' . "\n";
+  if (is_numeric($objectPrice) && $objectPrice > 0) {
+    $feed .= '    <price' . $objectPriceAttribs . '><![CDATA[' . $objectPrice . ']]></price>' . "\n";
+  }
   $feed .= '    <property_type><![CDATA[' . $objectType . ']]></property_type>' . "\n";
   if (is_numeric($objectArea) && $objectArea > 0)
     $feed .= '    <floor_area unit="meters"><![CDATA[' . $objectArea . ']]></floor_area>' . "\n";
@@ -243,14 +273,15 @@ foreach (immotool_functions::list_available_objects() as $id) {
   if (!is_null($objectLongitude))
     $feed .= '    <longitude><![CDATA[' . $objectLongitude . ']]></longitude>' . "\n";
 
-  if (is_array($object['images'])) {
+  if (isset($object['images']) && is_array($object['images'])) {
     $feed .= '    <pictures>' . "\n";
     foreach ($object['images'] as $img) {
-      $imgUrl = ($_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
+      $imgUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
       $imgUrl .= $_SERVER['SERVER_NAME'];
       $imgUrl .= substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
       $imgUrl .= '/data/' . $object['id'] . '/' . $img['name'];
-      $imgTitle = (is_string($img['title'][$lang])) ? $img['title'][$lang] : '';
+      $imgTitle = (isset($img['title'][$lang]) && is_string($img['title'][$lang])) ?
+          $img['title'][$lang] : '';
       $feed .= '      <picture>' . "\n";
       $feed .= '        <picture_url><![CDATA[' . $imgUrl . ']]></picture_url>' . "\n";
       $feed .= '        <picture_title><![CDATA[' . $imgTitle . ']]></picture_title>' . "\n";

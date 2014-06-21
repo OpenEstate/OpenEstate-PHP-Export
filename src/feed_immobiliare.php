@@ -36,6 +36,146 @@ if (session_id() == '')
   session_start();
 header('Content-Type: text/xml; charset=utf-8');
 
+// Mapping, Vermartungsart
+$mapObjectAction = array(
+  'MIETE' => 'R', // Miete
+  'PACHT' => 'R', // Miete
+  'ERBPACHT' => 'R', // Miete
+  'WAZ' => 'R', // Miete
+  'KAUF' => 'S', // Kauf
+);
+
+// Mapping, Kategorie
+$mapObjectCat = array(
+  'FERIENHAUS' => 'V', // Ferien
+  'MAIN_GEWERBE' => 'C', // Gewerbe
+  'MAIN_GRUND' => 'C', // Gewerbe
+  'MAIN_LANDWIRTSCHAFT' => 'C', // Gewerbe
+  'MAIN_STELLPLATZ' => 'R', // Wohnen
+  'MAIN_WOHNEN' => 'R', // Wohnen
+);
+
+// Mapping, Objektart, Wohnung & Ferien
+$mapObjectType = array(
+  'TERRASSENWOHNUNG' => 'Attico', // Dachgeschosswohnung / Terrassenwohnung
+  'DACHWOHNUNG' => 'Mansarda', // Dachgeschosswohung
+  'LOFTWOHNUNG' => 'Loft', // Loft
+  'WOHNUNG' => 'Appartamento', // Wohnung (ganz allgemein)
+  'BESONDERES_HAUS' => 'Palazzo', // Palast / herrschaftliches Stadthaus
+  'BAUERNHAUS' => 'Casale', // Bauernhaus
+  'LANDHAUS' => 'Rustico', // ländliches Wohnhaus / Bauernhaus / Landhaus
+  'VILLA' => 'Villa', // Villa
+  'HAUS' => 'Stabile', // Gebäude
+  'MAIN_STELLPLATZ' => 'Garage', // Garage
+    //'' => 'Multiproprietà',                       // Häuser in gemeinschaftlichem Eigentum (wurde bei Ferienwohnungen oft gemacht, ist aber wieder ein wenig aus der Mode gekommen - mehrere Familien kaufen eine Ferienwohnung und "teilen" sich dann das Haus für definierte Zeiträume zu)
+    //'' => 'Open Space',                           // ???
+    //'' => 'Villetta a schiera',                   // Reihenhaus-Villa
+    //'' => 'Casa Indipendente',                    // freistehendes Haus
+    //'' => 'Other',                                // Andere
+);
+
+// Mapping, Objektart, Gewerbe, Grundstück
+$mapObjectBusinessType_Terreno = array(
+  'WOHNGRUND' => 'Residenziale', // Baugrund für Wohnungsbau
+  'GEWERBEGRUND' => 'Commerciale', // Baugrund für gewerbliche Immobilien
+  'INDUSTRIEGRUND' => 'Industriale', // Baugrund für Industriegebäude
+  'LAND_FORSTGRUND' => 'Agricolo', // Baugrund für Industriegebäude
+);
+
+// Mapping, Objektart, Gewerbe, wirtschaftliche Tätigkeit
+$mapObjectBusinessType_Attivita = array(
+  'EINKAUFSZENTRUM' => 'Centro commerciale', // Einkaufszentrum
+  'RESTAURANT' => 'Ristorante', // Restaurant
+  'BAR' => 'Bar', // Bar
+  'DISKO' => 'Discoteca', // Diskothek
+  'HOTEL' => 'Hotel', // Hotel
+  'HOSTEL' => 'Hotel', // Hotel
+  'FREMDENZIMMER' => 'Bed and Breakfast', // Zimmer mit Frühstück
+  'PENSION' => 'Pensione', // Pension
+  'FITNESSTUDIO' => 'Palestra', // Fitnesscenter
+  'SONNENSTUDIO' => 'Estetica / Solarium', // Schönheitssalon / Solarium
+  'WERKSTATT' => 'Auto officina', // Autowerkstatt
+    //'' => 'Negozio',                              // Geschäftslokal
+    //'' => 'Azienda agricola',                     // landwirtschaftlicher Betrieb
+    //'' => 'Pizzeria',                             // Pizzeria
+    //'' => 'Pizza Al Taglio',                      // Fast-Food / Kebap
+    //'' => 'Pub',                                  // Pub
+    //'' => 'Alimentari',                           // Lebensmittelgeschäft
+    //'' => 'Rosticceria',                          // Restaurant mit Grill
+    //'' => 'Pasticceria',                          // Konditorei
+    //'' => 'Gelateria',                            // Eisdiele
+    //'' => 'Panetteria',                           // Bäckerei
+    //'' => 'Altro | Alimentare',                   // anderes Lebensmittelgeschäft
+    //'' => 'Ferramenta',                           // Eisenwarenhandlung
+    //'' => 'Casalinghi',                           // Haushaltswaren
+    //'' => 'Abbigliamento',                        // Textilgeschäft
+    //'' => 'Parrucchiere uomo/donna',              // Herren-/Damen-Frisör
+    //'' => 'Videonoleggio',                        // Videoverleih
+    //'' => 'Tabaccheria',                          // Tabak-Trafik
+    //'' => 'Tintoria',                             // Färberei
+    //'' => 'Lavanderia',                           // Wäscherei
+    //'' => 'Cartoleria',                           // Papierhandel
+    //'' => 'Libreria',                             // Buchhandlung
+    //'' => 'Informatica',                          // Computerwaren
+    //'' => 'Telefonia',                            // Telefongeschäft
+    //'' => 'Edicola',                              // Zeitungshandel
+    //'' => 'Altro | Non alimentare',               // anderes Nicht-Lebensmittel
+    //'' => 'Giochi',                               // Spielwaren
+    //'' => 'Scommesse',                            // Wettbüro
+);
+
+// Mapping, Objektart, Gewerbe, Sonstiges
+$mapObjectBusinessType_Immobile = array(
+  'INDUSTRIEHALLE' => 'Capannone Industriale', // Industriehalle
+  'HALLE_LAGER' => 'Capannone', // Halle
+  'MAIN_LANDWIRTSCHAFT' => 'Azienda Agricola', // landwirtschaftl. Betrieb
+  'MAIN_STELLPLATZ' => 'Garage', // Garage
+  'GESCHAEFTSLOKAL' => 'Negozio', // Geschäftslokal
+  'BUERO_GESCHAEFTSLOKAL' => 'Negozio', // Geschäftslokal
+  'BUERO_PRAXIS' => 'Ufficio', // Bürolokal
+  'HAUS' => 'Stabile', // Gebäude / Stadthaus
+  'AUSSTELLUNGSFLAECHE' => 'Showroom', // Ausstellungsraum
+  'GAST' => 'Albergo', // Gasthof / Unterkünfte
+    //'' => 'Casa di cura',                         // Kurhaus
+    //'' => 'Magazzino',                            // Magazin
+    //'' => 'Scuderia',                             // Ställe und Pferderennställe
+    //'' => 'Stabilimento Balneare',                // Badeanlage
+    //'' => 'Laboratorio',                          // Labor
+    //'' => 'Altro',                                // Andere
+);
+
+// Mapping, Art der Gewerbefläche
+$mapObjectTerrainType = array(
+  'WEINBAU' => 'vigneto', // Weinberg
+  'ACKERBAU' => 'seminativo', // Saatfeld
+    //'' => 'seminativo irriguo',                   // Saatfeld mit Bewässerung
+    //'' => 'seminativo arborato',                  // Saatfeld mit Bäumen
+    //'' => 'seminativo arborato irriguo',          // Saatfeld mit Bewässerung und Bäumen
+    //'' => 'prato',                                // Wiese
+    //'' => 'prato irriguo',                        // Wiese mit Bewässerung
+    //'' => 'prato arborato',                       // Wiese mit Bäumen
+    //'' => 'prato a marcita',                      // verrottetes Feld ???
+    //'' => 'risaia stabile',                       // Reisfeld
+    //'' => 'pascolo',                              // Weide
+    //'' => 'pascolo arborato',                     // Weide mit Bäumen
+    //'' => 'pascolo cespugliato',                  // Weide mit Sträuchern/Gebüsch
+    //'' => 'giardino',                             // Garten
+    //'' => 'orto',                                 // Gemüsegarten
+    //'' => 'orto irriguo',                         // Gemüsefeld mit BEwässerung
+    //'' => 'agrumeto',                             // Feld für Zitrusfrüchte
+    //'' => 'uliveto',                              // Olivenhain
+    //'' => 'frutteto',                             // Obstgarten
+    //'' => 'gelseto',                              // Maulbeerhain
+    //'' => 'colture speciali',                     // spezielle Anbaukulturen
+    //'' => 'castagneto da frutto',                 // Kastanienhain
+    //'' => 'canneto',                              // Schilf
+    //'' => 'bosco alto fusto',                     // Wald
+    //'' => 'bosco ceduo',                          // Nutzwald
+    //'' => 'bosco misto',                          // Mischwald
+    //'' => 'incolto produttivo',                   // unbebautes/nutzbares Ödland
+    //'' => 'incolto sterile',                      // unfruchtbares Ödland
+);
+
 // Konfiguration ermitteln
 $setup = new immotool_setup_feeds();
 if (is_callable(array('immotool_myconfig', 'load_config_feeds')))
@@ -60,7 +200,7 @@ if (is_file($feedFile)) {
 }
 
 // URL der Seite ermitteln
-$siteUrl = ($_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
+$siteUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
 $siteUrl .= $_SERVER['SERVER_NAME'];
 
 // Zeitpunkt der Erzeugung
@@ -96,7 +236,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
     continue;
 
   // Exposé-URL
-  $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate);
+  $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
 
   // Zeitpunkt der letzten Änderung
   $feedStamp = date('Y-m-d\TH:i:sO', immotool_functions::get_object_stamp($id));
@@ -109,34 +249,26 @@ foreach (immotool_functions::list_available_objects() as $id) {
 
   // Vermartungsart
   $objectAction = null;
-  if ($object['action'] == 'miete')
-    $objectAction = 'R';
-  else if ($object['action'] == 'pacht')
-    $objectAction = 'R';
-  else if ($object['action'] == 'erbpacht')
-    $objectAction = 'R';
-  else if ($object['action'] == 'waz')
-    $objectAction = 'R';
-  else if ($object['action'] == 'kauf')
-    $objectAction = 'S';
-  else
+  foreach ($mapObjectAction as $key => $value) {
+    $action = trim(strtolower($key));
+    if (array_search($action, $object['type_path']) !== false) {
+      $objectAction = $val;
+      break;
+    }
+  }
+  if ($objectAction == null)
     continue;
 
   // Kategorie
   $objectCat = null;
-  if (array_search('ferienhaus', $object['type_path']) !== false)
-    $objectCat = 'V';
-  else if (array_search('main_gewerbe', $object['type_path']) !== false)
-    $objectCat = 'C';
-  else if (array_search('main_landwirtschaft', $object['type_path']) !== false)
-    $objectCat = 'C';
-  else if (array_search('main_grund', $object['type_path']) !== false)
-    $objectCat = 'C';
-  else if (array_search('main_wohnen', $object['type_path']) !== false)
-    $objectCat = 'R';
-  else if (array_search('main_stellplatz', $object['type_path']) !== false)
-    $objectCat = 'R';
-  else
+  foreach ($mapObjectCat as $key => $value) {
+    $type = trim(strtolower($key));
+    if (array_search($type, $object['type_path']) !== false) {
+      $objectCat = $val;
+      break;
+    }
+  }
+  if ($objectCat == null)
     continue;
 
   // Objektart
@@ -147,54 +279,14 @@ foreach (immotool_functions::list_available_objects() as $id) {
 
   // Immobilienarten, die nur für Wohn- & Ferien-Objekte gelten
   if ($objectCat == 'R' || $objectCat == 'V') {
-
-    // Wohnungen
-    if (array_search('appartmentwohnung', $object['type_path']) !== false)
-      $objectType = 'Appartamento';
-    else if (array_search('penthousewohnung', $object['type_path']) !== false)
-      $objectType = 'Attico';
-    else if (array_search('loftwohnung', $object['type_path']) !== false)
-      $objectType = 'Loft';
-    else if (array_search('dachwohnung', $object['type_path']) !== false)
-      $objectType = 'Mansarda';
-
-    // Häuser
-    else if (array_search('mfh', $object['type_path']) !== false)
-      $objectType = 'Multiproprietà';
-    else if (array_search('mfh_gewerbe', $object['type_path']) !== false)
-      $objectType = 'Multiproprietà';
-    else if (array_search('schloss', $object['type_path']) !== false)
-      $objectType = 'Palazzo';
-    else if (array_search('burg', $object['type_path']) !== false)
-      $objectType = 'Palazzo';
-    else if (array_search('chalet', $object['type_path']) !== false)
-      $objectType = 'Palazzo';
-    else if (array_search('besonderes_haus', $object['type_path']) !== false)
-      $objectType = 'Rustico';
-    else if (array_search('villa', $object['type_path']) !== false)
-      $objectType = 'Villa';
-    else if (array_search('efh', $object['type_path']) !== false)
-      $objectType = 'Villa';
-    else if (array_search('landhaus', $object['type_path']) !== false)
-      $objectType = 'Villa';
-    else if (array_search('reihenhaus', $object['type_path']) !== false)
-      $objectType = 'Villetta a schiera';
-    else if (array_search('haus', $object['type_path']) !== false)
-      $objectType = 'Casa Indipendente';
-
-    // Stellplätze
-    else if (array_search('main_stellplatz', $object['type_path']) !== false)
-      $objectType = 'Garage';
-
-    // keine Ahnung???
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectType = 'Casale';
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectType = 'Stabile';
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectType = 'Open Space';
-    // Sonstiges
-    else
+    foreach ($mapObjectType as $key => $value) {
+      $type = trim(strtolower($key));
+      if (array_search($type, $object['type_path']) !== false) {
+        $objectType = $val;
+        break;
+      }
+    }
+    if ($objectType == null)
       $objectType = 'Other';
   }
 
@@ -204,223 +296,62 @@ foreach (immotool_functions::list_available_objects() as $id) {
     // Grundstücke
     if (array_search('main_grund', $object['type_path']) !== false) {
       $objectBusinessTypeCat = 'Terreno';
-
-      if (array_search('wohngrund', $object['type_path']) !== false)
-        $objectBusinessType = 'Residenziale'; // Wohn-Bauland
-      else if (array_search('gewerbegrund', $object['type_path']) !== false)
-        $objectBusinessType = 'Commerciale'; // Gewerbe Grundstücke
-      else if (array_search('industriegrund', $object['type_path']) !== false)
-        $objectBusinessType = 'Industriale'; // Industrial Land
-      else if (array_search('land_forstgrund', $object['type_path']) !== false)
-        $objectBusinessType = 'Agricolo'; // landwirtschaftliche Grundstück oder Gebäude
-      else
+      foreach ($mapObjectBusinessType_Terreno as $key => $value) {
+        $type = trim(strtolower($key));
+        if (array_search($type, $object['type_path']) !== false) {
+          $objectBusinessType = $val;
+          break;
+        }
+      }
+      if ($objectBusinessType == null)
         $objectBusinessType = 'Residenziale';
     }
 
     // weiteres Gewerbe
     else {
-      //$objectBusinessTypeCat = 'Attività';
-      $objectBusinessTypeCat = 'Immobile';
-
-      if (array_search('einkaufszentrum', $object['type_path']) !== false)
-        $objectBusinessType = 'Centro commerciale'; // Shopping-Center
-      else if (array_search('bauernhof', $object['type_path']) !== false)
-        $objectBusinessType = 'Azienda agricola'; // Bauernhof
-      else if (array_search('restaurant', $object['type_path']) !== false)
-        $objectBusinessType = 'Ristorante'; // Restaurant
-      else if (array_search('bar', $object['type_path']) !== false)
-        $objectBusinessType = 'Bar'; // Bar
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Pizzeria'; // Pizzeria
-      else if (array_search('bistro', $object['type_path']) !== false)
-        $objectBusinessType = 'Pizza Al Taglio'; // Pizza, Fast Food, Kebab
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Pub'; // Pub
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Alimentari'; // Nahrung
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Rosticceria'; // Feinkostgeschäft / Delikatessengeschäft
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Pasticceria'; // Süßwaren
-      else if (array_search('disko', $object['type_path']) !== false)
-        $objectBusinessType = 'Discoteca'; // Disko
-      else if (array_search('hotel', $object['type_path']) !== false)
-        $objectBusinessType = 'Hotel'; // Hotels
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Bed and Breakfast'; // Bed & Breakfest
-      else if (array_search('pension', $object['type_path']) !== false)
-        $objectBusinessType = 'Pensione'; // Pension
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Gelateria'; // Eisdiele
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Panetteria'; // Bäckerei
-      else if (array_search('gastronomie', $object['type_path']) !== false)
-        $objectBusinessType = 'Altro | Alimentare'; // Sonstiges Essen
-      else if (array_search('ladenlokal', $object['type_path']) !== false)
-        $objectBusinessType = 'Altro | Alimentare'; // Sonstiges Essen
-      else if (array_search('geschaeftslokal', $object['type_path']) !== false)
-        $objectBusinessType = 'Altro | Alimentare'; // Sonstiges Essen
-      else if (array_search('kaufhaus', $object['type_path']) !== false)
-        $objectBusinessType = 'Negozio'; // Geschäft / Kaufhaus
-      else if (array_search('geschaeftshaus', $object['type_path']) !== false)
-        $objectBusinessType = 'Negozio'; // Geschäft / Kaufhaus
-      else if (array_search('wohn_geschaeftshaus', $object['type_path']) !== false)
-        $objectBusinessType = 'Negozio'; // Geschäft / Kaufhaus
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Ferramenta'; // Eisenwaren
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Casalinghi'; // Haushalt
-      else if (array_search('sportanlage', $object['type_path']) !== false)
-        $objectBusinessType = 'Palestra'; // Sporthalle / Turnhalle
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Abbigliamento'; // Kleidung
-      else if (array_search('sonnenstudio', $object['type_path']) !== false)
-        $objectBusinessType = 'Estetica / Solarium'; // Ästhetik / Solarium
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Parrucchiere uomo/donna'; // Friseur Mann / Frau
-      else if (array_search('werkstatt', $object['type_path']) !== false)
-        $objectBusinessType = 'Auto officina'; // KFZ-Betriebe
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Videonoleggio'; // Videothek
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Tabaccheria'; // Tabakladen
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Tintoria'; // Subunternehmer
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Lavanderia'; // Wäscheservice
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Cartoleria'; // Schreibwarenladen
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Libreria'; // Bibliothek
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Informatica'; // Computer ???
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Telefonia'; // Telefonie ???
-      else if (array_search('kiosk', $object['type_path']) !== false)
-        $objectBusinessType = 'Edicola'; // Zeitschriften
-      else if (array_search('laden', $object['type_path']) !== false)
-        $objectBusinessType = 'Altro | Non alimentare'; // Sonstiges, Non-Food
-      else if (array_search('freizeit_sport', $object['type_path']) !== false)
-        $objectBusinessType = 'Giochi'; // Sport & Spiel
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Scommesse'; // Wetten
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Capannone'; // ???
-      else if (array_search('parkhaus', $object['type_path']) !== false)
-        $objectBusinessType = 'Garage'; // Garage / Stellplatz
-      else if (array_search('buero', $object['type_path']) !== false)
-        $objectBusinessType = 'Ufficio'; // Büro
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Stabile'; // ???
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Capannone Industriale'; // ???
-      else if (array_search('krankenhaus', $object['type_path']) !== false)
-        $objectBusinessType = 'Casa di cura'; // Krankenhaus
-      else if (array_search('sanatorium', $object['type_path']) !== false)
-        $objectBusinessType = 'Casa di cura'; // Krankenhaus
-      else if (array_search('lagerhalle', $object['type_path']) !== false)
-        $objectBusinessType = 'Magazzino'; // Lagerhaus / Abstellraum / Depot
-      else if (array_search('lagerflaeche', $object['type_path']) !== false)
-        $objectBusinessType = 'Magazzino'; // Lagerhaus / Abstellraum / Depot
-      else if (array_search('halle_lager', $object['type_path']) !== false)
-        $objectBusinessType = 'Magazzino'; // Lagerhaus / Abstellraum / Depot
-      else if (array_search('ausstellungsflaeche', $object['type_path']) !== false)
-        $objectBusinessType = 'Showroom'; // Ausstellungsraum
-
-//else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Scuderia'; // Stall
-      //else if (array_search('???',$object['type_path'])!==false)
-      //  $objectBusinessType = 'Stabilimento Balneare'; // Badeanstalt
-      else if (array_search('atelierwohnung', $object['type_path']) !== false)
-        $objectBusinessType = 'Laboratorio'; // Labor
-      else if (array_search('hotel', $object['type_path']) !== false)
-        $objectBusinessType = 'Albergo'; // Hotel / Unterkunft
-      else if (array_search('hostel', $object['type_path']) !== false)
-        $objectBusinessType = 'Albergo'; // Hotel / Unterkunft
-      else if (array_search('gast', $object['type_path']) !== false)
-        $objectBusinessType = 'Albergo'; // Hotel / Unterkunft
-      else
-        $objectBusinessType = 'Altro'; // Andere
+      foreach ($mapObjectBusinessType_Attivita as $key => $value) {
+        $type = trim(strtolower($key));
+        if (array_search($type, $object['type_path']) !== false) {
+          $objectBusinessTypeCat = 'Attività';
+          $objectBusinessType = $val;
+          break;
+        }
+      }
+      if ($objectBusinessType == null || $objectBusinessTypeCat == null) {
+        foreach ($mapObjectBusinessType_Immobile as $key => $value) {
+          $type = trim(strtolower($key));
+          if (array_search($type, $object['type_path']) !== false) {
+            $objectBusinessType = $val;
+            break;
+          }
+        }
+        if ($objectBusinessType == null)
+          $objectBusinessType = 'Altro';
+        $objectBusinessTypeCat = 'Immobile';
+      }
     }
 
-    // Art der landwirtschaftlichen Fläche
-    $bebaubar = (isset($object['attributes']['verwaltung']['bebaubar_mit']['value'])) ?
-        $object['attributes']['verwaltung']['bebaubar_mit']['value'] : array();
-    if (!is_array($bebaubar))
-      $bebaubar = array();
-    if (array_search('ackerbau', $object['type_path']) !== false) {
-      $baumbestand = (isset($object['attributes']['ausstattung']['baumbestand']['value'])) ?
-          $object['attributes']['ausstattung']['baumbestand']['value'] : null;
-      if ($baumbestand === true)
-        $objectTerrainType = 'seminativo arborato'; // Ackerland mit Baumbestand
-      else
-        $objectTerrainType = 'seminativo'; // Ackerland
+    // Art der landwirtschaftlichen Gewerbefläche
+    foreach ($mapObjectTerrainType as $key => $value) {
+      $type = trim(strtolower($key));
+      if (array_search($type, $object['type_path']) !== false) {
+        $objectTerrainType = $val;
+        break;
+      }
     }
-    else if (array_search('weinbau', $object['type_path']) !== false)
-      $objectTerrainType = 'vigneto'; // Weinberge
-    else if (array_search('acker', $bebaubar) !== false)
-      $objectTerrainType = 'seminativo'; // Ackerland
-    else if (array_search('obstpflanzung', $bebaubar) !== false)
-      $objectTerrainType = 'frutteto'; // Obst
-    else if (array_search('wald', $bebaubar) !== false)
-      $objectTerrainType = 'pascolo arborato'; // Waldweiden
+    if ($objectTerrainType == null) {
 
-//else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'agrumeto'; // Zitrusfrüchte
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'bosco alto fusto'; // Hochwald
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'bosco ceduo'; // Niederwald
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'bosco misto'; // Mischwald
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'canneto'; // Schilf
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'castagneto da frutto'; // Kastanien Obst
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'colture speciali'; // Sonderkulturen
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'gelseto'; // ???
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'giardino'; // Garten
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'incolto produttivo'; // ???
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'incolto sterile'; // ???
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'orto'; // ???
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'orto irriguo'; // Gartenbewässerung
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'pascolo'; // Weide
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'pascolo cespugliato'; // Weide, Busch
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'prato'; // Rasen
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'prato arborato'; // Wiese mit Baumbestand
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'prato a marcita'; // Rasen Gang
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'prato irriguo'; // Rasen-Bewässerung
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'risaia stabile'; // ???
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'seminativo arborato irriguo'; // bewässerten Anbauflächen mit Baumbestand
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'seminativo irriguo'; // bewässerte Kulturen
-    //else if (array_search('???',$object['type_path'])!==false)
-    //  $objectTerrainType = 'uliveto'; // Olivenöl
+      $bebaubar = (isset($object['attributes']['verwaltung']['bebaubar_mit']['value'])) ?
+          $object['attributes']['verwaltung']['bebaubar_mit']['value'] : array();
+      if (!is_array($bebaubar))
+        $bebaubar = array();
+      if (array_search('acker', $bebaubar) !== false)
+        $objectTerrainType = 'seminativo'; // Saatfeld
+      else if (array_search('obstpflanzung', $bebaubar) !== false)
+        $objectTerrainType = 'frutteto'; // Obstgarten
+      else if (array_search('wald', $bebaubar) !== false)
+        $objectTerrainType = 'bosco alto fusto'; // Wald
+    }
   }
 
   else {
@@ -431,6 +362,10 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $objectStatus = null;
   $zustand = (isset($object['attributes']['zustand']['zustand']['value'])) ?
       $object['attributes']['zustand']['zustand']['value'] : array();
+  if (!is_array($zustand))
+    $zustand = array();
+  $alter = (isset($object['attributes']['zustand']['alter']['value'])) ?
+      $object['attributes']['zustand']['alter']['value'] : '';
   $ausstattung = (isset($object['attributes']['ausstattung']['ausstattung_art']['value'])) ?
       $object['attributes']['ausstattung']['ausstattung_art']['value'] : '';
   if (array_search('renoviert_teil', $zustand) !== false)
@@ -463,6 +398,8 @@ foreach (immotool_functions::list_available_objects() as $id) {
     $objectStatus = 'nuovo'; // Neu
   else if (array_search('gepflegt', $zustand) !== false)
     $objectStatus = 'buono'; // gut
+  else if ($alter == 'neubau')
+    $objectStatus = 'nuovo'; // Neu
   else if ($ausstattung == 'einfach')
     $objectStatus = 'abitabile'; // bewohnbar
   else if ($ausstattung == 'normal')
@@ -475,24 +412,26 @@ foreach (immotool_functions::list_available_objects() as $id) {
     $objectStatus = 'nd'; // keine Angaben
 
 
-// Ortsangaben
+// Land (derzeit ausschließlich Italien)
   if (!isset($object['adress']['country']) || is_null($object['adress']['country']))
     continue;
   $objectLocationCountry = strtoupper($object['adress']['country']);
   if ($objectLocationCountry != 'IT')
     continue;
+
+  // Ortsangaben
   $objectLocationArea1 = (isset($object['other']['immobiliare']['areaName'])) ?
       $object['other']['immobiliare']['areaName'] : null;
-  if (is_null($objectLocationArea1))
-    $objectLocationArea1 = '';
+  if (is_null($objectLocationArea1) || trim($objectLocationArea1) == '')
+    continue;
   $objectLocationArea2 = (isset($object['other']['immobiliare']['subAreaName'])) ?
       $object['other']['immobiliare']['subAreaName'] : null;
-  if (is_null($objectLocationArea2))
-    $objectLocationArea2 = '';
+  if (is_null($objectLocationArea2) || trim($objectLocationArea2) == '')
+    continue;
   $objectLocationCity = (isset($object['other']['immobiliare']['cityName'])) ?
       $object['other']['immobiliare']['cityName'] : null;
-  if (is_null($objectLocationCity))
-    $objectLocationCity = '';
+  if (is_null($objectLocationCity) || trim($objectLocationCity) == '')
+    continue;
   $objectLocationCityCode = (isset($object['other']['immobiliare']['cityCode'])) ?
       $object['other']['immobiliare']['cityCode'] : null;
   if (is_null($objectLocationCityCode))
@@ -651,20 +590,23 @@ foreach (immotool_functions::list_available_objects() as $id) {
 
   // Heizung
   $objectHeating = null;
-  $heizung = (isset($object['attributes']['ausstattung']['kueche']['value'])) ?
-      $object['attributes']['ausstattung']['kueche']['value'] : null;
+  $heizung = (isset($object['attributes']['ausstattung']['heizungsart']['value'])) ?
+      $object['attributes']['ausstattung']['heizungsart']['value'] : null;
+  $befeuerung = (isset($object['attributes']['ausstattung']['befeuerung']['value'])) ?
+      $object['attributes']['ausstattung']['befeuerung']['value'] : null;
   if (is_array($heizung) && count($heizung) > 0) {
     if (array_search('autonom', $heizung) !== false)
       $objectHeating = 'Autonomo'; // autonome Heizung
-    else if (array_search('fernwaerme', $heizung) !== false)
-      $objectHeating = 'Teleriscaldamento'; // Fernheizung
     else if (array_search('zentral', $heizung) !== false)
       $objectHeating = 'Centralizzato'; // Zentralheizung
   }
-  else {
-    $objectHeating = 'Assente'; // Keine
+  if ($objectHeating == null && is_array($befeuerung) && count($befeuerung) > 0) {
+    if (array_search('fernwaerme', $befeuerung) !== false)
+      $objectHeating = 'Teleriscaldamento'; // Fernheizung
   }
-
+  //if ($objectHeating==null) {
+  //  $objectHeating = 'Assente'; // fehlend
+  //}
   // Gartennutzung
   $objectGarden = null;
   $garten = (isset($object['attributes']['ausstattung']['gartennutzung']['value'])) ?
@@ -840,7 +782,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $objectPictures = array();
   if (isset($object['images']) && is_array($object['images'])) {
     foreach ($object['images'] as $img) {
-      $imgUrl = ($_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
+      $imgUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
       $imgUrl .= $_SERVER['SERVER_NAME'];
       $imgUrl .= substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
       $imgUrl .= '/data/' . $object['id'] . '/' . $img['name'];
@@ -848,11 +790,15 @@ foreach (immotool_functions::list_available_objects() as $id) {
     }
   }
 
+  // ID der Immobilie ermittln
+  $uniqueId = ($setup->ExportPublicId && isset($object['nr']) && is_string($object['nr']) && strlen($object['nr']) > 0) ?
+      $object['nr'] : $id;
+
   // Immobilie in den Feed eintragen
   $txtCounter = 0;
   $picCounter = 0;
-  $feed .= '    <property operation="force">' . "\n";
-  $feed .= '      <unique-id>' . $id . '</unique-id>' . "\n";
+  $feed .= '    <property operation="write">' . "\n";
+  $feed .= '      <unique-id>' . $uniqueId . '</unique-id>' . "\n";
   $feed .= '      <date-updated>' . $feedStamp . '</date-updated>' . "\n";
   //$feed .= '      <date-expiration/>' . "\n";
   $feed .= '      <transaction-type>' . $objectAction . '</transaction-type>' . "\n";
@@ -963,7 +909,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
     $feed .= '        <net>' . $objectNet . '</net>' . "\n";
   }
   if ($objectFreeConditions != null) {
-    $feed .= '        <free-conditions><![CDATA[' . $objectFreeConditions . ']]</free-conditions>' . "\n";
+    $feed .= '        <free-conditions><![CDATA[' . $objectFreeConditions . ']]></free-conditions>' . "\n";
   }
   if ($objectOverheadCrane != null) {
     $feed .= '        <overhead-crane>' . $objectOverheadCrane . '</overhead-crane>' . "\n";

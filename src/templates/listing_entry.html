@@ -1,6 +1,6 @@
 <div class="openestate_listing_entry {BG}">
-  <h2><a href="expose.php?{PARAM_EXPOSE_ID}={ID}&amp;{PARAM_LANG}={LANGUAGE_CODE}">{TITLE}</a></h2>
-  {IMAGE.}<div class="image"><a href="expose.php?{PARAM_EXPOSE_ID}={ID}&amp;{PARAM_LANG}={LANGUAGE_CODE}"><img src="{IMAGE}" alt="" border="0"/></a></div>{.IMAGE}
+  <h2><a href="expose.php?{PARAM_EXPOSE_ID}={ID}{DEFAULT_LINK_PARAMS}">{TITLE}</a></h2>
+  {IMAGE.}<div class="image"><a href="expose.php?{PARAM_EXPOSE_ID}={ID}{DEFAULT_LINK_PARAMS}"><img src="{IMAGE}" alt="" border="0"/></a></div>{.IMAGE}
   <div class="col_1">
     <ul>
       {TYPE.}<li>{TYPE}</li>{.TYPE}
@@ -19,10 +19,10 @@
   </div>
   <div class="options">
     <ul>
-      {LINK_EXPOSE.}<li><a href="{LINK_EXPOSE}">{LINK_EXPOSE_TEXT}</a></li>{.LINK_EXPOSE}
-      {LINK_PDF.}<li><a href="{LINK_PDF}" target="_blank">{LINK_PDF_TEXT}</a></li>{.LINK_PDF}
-      {LINK_FAV.}<li><a href="{LINK_FAV}" rel="nofollow">{LINK_FAV_TEXT}</a></li>{.LINK_FAV}
-      {LINK_CONTACT.}<li><a href="{LINK_CONTACT}">{LINK_CONTACT_TEXT}</a></li>{.LINK_CONTACT}
+      {LINK_EXPOSE.}<li><a href="{LINK_EXPOSE}{DEFAULT_LINK_PARAMS}">{LINK_EXPOSE_TEXT}</a></li>{.LINK_EXPOSE}
+      {LINK_PDF.}<li><a href="{LINK_PDF}{DEFAULT_LINK_PARAMS}" target="_blank">{LINK_PDF_TEXT}</a></li>{.LINK_PDF}
+      {LINK_FAV.}<li><a href="{LINK_FAV}{DEFAULT_LINK_PARAMS}" rel="nofollow">{LINK_FAV_TEXT}</a></li>{.LINK_FAV}
+      {LINK_CONTACT.}<li><a href="{LINK_CONTACT}{DEFAULT_LINK_PARAMS}">{LINK_CONTACT_TEXT}</a></li>{.LINK_CONTACT}
     </ul>
   </div>
   <div class="openestate_clear"></div>
