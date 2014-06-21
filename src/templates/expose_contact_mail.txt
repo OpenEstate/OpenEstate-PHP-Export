@@ -2,9 +2,11 @@ Kontaktanfrage zum Inserat {SUBJECT_ID}
 ----------------------------------------
  Details zum Interessenten
 ----------------------------------------
- Name       : {CONTACT_NAME} 
+ Name       : {CONTACT_FIRSTNAME} {CONTACT_NAME}
  E-Mail     : {CONTACT_EMAIL}
  Telefon    : {CONTACT_PHONE}
+ Anschrift  : {CONTACT_STREET} {CONTACT_STREETNR}
+              {CONTACT_POSTAL} {CONTACT_CITY}
 
 ----------------------------------------
  Details zur Kontaktanfrage
@@ -18,4 +20,5 @@ Kontaktanfrage zum Inserat {SUBJECT_ID}
 ----------------------------------------
  Mitteilung
 ----------------------------------------
+
 {CONTACT_MESSAGE}

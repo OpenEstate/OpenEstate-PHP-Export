@@ -17,10 +17,10 @@
  */
 
 /**
- * Website-Export, Filter nach Neubau-Objekten.
+ * Website-Export, Filter nach Neubau- oder Altbau-Objekten.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009, OpenEstate.org
+ * @copyright 2009-2010, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -29,7 +29,7 @@ if (!defined('IN_WEBSITE'))
 
 require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
 
-class ImmoToolFilter_neubau extends ImmoToolFilter {
+class ImmoToolFilter_alter extends ImmoToolFilter {
 
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
@@ -37,26 +37,27 @@ class ImmoToolFilter_neubau extends ImmoToolFilter {
   function filter($object, &$items) {
     $value = (isset($object['attributes']['zustand']['alter']['value'])) ?
         $object['attributes']['zustand']['alter']['value'] : null;
-    if (!is_string($value) || strtolower($value) != 'neubau')
+    if (!is_string($value))
       return;
-    if (!isset($items['1']) || !is_array($items['1']))
-      $items['1'] = array();
-    $items['1'][] = $object['id'];
+    $value = strtolower($value);
+    if (!isset($items[$value]) || !is_array($items[$value]))
+      $items[$value] = array();
+    $items[$value][] = $object['id'];
   }
 
   /**
    * Name des Filters.
    */
   function getName() {
-    return 'neubau';
+    return 'alter';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['openestate.neubau'])) ?
-        $translations['labels']['openestate.neubau'] : null;
+    $title = (isset($translations['labels']['openestate.alter'])) ?
+        $translations['labels']['openestate.alter'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 
@@ -64,11 +65,30 @@ class ImmoToolFilter_neubau extends ImmoToolFilter {
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
   function getWidget($selectedValue, $lang, &$translations, &$setup) {
-    $checked = ($selectedValue == '1') ? 'checked="checked"' : '';
-    $widget = '<div class="nowrap">';
-    $widget .= '<input id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']" value="1" type="checkbox" ' . $checked . '/>';
-    $widget .= '<label for="filter_' . $this->getName() . '">' . $this->getTitle($translations, $lang) . '</label>';
-    $widget .= '</div>';
+    $widget = '';
+    if (!$this->readOrRebuild() || !is_array($this->items))
+      return $widget;
+
+    // Optionen in der Auswahlbox ermitteln
+    $options = array('altbau', 'neubau');
+    $values = array();
+    foreach ($options as $o) {
+      $txt = (isset($translations['labels']['openestate.alter.' . $o])) ?
+          $translations['labels']['openestate.alter.' . $o] : null;
+      $values[$o] = is_string($txt) ? $txt : $o;
+    }
+
+    // HTML-Code zur Auswahlbox erzeugen
+    if (is_array($values) && count($values) > 0) {
+      $by = $this->getTitle($translations, $lang);
+      $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
+      $widget .= '<option value="">[ ' . $by . ' ]</option>';
+      foreach ($values as $value => $txt) {
+        $selected = ($selectedValue == $value) ? 'selected="selected"' : '';
+        $widget .= '<option value="' . $value . '" ' . $selected . '>' . $txt . '</option>';
+      }
+      $widget .= '</select>';
+    }
     return $widget;
   }
 

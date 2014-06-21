@@ -20,7 +20,7 @@
  * Website-Export, Darstellung der Exposé-Ansicht.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009, OpenEstate.org
+ * @copyright 2009-2010, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -73,11 +73,11 @@ class immotool_expose {
         '{CONTACT_PHONE_TITLE}' => $translations['labels']['estate.contact.person.phone'],
         '{CONTACT_MOBILE_TITLE}' => $translations['labels']['estate.contact.person.mobile'],
         '{CONTACT_FAX_TITLE}' => $translations['labels']['estate.contact.person.fax'],
-        '{CONTACT_FORM_NAME}' => $translations['labels']['estate.contact.form.name'],
-        '{CONTACT_FORM_EMAIL}' => $translations['labels']['estate.contact.form.email'],
-        '{CONTACT_FORM_PHONE}' => $translations['labels']['estate.contact.form.phone'],
-        '{CONTACT_FORM_MESSAGE}' => $translations['labels']['estate.contact.form.message'],
-        '{CONTACT_FORM_SUBMIT}' => $translations['labels']['estate.contact.form.submit'],
+          //'{CONTACT_FORM_NAME}' => $translations['labels']['estate.contact.form.name'],
+          //'{CONTACT_FORM_EMAIL}' => $translations['labels']['estate.contact.form.email'],
+          //'{CONTACT_FORM_PHONE}' => $translations['labels']['estate.contact.form.phone'],
+          //'{CONTACT_FORM_MESSAGE}' => $translations['labels']['estate.contact.form.message'],
+          //'{CONTACT_FORM_SUBMIT}' => $translations['labels']['estate.contact.form.submit'],
       );
       $output = str_replace(array_keys($replacement), array_values($replacement), $output);
       immotool_functions::replace_var('CONTACT_ADRESS_VALUE2', $contactAdressLine2, $output);
@@ -97,56 +97,142 @@ class immotool_expose {
     else {
       $showContactForm = $translations['labels']['estate.contact.form'];
       $replacement = array(
-        '{CONTACT_FORM_NAME}' => $translations['labels']['estate.contact.form.name'],
+        '{CONTACT_FORM_NAME}' => $translations['labels']['estate.contact.form.name'] . ':',
         '{CONTACT_FORM_NAME_VALUE}' => '',
         '{CONTACT_FORM_NAME_ERROR}' => '',
-        '{CONTACT_FORM_EMAIL}' => $translations['labels']['estate.contact.form.email'],
+        '{CONTACT_FORM_FIRSTNAME}' => $translations['labels']['estate.contact.form.firstname'] . ':',
+        '{CONTACT_FORM_FIRSTNAME_VALUE}' => '',
+        '{CONTACT_FORM_FIRSTNAME_ERROR}' => '',
+        '{CONTACT_FORM_EMAIL}' => $translations['labels']['estate.contact.form.email'] . ':',
         '{CONTACT_FORM_EMAIL_VALUE}' => '',
         '{CONTACT_FORM_EMAIL_ERROR}' => '',
-        '{CONTACT_FORM_PHONE}' => $translations['labels']['estate.contact.form.phone'],
+        '{CONTACT_FORM_PHONE}' => $translations['labels']['estate.contact.form.phone'] . ':',
         '{CONTACT_FORM_PHONE_VALUE}' => '',
         '{CONTACT_FORM_PHONE_ERROR}' => '',
-        '{CONTACT_FORM_MESSAGE}' => $translations['labels']['estate.contact.form.message'],
+        '{CONTACT_FORM_STREET}' => $translations['labels']['estate.contact.form.street'] . ':',
+        '{CONTACT_FORM_STREET_VALUE}' => '',
+        '{CONTACT_FORM_STREET_ERROR}' => '',
+        '{CONTACT_FORM_STREETNR}' => $translations['labels']['estate.contact.form.streetnr'] . ':',
+        '{CONTACT_FORM_STREETNR_VALUE}' => '',
+        '{CONTACT_FORM_STREETNR_ERROR}' => '',
+        '{CONTACT_FORM_POSTAL}' => $translations['labels']['estate.contact.form.postal'] . ':',
+        '{CONTACT_FORM_POSTAL_VALUE}' => '',
+        '{CONTACT_FORM_POSTAL_ERROR}' => '',
+        '{CONTACT_FORM_CITY}' => $translations['labels']['estate.contact.form.city'] . ':',
+        '{CONTACT_FORM_CITY_VALUE}' => '',
+        '{CONTACT_FORM_CITY_ERROR}' => '',
+        '{CONTACT_FORM_MESSAGE}' => $translations['labels']['estate.contact.form.message'] . ':',
         '{CONTACT_FORM_MESSAGE_VALUE}' => '',
         '{CONTACT_FORM_MESSAGE_ERROR}' => '',
         '{CONTACT_FORM_MESSAGE_ATTRIBS}' => 'class="field"',
         '{CONTACT_FORM_SUBMIT}' => $translations['labels']['estate.contact.form.submit'],
       );
 
+      // Pflichtfelder markieren
+      $requiredFields = $setup->ContactRequiredFields;
+      if (!is_array($requiredFields))
+        $requiredFields = array();
+      foreach ($requiredFields as $field) {
+        $key = '{CONTACT_FORM_' . strtoupper($field) . '}';
+        if (!isset($replacement[$key]))
+          continue;
+        //$replacement[$key] .= '&nbsp;<img src="img/required.png" alt="" title="" border="0" />';
+        $replacement[$key] = '<img src="img/required.png" alt="" title="" border="0" />&nbsp;' . $replacement[$key];
+      }
+
+      // Captcha darstellen
       $showCaptcha = null;
       if ($setup->ShowContactCaptcha) {
-        $showCaptcha = $translations['labels']['estate.contact.form.captcha'];
+        $showCaptcha = $translations['labels']['estate.contact.form.captcha'] . ':';
         $replacement['{CONTACT_FORM_CAPTCHA_REFRESH}'] = $translations['labels']['estate.contact.form.captcha.refresh'];
         $replacement['{CONTACT_FORM_CAPTCHA_VALUE}'] = '';
         $replacement['{CONTACT_FORM_CAPTCHA_ERROR}'] = '';
       }
       immotool_functions::replace_var('CONTACT_FORM_CAPTCHA', $showCaptcha, $output);
 
+      // Rechtserklärung darstellen
+      $showTerms = null;
+      if ($setup->ShowContactTerms) {
+        $showTerms = $translations['labels']['estate.contact.form.terms'];
+        $replacement['{CONTACT_FORM_TERMS_ERROR}'] = '';
+        $replacement['{CONTACT_FORM_TERMS_ATTRIBS}'] = '';
+
+        // Text der Rechtserklärung ermitteln
+        $termTemplates = array('expose_contact_terms_' . $lang . '.txt', 'expose_contact_terms.txt');
+        foreach ($termTemplates as $termTemplate) {
+          if (!is_file(IMMOTOOL_BASE_PATH . 'templates/' . $termTemplate))
+            continue;
+          $lines = file(IMMOTOOL_BASE_PATH . 'templates/' . $termTemplate);
+          $terms = '';
+          for ($i = 0; $i < count($lines); $i++) {
+            $terms .= rtrim($lines[$i], "\r\n") . PHP_EOL;
+          }
+          break;
+        }
+        $replacement['{CONTACT_FORM_TERMS_TEXT}'] = trim($terms);
+      }
+      immotool_functions::replace_var('CONTACT_FORM_TERMS', $showTerms, $output);
+
       // Formular wurde nicht abgeschickt
-      if (!is_array($_POST[IMMOTOOL_PARAM_EXPOSE_CONTACT])) {
+      if (!isset($_POST[IMMOTOOL_PARAM_EXPOSE_CONTACT]) || !is_array($_POST[IMMOTOOL_PARAM_EXPOSE_CONTACT])) {
         immotool_functions::replace_var('CONTACT_RESULT', null, $output);
       }
 
       // Formular wurde abgeschickt
       else {
+
         $errors = array();
         $contact = $_POST[IMMOTOOL_PARAM_EXPOSE_CONTACT];
-        if (!is_string($contact['name']) || strlen(trim($contact['name'])) == 0)
-          $errors[] = 'name';
-        if (!is_string($contact['email']) || preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^", $contact['email']) !== 1)
-          $errors[] = 'email';
-        if (!is_string($contact['phone']) || strlen(trim($contact['phone'])) == 0)
-          $errors[] = 'phone';
-        if (!is_string($contact['message']) || strlen(trim($contact['message'])) == 0)
-          $errors[] = 'message';
+
+        if (array_search('name', $requiredFields) !== false) {
+          if (!is_string($contact['name']) || strlen(trim($contact['name'])) == 0)
+            $errors[] = 'name';
+        }
+        if (array_search('firstname', $requiredFields) !== false) {
+          if (!is_string($contact['firstname']) || strlen(trim($contact['firstname'])) == 0)
+            $errors[] = 'firstname';
+        }
+        if (array_search('street', $requiredFields) !== false) {
+          if (!is_string($contact['street']) || strlen(trim($contact['street'])) == 0)
+            $errors[] = 'street';
+        }
+        if (array_search('streetnr', $requiredFields) !== false) {
+          if (!is_string($contact['streetnr']) || strlen(trim($contact['streetnr'])) == 0)
+            $errors[] = 'streetnr';
+        }
+        if (array_search('city', $requiredFields) !== false) {
+          if (!is_string($contact['city']) || strlen(trim($contact['city'])) == 0)
+            $errors[] = 'city';
+        }
+        if (array_search('postal', $requiredFields) !== false) {
+          if (!is_string($contact['postal']) || strlen(trim($contact['postal'])) == 0)
+            $errors[] = 'postal';
+        }
+        if (array_search('email', $requiredFields) !== false) {
+          if (!is_string($contact['email']) || preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^", $contact['email']) !== 1)
+            $errors[] = 'email';
+        }
+        if (array_search('phone', $requiredFields) !== false) {
+          if (!is_string($contact['phone']) || strlen(trim($contact['phone'])) == 0)
+            $errors[] = 'phone';
+        }
+        if (array_search('message', $requiredFields) !== false) {
+          if (!is_string($contact['message']) || strlen(trim($contact['message'])) == 0)
+            $errors[] = 'message';
+        }
         if ($setup->ShowContactCaptcha) {
-          //die( session_name() . '<hr/>' . $_SESSION['captchacode'] . '!=' . $_POST[ IMMOTOOL_PARAM_EXPOSE_CAPTCHA ] );
           if (!is_string($_POST[IMMOTOOL_PARAM_EXPOSE_CAPTCHA]) || strlen($_POST[IMMOTOOL_PARAM_EXPOSE_CAPTCHA]) <= 0)
             $errors[] = 'captcha';
           else if (!is_string($_SESSION['captchacode']) || strlen($_SESSION['captchacode']) <= 0)
             $errors[] = 'captcha';
           else if (trim(strtolower($_SESSION['captchacode'])) != trim(strtolower($_POST[IMMOTOOL_PARAM_EXPOSE_CAPTCHA])))
             $errors[] = 'captcha';
+        }
+        if ($setup->ShowContactTerms) {
+          if (!isset($contact['terms']) || $contact['terms'] != '1')
+            $errors[] = 'terms';
+          else
+            $replacement['{CONTACT_FORM_TERMS_ATTRIBS}'] = 'checked="checked"';
         }
 
         // Die Eingaben sind unvollständig
@@ -168,7 +254,7 @@ class immotool_expose {
           // Vorlage für Mailtext ermitteln
           $mailBody = null;
           $mailSubject = null;
-          $mailTemplates = array('expose_contact_' . $lang . '.txt', 'expose_contact.txt');
+          $mailTemplates = array('expose_contact_mail_' . $lang . '.txt', 'expose_contact_mail.txt');
           foreach ($mailTemplates as $mailTemplate) {
             if (!is_file(IMMOTOOL_BASE_PATH . 'templates/' . $mailTemplate))
               continue;
@@ -178,6 +264,7 @@ class immotool_expose {
             for ($i = 1; $i < count($lines); $i++) {
               $mailBody .= rtrim($lines[$i], "\r\n") . PHP_EOL;
             }
+            break;
           }
           if (is_null($mailBody) || is_null($mailSubject)) {
             immotool_functions::replace_var(
@@ -189,24 +276,21 @@ class immotool_expose {
           else {
 
             // Inhalte in Mailtext übernehmen
-            $requestUrl = (strtolower($_SERVER['HTTPS']) == 'on') ? 'https://' : 'http://';
-            $requestUrl .= $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'];
-            $requestUrl .= '?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'];
+            $requestUrl = immotool_functions::get_expose_url($object['id'], $lang, $setup->ExposeUrlTemplate);
             $subjectId = '#' . $object['id'];
             if (is_string($object['nr']) && strlen($object['nr']) > 0)
               $subjectId .= ' / ' . $object['nr'];
             $mailReplacement = array(
               '{SUBJECT_ID}' => $subjectId,
-              '{CONTACT_NAME}' => $contact['name'],
-              '{CONTACT_EMAIL}' => $contact['email'],
-              '{CONTACT_PHONE}' => $contact['phone'],
-              '{CONTACT_MESSAGE}' => $contact['message'],
               '{REQUEST_OBJECT_ID}' => $object['id'],
               '{REQUEST_OBJECT_NR}' => $object['nr'],
               '{REQUEST_URL}' => $requestUrl,
               '{REQUEST_TIME}' => date('r'),
               '{REQUEST_IP}' => $_SERVER['REMOTE_ADDR'],
             );
+            foreach (array_keys($contact) as $key) {
+              $mailReplacement['{CONTACT_' . strtoupper($key) . '}'] = $contact[$key];
+            }
 
             $mailBody = str_replace(array_keys($mailReplacement), array_values($mailReplacement), $mailBody);
             $mailSubject = str_replace(array_keys($mailReplacement), array_values($mailReplacement), $mailSubject);
@@ -353,6 +437,42 @@ class immotool_expose {
   }
 
   /**
+   * Medien zur Immobilie darstellen.
+   * @param array $object Immobilie
+   * @param object $setup Konfiguration
+   * @param array $translations Übersetzungen
+   * @param string $lang Sprache
+   * @return string HTML-Code
+   */
+  function media(&$object, &$setup, &$translations, $lang) {
+    $output = '<h2>' . $translations['labels']['estate.media.title'] . '</h2>';
+
+    if (!isset($object['media']) || !is_array($object['media']) || count($object['media']) <= 0) {
+      $output .= '<p>' . $translations['labels']['estate.media.empty'] . '</p>';
+      return $output;
+    }
+
+    $output .= '<ul>';
+    foreach ($object['media'] as $media) {
+      if (!isset($media['name']) || !is_string($media['name']))
+        continue;
+      $mediaLink = 'data/' . $object['id'] . '/' . $media['name'];
+      $mediaTitle = '';
+      if (isset($media['title'][$lang]) && is_string($media['title'][$lang]) && strlen($media['title'][$lang]) > 0)
+        $mediaTitle = $media['title'][$lang];
+      else
+        $mediaTitle = $media['name'];
+
+      $output .= '<li>';
+      $output .= '<a href="' . $mediaLink . '" title="' . $mediaTitle . '" target="_blank">' . $mediaTitle . '</a>';
+      $output .= '</li>';
+    }
+
+    $output .= '</ul>';
+    return $output;
+  }
+
+  /**
    * AGB des Anbieters darstellen.
    * @param object $setup Konfiguration
    * @param array $translations Übersetzungen
@@ -381,6 +501,8 @@ class immotool_expose {
     $output = '<h2>' . $translations['labels']['estate.texts.title'] . '</h2>';
     foreach ($objectTexts as $attrib => $values) {
       if ($attrib == 'id')
+        continue;
+      if ($attrib == 'keywords')
         continue;
       $txt = $values[$lang];
       if (!is_string($txt) || strlen(trim($txt)) == 0)
@@ -412,6 +534,8 @@ if (session_id() == '')
 $setup = new immotool_setup_expose();
 if (is_callable(array('immotool_myconfig', 'load_config_expose')))
   immotool_myconfig::load_config_expose($setup);
+
+// Initialisierungen
 immotool_functions::init($setup);
 
 // Übersetzungen ermitteln
@@ -436,7 +560,6 @@ if (!is_array($object)) {
 $idValue = (is_string($object['nr']) && strlen($object['nr']) > 0) ? $object['nr'] : '#' . $object['id'];
 $mainTitle = $translations['labels']['title'];
 $pageTitle = strip_tags($translations['labels']['estate'] . ' ' . $idValue);
-$robots = 'index,follow';
 
 // Galerie-Handler ermitteln
 $galleryHandlerDefault = immotool_functions::get_gallery('html');
@@ -449,14 +572,14 @@ $expose = immotool_functions::read_template('expose.html');
 
 // Hauptmenü
 $exposeMenu = '<ul>';
-$exposeMenu .= '<li class="selected"><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '">' . $pageTitle . '</a></li>';
+$exposeMenu .= '<li class="selected"><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '">' . $pageTitle . '</a></li>';
 $favTitle = immotool_functions::has_favourite($object['id']) ? $translations['labels']['link.expose.unfav'] : $translations['labels']['link.expose.fav'];
-$exposeMenu .= '<li><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '" rel="nofollow">' . $favTitle . '</a></li>';
+$exposeMenu .= '<li><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $favTitle . '</a></li>';
 $pdf = 'data/' . $object['id'] . '/' . $object['id'] . '_' . $lang . '.pdf';
 if (is_file(IMMOTOOL_BASE_PATH . $pdf))
   $exposeMenu .= '<li><a href="' . $pdf . '" target="_blank">' . $translations['labels']['link.expose.pdf'] . '</a></li>';
-$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav" rel="nofollow">' . $translations['labels']['title.fav'] . '</a></li>';
-$exposeMenu .= '<li style="float:right;"><a href="index.php">' . $translations['labels']['title.index'] . '</a></li>';
+$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['title.fav'] . '</a></li>';
+$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_LANG . '=' . $lang . '">' . $translations['labels']['title.index'] . '</a></li>';
 $exposeMenu .= '</ul>';
 
 // Titelbild
@@ -502,8 +625,12 @@ $viewMode = $setup->ViewMode;
 if (!is_string($viewMode))
   $viewMode = 'tabular';
 $viewOrder = $setup->ViewOrder;
-if (!is_array($viewOrder))
+if (!is_array($viewOrder) || count($viewOrder) <= 0) {
   $viewOrder = array('details', 'texts', 'gallery', 'contact', 'terms');
+}
+if (!is_string($view) || strlen(trim($view)) == 0 || array_search($view, $viewOrder) === false) {
+  $view = $viewOrder[0];
+}
 
 // Darstellung als Reiter
 if ($viewMode == 'tabular') {
@@ -517,8 +644,14 @@ if ($viewMode == 'tabular') {
   }
 
   // aktueller Reiter: Galerie
-  else if ($view == 'gallery' && is_array($object['images']) && count($object['images']) > 0) {
+  else if ($view == 'gallery' && isset($object['images']) && is_array($object['images']) && count($object['images']) > 0) {
     $viewContent .= immotool_expose::gallery($object, $setup, $translations, $lang, $galleryHandler, $galleryHandlerDefault);
+    $viewClass[$view] = 'class="selected"';
+  }
+
+  // aktueller Reiter: Medien
+  else if ($view == 'media' && isset($object['media']) && is_array($object['media']) && count($object['media']) > 0) {
+    $viewContent .= immotool_expose::media($object, $setup, $translations, $lang);
     $viewClass[$view] = 'class="selected"';
   }
 
@@ -552,21 +685,27 @@ if ($viewMode == 'tabular') {
         continue;
     }
     if ($v == 'gallery') {
+      if (!isset($object['images']))
+        continue;
       if (!is_array($object['images']))
         continue;
       if (count($object['images']) <= 0)
         continue;
     }
-    if ($v == 'contact') {
-      if (!is_array($object['contact']))
+    if ($v == 'media') {
+      if (!isset($object['media']))
         continue;
-      if (count($object['contact']) <= 0)
+      if (!is_array($object['media']))
         continue;
-      if (!$setup->ShowContactForm)
-        continue;
-      if (!is_string($object['mail']))
+      if (count($object['media']) <= 0)
         continue;
     }
+    /* if ($v=='contact') {
+      if (!is_array($object['contact'])) continue;
+      if (count($object['contact'])<=0) continue;
+      if (!$setup->ShowContactForm) continue;
+      if (!is_string($object['mail'])) continue;
+      } */
     if ($v == 'terms') {
       if (!$setup->ShowTerms)
         continue;
@@ -574,7 +713,7 @@ if ($viewMode == 'tabular') {
 
     $c = (isset($viewClass[$v]) && is_string($viewClass[$v])) ? $viewClass[$v] : '';
     $viewMenu .= '<li ' . $c . '>' .
-        '<a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=' . $v . '">' .
+        '<a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=' . $v . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '">' .
         $translations['labels']['estate.' . $v] . '</a></li>';
   }
   $viewMenu .= '</ul>';
@@ -590,8 +729,13 @@ else {
     }
 
     // Abschnitt: Galerie
-    else if ($v == 'gallery' && is_array($object['images']) && count($object['images']) > 0) {
+    else if ($v == 'gallery' && isset($object['images']) && is_array($object['images']) && count($object['images']) > 0) {
       $viewContent .= immotool_expose::gallery($object, $setup, $translations, $lang, $galleryHandler, $galleryHandlerDefault);
+    }
+
+    // Abschnitt: Medien
+    else if ($v == 'media' && isset($object['media']) && is_array($object['media']) && count($object['media']) > 0) {
+      $viewContent .= immotool_expose::media($object, $setup, $translations, $lang);
     }
 
     // Abschnitt: Kontaktformular
@@ -637,8 +781,12 @@ if (is_object($galleryHandler))
   $pageHeader .= "\n" . $galleryHandler->getHeader();
 
 // Ausgabe erzeugen
+$metaRobots = 'index,follow';
+$metaKeywords = (isset($objectTexts['keywords'][$lang])) ? $objectTexts['keywords'][$lang] : null;
+$metaDescription = (isset($objectTexts['kurz_beschr'][$lang])) ? $objectTexts['kurz_beschr'][$lang] : null;
+$linkParam = '&amp;' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=' . $view;
 $buildTime = microtime() - $startup;
-$output = immotool_functions::build_page('expose', $lang, $mainTitle, $pageTitle, trim($pageHeader), $pageContent, $buildTime, $setup->AdditionalStylesheet, $setup->ShowLanguageSelection, $robots, '&amp;' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=' . $view);
+$output = immotool_functions::build_page('expose', $lang, $mainTitle, $pageTitle, trim($pageHeader), $pageContent, $buildTime, $setup->AdditionalStylesheet, $setup->ShowLanguageSelection, $metaRobots, $linkParam, $metaKeywords, $metaDescription);
 if (is_string($setup->Charset) && strlen(trim($setup->Charset)) > 0) {
   $output = immotool_functions::encode($output, $setup->Charset);
 }
