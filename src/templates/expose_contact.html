@@ -9,19 +9,17 @@
     {CONTACT_MOBILE_VALUE.}<li><div>{CONTACT_MOBILE_TITLE}:</div>{CONTACT_MOBILE_VALUE}</li>{.CONTACT_MOBILE_VALUE}
     {CONTACT_FAX_VALUE.}<li><div>{CONTACT_FAX_TITLE}:</div>{CONTACT_FAX_VALUE}</li>{.CONTACT_FAX_VALUE}
   </ul></div>{.CONTACT_PERSON}
-  {CONTACT_FORM_SUBMIT.}
+
+  {CONTACT_FORM_TITLE.}<h3>{CONTACT_FORM_TITLE}</h3>{.CONTACT_FORM_TITLE}
   <a name="form"></a>
-  <h3>{CONTACT_FORM_TITLE}</h3>
+  {CONTACT_RESULT.}<div id="openestate_expose_contact_result">
+    <h3>{CONTACT_RESULT_TITLE}</h3>
+    {CONTACT_RESULT}
+  </div>{.CONTACT_RESULT}
+
+  {CONTACT_FORM_SUBMIT.}
   <form action="expose.php#form" method="post" id="openestate_expose_contact_form">
     <table cellpadding="0" cellspacing="0" border="0">
-      {CONTACT_RESULT.}<tr>
-        <td colspan="4">
-          <div id="openestate_expose_contact_form_result">
-            <h3>{CONTACT_RESULT_TITLE}</h3>
-            {CONTACT_RESULT}
-          </div>
-        </td>
-      </tr>{.CONTACT_RESULT}
       <tr>
         <td class="col1{CONTACT_FORM_NAME_ERROR}">
           <label for="openestate_expose_contact_form_name">{CONTACT_FORM_NAME}</label>

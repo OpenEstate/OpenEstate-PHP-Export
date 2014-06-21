@@ -20,7 +20,7 @@
  * Website-Export, Konfigurationen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -201,7 +201,15 @@ class immotool_setup {
    * $CacheLifeTime = 86400; // ein Tag
    * @var int
    */
-  var $CacheLifeTime = 10800;
+  var $CacheLifeTime = 10800; // drei Stunden
+
+  /**
+   * Verkleinerte Vorschaubilder dynamisch via PHP erzeugen.
+   * Die Option kann nur verwendet werden, wenn das GD-Modul in PHP verfügbar ist.
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $DynamicImageScaling = true;
 
 }
 
@@ -258,6 +266,28 @@ class immotool_setup_index extends immotool_setup {
    * @var bool
    */
   var $FilterAllEstateTypes = true;
+
+  /**
+   * Größe der verkleinerten Vorschaubilder in der Listenansicht der
+   * Immobilienübersicht.
+   * Die Option kann nur verwendet werden, wenn das GD-Modul in PHP verfügbar ist
+   * und '$DynamicImageScaling = true' gesetzt wurde.
+   * Die erste Zahl stellt die Breite, die zweite Zahl die Höhe in Pixeln dar.
+   * Erlaubt sind ganze Zahlen größer 0.
+   * @var array
+   */
+  var $ListingImageSize = array(100, 75);
+
+  /**
+   * Größe der verkleinerten Vorschaubilder in der Galerieansicht der
+   * Immobilienübersicht (in Pixel).
+   * Die Option kann nur verwendet werden, wenn das GD-Modul in PHP verfügbar ist
+   * und '$DynamicImageScaling = true' gesetzt wurde.
+   * Die erste Zahl stellt die Breite, die zweite Zahl die Höhe in Pixeln dar.
+   * Erlaubt sind ganze Zahlen größer 0.
+   * @var array
+   */
+  var $GalleryImageSize = array(150, 150);
 
 }
 
@@ -326,6 +356,26 @@ class immotool_setup_expose extends immotool_setup {
    * @var array
    */
   var $ViewOrder = array('details', 'texts', 'gallery', 'media', 'contact', 'terms');
+
+  /**
+   * Größe des verkleinerten Titelbildes in der Exposéansicht (in Pixel).
+   * Die Option kann nur verwendet werden, wenn das GD-Modul in PHP verfügbar ist
+   * und '$DynamicImageScaling = true' gesetzt wurde.
+   * Die erste Zahl stellt die Breite, die zweite Zahl die Höhe in Pixeln dar.
+   * Erlaubt sind ganze Zahlen größer 0.
+   * @var array
+   */
+  var $TitleImageSize = array(200, 150);
+
+  /**
+   * Größe der verkleinerten Galeriebilder in der Exposéansicht (in Pixel).
+   * Die Option kann nur verwendet werden, wenn das GD-Modul in PHP verfügbar ist
+   * und '$DynamicImageScaling = true' gesetzt wurde.
+   * Die erste Zahl stellt die Breite, die zweite Zahl die Höhe in Pixeln dar.
+   * Erlaubt sind ganze Zahlen größer 0.
+   * @var array
+   */
+  var $GalleryImageSize = array(100, 75);
 
 }
 
@@ -398,12 +448,6 @@ class immotool_setup_feeds extends immotool_setup {
    * @var bool
    */
   var $PublishAtomFeed = true;
-
-  /**
-   * Immobiliare-Feed veröffentlichen.
-   * @var bool
-   */
-  var $PublishImmobiliareFeed = false;
 
   /**
    * RSS-Feed veröffentlichen.
