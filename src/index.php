@@ -35,11 +35,6 @@ include(IMMOTOOL_BASE_PATH . 'data/language.php');
 if (session_id() == '')
   session_start();
 
-// Konfiguration ermitteln
-$setup = new immotool_setup_index();
-if (is_callable(array('immotool_myconfig', 'load_config_index')))
-  immotool_myconfig::load_config_index($setup);
-
 // Favoriten ggf. entfernen
 if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR]) && is_string($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR])) {
   if (isset($_SESSION['immotool']['favs']))
@@ -57,7 +52,8 @@ if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR]) && is_string($_REQUEST[IMM
 }
 
 // Initialisierungen
-immotool_functions::init($setup);
+$setup = new immotool_setup_index();
+immotool_functions::init($setup, 'load_config_index');
 
 // Übersetzungen ermitteln
 $translations = null;
@@ -221,7 +217,7 @@ foreach ($result as $resultId) {
         break;
       $attribTitle = null;
       $attribValue = null;
-      if ($attribs[$i - 1] != false) {
+      if (isset($attribs[$i - 1]) && $attribs[$i - 1] != false) {
         $attrib = $attribs[$i - 1];
         $attribTitle = $translations['openestate']['attributes'][$group][$attrib];
         $attribValue = $object['attributes'][$group][$attrib][$lang];
@@ -235,11 +231,11 @@ foreach ($result as $resultId) {
   $favTitle = immotool_functions::has_favourite($object['id']) ?
       $translations['labels']['link.expose.unfav'] : $translations['labels']['link.expose.fav'];
 
-  immotool_functions::replace_var('LINK_EXPOSE', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang, $listingEntry);
+  immotool_functions::replace_var('LINK_EXPOSE', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'], $listingEntry);
   immotool_functions::replace_var('LINK_EXPOSE_TEXT', $translations['labels']['link.expose.view'], $listingEntry);
-  immotool_functions::replace_var('LINK_FAV', '?' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang, $listingEntry);
+  immotool_functions::replace_var('LINK_FAV', '?' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view, $listingEntry);
   immotool_functions::replace_var('LINK_FAV_TEXT', $favTitle, $listingEntry);
-  immotool_functions::replace_var('LINK_CONTACT', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=contact&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang, $listingEntry);
+  immotool_functions::replace_var('LINK_CONTACT', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=contact', $listingEntry);
   immotool_functions::replace_var('LINK_CONTACT_TEXT', $translations['labels']['link.expose.contact'], $listingEntry);
   $pdf = 'data/' . $object['id'] . '/' . $object['id'] . '_' . $lang . '.pdf';
   if (is_file(IMMOTOOL_BASE_PATH . $pdf)) {

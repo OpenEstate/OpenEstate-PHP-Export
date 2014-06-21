@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.5');
+define('IMMOTOOL_SCRIPT_VERSION', '1.5.3');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 // Parameter, allgemein
@@ -36,6 +36,8 @@ if (!defined('IMMOTOOL_PARAM_LANG'))
   define('IMMOTOOL_PARAM_LANG', 'lang');
 if (!defined('IMMOTOOL_PARAM_FAV'))
   define('IMMOTOOL_PARAM_FAV', 'fav');
+if (!defined('IMMOTOOL_PARAM_CAT'))
+  define('IMMOTOOL_PARAM_CAT', 'cat');
 
 // Parameter, captcha.php
 if (!defined('IMMOTOOL_PARAM_CAPTCHA_SESSION'))
@@ -100,16 +102,21 @@ class immotool_functions {
    * @return string HTML-Code der erzeugten Seite
    */
   function build_page($pageId, $languageCode, $mainTitle, $pageTitle, $pageHeader, &$pageContent, $buildTime, $addonStylesheet, $showLanguageSelection = true, $metaRobots = 'index,follow', $linkParam = '', $metaKeywords = null, $metaDescription = null) {
-    $page = immotool_functions::read_template('global.html');
+
+    $page = null;
+    if (defined('IMMOTOOL_CAT'))
+      $page = immotool_functions::read_template('global_' . IMMOTOOL_CAT . '.html');
+    if (!is_string($page))
+      $page = immotool_functions::read_template('global.html');
     if (!is_string($pageHeader))
       $pageHeader = '';
     if (strlen($pageHeader) > 0)
       $pageHeader .= "\n";
 
     // Sprachauswahl
+    $languages = immotool_functions::get_language_codes();
     $languageSelection = null;
     if ($showLanguageSelection === true) {
-      $languages = immotool_functions::get_language_codes();
       $languageSelection = '';
       if (count($languages) > 1) {
         $languageSelection .= '<ul>';
@@ -161,6 +168,15 @@ class immotool_functions {
     $pageFooter = 'powered by <a href="http://www.openestate.org" target="_blank">OpenEstate</a>';
     $pageFooter .= '<br/>v' . IMMOTOOL_SCRIPT_VERSION . ', built in ' . $buildTime . 's';
 
+    // Weitere Link-Parameter
+    $linkParams = '';
+    if (count($languages) > 1) {
+      $linkParams .= '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $languageCode;
+    }
+    if (defined('IMMOTOOL_CAT')) {
+      $linkParams .= '&amp;' . IMMOTOOL_PARAM_CAT . '=' . IMMOTOOL_CAT;
+    }
+
     // Ausgabe erzeugen
     $replacements = array(
       '{PAGE_CONTENT}' => $pageContent,
@@ -170,10 +186,13 @@ class immotool_functions {
       '{PAGE_TITLE}' => $pageTitle,
       '{PAGE_FOOTER}' => $pageFooter,
       '{PAGE_HEADER}' => $pageHeader,
+      '{CATEGORY}' => (defined('IMMOTOOL_CAT')) ? IMMOTOOL_CAT : '',
       '{ROBOTS}' => $metaRobots, // HACK: Abwärtskompatiblität, kann demnächst entfernt werden
+      '{DEFAULT_LINK_PARAMS}' => $linkParams,
       '{SESSION_NAME}' => session_name(),
       '{PARAM_LANG}' => IMMOTOOL_PARAM_LANG,
       '{PARAM_FAV}' => IMMOTOOL_PARAM_FAV,
+      '{PARAM_CAT}' => IMMOTOOL_PARAM_CAT,
       '{PARAM_CAPTCHA_SESSION}' => IMMOTOOL_PARAM_CAPTCHA_SESSION,
       '{PARAM_INDEX_PAGE}' => IMMOTOOL_PARAM_INDEX_PAGE,
       '{PARAM_INDEX_RESET}' => IMMOTOOL_PARAM_INDEX_RESET,
@@ -221,9 +240,12 @@ class immotool_functions {
    * @param string $id ID der Immobilie
    * @param string $lang Zweistelliger ISO-Sprachcode
    * @param string $urlTemplate URL-Vorlage für Exposé-Links
+   * @param bool $escapeXmlSpecialChars HTML-/XML-Sonderzeichen umwandeln
    * return string URL zum Exposé
    */
-  function get_expose_url($id, $lang, $urlTemplate = null) {
+  function get_expose_url($id, $lang, $urlTemplate = null, $escapeXmlSpecialChars = false) {
+
+    $url = null;
 
     // Exposé-URL aus Vorlage ermitteln
     if (is_string($urlTemplate) && strlen($urlTemplate) > 0) {
@@ -231,19 +253,24 @@ class immotool_functions {
         '{ID}' => $id,
         '{LANG}' => $lang,
       );
-      return str_replace(array_keys($replacement), array_values($replacement), $urlTemplate);
+      $url = str_replace(array_keys($replacement), array_values($replacement), $urlTemplate);
     }
 
     // Exposé-URL automatisch ermitteln
     else {
-      $url = ($_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
+      $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
       $url .= $_SERVER['SERVER_NAME'];
       $url .= substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
       $url .= '/expose.php';
       $url .= '?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id;
-      $url .= '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang;
-      return $url;
+      $url .= '&' . IMMOTOOL_PARAM_LANG . '=' . $lang;
     }
+
+    if ($escapeXmlSpecialChars === true) {
+      $url = htmlspecialchars($url, ENT_QUOTES);
+    }
+
+    return $url;
   }
 
   /**
@@ -478,11 +505,38 @@ class immotool_functions {
   /**
    * Allgemeine Initialisierungen.
    * @param object $setup Konfiguration
+   * @param string $myconfigMethod Name der einzubindenden Funktion aus myconfig.php
    */
-  function init(&$setup) {
+  function init(&$setup, $myconfigMethod = null) {
     // Session initialisieren
     if (!isset($_SESSION['immotool']) || !is_array($_SESSION['immotool'])) {
       $_SESSION['immotool'] = array();
+    }
+
+    // ggf. Konfiguration mit myconfig.php überschreiben
+    if (is_string($myconfigMethod) && is_callable(array('immotool_myconfig', $myconfigMethod))) {
+      eval('immotool_myconfig::' . $myconfigMethod . '( $setup );');
+    }
+
+    // ggf. die gewählte Kategorie übernehmen
+    //if (is_callable(array('immotool_setup','Categories'), true)) die( 'CALLABLE' );
+    //echo '<pre>'; print_r($setup); echo '</pre>';
+    if (is_callable(array('immotool_setup', 'Categories'), true) && is_array($setup->Categories) && count($setup->Categories) > 0) {
+      $cat = (isset($_REQUEST[IMMOTOOL_PARAM_CAT])) ? $_REQUEST[IMMOTOOL_PARAM_CAT] : null;
+      if (!is_string($cat) || array_search($cat, $setup->Categories) === false)
+        $cat = (isset($_SESSION['immotool']['cat'])) ? $_SESSION['immotool']['cat'] : $setup->Categories[0];
+      //die( 'Category: ' . $cat );
+      if (array_search($cat, $setup->Categories) !== false) {
+        $_SESSION['immotool']['cat'] = $cat;
+        if (!defined('IMMOTOOL_CAT')) {
+          define('IMMOTOOL_CAT', $cat);
+
+          // HACK: bei geänderter Kategorie ggf. die Konfiguration nochmals mit myconfig.php überschreiben
+          if (is_string($myconfigMethod) && is_callable(array('immotool_myconfig', $myconfigMethod))) {
+            eval('immotool_myconfig::' . $myconfigMethod . '( $setup );');
+          }
+        }
+      }
     }
 
     // vorgemerkte Inserate ermitteln
@@ -516,11 +570,14 @@ class immotool_functions {
     }
 
     // ggf. die Standard-Zeitzone für Datumsformatierungen setzen
-    $tz = (isset($_SERVER['TZ'])) ? $_SERVER['TZ'] : null;
-    if (is_string($setup->Timezone) && strlen($setup->Timezone) > 0)
-      $tz = $setup->Timezone;
-    if (function_exists('date_default_timezone_set') && is_string($tz) && strlen($tz) > 0) {
-      date_default_timezone_set($tz);
+    //if (is_callable(array('immotool_setup','Timezone'), true)) die( 'CALLABLE' );
+    if (is_callable(array('immotool_setup', 'Timezone'), true) && function_exists('date_default_timezone_set')) {
+      $tz = (isset($_SERVER['TZ'])) ? $_SERVER['TZ'] : null;
+      if (is_string($setup->Timezone) && strlen($setup->Timezone) > 0)
+        $tz = $setup->Timezone;
+      if (is_string($tz) && strlen($tz) > 0) {
+        date_default_timezone_set($tz);
+      }
     }
   }
 

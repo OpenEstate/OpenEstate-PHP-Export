@@ -181,6 +181,16 @@ class immotool_setup {
    */
   var $ExposeUrlTemplate = null;
 
+  /**
+   * Kategorien.
+   * Wird an verschiedenen Stellen verwendet, um unterschiedliches Verhalten für
+   * verschiedene Kategorien zu realisieren.
+   * Beispiel:
+   * $Categories = array( 'wohnen', 'gewerbe', 'anlage' );
+   * @var string
+   */
+  var $Categories = array();
+
 }
 
 /**
@@ -408,5 +418,11 @@ class immotool_setup_feeds extends immotool_setup {
    * @var int
    */
   var $RssFeedLimit = 15;
+
+  /**
+   * Objekt-Nummer an Stelle der Objekt-ID bei Feed-Exporten veröffentlichen.
+   * @var bool
+   */
+  var $ExportPublicId = false;
 
 }

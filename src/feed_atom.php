@@ -60,7 +60,7 @@ if (is_file($feedFile)) {
 }
 
 // URL des Feed-Skriptes ermitteln
-$feedUrl = ($_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
+$feedUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
 $feedUrl .= $_SERVER['SERVER_NAME'];
 $feedUrl .= substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
 $feedUrl .= '/feed_atom.php';
@@ -107,7 +107,7 @@ foreach ($stamps as $stamp) {
       continue;
 
     // Exposé-URL ermitteln
-    $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate);
+    $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
 
     // Titel ermitteln
     $objectTitle = $object['title'][$lang];

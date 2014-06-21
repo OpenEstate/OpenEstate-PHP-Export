@@ -32,29 +32,36 @@ require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
 class ImmoToolFilter_rooms extends ImmoToolFilter {
 
   /**
+   * Anzahl der maximal zu filternden Zimmer
+   * @var int Anzahl
+   */
+  var $roomCount = 6;
+
+  /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
     $value = isset($object['attributes']['flaechen']['anz_zimmer']['value']) ?
         $object['attributes']['flaechen']['anz_zimmer']['value'] : null;
-    if (!is_numeric($value))
+    if (!is_numeric($value) || $value <= 0)
       return;
+    $value = (int) floor($value);
 
     $key = '';
-    if ($value <= 1)
-      $key = '1';
-    else if ($value <= 2)
-      $key = '2';
-    else if ($value <= 3)
-      $key = '3';
-    else if ($value <= 4)
-      $key = '4';
+    $max = $this->getMax();
+    if ($value >= $max)
+      $key = $max . '+';
     else
-      $key = '5+';
+      $key = strval($value);
 
     if (!isset($items[$key]) || !is_array($items[$key]))
       $items[$key] = array();
     $items[$key][] = $object['id'];
+  }
+
+  function getMax() {
+    return (is_int($this->roomCount) && $this->roomCount > 0) ?
+        $this->roomCount : 5;
   }
 
   /**
@@ -82,7 +89,12 @@ class ImmoToolFilter_rooms extends ImmoToolFilter {
       return $widget;
 
     // HTML-Code zur Auswahlbox erzeugen
-    $options = array('1', '2', '3', '4', '5+');
+    $options = array();
+    $max = $this->getMax();
+    for ($i = 1; $i < $max; $i++) {
+      $options[] = strval($i);
+    }
+    $options[] = $max . '+';
     if (is_array($options) && count($options) > 0) {
       $by = $this->getTitle($translations, $lang);
       $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
