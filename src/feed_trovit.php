@@ -34,7 +34,11 @@ include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 include(IMMOTOOL_BASE_PATH . 'data/language.php');
 if (session_id() == '')
   session_start();
-header('Content-Type: text/xml; charset=utf-8');
+$debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
+if ($debugMode)
+  header('Content-Type: text/html; charset=utf-8');
+else
+  header('Content-Type: text/xml; charset=utf-8');
 
 // Konfiguration ermitteln
 $setup = new immotool_setup_feeds();
@@ -53,24 +57,62 @@ if (!is_array($translations))
 
 // Cache-Datei des Feeds
 $feedFile = IMMOTOOL_BASE_PATH . 'cache/feed.trovit_' . $lang . '.xml';
-if (is_file($feedFile)) {
-  $feed = immotool_functions::read_file($feedFile);
-  echo $feed;
-  return;
+if (!$debugMode && is_file($feedFile)) {
+  if (!immotool_functions::check_file_age($feedFile, $setup->CacheLifeTime)) {
+    // abgelaufene Cache-Datei entfernen
+    unlink($feedFile);
+  }
+  else {
+    // Feed aus Cache-Datei erzeugen
+    $feed = immotool_functions::read_file($feedFile);
+    echo $feed;
+    return;
+  }
 }
 
 // Feed erzeugen
 $feed = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 $feed .= '<trovit>' . "\n";
 
+if ($debugMode) {
+  echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+  echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">';
+  echo '  <head>';
+  echo '    <title>Trovit-Feed Debugger</title>';
+  echo '    <meta http-equiv="Content-Language" content="de" />';
+  echo '    <meta http-equiv="pragma" content="no-cache" />';
+  echo '    <meta http-equiv="cache-control" content="no-cache" />';
+  echo '    <meta http-equiv="expires" content="0" />';
+  echo '    <meta http-equiv="imagetoolbar" content="no" />';
+  echo '    <meta name="MSSmartTagsPreventParsing" content="true" />';
+  echo '    <meta name="generator" content="OpenEstate-ImmoTool" />';
+  echo '    <link rel="stylesheet" href="style.php" />';
+  echo '    <meta name="robots" content="noindex,follow" />';
+  echo '  </head>';
+  echo '  <body>';
+  echo '  <h2>Trovit-Feed Debugger</h2>';
+}
+
 foreach (immotool_functions::list_available_objects() as $id) {
   $object = immotool_functions::get_object($id);
-  if (!is_array($object))
+  if ($debugMode)
+    echo '<h3 style="margin-top:1em;margin-bottom:0;"><a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '">property #' . $id . '</a></h3>';
+  if (!is_array($object)) {
+    if ($debugMode)
+      echo '&gt; NOT FOUND<br/>';
     continue;
+  }
+
+  $objectTexts = immotool_functions::get_text($id);
+  if (!is_array($objectTexts))
+    $objectTexts = array();
 
   // nur Wohnimmobilien exportieren
-  if (array_search('main_wohnen', $object['type_path']) === false)
+  if (array_search('main_wohnen', $object['type_path']) === false) {
+    if ($debugMode)
+      echo '&gt; UNSUPPORTED TYPE: ' . $object['type'] . '<br/>';
     continue;
+  }
 
   // Exposé-URL ermitteln
   $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
@@ -79,11 +121,18 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $objectType = (is_string($translations['openestate']['types'][$object['type']])) ?
       $translations['openestate']['types'][$object['type']] : $object['type'];
 
+  // Datum ermitteln
+  $objectStamp = immotool_functions::get_object_stamp($id);
+  if ($objectStamp == null)
+    $objectStamp = 0;
+  $objectDate = ($objectStamp > 0) ? date('d/m/Y', $objectStamp) : date('d/m/Y');
+  $objectTime = ($objectStamp > 0) ? date('H:i', $objectStamp) : date('H:i');
+
   // Inhalt ermitteln
   $objectTitle = (isset($object['title'][$lang])) ?
       $object['title'][$lang] : '';
   $objectContent = $objectTitle;
-  foreach (immotool_functions::get_text($id) as $key => $text) {
+  foreach ($objectTexts as $key => $text) {
     if ($key == 'id')
       continue;
     if (!is_string($text[$lang]) || trim($text[$lang]) == '')
@@ -98,53 +147,53 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $objectPriceHidden = isset($object['hidden_price']) && $object['hidden_price'] === true;
   if ($object['action'] == 'kauf') {
     $objectAction = 'For Sale';
-    $objectPrice = (isset($object['attributes']['preise']['kaufpreis']['value'])) ?
+    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['preise']['kaufpreis']['value'])) ?
         $object['attributes']['preise']['kaufpreis']['value'] : null;
   }
   else if ($object['action'] == 'miete') {
     $objectAction = 'For Rent';
-    $objectPrice = (isset($object['attributes']['preise']['kaltmiete']['value'])) ?
+    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['preise']['kaltmiete']['value'])) ?
         $object['attributes']['preise']['kaltmiete']['value'] : null;
     $mietePro = (isset($object['attributes']['preise']['miete_pro'])) ?
         $object['attributes']['preise']['miete_pro']['value'] : null;
     if ($mietePro == 'WOCHE')
-      $objectPriceAttribs = ' period="weekly"';
+      $objectPriceAttribs = (!$objectPriceHidden) ? ' period="weekly"' : '';
     else
-      $objectPriceAttribs = ' period="monthly"';
+      $objectPriceAttribs = (!$objectPriceHidden) ? ' period="monthly"' : '';
   }
   else if ($object['action'] == 'waz') {
     $objectAction = 'For Rent';
-    $objectPrice = (isset($object['attributes']['preise']['pauschalmiete']['value'])) ?
+    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['preise']['pauschalmiete']['value'])) ?
         $object['attributes']['preise']['pauschalmiete']['value'] : null;
     $mietePro = (isset($object['attributes']['preise']['miete_pro']['value'])) ?
         $object['attributes']['preise']['miete_pro']['value'] : null;
     if ($mietePro == 'WOCHE')
-      $objectPriceAttribs = ' period="weekly"';
+      $objectPriceAttribs = (!$objectPriceHidden) ? ' period="weekly"' : '';
     else
-      $objectPriceAttribs = ' period="monthly"';
+      $objectPriceAttribs = (!$objectPriceHidden) ? ' period="monthly"' : '';
   }
   else if ($object['action'] == 'pacht') {
     $objectAction = 'For Rent';
-    $objectPrice = (isset($object['attributes']['preise']['pacht']['value'])) ?
+    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['preise']['pacht']['value'])) ?
         $object['attributes']['preise']['pacht']['value'] : null;
-    $objectPriceAttribs = ' period="monthly"';
+    $objectPriceAttribs = (!$objectPriceHidden) ? ' period="monthly"' : '';
   }
   else if ($object['action'] == 'erbpacht') {
     $objectAction = 'For Rent';
-    $objectPrice = (isset($object['attributes']['preise']['pacht']['value'])) ?
+    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['preise']['pacht']['value'])) ?
         $object['attributes']['preise']['pacht']['value'] : null;
-    $objectPriceAttribs = ' period="monthly"';
+    $objectPriceAttribs = (!$objectPriceHidden) ? ' period="monthly"' : '';
   }
   else {
+    if ($debugMode)
+      echo '&gt; UNSUPPORTED ACTION: ' . $object['action'] . '<br/>';
     continue;
   }
 
   // Preis umwandeln
-  if ($objectPrice != null) {
-    $objectPrice = intval($objectPrice);
-    if ($objectPrice <= 0)
-      $objectPrice = null;
-  }
+  $objectPrice = ($objectPrice != null) ? intval($objectPrice) : 0;
+  if ($objectPrice < 0)
+    $objectPrice = 0;
 
   // Fläche ermitteln
   $objectArea = null;
@@ -208,9 +257,8 @@ foreach (immotool_functions::list_available_objects() as $id) {
     $objectIsFurnished = 0;
 
   // Zustand ermitteln
-  $objectConditition = (isset($object['attributes']['zustand']['zustand'][$lang])) ?
-      $object['attributes']['zustand']['zustand'][$lang] : null;
-
+  //$objectConditition = (isset($object['attributes']['zustand']['zustand'][$lang]))?
+  //        $object['attributes']['zustand']['zustand'][$lang]: null;
   // Baujahr ermitteln
   $objectYear = (isset($object['attributes']['zustand']['baujahr'][$lang])) ?
       $object['attributes']['zustand']['baujahr'][$lang] : null;
@@ -244,9 +292,11 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $feed .= '    <url><![CDATA[' . $objectUrl . ']]></url>' . "\n";
   $feed .= '    <title><![CDATA[' . $objectTitle . ']]></title>' . "\n";
   $feed .= '    <type><![CDATA[' . $objectAction . ']]></type>' . "\n";
+  $feed .= '    <date><![CDATA[' . $objectDate . ']]></date>' . "\n";
+  $feed .= '    <time><![CDATA[' . $objectTime . ']]></time>' . "\n";
   $feed .= '    <agency><![CDATA[' . $translations['labels']['title'] . ']]></agency>' . "\n";
   $feed .= '    <content><![CDATA[' . $objectContent . ']]></content>' . "\n";
-  if (is_numeric($objectPrice) && $objectPrice > 0) {
+  if (is_numeric($objectPrice) && $objectPrice >= 0) {
     $feed .= '    <price' . $objectPriceAttribs . '><![CDATA[' . $objectPrice . ']]></price>' . "\n";
   }
   $feed .= '    <property_type><![CDATA[' . $objectType . ']]></property_type>' . "\n";
@@ -291,8 +341,6 @@ foreach (immotool_functions::list_available_objects() as $id) {
   }
 
   //$feed .= '    <virtual_tour><![CDATA['..']]></virtual_tour>' . "\n";
-  //$feed .= '    <date><![CDATA['..']]></date>' . "\n";
-  //$feed .= '    <time><![CDATA['..']]></time>' . "\n";
   //$feed .= '    <expiration_date><![CDATA['..']]></expiration_date>' . "\n";
   if (is_numeric($objectPlotArea) && $objectPlotArea > 0)
     $feed .= '    <plot_area><![CDATA[' . $objectPlotArea . ']]></plot_area>' . "\n";
@@ -303,18 +351,31 @@ foreach (immotool_functions::list_available_objects() as $id) {
   if (is_numeric($objectIsFurnished))
     $feed .= '    <is_furnished><![CDATA[' . $objectIsFurnished . ']]></is_furnished>' . "\n";
   //$feed .= '    <is_new><![CDATA['..']]></is_new>' . "\n";
-  if (is_string($objectConditition))
-    $feed .= '    <s_condition><![CDATA[' . $objectConditition . ']]></s_condition>' . "\n";
+  //if (is_string($objectConditition))
+  //$feed .= '    <s_condition><![CDATA['.$objectConditition.']]></s_condition>' . "\n";
   if (is_numeric($objectYear))
     $feed .= '    <year><![CDATA[' . $objectYear . ']]></year>' . "\n";
   $feed .= '  </ad>' . "\n";
+
+  if ($debugMode)
+    echo '&gt; OK<br/>';
 }
 $feed .= '</trovit>';
 
-// Feed cachen
-$fh = fopen($feedFile, 'w') or die('can\'t write file: ' . $feedFile);
-fwrite($fh, $feed);
-fclose($fh);
+// Debug-Ausgabe des Feeds
+if ($debugMode) {
+  echo '<h2>Generated XML</h2>';
+  echo '<pre>' . htmlentities($feed) . '</pre>';
+  echo '</body></html>';
+}
 
-// Feed ausgeben
-echo $feed;
+// normale Ausgabe des Feeds
+else {
+  // Feed cachen
+  $fh = fopen($feedFile, 'w') or die('can\'t write file: ' . $feedFile);
+  fwrite($fh, $feed);
+  fclose($fh);
+
+  // Feed ausgeben
+  echo $feed;
+}

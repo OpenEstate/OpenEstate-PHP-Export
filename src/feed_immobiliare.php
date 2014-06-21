@@ -34,7 +34,11 @@ include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 include(IMMOTOOL_BASE_PATH . 'data/language.php');
 if (session_id() == '')
   session_start();
-header('Content-Type: text/xml; charset=utf-8');
+$debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
+if ($debugMode)
+  header('Content-Type: text/html; charset=utf-8');
+else
+  header('Content-Type: text/xml; charset=utf-8');
 
 // Mapping, Vermartungsart
 $mapObjectAction = array(
@@ -191,12 +195,22 @@ $lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $trans
 if (!is_array($translations))
   die('Can\'t load translations!');
 
+// Titel ermitteln
+$feedTitle = htmlentities($translations['labels']['title']);
+
 // Cache-Datei des Feeds
 $feedFile = IMMOTOOL_BASE_PATH . 'cache/feed.immobiliare_' . $lang . '.xml';
-if (is_file($feedFile)) {
-  $feed = immotool_functions::read_file($feedFile);
-  echo $feed;
-  return;
+if (!$debugMode && is_file($feedFile)) {
+  if (!immotool_functions::check_file_age($feedFile, $setup->CacheLifeTime)) {
+    // abgelaufene Cache-Datei entfernen
+    unlink($feedFile);
+  }
+  else {
+    // Feed aus Cache-Datei erzeugen
+    $feed = immotool_functions::read_file($feedFile);
+    echo $feed;
+    return;
+  }
 }
 
 // URL der Seite ermitteln
@@ -213,7 +227,7 @@ $feed .= '<feed xmlns="http://feed.immobiliare.it" xmlns:xsi="http://www.w3.org/
 $feed .= '  <version>1.5</version>' . "\n";
 $feed .= '  <metadata>' . "\n";
 $feed .= '    <publisher>' . "\n";
-$feed .= '      <name>' . $translations['labels']['title'] . '</name>' . "\n";
+$feed .= '      <name>' . $feedTitle . '</name>' . "\n";
 $feed .= '      <site>' . $siteUrl . '</site>' . "\n";
 $feed .= '      <email>' . $setup->MailFrom . '</email>' . "\n";
 $feed .= '      <phone></phone>' . "\n";
@@ -226,14 +240,38 @@ $feed .= '    </multipage>' . "\n";
 $feed .= '  </metadata>' . "\n";
 $feed .= '  <properties>' . "\n";
 
+if ($debugMode) {
+  echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+  echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">';
+  echo '  <head>';
+  echo '    <title>Immobiliare-Feed Debugger</title>';
+  echo '    <meta http-equiv="Content-Language" content="de" />';
+  echo '    <meta http-equiv="pragma" content="no-cache" />';
+  echo '    <meta http-equiv="cache-control" content="no-cache" />';
+  echo '    <meta http-equiv="expires" content="0" />';
+  echo '    <meta http-equiv="imagetoolbar" content="no" />';
+  echo '    <meta name="MSSmartTagsPreventParsing" content="true" />';
+  echo '    <meta name="generator" content="OpenEstate-ImmoTool" />';
+  echo '    <link rel="stylesheet" href="style.php" />';
+  echo '    <meta name="robots" content="noindex,follow" />';
+  echo '  </head>';
+  echo '  <body>';
+  echo '  <h2>Immobiliare-Feed Debugger</h2>';
+}
+
 foreach (immotool_functions::list_available_objects() as $id) {
   $object = immotool_functions::get_object($id);
-  if (!is_array($object))
+  if ($debugMode)
+    echo '<h3 style="margin-top:1em;margin-bottom:0;"><a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '">property #' . $id . '</a></h3>';
+  if (!is_array($object)) {
+    if ($debugMode)
+      echo '&gt; NOT FOUND<br/>';
     continue;
+  }
 
   $objectTexts = immotool_functions::get_text($id);
   if (!is_array($objectTexts))
-    continue;
+    $objectTexts = array();
 
   // Exposé-URL
   $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
@@ -248,28 +286,33 @@ foreach (immotool_functions::list_available_objects() as $id) {
     $objectMail = $setup->MailFrom;
 
   // Vermartungsart
-  $objectAction = null;
-  foreach ($mapObjectAction as $key => $value) {
-    $action = trim(strtolower($key));
-    if (array_search($action, $object['type_path']) !== false) {
-      $objectAction = $val;
-      break;
-    }
-  }
-  if ($objectAction == null)
+  $action = (isset($object['action'])) ? strtoupper($object['action']) : null;
+  if ($action == null) {
+    if ($debugMode)
+      echo '&gt; UNKNOWN ACTION<br/>';
     continue;
+  }
+  $objectAction = (isset($mapObjectAction[$action])) ? $mapObjectAction[$action] : null;
+  if ($objectAction == null) {
+    if ($debugMode)
+      echo '&gt; UNSUPPORTED ACTION: ' . $object['action'] . '<br/>';
+    continue;
+  }
 
   // Kategorie
   $objectCat = null;
   foreach ($mapObjectCat as $key => $value) {
     $type = trim(strtolower($key));
     if (array_search($type, $object['type_path']) !== false) {
-      $objectCat = $val;
+      $objectCat = $value;
       break;
     }
   }
-  if ($objectCat == null)
+  if ($objectCat == null) {
+    if ($debugMode)
+      echo '&gt; UNKNOWN CATEGORY<br/>';
     continue;
+  }
 
   // Objektart
   $objectType = null;
@@ -282,7 +325,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
     foreach ($mapObjectType as $key => $value) {
       $type = trim(strtolower($key));
       if (array_search($type, $object['type_path']) !== false) {
-        $objectType = $val;
+        $objectType = $value;
         break;
       }
     }
@@ -299,7 +342,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
       foreach ($mapObjectBusinessType_Terreno as $key => $value) {
         $type = trim(strtolower($key));
         if (array_search($type, $object['type_path']) !== false) {
-          $objectBusinessType = $val;
+          $objectBusinessType = $value;
           break;
         }
       }
@@ -313,7 +356,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
         $type = trim(strtolower($key));
         if (array_search($type, $object['type_path']) !== false) {
           $objectBusinessTypeCat = 'Attività';
-          $objectBusinessType = $val;
+          $objectBusinessType = $value;
           break;
         }
       }
@@ -321,7 +364,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
         foreach ($mapObjectBusinessType_Immobile as $key => $value) {
           $type = trim(strtolower($key));
           if (array_search($type, $object['type_path']) !== false) {
-            $objectBusinessType = $val;
+            $objectBusinessType = $value;
             break;
           }
         }
@@ -335,7 +378,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
     foreach ($mapObjectTerrainType as $key => $value) {
       $type = trim(strtolower($key));
       if (array_search($type, $object['type_path']) !== false) {
-        $objectTerrainType = $val;
+        $objectTerrainType = $value;
         break;
       }
     }
@@ -355,6 +398,8 @@ foreach (immotool_functions::list_available_objects() as $id) {
   }
 
   else {
+    if ($debugMode)
+      echo '&gt; INVALID CATEGORY: ' . $objectCat . '<br/>';
     continue;
   }
 
@@ -413,25 +458,40 @@ foreach (immotool_functions::list_available_objects() as $id) {
 
 
 // Land (derzeit ausschließlich Italien)
-  if (!isset($object['adress']['country']) || is_null($object['adress']['country']))
+  if (!isset($object['adress']['country']) || is_null($object['adress']['country'])) {
+    if ($debugMode)
+      echo '&gt; UNKNOWN COUNTRY<br/>';
     continue;
+  }
   $objectLocationCountry = strtoupper($object['adress']['country']);
-  if ($objectLocationCountry != 'IT')
+  if ($objectLocationCountry != 'IT') {
+    if ($debugMode)
+      echo '&gt; UNSUPPORTED COUNTRY: ' . $objectLocationCountry . '<br/>';
     continue;
+  }
 
   // Ortsangaben
   $objectLocationArea1 = (isset($object['other']['immobiliare']['areaName'])) ?
       $object['other']['immobiliare']['areaName'] : null;
-  if (is_null($objectLocationArea1) || trim($objectLocationArea1) == '')
+  if (is_null($objectLocationArea1) || trim($objectLocationArea1) == '') {
+    if ($debugMode)
+      echo '&gt; UNKNOWN LOCATION-AREA<br/>';
     continue;
+  }
   $objectLocationArea2 = (isset($object['other']['immobiliare']['subAreaName'])) ?
       $object['other']['immobiliare']['subAreaName'] : null;
-  if (is_null($objectLocationArea2) || trim($objectLocationArea2) == '')
+  if (is_null($objectLocationArea2) || trim($objectLocationArea2) == '') {
+    if ($debugMode)
+      echo '&gt; UNKNOWN LOCATION-SUBAREA<br/>';
     continue;
+  }
   $objectLocationCity = (isset($object['other']['immobiliare']['cityName'])) ?
       $object['other']['immobiliare']['cityName'] : null;
-  if (is_null($objectLocationCity) || trim($objectLocationCity) == '')
+  if (is_null($objectLocationCity) || trim($objectLocationCity) == '') {
+    if ($debugMode)
+      echo '&gt; UNKNOWN LOCATION-CITY<br/>';
     continue;
+  }
   $objectLocationCityCode = (isset($object['other']['immobiliare']['cityCode'])) ?
       $object['other']['immobiliare']['cityCode'] : null;
   if (is_null($objectLocationCityCode))
@@ -450,13 +510,12 @@ foreach (immotool_functions::list_available_objects() as $id) {
       $object['adress']['longitude'] : null;
   if (!is_numeric($objectLocationLongitude))
     $objectLocationLongitude = null;
-  $objectLocationStreet = null;
-  if (isset($object['adress']['street']) && !is_null($object['adress']['street'])) {
-    $objectLocationStreet = $object['adress']['street'];
-    if (isset($object['adress']['street_nr']) && !is_null($object['adress']['street_nr']))
-      $objectLocationStreet .= ' ' . $object['adress']['street_nr'];
-  }
-
+  //$objectLocationStreet = null;
+  //if (isset($object['adress']['street']) && !is_null($object['adress']['street'])) {
+  //  $objectLocationStreet = $object['adress']['street'];
+  //  if (isset($object['adress']['street_nr']) && !is_null($object['adress']['street_nr']))
+  //    $objectLocationStreet .= ' ' . $object['adress']['street_nr'];
+  //}
   // Zimmerzahl
   $objectRooms = (isset($object['attributes']['flaechen']['anz_zimmer']['value'])) ?
       $object['attributes']['flaechen']['anz_zimmer']['value'] : null;
@@ -507,8 +566,11 @@ foreach (immotool_functions::list_available_objects() as $id) {
     $prices = array('PAUSCHALMIETE');
   else if ($object['action'] == 'kauf')
     $prices = array('KAUFPREIS');
-  else
+  else {
+    if ($debugMode)
+      echo '&gt; UNSUPPORTED ACTION: ' . $object['action'] . '<br/>';
     continue;
+  }
   foreach ($prices as $price) {
     $key = strtolower($price);
     $val = (isset($object['attributes']['preise'][$key]['value'])) ?
@@ -798,7 +860,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $txtCounter = 0;
   $picCounter = 0;
   $feed .= '    <property operation="write">' . "\n";
-  $feed .= '      <unique-id>' . $uniqueId . '</unique-id>' . "\n";
+  $feed .= '      <unique-id>' . htmlentities($uniqueId) . '</unique-id>' . "\n";
   $feed .= '      <date-updated>' . $feedStamp . '</date-updated>' . "\n";
   //$feed .= '      <date-expiration/>' . "\n";
   $feed .= '      <transaction-type>' . $objectAction . '</transaction-type>' . "\n";
@@ -818,23 +880,23 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $feed .= '      </property-type>' . "\n";
   $feed .= '      <building-status>' . $objectStatus . '</building-status>' . "\n";
   $feed .= '      <agent>' . "\n";
-  $feed .= '        <office-name>' . $translations['labels']['title'] . '</office-name>' . "\n";
-  $feed .= '        <email>' . $objectMail . '</email>' . "\n";
+  $feed .= '        <office-name>' . $feedTitle . '</office-name>' . "\n";
+  $feed .= '        <email>' . htmlentities($objectMail) . '</email>' . "\n";
   $feed .= '      </agent>' . "\n";
   $feed .= '      <location>' . "\n";
   $feed .= '        <country-code>' . $objectLocationCountry . '</country-code>' . "\n";
   $feed .= '        <administrative-area>' . $objectLocationArea1 . '</administrative-area>' . "\n";
   $feed .= '        <sub-administrative-area>' . $objectLocationArea2 . '</sub-administrative-area>' . "\n";
   if (!is_numeric($objectLocationCityCode) || $objectLocationCityCode <= 0)
-    $feed .= '        <city>' . $objectLocationCity . '</city>' . "\n";
+    $feed .= '        <city>' . htmlentities($objectLocationCity) . '</city>' . "\n";
   else
-    $feed .= '        <city code="' . $objectLocationCityCode . '">' . $objectLocationCity . '</city>' . "\n";
+    $feed .= '        <city code="' . $objectLocationCityCode . '">' . htmlentities($objectLocationCity) . '</city>' . "\n";
   $feed .= '        <locality>' . "\n";
-  $feed .= '          <postal-code>' . $objectLocationPostal . '</postal-code>' . "\n";
+  $feed .= '          <postal-code>' . htmlentities($objectLocationPostal) . '</postal-code>' . "\n";
   //$feed .= '          <neighbourhood type=""></neighbourhood>' . "\n";
-  if ($objectLocationStreet != null) {
-    $feed .= '          <thoroughfare display="no">' . $objectLocationStreet . '</thoroughfare>' . "\n";
-  }
+  //if ($objectLocationStreet!=null) {
+  //  $feed .= '          <thoroughfare display="no">'.htmlentities($objectLocationStreet).'</thoroughfare>' . "\n";
+  //}
   if ($objectLocationLongitude != null && $objectLocationLatitude != null) {
     $feed .= '          <longitude>' . $objectLocationLongitude . '</longitude>' . "\n";
     $feed .= '          <latitude>' . $objectLocationLatitude . '</latitude>' . "\n";
@@ -932,14 +994,27 @@ foreach (immotool_functions::list_available_objects() as $id) {
     $feed .= '      </pictures>' . "\n";
   }
   $feed .= '    </property>' . "\n";
+
+  if ($debugMode)
+    echo '&gt; OK<br/>';
 }
 $feed .= '  </properties>' . "\n";
 $feed .= '</feed>';
 
-// Feed cachen
-$fh = fopen($feedFile, 'w') or die('can\'t write file: ' . $feedFile);
-fwrite($fh, $feed);
-fclose($fh);
+// Debug-Ausgabe des Feeds
+if ($debugMode) {
+  echo '<h2>Generated XML</h2>';
+  echo '<pre>' . htmlentities($feed) . '</pre>';
+  echo '</body></html>';
+}
 
-// Feed ausgeben
-echo $feed;
+// normale Ausgabe des Feeds
+else {
+  // Feed cachen
+  $fh = fopen($feedFile, 'w') or die('can\'t write file: ' . $feedFile);
+  fwrite($fh, $feed);
+  fclose($fh);
+
+  // Feed ausgeben
+  echo $feed;
+}

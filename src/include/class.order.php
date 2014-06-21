@@ -136,11 +136,21 @@ class ImmoToolOrder {
 
   /**
    * Sortierungs-Array aus der Cache-Datei erzeugen.
+   * @param int $maxLifeTime Maximale Lebenszeit einer Cache-Datei in Sekunden
+   * @return array Sortierungs-Array
    */
-  function read() {
+  function read($maxLifeTime = 0) {
     $file = $this->getFile();
     if (!is_file($file))
       return false;
+
+    // abgelaufene Cache-Datei ggf. löschen
+    if ($maxLifeTime > 0 && !immotool_functions::check_file_age($file, $maxLifeTime)) {
+      unlink($file);
+      return false;
+    }
+
+    // Array aus Cache-Datei erzeugen
     $data = immotool_functions::read_file($file);
     if (!is_string($data))
       return false;
@@ -153,9 +163,11 @@ class ImmoToolOrder {
   /**
    * Sortierungs-Array aus der Cache-Datei erzeugen.
    * Wenn keine Cache-Datei vorhanden ist, wird diese erzeugt.
+   * @param int $maxLifeTime Maximale Lebenszeit einer Cache-Datei in Sekunden
+   * @return array Sortierungs-Array
    */
-  function readOrRebuild() {
-    if ($this->read())
+  function readOrRebuild($maxLifeTime = 0) {
+    if ($this->read($maxLifeTime))
       return true;
     if (!$this->build())
       return false;
