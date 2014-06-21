@@ -1,0 +1,21 @@
+Kontaktanfrage zum Inserat {SUBJECT_ID}
+----------------------------------------
+ Details zum Interessenten
+----------------------------------------
+ Name       : {CONTACT_NAME} 
+ E-Mail     : {CONTACT_EMAIL}
+ Telefon    : {CONTACT_PHONE}
+
+----------------------------------------
+ Details zur Kontaktanfrage
+----------------------------------------
+ Inserat-ID : {REQUEST_OBJECT_ID}
+ Inserat-Nr : {REQUEST_OBJECT_NR}
+ Webseite   : {REQUEST_URL}
+ Zeitpunkt  : {REQUEST_TIME}
+ IP-Adresse : {REQUEST_IP}
+
+----------------------------------------
+ Mitteilung
+----------------------------------------
+{CONTACT_MESSAGE}
