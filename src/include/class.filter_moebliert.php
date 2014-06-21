@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Filter nach Neubau-Objekten.
+ * Website-Export, Filter nach möblierten Inseraten.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
@@ -29,14 +29,15 @@ if (!defined('IN_WEBSITE'))
 
 require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
 
-class ImmoToolFilter_neubau extends ImmoToolFilter {
+class ImmoToolFilter_moebliert extends ImmoToolFilter {
 
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $alter = (isset($object['attributes']['zustand']['alter']['value'])) ? $object['attributes']['zustand']['alter']['value'] : null;
-    if (!is_string($alter) || strtolower($alter) != 'neubau')
+    $moebliert = (isset($object['attributes']['ausstattung']['moebliert']['value'])) ?
+        $object['attributes']['ausstattung']['moebliert']['value'] : null;
+    if (!is_string($moebliert) && strtolower($moebliert) != 'ja' && strtolower($moebliert) != 'teil')
       return;
     if (!isset($items['1']) || !is_array($items['1']))
       $items['1'] = array();
@@ -47,14 +48,14 @@ class ImmoToolFilter_neubau extends ImmoToolFilter {
    * Name des Filters.
    */
   function getName() {
-    return 'neubau';
+    return 'moebliert';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.neubau'])) ? $translations['labels']['estate.neubau'] : null;
+    $title = (isset($translations['labels']['estate.moebliert'])) ? $translations['labels']['estate.moebliert'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 

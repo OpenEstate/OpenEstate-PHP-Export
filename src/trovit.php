@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Darstellung des Trovit-XML-Feeds
+ * Website-Export, Darstellung des Trovit-XML-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
@@ -74,7 +74,11 @@ foreach (immotool_functions::list_available_objects() as $id) {
 
   // Exposé-URL aus Vorlage ermitteln
   if (is_string($setup->ExposeUrlTemplate) && strlen($setup->ExposeUrlTemplate) > 0) {
-    $objectUrl = str_replace('{ID}', $object['id'], $setup->ExposeUrlTemplate);
+    $replacement = array(
+      '{ID}' => $object['id'],
+      '{LANG}' => $lang,
+    );
+    $objectUrl = str_replace(array_keys($replacement), array_values($replacement), $setup->ExposeUrlTemplate);
   }
 
   // Exposé-URL automatisch ermitteln

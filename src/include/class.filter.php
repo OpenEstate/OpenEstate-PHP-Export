@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, allgemeiner Filter
+ * Website-Export, allgemeiner Filter.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org

@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Sortierung nach Stadt
+ * Website-Export, Sortierung nach Stadt.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org

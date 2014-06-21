@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Darstellung der Inseratsübersicht
+ * Website-Export, Darstellung der Inseratsübersicht.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
@@ -46,6 +46,32 @@ $lang = immotool_functions::init_language($_REQUEST[IMMOTOOL_PARAM_LANG], $setup
 if (!is_array($translations))
   die('Can\'t load translations!');
 
+// Ansicht ermitteln
+$view = $_REQUEST[IMMOTOOL_PARAM_INDEX_VIEW];
+if ($view != 'fav')
+  $view = 'index';
+
+// Modus ermitteln
+$mode = $_REQUEST[IMMOTOOL_PARAM_INDEX_MODE];
+if (!is_string($mode) || strlen($mode) <= 0)
+  $mode = $_SESSION['immotool']['mode'];
+if ($mode != 'gallery' && $mode != 'entry')
+  $mode = $setup->DefaultMode;
+$_SESSION['immotool']['mode'] = $mode;
+
+// Sortierung & Filterkriterien ignorieren und aus der Session entfernen
+$reset = false;
+if (is_string($_REQUEST[IMMOTOOL_PARAM_INDEX_RESET])) {
+  $reset = true;
+  unset($_SESSION['immotool']['orderBy']);
+  unset($_SESSION['immotool']['orderDir']);
+  unset($_SESSION['immotool']['filter']);
+  unset($_SESSION['immotool']['page']);
+  unset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER]);
+  unset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER]);
+  unset($_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE]);
+}
+
 // Seitenzahl ermitteln
 $elementsPerPage = $setup->ElementsPerPage;
 $page = $_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE];
@@ -55,17 +81,6 @@ if (!is_numeric($page) || $page <= 0) {
     $page = 1;
 }
 $_SESSION['immotool']['page'] = $page;
-
-// Sortierung & Filterkriterien ignorieren und aus der Session entfernen
-$reset = false;
-if (is_string($_REQUEST[IMMOTOOL_PARAM_INDEX_RESET])) {
-  $reset = true;
-  unset($_SESSION['immotool']['orderBy']);
-  unset($_SESSION['immotool']['orderDir']);
-  unset($_SESSION['immotool']['filter']);
-  unset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER]);
-  unset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER]);
-}
 
 // Sortierung ermitteln
 $order = explode('-', $_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER]);
@@ -85,23 +100,23 @@ $_SESSION['immotool']['orderBy'] = $orderBy;
 $_SESSION['immotool']['orderDir'] = $orderDir;
 
 // Filterkriterien ermitteln
-$filters = $_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER];
-if ($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER_CLEAR] == '1') {
-  $_SESSION['immotool']['filter'] = array();
-  if (!is_array($filters))
-    $filters = array();
+$filters = array();
+if ($view != 'fav') {
+  $filters = $_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER];
+  if ($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER_CLEAR] == '1') {
+    $_SESSION['immotool']['filter'] = array();
+    if (!is_array($filters))
+      $filters = array();
+  }
+  else if (!is_array($filters)) {
+    $filters = $_SESSION['immotool']['filter'];
+    if (!is_array($filters))
+      $filters = array();
+  }
+  $_SESSION['immotool']['filter'] = $filters;
 }
-else if (!is_array($filters)) {
-  $filters = $_SESSION['immotool']['filter'];
-  if (!is_array($filters))
-    $filters = array();
-}
-$_SESSION['immotool']['filter'] = $filters;
 
 // Parameter der Seite
-$view = $_REQUEST[IMMOTOOL_PARAM_INDEX_VIEW];
-if ($view != 'fav')
-  $view = 'index';
 $mainTitle = $translations['labels']['title'];
 $pageTitle = ($view == 'fav') ? $translations['labels']['title.fav'] : $translations['labels']['title.index'];
 $robots = 'noindex,follow';
@@ -116,7 +131,9 @@ foreach ($result as $resultId) {
   $counter++;
   $bg = (($counter % 2) == 0) ? 'openestate_light' : 'openestate_dark';
   $object = immotool_functions::get_object($resultId);
-  $listingEntry = immotool_functions::read_template('listing_entry.html');
+  $listingEntry = immotool_functions::read_template('listing_' . $mode . '.html');
+  if (!is_string($listingEntry))
+    $listingEntry = immotool_functions::read_template('listing_entry.html');
   immotool_functions::replace_var('ID', $object['id'], $listingEntry);
   immotool_functions::replace_var('BG', $bg, $listingEntry);
   immotool_functions::replace_var('ACTION', $translations['openestate']['actions'][$object['action']], $listingEntry);
@@ -134,7 +151,11 @@ foreach ($result as $resultId) {
   immotool_functions::replace_var('TITLE', $title, $listingEntry);
 
   // Titelbild ermitteln
-  $img = 'data/' . $object['id'] . '/img_0.thumb.jpg';
+  $img = 'data/' . $object['id'] . '/';
+  if ($mode == 'gallery')
+    $img .= 'title.jpg';
+  else
+    $img .= 'img_0.thumb.jpg';
   if (is_file(IMMOTOOL_BASE_PATH . $img))
     immotool_functions::replace_var('IMAGE', $img, $listingEntry);
   else
@@ -287,17 +308,19 @@ if ((is_array($setup->OrderOptions) && count($setup->OrderOptions) > 0) ||
   }
 
   // Filterkriterien
-  if (is_array($setup->FilterOptions) && count($setup->FilterOptions) > 0) {
-    foreach ($setup->FilterOptions as $key) {
-      $filterObj = immotool_functions::get_filter($key);
-      if (!is_object($filterObj))
-        continue;
-      $filterWidget = $filterObj->getWidget($filters[$key], $lang, $translations, $setup);
-      if (!is_string($filterWidget) || strlen($filterWidget) == 0)
-        continue;
-      $showMenu .= '<div class="listing_filter">';
-      $showMenu .= $filterWidget;
-      $showMenu .= '</div>';
+  if ($view != 'fav') {
+    if (is_array($setup->FilterOptions) && count($setup->FilterOptions) > 0) {
+      foreach ($setup->FilterOptions as $key) {
+        $filterObj = immotool_functions::get_filter($key);
+        if (!is_object($filterObj))
+          continue;
+        $filterWidget = $filterObj->getWidget($filters[$key], $lang, $translations, $setup);
+        if (!is_string($filterWidget) || strlen($filterWidget) == 0)
+          continue;
+        $showMenu .= '<div class="listing_filter">';
+        $showMenu .= $filterWidget;
+        $showMenu .= '</div>';
+      }
     }
   }
 }
@@ -313,5 +336,12 @@ $pageContent = str_replace(array_keys($replacement), array_values($replacement),
 
 // Ausgabe erzeugen
 $buildTime = microtime() - $startup;
-header("Content-Type: text/html; charset=utf-8");
-echo immotool_functions::build_page('index', $lang, $mainTitle, $pageTitle, $pageContent, $buildTime, $setup->AdditionalStylesheet, $setup->ShowLanguageSelection, $robots);
+$output = immotool_functions::build_page('index', $lang, $mainTitle, $pageTitle, $pageContent, $buildTime, $setup->AdditionalStylesheet, $setup->ShowLanguageSelection, $robots);
+if (is_string($setup->Charset) && strlen(trim($setup->Charset)) > 0) {
+  //die( 'encode from '.mb_detect_encoding($output).' to ' . $setup->Charset );
+  $output = immotool_functions::encode($output, $setup->Charset);
+}
+if (is_string($setup->ContentType) && strlen(trim($setup->ContentType)) > 0) {
+  header('Content-Type: ' . $setup->ContentType);
+}
+echo $output;

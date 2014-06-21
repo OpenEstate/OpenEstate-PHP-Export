@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, dynamischer Stylesheet
+ * Website-Export, dynamischer Stylesheet.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
@@ -312,6 +312,17 @@ font-weight: bold;
 font-size: 1.2em;
 }
 
+#openestate_listing_modes
+{
+float: right;
+margin-right: 0.5em;
+}
+
+
+/**
+* Immobilienliste, Kurzexposé, Listenansicht
+*/
+
 .openestate_listing_entry
 {
 clear: both;
@@ -362,6 +373,92 @@ text-align: left;
 text-align: left;
 display: inline;
 padding-right: 0.5em;
+}
+
+
+/**
+* Immobilienliste, Kurzexposé, Galerieansicht
+*/
+
+.openestate_listing_image
+{
+height:150px;
+float: left;
+text-align:center;
+margin: 0.5em;
+-moz-border-radius:0.8em;
+-khtml-border-radius:0.8em;
+background-color: <?php echo $setup->DarkBackgroundColor; ?>;
+border: 3px solid <?php echo $setup->BorderColor; ?>;
+border-style: outset;
+padding: 0.5em;
+margin-top: 0.5em;
+margin-bottom: 0.5em;
+vertical-align:middle;
+}
+
+.openestate_listing_image .info_box {
+display: none;
+margin: 0;
+margin-bottom: 0.1em;
+text-align:left;
+}
+.openestate_listing_image:hover .info_box {
+display: block;
+padding: 1em;
+margin-left:-2em;
+margin-top: -4em;
+position: absolute;
+z-index: 3;
+background-color: <?php echo $setup->DarkBackgroundColor; ?>;
+border: 2px solid <?php echo $setup->BorderColor; ?>;
+width: 250px;
+}
+
+.openestate_listing_image:hover .info_box h2 {
+margin:0;
+margin-bottom:0.5em;
+font-size: 1.0em;
+}
+
+.openestate_listing_image:hover .info_box h2 a {
+text-decoration: none;
+}
+
+.openestate_listing_image:hover .info_box h2 a:hover {
+text-decoration: underline;
+}
+
+.openestate_listing_image:hover .info_box ul {
+margin:0;
+padding:0;
+padding-left:1em;
+}
+
+.openestate_listing_image:hover .info_box ul li {
+font-size: 0.9em;
+}
+
+.openestate_listing_image:hover .info_box div.options
+{
+clear: both;
+}
+
+.openestate_listing_image:hover .info_box div.options ul
+{
+margin: 0;
+padding: 0;
+padding-top: 0.5em;
+list-style-type: none;
+text-align: left;
+}
+
+.openestate_listing_image:hover .info_box div.options ul li
+{
+display: block;
+text-align: left;
+float: left;
+clear: left;
 }
 
 

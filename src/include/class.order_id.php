@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Sortierung nach ID
+ * Website-Export, Sortierung nach ID.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org

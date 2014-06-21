@@ -1,3 +1,7 @@
+<div id="openestate_listing_modes">
+  <a href="index.php?{PARAM_INDEX_MODE}=entry&amp;{PARAM_INDEX_VIEW}={VIEW}"><img src="img/view_table.png" alt="Table" border="0" title="Tabular view"/></a>
+  <a href="index.php?{PARAM_INDEX_MODE}=gallery&amp;{PARAM_INDEX_VIEW}={VIEW}"><img src="img/view_gallery.png" alt="Gallery" border="0" title="Gallery view"/></a>
+</div>
 <div id="openestate_header"><h1>{PAGE_TITLE}</h1></div>
 <div id="openestate_listing">
   <div id="openestate_listing_pagination_top">{PAGINATION}</div>
@@ -5,15 +9,15 @@
   {MENU.}<div id="openestate_listing_menu">
     <form action="index.php" method="get" style="margin:0;">
       <div class="openestate_listing_buttons">
-        <input type="hidden" name="view" value="{VIEW}" />
+        <input type="hidden" name="{PARAM_INDEX_VIEW}" value="{VIEW}" />
         <input class="openestate_search_button" type="submit" name="submit" value="" title="Search" />
-        <input class="openestate_cancel_button" type="submit" name="reset" value="" title="Reset" />
+        <input class="openestate_cancel_button" type="submit" name="{PARAM_INDEX_RESET}" value="" title="Reset" />
       </div>
       {MENU}
       <div class="openestate_clear" style="float:none;"></div>
     </form>
   </div>{.MENU}
-{ENTRIES}
+  {ENTRIES}
   <div id="openestate_listing_pagination_bottom">{PAGINATION}</div>
   <div class="openestate_clear"></div>
 </div>

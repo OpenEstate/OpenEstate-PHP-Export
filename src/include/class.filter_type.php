@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Filter nach Immobilienart
+ * Website-Export, Filter nach Immobilienart.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org

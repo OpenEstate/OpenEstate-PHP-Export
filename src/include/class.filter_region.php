@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Filter nach Region / Bundesland
+ * Website-Export, Filter nach Region / Bundesland.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009, OpenEstate.org
