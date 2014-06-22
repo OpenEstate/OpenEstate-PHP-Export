@@ -181,6 +181,28 @@ class immotool_setup {
    */
   var $ExposeUrlTemplate = null;
 
+  /**
+   * Kategorien.
+   * Wird an verschiedenen Stellen verwendet, um unterschiedliches Verhalten für
+   * verschiedene Kategorien zu realisieren.
+   * Beispiel:
+   * $Categories = array( 'wohnen', 'gewerbe', 'anlage' );
+   * @var string
+   */
+  var $Categories = array();
+
+  /**
+   * Lebensdauer von Cache-Dateien.
+   * Eine im Cache-Verzeichnis abgelegte Dateien wird nach einem bestimmten
+   * Zeitraum verworfen und neu erzeugt. Die Dauer der Gültigkeit einer
+   * Cache-Datei wird in Sekunden erfasst.
+   * Beispiel:
+   * $CacheLifeTime = 3600; // eine Stunde
+   * $CacheLifeTime = 86400; // ein Tag
+   * @var int
+   */
+  var $CacheLifeTime = 10800;
+
 }
 
 /**
@@ -226,7 +248,7 @@ class immotool_setup_index extends immotool_setup {
    * Verwendete Filter-Optionen.
    * @var array
    */
-  var $FilterOptions = array('action', 'type', 'alter');
+  var $FilterOptions = array('action', 'type', 'age');
 
   /**
    * Alle verfügbaren Immobilienarten filtern.
@@ -408,5 +430,11 @@ class immotool_setup_feeds extends immotool_setup {
    * @var int
    */
   var $RssFeedLimit = 15;
+
+  /**
+   * Objekt-Nummer an Stelle der Objekt-ID bei Feed-Exporten veröffentlichen.
+   * @var bool
+   */
+  var $ExportPublicId = false;
 
 }

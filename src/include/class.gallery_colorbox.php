@@ -25,9 +25,7 @@
  * @link http://colorpowered.com/colorbox/
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
+if (!defined('IN_WEBSITE')) exit;
 require_once( IMMOTOOL_BASE_PATH . 'include/class.gallery.php' );
 
 class ImmoToolGallery_colorbox extends ImmoToolGallery {
@@ -42,17 +40,14 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
    * Liefert HTML-Code zur Darstellung eines Fotos in der Galerie.
    * @return string HTML-Code
    */
-  function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
-    if (!is_string($image['thumb']))
-      return '';
-    $thumb = 'data/' . $objectId . '/' . $image['thumb'];
-    $file = 'data/' . $objectId . '/' . $image['name'];
+  function getGalleryImage( $objectId, &$image, $index, $selectedImg, $lang ) {
+    if (!is_string($image['thumb'])) return '';
+    $thumb = 'data/'.$objectId.'/'.$image['thumb'];
+    $file = 'data/'.$objectId.'/'.$image['name'];
     $title = $image['title'][$lang];
-    if (!is_string($title))
-      $title = '';
-    else
-      $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-    return '<li><a href="' . $file . '" rel="gallery" title="' . $title . '"><img src="' . $thumb . '" title="' . $title . '" alt="" border="0"/></a></li>';
+    if (!is_string($title)) $title = '';
+    else $title = htmlentities( $title, ENT_QUOTES, 'UTF-8' );
+    return '<li><a href="'.$file.'" rel="gallery" title="'.$title.'"><img src="'.$thumb.'" title="'.$title.'" alt="" border="0"/></a></li>';
   }
 
   /**
@@ -89,18 +84,32 @@ $(document).ready(function(){
    * HTML-Code zum Titelbild.
    * @return string
    */
-  function getTitleImage($objectId, &$image, $lang) {
+  function getTitleImage( $objectId, &$image, $lang ) {
     $thumb = 'data/' . $objectId . '/title.jpg';
-    if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
-      return null;
-    $file = 'data/' . $objectId . '/' . $image['name'];
-    $link = '?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $objectId . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=gallery&amp;' . IMMOTOOL_PARAM_EXPOSE_IMG . '=1#img';
+    if (!is_file(IMMOTOOL_BASE_PATH.$thumb)) return null;
+    $file = 'data/'.$objectId.'/'.$image['name'];
+    $link = '?'.IMMOTOOL_PARAM_EXPOSE_ID.'='.$objectId.'&amp;'.IMMOTOOL_PARAM_EXPOSE_VIEW.'=gallery&amp;'.IMMOTOOL_PARAM_EXPOSE_IMG.'=1#img';
     $title = $image['title'][$lang];
-    if (!is_string($title))
-      $title = '';
-    else
-      $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-    return '<a href="' . $file . '" rel="title" title="' . $title . '"><img src="' . $thumb . '" alt="" title="' . $title . '" border="0"/></a>';
+    if (!is_string($title)) $title = '';
+    else $title = htmlentities( $title, ENT_QUOTES, 'UTF-8' );
+    $html = '<a href="'.$file.'" rel="title" title="'.$title.'"><img src="'.$thumb.'" alt="" title="'.$title.'" border="0"/></a>';
+
+    // Weitere Galeriebilder versteckt anzeigen,
+    // um bei Klick auf das Titelbild eine Galerie-Navigation zu ermöglichen.
+    $object = immotool_functions::get_object( $objectId );
+    if (is_array($object) && isset($object['images']) && is_array($object['images'])) {
+      $html .= '<div style="visibility:hidden; position:absolute;">';
+      foreach ($object['images'] as $img) {
+        if ($img['name']==$image['name']) continue;
+        $file = 'data/'.$objectId.'/'.$img['name'];
+        $title = $img['title'][$lang];
+        if (!is_string($title)) $title = '';
+        else $title = htmlentities( $title, ENT_QUOTES, 'UTF-8' );
+        $html .= '<a href="'.$file.'" rel="title" title="'.$title.'">&nbsp;</a>';
+      }
+      $html .= '</div>';
+    }
+    return $html;
   }
 
   /**
@@ -118,5 +127,4 @@ $(document).ready(function(){
   function isSelectedImagePrinted() {
     return false;
   }
-
 }

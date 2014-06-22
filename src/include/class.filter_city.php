@@ -35,8 +35,8 @@ class ImmoToolFilter_city extends ImmoToolFilter {
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $value = (isset($object['adress']['city'])) ?
-        $object['adress']['city'] : null;
+    $value = (isset($object['address']['city'])) ?
+        $object['address']['city'] : null;
     if (!is_string($value))
       return;
     $value = trim($value);
@@ -67,7 +67,7 @@ class ImmoToolFilter_city extends ImmoToolFilter {
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
   function getWidget($selectedValue, $lang, &$translations, &$setup) {
-    if (!$this->readOrRebuild())
+    if (!$this->readOrRebuild($setup->CacheLifeTime))
       return null;
     $widget = '';
     $options = array_keys($this->items);

@@ -56,24 +56,24 @@ class ImmoToolOrder_price extends ImmoToolOrder {
       return null;
 
     // Kauf
-    if ($object['action'] == 'kauf')
-      return (isset($object['attributes']['preise']['kaufpreis']['value'])) ?
-          $object['attributes']['preise']['kaufpreis']['value'] : null;
+    if ($object['action'] == 'purchase')
+      return (isset($object['attributes']['prices']['buying_price']['value'])) ?
+          $object['attributes']['prices']['buying_price']['value'] : null;
 
     // Miete
-    if ($object['action'] == 'miete')
-      return (isset($object['attributes']['preise']['kaltmiete']['value'])) ?
-          $object['attributes']['preise']['kaltmiete']['value'] : null;
+    if ($object['action'] == 'rent')
+      return (isset($object['attributes']['prices']['rent_without_heating']['value'])) ?
+          $object['attributes']['prices']['rent_without_heating']['value'] : null;
 
     // Miete auf Zeit
-    if ($object['action'] == 'waz')
-      return (isset($object['attributes']['preise']['pauschalmiete']['value'])) ?
-          $object['attributes']['preise']['pauschalmiete']['value'] : null;
+    if ($object['action'] == 'rent_in_time')
+      return (isset($object['attributes']['prices']['rent_flat_rate']['value'])) ?
+          $object['attributes']['prices']['rent_flat_rate']['value'] : null;
 
     // Pacht
-    if ($object['action'] == 'pacht')
-      return (isset($object['attributes']['preise']['pacht']['value'])) ?
-          $object['attributes']['preise']['pacht']['value'] : null;
+    if ($object['action'] == 'lease' || $object['action'] == 'emphyteusis')
+      return (isset($object['attributes']['prices']['lease']['value'])) ?
+          $object['attributes']['prices']['lease']['value'] : null;
 
     return null;
   }

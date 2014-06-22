@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Filter nach Ausstattungsart.
+ * Website-Export, Filter nach Neubau- oder Altbau-Objekten.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2010, OpenEstate.org
@@ -29,14 +29,14 @@ if (!defined('IN_WEBSITE'))
 
 require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
 
-class ImmoToolFilter_ausstattung extends ImmoToolFilter {
+class ImmoToolFilter_age extends ImmoToolFilter {
 
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $value = isset($object['attributes']['ausstattung']['ausstattung_art']['value']) ?
-        $object['attributes']['ausstattung']['ausstattung_art']['value'] : null;
+    $value = (isset($object['attributes']['condition']['age']['value'])) ?
+        $object['attributes']['condition']['age']['value'] : null;
     if (!is_string($value))
       return;
     $value = strtolower($value);
@@ -49,15 +49,15 @@ class ImmoToolFilter_ausstattung extends ImmoToolFilter {
    * Name des Filters.
    */
   function getName() {
-    return 'ausstattung';
+    return 'age';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['openestate.ausstattung'])) ?
-        $translations['labels']['openestate.ausstattung'] : null;
+    $title = (isset($translations['labels']['openestate.age'])) ?
+        $translations['labels']['openestate.age'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 
@@ -66,15 +66,15 @@ class ImmoToolFilter_ausstattung extends ImmoToolFilter {
    */
   function getWidget($selectedValue, $lang, &$translations, &$setup) {
     $widget = '';
-    if (!$this->readOrRebuild() || !is_array($this->items))
+    if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
       return $widget;
 
     // Optionen in der Auswahlbox ermitteln
-    $options = array('einfach', 'normal', 'gehoben', 'luxus');
+    $options = array('old_building', 'new_building');
     $values = array();
     foreach ($options as $o) {
-      $txt = (isset($translations['labels']['openestate.ausstattung.' . $o])) ?
-          $translations['labels']['openestate.ausstattung.' . $o] : null;
+      $txt = (isset($translations['labels']['openestate.age.' . $o])) ?
+          $translations['labels']['openestate.age.' . $o] : null;
       $values[$o] = is_string($txt) ? $txt : $o;
     }
 

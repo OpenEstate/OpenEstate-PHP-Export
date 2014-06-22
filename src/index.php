@@ -35,11 +35,6 @@ include(IMMOTOOL_BASE_PATH . 'data/language.php');
 if (session_id() == '')
   session_start();
 
-// Konfiguration ermitteln
-$setup = new immotool_setup_index();
-if (is_callable(array('immotool_myconfig', 'load_config_index')))
-  immotool_myconfig::load_config_index($setup);
-
 // Favoriten ggf. entfernen
 if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR]) && is_string($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR])) {
   if (isset($_SESSION['immotool']['favs']))
@@ -52,12 +47,13 @@ if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR]) && is_string($_REQUEST[IMM
       time() + 60 * 60 * 24 * 365, // expires after 30 days
       '/', // path
       '', // domain
-      false                                            // secure
+      false // secure
   );
 }
 
 // Initialisierungen
-immotool_functions::init($setup);
+$setup = new immotool_setup_index();
+immotool_functions::init($setup, 'load_config_index');
 
 // Übersetzungen ermitteln
 $translations = null;
@@ -147,7 +143,7 @@ $pageTitle = ($view == 'fav') ? $translations['labels']['title.fav'] : $translat
 $totalCount = 0;
 $listing = immotool_functions::read_template('listing.html');
 $favIds = ($view == 'fav') ? $_SESSION['immotool']['favs'] : null;
-$result = immotool_functions::list_objects($page, $elementsPerPage, $orderBy, $orderDir, $filters, $totalCount, $lang, $favIds);
+$result = immotool_functions::list_objects($page, $elementsPerPage, $orderBy, $orderDir, $filters, $totalCount, $lang, $setup->CacheLifeTime, $favIds);
 $counter = 0;
 foreach ($result as $resultId) {
   $counter++;
@@ -160,9 +156,9 @@ foreach ($result as $resultId) {
   immotool_functions::replace_var('BG', $bg, $listingEntry);
   immotool_functions::replace_var('ACTION', $translations['openestate']['actions'][$object['action']], $listingEntry);
   immotool_functions::replace_var('TYPE', $translations['openestate']['types'][$object['type']], $listingEntry);
-  immotool_functions::replace_var('POSTAL', $object['adress']['postal'], $listingEntry);
-  immotool_functions::replace_var('CITY', $object['adress']['city'], $listingEntry);
-  immotool_functions::replace_var('COUNTRY', $object['adress']['country_name'][$lang], $listingEntry);
+  immotool_functions::replace_var('POSTAL', $object['address']['postal'], $listingEntry);
+  immotool_functions::replace_var('CITY', $object['address']['city'], $listingEntry);
+  immotool_functions::replace_var('COUNTRY', $object['address']['country_name'][$lang], $listingEntry);
 
   // Titel ermitteln
   $title = $object['title'][$lang];
@@ -189,25 +185,25 @@ foreach ($result as $resultId) {
     $attribs = array_keys($object['attributes'][$group]);
 
     // HACK: Angaben zur Courtage nicht darstellen
-    if ($group == 'preise') {
-      $pos = array_search('courtage_aussen', $attribs);
+    if ($group == 'prices') {
+      $pos = array_search('brokerage', $attribs);
       if ($pos !== false)
         unset($attribs[$pos]);
-      $pos = array_search('courtage_aussen_tax', $attribs);
+      $pos = array_search('brokerage_with_vat', $attribs);
       if ($pos !== false)
         unset($attribs[$pos]);
     }
 
     // HACK: Warmmiete & Kaltmiete nicht gemeinsam darstellen
-    if ($group == 'preise' && array_search('kaltmiete', $attribs) !== false) {
-      $pos = array_search('warmmiete', $attribs);
+    if ($group == 'prices' && array_search('rent_without_heating', $attribs) !== false) {
+      $pos = array_search('rent_with_heating', $attribs);
       if ($pos !== false)
         unset($attribs[$pos]);
     }
 
     // HACK: Bruttofläche & Wohnfläche nicht gemeinsam darstellen
-    if ($group == 'flaechen' && array_search('bruttoflaeche', $attribs) !== false) {
-      $pos = array_search('wohnflaeche', $attribs);
+    if ($group == 'measures' && array_search('gross_area', $attribs) !== false) {
+      $pos = array_search('residential_area', $attribs);
       if ($pos !== false)
         unset($attribs[$pos]);
     }
@@ -221,7 +217,7 @@ foreach ($result as $resultId) {
         break;
       $attribTitle = null;
       $attribValue = null;
-      if ($attribs[$i - 1] != false) {
+      if (isset($attribs[$i - 1]) && $attribs[$i - 1] != false) {
         $attrib = $attribs[$i - 1];
         $attribTitle = $translations['openestate']['attributes'][$group][$attrib];
         $attribValue = $object['attributes'][$group][$attrib][$lang];
@@ -235,11 +231,11 @@ foreach ($result as $resultId) {
   $favTitle = immotool_functions::has_favourite($object['id']) ?
       $translations['labels']['link.expose.unfav'] : $translations['labels']['link.expose.fav'];
 
-  immotool_functions::replace_var('LINK_EXPOSE', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang, $listingEntry);
+  immotool_functions::replace_var('LINK_EXPOSE', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'], $listingEntry);
   immotool_functions::replace_var('LINK_EXPOSE_TEXT', $translations['labels']['link.expose.view'], $listingEntry);
-  immotool_functions::replace_var('LINK_FAV', '?' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang, $listingEntry);
+  immotool_functions::replace_var('LINK_FAV', '?' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view, $listingEntry);
   immotool_functions::replace_var('LINK_FAV_TEXT', $favTitle, $listingEntry);
-  immotool_functions::replace_var('LINK_CONTACT', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=contact&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang, $listingEntry);
+  immotool_functions::replace_var('LINK_CONTACT', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=contact', $listingEntry);
   immotool_functions::replace_var('LINK_CONTACT_TEXT', $translations['labels']['link.expose.contact'], $listingEntry);
   $pdf = 'data/' . $object['id'] . '/' . $object['id'] . '_' . $lang . '.pdf';
   if (is_file(IMMOTOOL_BASE_PATH . $pdf)) {

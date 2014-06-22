@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Filter nach Sonderangeboten.
+ * Website-Export, Filter nach möblierten Inseraten.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2010, OpenEstate.org
@@ -29,15 +29,15 @@ if (!defined('IN_WEBSITE'))
 
 require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
 
-class ImmoToolFilter_sonderangebot extends ImmoToolFilter {
+class ImmoToolFilter_furnished extends ImmoToolFilter {
 
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $value = (isset($object['attributes']['preise']['sonderangebot']['value'])) ?
-        $object['attributes']['preise']['sonderangebot']['value'] : null;
-    if (!is_bool($value) || $value == false)
+    $value = (isset($object['attributes']['facilities']['furnished']['value'])) ?
+        $object['attributes']['facilities']['furnished']['value'] : null;
+    if (!is_string($value) && strtolower($value) != 'yes' && strtolower($value) != 'partially')
       return;
     if (!isset($items['1']) || !is_array($items['1']))
       $items['1'] = array();
@@ -48,15 +48,15 @@ class ImmoToolFilter_sonderangebot extends ImmoToolFilter {
    * Name des Filters.
    */
   function getName() {
-    return 'sonderangebot';
+    return 'furnished';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
   function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['openestate.sonderangebot'])) ?
-        $translations['labels']['openestate.sonderangebot'] : null;
+    $title = (isset($translations['labels']['openestate.furnished'])) ?
+        $translations['labels']['openestate.furnished'] : null;
     return is_string($title) ? $title : $this->getName();
   }
 

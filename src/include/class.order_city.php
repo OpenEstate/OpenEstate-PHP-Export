@@ -51,8 +51,8 @@ class ImmoToolOrder_city extends ImmoToolOrder {
    * Liefert das Sortierungsfeld eines Objektes.
    */
   function sort_field(&$object, $lang) {
-    return (isset($object['adress']['city'])) ?
-        $object['adress']['city'] : null;
+    return (isset($object['address']['city'])) ?
+        $object['address']['city'] : null;
   }
 
   /**

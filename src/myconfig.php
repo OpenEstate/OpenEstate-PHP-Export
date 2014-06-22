@@ -39,6 +39,7 @@ class immotool_myconfig {
     //$config->DefaultLanguage = 'en';
     //$config->AdditionalStylesheet = '';
     //$config->ShowLanguageSelection = false;
+    //$config->CacheLifeTime = 86400;
   }
 
   /**
@@ -71,8 +72,8 @@ class immotool_myconfig {
 
     // ggf. individuelle Konfigurationswerte einfügen
     //$config->ElementsPerPage = 5;
-    //$config->OrderOptions = array( 'id', 'city', 'postal' );
-    //$config->FilterOptions = array( 'action', 'type' );
+    //$config->OrderOptions = array( 'area', 'city', 'id', 'nr', 'postal', 'price', 'rooms', 'title' );
+    //$config->FilterOptions = array( 'action', 'age', 'city', 'equipment', 'region', 'rooms', 'type', 'furnished', 'specialoffer' );
   }
 
   /**
