@@ -72,6 +72,9 @@ class immotool_myconfig {
     //$config->GalleryHandler = null;
     //$config->GalleryImageSize = array( 100, 75 );
     //$config->TitleImageSize = array( 200, 150 );
+    //$config->TitleAttributes = array( 'preise.kaltmiete', 'preise.kaufpreis' );
+    //$config->PreferredAttributes = array( 'preise.kaufpreis', 'preise.kaltmiete', 'preise.nebenkosten', 'preise.heizkosten', 'preise.warmmiete' );
+    //$config->HiddenAttributes = array( 'preise.sonderangebot', 'preise.courtage_aussen', 'preise.courtage_aussen_tax', 'freitexte.keywords' );
   }
 
   /**
@@ -88,6 +91,9 @@ class immotool_myconfig {
     //$config->FilterOptions = array( 'action', 'alter', 'ausstattung', 'city', 'country', 'group', 'moebliert', 'region', 'rooms', 'sonderangebot', 'type' );
     //$config->ListingImageSize = array( 100, 75 );
     //$config->GalleryImageSize = array( 150, 150 );
+    //$config->AttributesPerGroup = 3;
+    //$config->PreferredAttributes = array( 'preise.kaufpreis', 'preise.nettorendite', 'preise.kaltmiete', 'preise.nebenkosten' );
+    //$config->HiddenAttributes = array( 'preise.sonderangebot', 'preise.courtage_aussen', 'preise.courtage_aussen_tax' );
   }
 
   /**
