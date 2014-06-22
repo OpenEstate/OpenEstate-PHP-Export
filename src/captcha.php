@@ -20,7 +20,7 @@
  * Website-Export, Darstellung einer Captcha-Grafik.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -30,11 +30,17 @@ if (!defined('IMMOTOOL_BASE_PATH')) {
   define('IMMOTOOL_BASE_PATH', '');
 }
 if (!extension_loaded('gd')) {
-  die('It seems like GD is not installed!');
+  if (!headers_sent()) {
+    // 500-Fehlercode zurückliefern,
+    // wenn das GD-PHP-Modul nicht verfügbar ist
+    header('HTTP/1.0 500 Internal Server Error');
+  }
+  echo 'It seems like GD is not installed!';
+  return;
 }
-include(IMMOTOOL_BASE_PATH . 'config.php');
-include(IMMOTOOL_BASE_PATH . 'private.php');
-include(IMMOTOOL_BASE_PATH . 'include/functions.php');
+require_once(IMMOTOOL_BASE_PATH . 'config.php');
+require_once(IMMOTOOL_BASE_PATH . 'private.php');
+require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
 define('CAPTCHA_FONT_PATH', IMMOTOOL_BASE_PATH . 'include/fonts');
 define('CAPTCHA_LENGTH', 5);
 //define( 'CAPTCHA_SYMBOLS', 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789');

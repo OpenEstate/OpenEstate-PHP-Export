@@ -20,29 +20,33 @@
  * Website-Export, dynamischer Stylesheet.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung
+// Initialisierung der Skript-Umgebung
 define('IN_WEBSITE', 1);
 if (!defined('IMMOTOOL_BASE_PATH'))
   define('IMMOTOOL_BASE_PATH', '');
-include(IMMOTOOL_BASE_PATH . 'config.php');
-include(IMMOTOOL_BASE_PATH . 'include/functions.php');
+require_once(IMMOTOOL_BASE_PATH . 'config.php');
+require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
 header('Content-Type: text/css; charset=utf-8');
 
 // Konfiguration ermitteln
 $setup = new immotool_setup_style();
 if (is_callable(array('immotool_myconfig', 'load_config_style')))
   immotool_myconfig::load_config_style($setup);
+$showGeneralStyles = $setup->ShowGeneralStyles;
+if (isset($_REQUEST['wrapped']) && $_REQUEST['wrapped'] == '1') {
+  $showGeneralStyles = false;
+}
 ?>
 /**
 * Allgemeines
 */
 
 <?php
-if ($setup->ShowGeneralStyles) {
+if ($showGeneralStyles === true) {
   ?>
 * {
 color: <?php echo $setup->GeneralTextColor; ?>;

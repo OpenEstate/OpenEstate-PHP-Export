@@ -17,26 +17,32 @@
  */
 
 /**
- * Website-Export, HTML-Galerie.
+ * Website-Export, Abgelaufene Einträge aus dem Session-Verzeichnis löschen.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
+// Initialisierung der Skript-Umgebung
+define('IN_WEBSITE', 1);
+if (!defined('IMMOTOOL_BASE_PATH')) {
+  define('IMMOTOOL_BASE_PATH', '');
+}
+require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
 
-require_once( IMMOTOOL_BASE_PATH . 'include/class.gallery.php' );
+//  Einträge aus dem Session-Verzeichnis löschen
+$files = immotool_functions::cleanup_sessions(true);
 
-class ImmoToolGallery_html extends ImmoToolGallery {
-
-  /**
-   * Name der Galerie.
-   * @return string Name
-   */
-  function getName() {
-    return 'html';
+//  gelöschte Einträge aus dem Session-Verzeichnis auflisten
+echo '<h2>Removed session files</h2>';
+if (!is_array($files) || count($files) <= 0) {
+  echo '<p>Nothing was removed</p>';
+}
+else {
+  echo '<ul>';
+  foreach ($files as $file) {
+    echo '<li>' . $file . '</li>';
   }
-
+  echo '</ul>';
 }

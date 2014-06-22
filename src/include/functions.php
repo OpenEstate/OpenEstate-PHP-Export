@@ -20,7 +20,7 @@
  * Website-Export, Hilfsfunktionen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.6.23');
+define('IMMOTOOL_SCRIPT_VERSION', '1.6.30');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 
@@ -101,8 +101,9 @@ $GLOBALS['immotool_texts'] = array();
 $GLOBALS['immotool_session'] = array();
 $GLOBALS['immotool_session_id'] = null;
 
-if (is_file(IMMOTOOL_BASE_PATH . 'myconfig.php'))
-  include( IMMOTOOL_BASE_PATH . 'myconfig.php' );
+if (is_file(IMMOTOOL_BASE_PATH . 'myconfig.php')) {
+  require_once( IMMOTOOL_BASE_PATH . 'myconfig.php' );
+}
 
 /**
  * Hilfsfunktionen des ImmoTool PHP-Exports.
@@ -156,17 +157,20 @@ class immotool_functions {
 
     // META-Description
     if (is_string($metaDescription) && strlen(trim($metaDescription)) > 0) {
-      $pageHeader .= '<meta name="description" content="' . htmlentities(trim($metaDescription)) . '" />' . "\n";
+      $txt = trim(htmlspecialchars(strip_tags($metaDescription)));
+      $pageHeader .= '<meta name="description" content="' . $txt . '" />' . "\n";
     }
 
     // META-Keywords
     if (is_string($metaKeywords) && strlen(trim($metaKeywords)) > 0) {
-      $pageHeader .= '<meta name="keywords" content="' . htmlentities(trim($metaKeywords)) . '" />' . "\n";
+      $txt = trim(htmlspecialchars(strip_tags($metaKeywords)));
+      $pageHeader .= '<meta name="keywords" content="' . $txt . '" />' . "\n";
     }
 
     // META-Robots
     if (is_string($metaRobots) && strlen(trim($metaRobots)) > 0) {
-      $pageHeader .= '<meta name="robots" content="' . htmlentities(trim($metaRobots)) . '" />' . "\n";
+      $txt = trim(htmlspecialchars(strip_tags($metaRobots)));
+      $pageHeader .= '<meta name="robots" content="' . $txt . '" />' . "\n";
     }
     else {
       $pageHeader .= '<meta name="robots" content="index,follow" />' . "\n";
@@ -177,7 +181,8 @@ class immotool_functions {
       if (strlen($pageHeader) > 0) {
         $pageHeader .= "\n";
       }
-      $pageHeader .= '<link rel="stylesheet" href="' . htmlentities(trim($setup->AdditionalStylesheet)) . '" />' . "\n";
+      $txt = trim(htmlspecialchars(strip_tags($setup->AdditionalStylesheet)));
+      $pageHeader .= '<link rel="stylesheet" href="' . $txt . '" />' . "\n";
     }
 
     // RSS- & Atom-Feeds ggf. einbinden
@@ -191,9 +196,16 @@ class immotool_functions {
 
     // Footer
     $buildTime = (is_numeric($startupTime)) ? microtime() - $startupTime : 0;
-    $pageFooter = 'v' . IMMOTOOL_SCRIPT_VERSION . ', built in ' . number_format($buildTime, '3') . 's';
-    //$pageFooter .= '<br/>memory: ' . immotool_functions::write_bytes( memory_get_usage() ) . ' / ' . immotool_functions::write_bytes( memory_get_peak_usage() );
-    $pageFooter .= '<br/>powered by <a href="http://openestate.org" target="_blank">OpenEstate</a>';
+    $pageFooter = 'powered by <a href="http://openestate.org" target="_blank">OpenEstate</a>';
+    $pageFooter .= "\n<!--";
+    $pageFooter .= "\nversion      : " . IMMOTOOL_SCRIPT_VERSION;
+    if ($buildTime > 0)
+      $pageFooter .= "\nbuild time   : " . number_format($buildTime, '3');
+    if (function_exists('memory_get_usage'))
+      $pageFooter .= "\nmemory usage : " . immotool_functions::write_bytes(memory_get_usage());
+    if (function_exists('memory_get_peak_usage'))
+      $pageFooter .= "\nmemory peak  : " . immotool_functions::write_bytes(memory_get_peak_usage());
+    $pageFooter .= "\n-->\n";
 
     // Weitere Link-Parameter
     $linkParams = '';
@@ -954,7 +966,7 @@ class immotool_functions {
    * @return string Inhalt der Datei
    */
   function read_file($file) {
-    return file_get_contents($file);
+    return (is_string($file) && is_file($file)) ? file_get_contents($file) : false;
   }
 
   /**
@@ -1033,14 +1045,16 @@ class immotool_functions {
     }
 
     // Session-ID als Cookie speichern
-    setcookie(
-        IMMOTOOL_SESSION_COOKIE_NAME, // name
-        $GLOBALS['immotool_session_id'], // value
-        time() + IMMOTOOL_SESSION_COOKIE_AGE, // expires after 30 days
-        IMMOTOOL_SESSION_COOKIE_PATH, // path
-        IMMOTOOL_SESSION_COOKIE_DOMAIN, // domain
-        IMMOTOOL_SESSION_COOKIE_SECURE   // secure
-    );
+    if (!headers_sent()) {
+      setcookie(
+          IMMOTOOL_SESSION_COOKIE_NAME, // name
+          $GLOBALS['immotool_session_id'], // value
+          time() + IMMOTOOL_SESSION_COOKIE_AGE, // expires after 30 days
+          IMMOTOOL_SESSION_COOKIE_PATH, // path
+          IMMOTOOL_SESSION_COOKIE_DOMAIN, // domain
+          IMMOTOOL_SESSION_COOKIE_SECURE   // secure
+      );
+    }
 
     // Session-Variable aus zwischengespeicherter Datei rekonstruieren
     $file = IMMOTOOL_BASE_PATH . 'sessions/' . sha1(IMMOTOOL_CRYPT_KEY . '-' . $GLOBALS['immotool_session_id']);
@@ -1080,17 +1094,7 @@ class immotool_functions {
     fclose($fh);
 
     // abgelaufene Session-Dateien entfernen
-    $files = immotool_functions::list_directory(IMMOTOOL_BASE_PATH . 'sessions');
-    foreach ($files as $file) {
-      if ($file != '.htaccess' && $file != 'index.html') {
-        $path = IMMOTOOL_BASE_PATH . 'sessions/' . $file;
-        $sessionTime = filemtime($path);
-        $minLifeTime = time() - IMMOTOOL_SESSION_COOKIE_AGE;
-        if ($sessionTime < $minLifeTime) {
-          @unlink($path);
-        }
-      }
-    }
+    immotool_functions::cleanup_sessions();
 
     return true;
   }
@@ -1129,11 +1133,141 @@ class immotool_functions {
   }
 
   /**
+   * Abgelaufene Session-Dateien entfernen.
+   * @param boolean $force Bereinigung erzwingen, auch wenn in den letzten 24 Stunden bereits eine Bereinigung durchgeführt wurde.
+   * @return array Namen der gelöschten Session-Dateien
+   */
+  function cleanup_sessions($force = false) {
+    $sessionDir = IMMOTOOL_BASE_PATH . 'sessions';
+    if (!is_dir($sessionDir))
+      return array();
+    $now = time();
+
+    // ggf. keine Bereinigung durchführen,
+    // wenn dies bereits innerhalb der letzten 24 Stunden erfolgt ist
+    $stampFile = 'sessions.stamp';
+    if ($force !== true && is_file($sessionDir . '/' . $stampFile)) {
+      $nextCleanupTime = filemtime($sessionDir . '/' . $stampFile) + 86400;
+      if ($nextCleanupTime > $now) {
+        //echo '<p>next session clean at '.date( 'd.m.Y H:i:s', $nextCleanupTime).'</p>';
+        return array();
+      }
+    }
+
+    // Vormerkung, dass eine Session-Bereinigung stattgefunden hat
+    @touch($sessionDir . '/' . $stampFile, $now);
+
+    // Dateien im Session-Verzeichnis ermitteln
+    $droppedFiles = array();
+    $minLifeTime = $now - IMMOTOOL_SESSION_COOKIE_AGE;
+    $files = immotool_functions::list_directory($sessionDir);
+    foreach ($files as $file) {
+      if ($file != '.htaccess' && $file != 'index.html' && $file != $stampFile) {
+        $path = $sessionDir . '/' . $file;
+        $sessionTime = filemtime($path);
+        if ($sessionTime < $minLifeTime) {
+          $droppedFiles[] = $file;
+          @unlink($path);
+        }
+      }
+    }
+    return $droppedFiles;
+  }
+
+  /**
    * Verarbeitung beenden.
    * @param object $setup Konfiguration
    */
   function shutdown(&$setup) {
     immotool_functions::store_session();
+  }
+
+  /**
+   * Überprüfung, ob der Kontakt-Reiter für eine Immobilie in der Exposé-Ansicht angezeigt werden soll.
+   * @param array $object Immobilie
+   * @param object $setup Exposé-Konfiguration
+   * @return bool Liefert true, wenn der Kontakt-Reiter für eine Immobilie angezeigt werden kann.
+   */
+  function can_show_expose_contact(&$object, &$setup) {
+    $tabEnabled = array_search('contact', $setup->ViewOrder) !== false;
+    $hasContactPerson = isset($object['contact']) && is_array($object['contact']) && count($object['contact']) > 0;
+    $hasContactMail = isset($object['mail']) && is_string($object['mail']) && strlen(trim($object['mail'])) > 0;
+    return $tabEnabled && (
+        ($setup->ShowContactPerson && $hasContactPerson) ||
+        ($setup->ShowContactForm && $hasContactMail)
+        );
+  }
+
+  /**
+   * Überprüfung, ob der Galerie-Reiter für eine Immobilie in der Exposé-Ansicht angezeigt werden soll.
+   * @param array $object Immobilie
+   * @param object $setup Exposé-Konfiguration
+   * @return bool Liefert true, wenn der Galerie-Reiter für eine Immobilie angezeigt werden kann.
+   */
+  function can_show_expose_gallery(&$object, &$setup) {
+    $tabEnabled = array_search('gallery', $setup->ViewOrder) !== false;
+    return $tabEnabled && isset($object['images']) && is_array($object['images']) && count($object['images']) > 0;
+  }
+
+  /**
+   * Überprüfung, ob der Karten-Reiter für eine Immobilie in der Exposé-Ansicht angezeigt werden soll.
+   * @param array $object Immobilie
+   * @param object $setup Exposé-Konfiguration
+   * @param object $mapHandler Handler zur Karten-Darstellung
+   * @return bool Liefert true, wenn der Karten-Reiter für eine Immobilie angezeigt werden kann.
+   */
+  function can_show_expose_map(&$object, &$setup, &$mapHandler) {
+    $tabEnabled = array_search('map', $setup->ViewOrder) !== false;
+    return $tabEnabled && is_object($mapHandler) && $mapHandler->canShowForObject($object);
+  }
+
+  /**
+   * Überprüfung, ob der Medien-Reiter für eine Immobilie in der Exposé-Ansicht angezeigt werden soll.
+   * @param array $object Immobilie
+   * @param object $setup Exposé-Konfiguration
+   * @return bool Liefert true, wenn der Medien-Reiter für eine Immobilie angezeigt werden kann.
+   */
+  function can_show_expose_media(&$object, &$setup) {
+    $tabEnabled = array_search('media', $setup->ViewOrder) !== false;
+    $hasMedia = isset($object['media']) && is_array($object['media']) && count($object['media']) > 0;
+    $hasLinks = isset($object['links']) && is_array($object['links']) && count($object['links']) > 0;
+    return $tabEnabled && ($hasMedia || $hasLinks);
+  }
+
+  /**
+   * Überprüfung, ob der AGB-Reiter für eine Immobilie in der Exposé-Ansicht angezeigt werden soll.
+   * @param object $setup Exposé-Konfiguration
+   * @return bool Liefert true, wenn der AGB-Reiter für eine Immobilie angezeigt werden kann.
+   */
+  function can_show_expose_terms(&$setup) {
+    $tabEnabled = array_search('terms', $setup->ViewOrder) !== false;
+    return $tabEnabled && $setup->ShowTerms;
+  }
+
+  /**
+   * Überprüfung, ob der Texte-Reiter für eine Immobilie in der Exposé-Ansicht angezeigt werden soll.
+   * @param array $objectTexts Immobilien-Texte
+   * @param object $setup Exposé-Konfiguration
+   * @param string $lang Aktuelle Sprache
+   * @return bool Liefert true, wenn der Texte-Reiter für eine Immobilie angezeigt werden kann.
+   */
+  function can_show_expose_texts(&$objectTexts, &$setup, $lang) {
+    $tabEnabled = array_search('texts', $setup->ViewOrder) !== false;
+    $hasTexts = false;
+    if (is_array($objectTexts)) {
+      if (!isset($setup->TextOrder) || !is_array($setup->TextOrder)) {
+        $hasTexts = count($objectTexts) > 1;
+      }
+      else {
+        foreach ($setup->TextOrder as $attrib) {
+          if (isset($objectTexts[$attrib][$lang])) {
+            $hasTexts = true;
+            break;
+          }
+        }
+      }
+    }
+    return $tabEnabled && $hasTexts;
   }
 
   /**
@@ -1231,6 +1365,50 @@ class immotool_functions {
       '/\'\.\/img\/([^\']*)\'/is' => '\'' . $immotoolBaseUrl . 'img/\1\'',
     );
     return preg_replace(array_keys($replacements), array_values($replacements), $body);
+  }
+
+  /**
+   * Liefert die lesbare Ausgabe eines Attribut-Wertes.
+   * @param string $group Name der Attribut-Gruppe
+   * @param string $attrib Name des Attributes
+   * @param array $value Attribut-Werte
+   * @param array $translations Übersetzungen in der angeforderten Sprache
+   * @param string $lang Sprache
+   * @return string lesbare Ausgabe des Attribut-Wertes
+   */
+  function write_attribute_value($group, $attrib, &$value, &$translations, $lang) {
+    if (!is_array($value)) {
+      return null;
+    }
+
+    $txt = null;
+
+    // ggf. individuellen Attribut-Wert aus der myconfig.php ermitteln
+    if (is_callable(array('immotool_myconfig', 'write_attribute_value'))) {
+      $txt = immotool_myconfig::write_attribute_value($group, $attrib, $value, $translations, $lang);
+    }
+
+    // ggf. den Texte "ab sofort" ausgeben,
+    // wenn der Verfügbarkeits-Beginn in der Vergangenheit liegt
+    if (is_null($txt) && $group == 'administration' && $attrib == 'availability_begin_date') {
+      $stamp = (isset($value['value'])) ? $value['value'] : null;
+      if (is_numeric($stamp) && $stamp <= time()) {
+        $txt = (isset($translations['labels']['fromNowOn'])) ?
+            $translations['labels']['fromNowOn'] : null;
+      }
+    }
+
+    // ggf. Attribut-Wert zur angeforderten Sprache ermitteln
+    if (is_null($txt)) {
+      $txt = (isset($value[$lang])) ? $value[$lang] : null;
+    }
+
+    // ggf. den unformatierten Attribut-Wert ermitteln
+    if (is_null($txt)) {
+      $txt = (isset($value['value'])) ? $value['value'] : null;
+    }
+
+    return $txt;
   }
 
   /**
