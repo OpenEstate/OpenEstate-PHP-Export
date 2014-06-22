@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.5.31');
+define('IMMOTOOL_SCRIPT_VERSION', '1.5.32');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 
@@ -311,7 +311,8 @@ class immotool_functions {
     if (strtoupper(trim($sourceEncoding)) == strtoupper(trim($targetEncoding))) {
       return $input;
     }
-    return iconv(strtoupper(trim($sourceEncoding)), strtoupper(trim($targetEncoding)) . '//TRANSLIT', $input);
+    return iconv(
+        strtoupper(trim($sourceEncoding)), strtoupper(trim($targetEncoding)) . '//TRANSLIT', $input);
   }
 
   /**
@@ -877,9 +878,24 @@ class immotool_functions {
       $filterObj = immotool_functions::get_filter($filter);
       if ($filterObj == null || !$filterObj->readOrRebuild($maxLifeTime))
         continue;
-      $items = $filterObj->getItems($filterValue);
-      if (is_array($items)) {
-        $ids = array_values(array_intersect($ids, $items));
+      $filterItems = null;
+      foreach (explode(',', $filterValue) as $filterVal) {
+        $filterVal = trim($filterVal);
+        if (strlen($filterVal) == 0)
+          continue;
+        $items = $filterObj->getItems($filterVal);
+        if (!is_array($items))
+          continue;
+        if ($filterItems == null) {
+          $filterItems = $items;
+          continue;
+        }
+        foreach ($items as $item) {
+          $filterItems[] = $item;
+        }
+      }
+      if (is_array($filterItems)) {
+        $ids = array_values(array_intersect($ids, $filterItems));
       }
     }
 
@@ -1007,6 +1023,24 @@ class immotool_functions {
         $src = str_replace('{.' . $varName . '}', '', $src);
       $src = str_replace('{' . $varName . '}', $value, $src);
     }
+  }
+
+  /**
+   * Ermittlung des Textes, der zwischen zwei Begrenzungstexten steht.
+   * @param string $string Eingabetext
+   * @param string $start Begrenzungstext am Anfang
+   * @param string $start Begrenzungstext am Ende
+   * @return string Textausschnitt des Eingabetextes,
+   *   der sich zwischen den beiden Begrenzungstexten befindet.
+   */
+  function get_string_between($string, $start, $end) {
+    $string = " " . $string;
+    $ini = strpos($string, $start);
+    if ($ini == 0)
+      return "";
+    $ini += strlen($start);
+    $len = strpos($string, $end, $ini) - $ini;
+    return substr($string, $ini, $len);
   }
 
   /**

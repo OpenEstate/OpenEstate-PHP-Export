@@ -148,6 +148,8 @@ $listing = immotool_functions::read_template('listing.html', $setup->TemplateFol
 $favIds = ($view == 'fav') ? immotool_functions::get_session_value('favs', array()) : null;
 $result = immotool_functions::list_objects($page, $elementsPerPage, $orderBy, $orderDir, $filters, $totalCount, $lang, $setup->CacheLifeTime, $favIds);
 $hiddenAttribs = (isset($setup->HiddenAttributes) && is_array($setup->HiddenAttributes)) ? $setup->HiddenAttributes : array();
+$preferredAttribs = (isset($setup->PreferredAttributes) && is_array($setup->PreferredAttributes)) ? $setup->PreferredAttributes : array();
+$attribsPerGroup = (isset($setup->AttributesPerGroup) && is_numeric($setup->AttributesPerGroup) && $setup->AttributesPerGroup > 0) ? $setup->AttributesPerGroup : 3;
 $counter = 0;
 foreach ($result as $resultId) {
   $counter++;
@@ -218,17 +220,29 @@ foreach ($result as $resultId) {
       immotool_functions::replace_var('IMAGE', null, $listingEntry);
   }
 
-  // Die ersten drei Attribute jeder Gruppe darstellen
+  // Die ersten X Attribute jeder Gruppe darstellen
   foreach (array_keys($object['attributes']) as $group) {
-    // Namen der darstellbaren Attribute ermitteln
-    $attribs = array_keys($object['attributes'][$group]);
 
-    // ignorierte Attribute nicht darstellen
-    foreach ($attribs as $pos => $attrib) {
+    // Namen der darstellbaren Attribute ermitteln
+    $attribs = array();
+    foreach ($preferredAttribs as $attribKey) {
+      //if (array_search($attribKey, $hiddenAttribs)!==false) continue;
+      $attrib = explode('.', strtolower(trim($attribKey)));
+      if (count($attrib) != 2)
+        continue;
+      if ($attrib[0] != $group)
+        continue;
+      if (!isset($object['attributes'][$group][$attrib[1]]))
+        continue;
+      $attribs[] = $attrib[1];
+    }
+    foreach (array_keys($object['attributes'][$group]) as $attrib) {
       $attribKey = strtolower(trim($group) . '.' . trim($attrib));
-      if (array_search($attribKey, $hiddenAttribs) !== false) {
-        unset($attribs[$pos]);
-      }
+      if (array_search($attribKey, $hiddenAttribs) !== false)
+        continue;
+      if (array_search($attrib, $attribs) !== false)
+        continue;
+      $attribs[] = $attrib;
     }
 
     // HACK: Warmmiete & Kaltmiete nicht gemeinsam darstellen
@@ -247,10 +261,10 @@ foreach ($result as $resultId) {
       }
     }
 
-    // Darstellung der ersten drei Attribute pro Gruppe
+    // Darstellung der ersten X Attribute pro Gruppe
     // Wenn keine Attribute hinterlegt sind, werden die Platzhalter geleert.
     $attribs = array_values($attribs);
-    for ($i = 1; $i <= 3; $i++) {
+    for ($i = 1; $i <= $attribsPerGroup; $i++) {
       $pos = strpos($listingEntry, '{' . strtoupper($group) . '_' . $i . '}');
       if ($pos === false) {
         break;

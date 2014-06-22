@@ -61,7 +61,7 @@ class immotool_setup {
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $ShowLanguageSelection = false;
+  var $ShowLanguageSelection = true;
 
   /**
    * Verwendeter Zeichensatz für erzeugte Inhalte.
@@ -307,8 +307,22 @@ class immotool_setup_index extends immotool_setup {
   var $GalleryImageSize = array(150, 150);
 
   /**
-   * Auflistung von Attributen, die in der Immobilien-Übersicht grundsätzlich
-   * nicht dargestellt werden sollen.
+   * Anzahl der Attribute, die pro Attributgruppe für eine Immobilie in der
+   * Immobilien-Übersicht dargestellt werden.
+   * @var int
+   */
+  var $AttributesPerGroup = 2;
+
+  /**
+   * Auflistung von Attributen, die in der Immobilien-Übersicht bevorzugt
+   * dargestellt werden sollen.
+   * @var array
+   */
+  var $PreferredAttributes = array();
+
+  /**
+   * Auflistung von Attributen, die in der Immobilien-Übersicht nicht
+   * dargestellt werden sollen.
    * @var array
    */
   var $HiddenAttributes = array('preise.sonderangebot', 'preise.courtage_aussen', 'preise.courtage_aussen_tax');
@@ -391,7 +405,7 @@ class immotool_setup_expose extends immotool_setup {
    * Reihenfolge der dargestellten Attribut-Gruppen im Reiter 'Details'.
    * @var array
    */
-  var $DetailsOrder = array('preise', 'flaechen', 'ausstattung', 'umfeld', 'zustand', 'verwaltung');
+  var $DetailsOrder = array('preise', 'flaechen', 'ausstattung', 'umfeld', 'zustand', 'verwaltung', 'energiepass');
 
   /**
    * Reihenfolge der dargestellten Beschreibungstexte im Reiter 'Beschreibung'.
@@ -426,6 +440,20 @@ class immotool_setup_expose extends immotool_setup {
    * @var array
    */
   var $MetaDescriptionTexts = array('kurz_beschr', 'objekt_beschr');
+
+  /**
+   * Auflistung von Attributen, die in der Exposé-Ansicht im Titelbereich
+   * dargestellt werden sollen.
+   * @var array
+   */
+  var $TitleAttributes = array();
+
+  /**
+   * Auflistung von Attributen, die in der Exposé-Ansicht an oberster Stelle
+   * innerhalb ihrer Gruppe dargestellt werden sollen.
+   * @var array
+   */
+  var $PreferredAttributes = array();
 
   /**
    * Auflistung von Attributen, die in der Exposé-Ansicht grundsätzlich
