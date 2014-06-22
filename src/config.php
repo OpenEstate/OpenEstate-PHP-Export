@@ -307,8 +307,22 @@ class immotool_setup_index extends immotool_setup {
   var $GalleryImageSize = array(150, 150);
 
   /**
-   * Auflistung von Attributen, die in der Immobilien-Übersicht grundsätzlich
-   * nicht dargestellt werden sollen.
+   * Anzahl der Attribute, die pro Attributgruppe für eine Immobilie in der
+   * Immobilien-Übersicht dargestellt werden.
+   * @var int
+   */
+  var $AttributesPerGroup = 2;
+
+  /**
+   * Auflistung von Attributen, die in der Immobilien-Übersicht bevorzugt
+   * dargestellt werden sollen.
+   * @var array
+   */
+  var $PreferredAttributes = array();
+
+  /**
+   * Auflistung von Attributen, die in der Immobilien-Übersicht nicht
+   * dargestellt werden sollen.
    * @var array
    */
   var $HiddenAttributes = array('prices.special_offer', 'prices.agent_fee', 'prices.agent_fee_including_vat');
@@ -397,7 +411,7 @@ class immotool_setup_expose extends immotool_setup {
    * Reihenfolge der dargestellten Attribut-Gruppen im Reiter 'Details'.
    * @var array
    */
-  var $DetailsOrder = array('prices', 'measures', 'features', 'surroundings', 'condition', 'administration');
+  var $DetailsOrder = array('prices', 'measures', 'features', 'surroundings', 'condition', 'administration', 'energy_certificate');
 
   /**
    * Reihenfolge der dargestellten Beschreibungstexte im Reiter 'Beschreibung'.
@@ -432,6 +446,20 @@ class immotool_setup_expose extends immotool_setup {
    * @var array
    */
   var $MetaDescriptionTexts = array('short_description', 'detailled_description');
+
+  /**
+   * Auflistung von Attributen, die in der Exposé-Ansicht im Titelbereich
+   * dargestellt werden sollen.
+   * @var array
+   */
+  var $TitleAttributes = array();
+
+  /**
+   * Auflistung von Attributen, die in der Exposé-Ansicht an oberster Stelle
+   * innerhalb ihrer Gruppe dargestellt werden sollen.
+   * @var array
+   */
+  var $PreferredAttributes = array();
 
   /**
    * Auflistung von Attributen, die in der Exposé-Ansicht grundsätzlich
