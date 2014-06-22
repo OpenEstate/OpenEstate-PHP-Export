@@ -18,7 +18,6 @@
 
 /**
  * Website-Export, Skalierung & Beschneidung der Objekt-Bilder auf eine vorgegebene Größe.
- * $Id: img.php 944 2011-06-30 19:53:18Z andy $
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2011, OpenEstate.org
@@ -31,8 +30,10 @@ if (!defined('IMMOTOOL_BASE_PATH'))
   define('IMMOTOOL_BASE_PATH', '');
 if (!extension_loaded('gd'))
   die('It seems like GD is not installed!');
+ob_start();
 include(IMMOTOOL_BASE_PATH . 'config.php');
 include(IMMOTOOL_BASE_PATH . 'include/functions.php');
+ob_end_clean();
 
 // Konfiguration ermitteln
 $setup = new immotool_setup();
