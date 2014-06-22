@@ -32,7 +32,7 @@ require_once( IMMOTOOL_BASE_PATH . 'include/class.order.php' );
 class ImmoToolOrder_area extends ImmoToolOrder {
 
   // Diese Flächenattribute werden zur Ermittlung des Sortierungswertes herangezogen.
-  var $lookupFields = array('gesamtflaeche', 'wohnflaeche', 'grundstuecksflaeche', 'lagerflaeche', 'nutzflaeche');
+  var $lookupFields = array('total_area', 'residential_area', 'plot_area', 'storage_area', 'usable_area');
 
   /**
    * Name des Filters.
@@ -55,8 +55,8 @@ class ImmoToolOrder_area extends ImmoToolOrder {
    */
   function sort_field(&$object, $lang) {
     foreach ($this->lookupFields as $field) {
-      $value = (isset($object['attributes']['flaechen'][$field]['value'])) ?
-          $object['attributes']['flaechen'][$field]['value'] : null;
+      $value = (isset($object['attributes']['measures'][$field]['value'])) ?
+          $object['attributes']['measures'][$field]['value'] : null;
       if (is_numeric($value))
         return $value;
     }

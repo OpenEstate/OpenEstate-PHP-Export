@@ -51,8 +51,8 @@ class ImmoToolOrder_postal extends ImmoToolOrder {
    * Liefert das Sortierungsfeld eines Objektes.
    */
   function sort_field(&$object, $lang) {
-    return (isset($object['adress']['postal'])) ?
-        $object['adress']['postal'] : null;
+    return (isset($object['address']['postal'])) ?
+        $object['address']['postal'] : null;
   }
 
   /**

@@ -51,8 +51,8 @@ class ImmoToolOrder_rooms extends ImmoToolOrder {
    * Liefert das Sortierungsfeld eines Objektes.
    */
   function sort_field(&$object, $lang) {
-    return (isset($object['attributes']['flaechen']['anz_zimmer']['value'])) ?
-        $object['attributes']['flaechen']['anz_zimmer']['value'] : null;
+    return (isset($object['attributes']['measures']['count_rooms']['value'])) ?
+        $object['attributes']['measures']['count_rooms']['value'] : null;
   }
 
   /**
