@@ -80,6 +80,15 @@ class immotool_setup {
   var $ContentType = 'text/html; charset=UTF-8';
 
   /**
+   * Verzeichnis, aus welchem die Templates bevorzugt geladen werden.
+   * Der angegebene Name muss als Unterverzeichnis im templates-Verzeichnis
+   * vorhanden sein, welches die individuell angepassten Template-Dateien
+   * enthält.
+   * @var string
+   */
+  var $TemplateFolder = 'default';
+
+  /**
    * Diese E-Mailadresse wird als Absender in den versendeten E-Mails verwendet.
    * @var string
    */
@@ -210,6 +219,13 @@ class immotool_setup {
    * @var bool
    */
   var $DynamicImageScaling = true;
+
+  /**
+   * Vormerkungen von Immobilien aktivieren.
+   * Erlaubt ist true (=ja) oder false (=nein)
+   * @var bool
+   */
+  var $HandleFavourites = true;
 
 }
 
@@ -345,6 +361,18 @@ class immotool_setup_expose extends immotool_setup {
   var $GalleryHandler = 'colorbox';
 
   /**
+   * Einbindung einer Umkreiskarte.
+   * @var string
+   */
+  var $MapHandler = 'osm';
+
+  /**
+   * Einbindung externer Videos.
+   * @var string
+   */
+  var $VideoHandler = 'default';
+
+  /**
    * Art der Darstellung.
    * Erlaubt ist 'tabular' (=Reiterdarstellung) oder 'listing' (=hintereinander)
    * @var string
@@ -355,7 +383,19 @@ class immotool_setup_expose extends immotool_setup {
    * Reihenfolge der Darstellung.
    * @var array
    */
-  var $ViewOrder = array('details', 'texts', 'gallery', 'media', 'contact', 'terms');
+  var $ViewOrder = array('details', 'texts', 'gallery', 'map', 'media', 'contact', 'terms');
+
+  /**
+   * Reihenfolge der dargestellten Attribut-Gruppen im Reiter 'Details'.
+   * @var array
+   */
+  var $DetailsOrder = array('prices', 'measures', 'features', 'surroundings', 'condition', 'administration');
+
+  /**
+   * Reihenfolge der dargestellten Beschreibungstexte im Reiter 'Beschreibung'.
+   * @var array
+   */
+  var $TextOrder = array('detailled_description', 'location_description', 'feature_description', 'price_description', 'agent_fee_information', 'additional_information', 'short_description');
 
   /**
    * Größe des verkleinerten Titelbildes in der Exposéansicht (in Pixel).
@@ -469,11 +509,23 @@ class immotool_setup_feeds extends immotool_setup {
   var $AtomFeedLimit = 15;
 
   /**
+   * Titelbild der Immobilie im Atom-Feed anzeigen.
+   * @var bool
+   */
+  var $AtomFeedWithImage = true;
+
+  /**
    * Anzahl maximaler Einträge im RSS-Feed.
    * Zur unlimitierten Darstellung: $RssFeedLimit = null;
    * @var int
    */
   var $RssFeedLimit = 15;
+
+  /**
+   * Titelbild der Immobilie im RSS-Feed anzeigen.
+   * @var bool
+   */
+  var $RssFeedWithImage = true;
 
   /**
    * Objekt-Nummer an Stelle der Objekt-ID bei Feed-Exporten veröffentlichen.
@@ -485,13 +537,13 @@ class immotool_setup_feeds extends immotool_setup {
    * Art der Sortierung in den erzeugten Feeds.
    * @var string
    */
-  var $OrderBy = null;
+  var $OrderBy = 'lastmod';
 
   /**
    * Richtung der Sortierung in den erzeugten Feeds.
    * 'asc' für aufsteigend, 'desc' für absteigend
    * @var string
    */
-  var $OrderDir = null;
+  var $OrderDir = 'desc';
 
 }

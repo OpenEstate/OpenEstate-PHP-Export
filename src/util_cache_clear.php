@@ -26,8 +26,9 @@
 
 // Initialisierung
 define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH'))
+if (!defined('IMMOTOOL_BASE_PATH')) {
   define('IMMOTOOL_BASE_PATH', '');
+}
 include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 define('CACHE_PATH', IMMOTOOL_BASE_PATH . 'cache');
 
@@ -43,9 +44,13 @@ if (!is_array($files) || count($files) <= 0) {
 else {
   echo '<ul>';
   foreach ($files as $file) {
-    $path = CACHE_PATH . '/' . $file;
-    if (!is_file($path))
+    if ($file == 'index.html' || $file == '.htaccess') {
       continue;
+    }
+    $path = CACHE_PATH . '/' . $file;
+    if (!is_file($path)) {
+      continue;
+    }
     echo '<li>';
     echo '<b>' . $file . '</b>';
     echo ' &rarr; ';

@@ -97,12 +97,12 @@
           <table cellpadding="0" cellspacing="0">
             <tr>
               <td id="openestate_expose_contact_form_captcha_col1">
-<img src="captcha.php?{PARAM_CAPTCHA_SESSION}={SESSION_NAME}" alt="" id="openestate_captcha_img" /><br/>
+<img src="captcha.php" alt="" id="openestate_captcha_img" /><br/>
 <script type="text/javascript">
 <!--
 function refresh_captcha()
 {
-  document.getElementById('openestate_captcha_img').src='captcha.php?{PARAM_CAPTCHA_SESSION}={SESSION_NAME}&time='+new Date().getTime();
+  document.getElementById('openestate_captcha_img').src='captcha.php?time='+new Date().getTime();
   return false;
 }
 document.write( '&nbsp;<a href="#" onclick="return refresh_captcha();">{CONTACT_FORM_CAPTCHA_REFRESH}</a>' );

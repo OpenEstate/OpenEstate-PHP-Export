@@ -28,9 +28,32 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.6.19');
+define('IMMOTOOL_SCRIPT_VERSION', '1.6.23');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
+
+if (!defined('IMMOTOOL_CRYPT_KEY'))
+  define('IMMOTOOL_CRYPT_KEY', 'ZtKMCpjIamND3MN3cx8I1pFGZ1Pul4h4pnujtUlnCUDkTMfXPO');
+
+// Session-Cookie
+if (!defined('IMMOTOOL_SESSION_COOKIE_NAME'))
+  define('IMMOTOOL_SESSION_COOKIE_NAME', 'openestate_sid');
+if (!defined('IMMOTOOL_SESSION_COOKIE_PATH'))
+  define('IMMOTOOL_SESSION_COOKIE_PATH', '/');
+if (!defined('IMMOTOOL_SESSION_COOKIE_DOMAIN'))
+  define('IMMOTOOL_SESSION_COOKIE_DOMAIN', '');
+if (!defined('IMMOTOOL_SESSION_COOKIE_SECURE'))
+  define('IMMOTOOL_SESSION_COOKIE_SECURE', false);
+if (!defined('IMMOTOOL_SESSION_COOKIE_AGE'))
+  define('IMMOTOOL_SESSION_COOKIE_AGE', (60 * 60 * 24 * 30)); // 30 Tage
+
+
+// Caching
+if (!defined('IMMOTOOL_OBJECTS_CACHE_SIZE'))
+  define('IMMOTOOL_OBJECTS_CACHE_SIZE', '10');
+if (!defined('IMMOTOOL_TEXTS_CACHE_SIZE'))
+  define('IMMOTOOL_TEXTS_CACHE_SIZE', '10');
+
 // Parameter, allgemein
 if (!defined('IMMOTOOL_PARAM_LANG'))
   define('IMMOTOOL_PARAM_LANG', 'lang');
@@ -75,6 +98,8 @@ if (!defined('IMMOTOOL_PARAM_EXPOSE_CAPTCHA'))
 
 $GLOBALS['immotool_objects'] = array();
 $GLOBALS['immotool_texts'] = array();
+$GLOBALS['immotool_session'] = array();
+$GLOBALS['immotool_session_id'] = null;
 
 if (is_file(IMMOTOOL_BASE_PATH . 'myconfig.php'))
   include( IMMOTOOL_BASE_PATH . 'myconfig.php' );
@@ -86,28 +111,27 @@ class immotool_functions {
 
   /**
    * Erzeugung einer Seite.
+   * @param object $setup Konfiguration
    * @param string $pageId ID der Seite
    * @param string $languageCode Gewählte Sprache
    * @param string $mainTitle Haupttitel
    * @param string $pageTitle Untertitel
    * @param string $pageHeader HTML-Code, der im head-Bereich der Seite eingefügt wird.
    * @param string $pageContent HTML-Code, der im body-Bereich der Seite eingefügt wird.
-   * @param string $buildTime Dauer der Erzeugung
-   * @param string $addonStylesheet URL des zusätzlichen Stylesheets.
-   * @param string $showLanguageSelection Sprachauswahl darstellen.
+   * @param int $startupTime Start-Zeitpunkt der Skript-Ausführung
    * @param string $metaRobots Als Meta-Tag dargestellte Robots-Einstellungen
-   * @param string $linkParam zusätzliche Parameter für Links, z.B. in der Sprachauswahl
    * @param string $metaKeywords Als Meta-Tag dargestellte Keywords
    * @param string $metaDescription Als Meta-Tag dargestellte Beschreibung
+   * @param string $linkParam zusätzliche Parameter für Links, z.B. in der Sprachauswahl
    * @return string HTML-Code der erzeugten Seite
    */
-  function build_page($pageId, $languageCode, $mainTitle, $pageTitle, $pageHeader, &$pageContent, $buildTime, $addonStylesheet, $showLanguageSelection = true, $metaRobots = 'index,follow', $linkParam = '', $metaKeywords = null, $metaDescription = null) {
+  function build_page(&$setup, $pageId, $languageCode, $mainTitle, $pageTitle, $pageHeader, &$pageContent, $startupTime, $metaRobots = 'index,follow', $metaKeywords = null, $metaDescription = null, $linkParam = '') {
 
     $page = null;
     if (defined('IMMOTOOL_CAT'))
-      $page = immotool_functions::read_template('global_' . IMMOTOOL_CAT . '.html');
+      $page = immotool_functions::read_template('global_' . IMMOTOOL_CAT . '.html', $setup->TemplateFolder);
     if (!is_string($page))
-      $page = immotool_functions::read_template('global.html');
+      $page = immotool_functions::read_template('global.html', $setup->TemplateFolder);
     if (!is_string($pageHeader))
       $pageHeader = '';
     if (strlen($pageHeader) > 0)
@@ -116,7 +140,7 @@ class immotool_functions {
     // Sprachauswahl
     $languages = immotool_functions::get_language_codes();
     $languageSelection = null;
-    if ($showLanguageSelection === true) {
+    if ($setup->ShowLanguageSelection === true) {
       $languageSelection = '';
       if (count($languages) > 1) {
         $languageSelection .= '<ul>';
@@ -149,10 +173,11 @@ class immotool_functions {
     }
 
     // zusätzlicher Stylesheet
-    if (is_string($addonStylesheet) && strlen(trim($addonStylesheet)) > 0) {
-      if (strlen($pageHeader) > 0)
+    if (is_string($setup->AdditionalStylesheet) && strlen(trim($setup->AdditionalStylesheet)) > 0) {
+      if (strlen($pageHeader) > 0) {
         $pageHeader .= "\n";
-      $pageHeader .= '<link rel="stylesheet" href="' . htmlentities(trim($addonStylesheet)) . '" />' . "\n";
+      }
+      $pageHeader .= '<link rel="stylesheet" href="' . htmlentities(trim($setup->AdditionalStylesheet)) . '" />' . "\n";
     }
 
     // RSS- & Atom-Feeds ggf. einbinden
@@ -165,7 +190,9 @@ class immotool_functions {
       $pageHeader .= '<link rel="alternate" type="application/atom+xml" title="Atom-Feed" href="feed_atom.php?' . IMMOTOOL_PARAM_LANG . '=' . $languageCode . '" />' . "\n";
 
     // Footer
+    $buildTime = (is_numeric($startupTime)) ? microtime() - $startupTime : 0;
     $pageFooter = 'v' . IMMOTOOL_SCRIPT_VERSION . ', built in ' . number_format($buildTime, '3') . 's';
+    //$pageFooter .= '<br/>memory: ' . immotool_functions::write_bytes( memory_get_usage() ) . ' / ' . immotool_functions::write_bytes( memory_get_peak_usage() );
     $pageFooter .= '<br/>powered by <a href="http://openestate.org" target="_blank">OpenEstate</a>';
 
     // Weitere Link-Parameter
@@ -189,11 +216,9 @@ class immotool_functions {
       '{CATEGORY}' => (defined('IMMOTOOL_CAT')) ? IMMOTOOL_CAT : '',
       '{ROBOTS}' => $metaRobots, // HACK: Abwärtskompatiblität, kann demnächst entfernt werden
       '{DEFAULT_LINK_PARAMS}' => $linkParams,
-      '{SESSION_NAME}' => session_name(),
       '{PARAM_LANG}' => IMMOTOOL_PARAM_LANG,
       '{PARAM_FAV}' => IMMOTOOL_PARAM_FAV,
       '{PARAM_CAT}' => IMMOTOOL_PARAM_CAT,
-      '{PARAM_CAPTCHA_SESSION}' => IMMOTOOL_PARAM_CAPTCHA_SESSION,
       '{PARAM_INDEX_PAGE}' => IMMOTOOL_PARAM_INDEX_PAGE,
       '{PARAM_INDEX_RESET}' => IMMOTOOL_PARAM_INDEX_RESET,
       '{PARAM_INDEX_ORDER}' => IMMOTOOL_PARAM_INDEX_ORDER,
@@ -209,6 +234,33 @@ class immotool_functions {
       '{PARAM_EXPOSE_CAPTCHA}' => IMMOTOOL_PARAM_EXPOSE_CAPTCHA,
     );
     return str_replace(array_keys($replacements), array_values($replacements), $page);
+  }
+
+  /**
+   * Darstellung einer Fehlerseite.
+   * @param string $errorMessage Fehlermeldung
+   * @param string $languageCode Gewählte Sprache
+   * @param int $startupTime Start-Zeitpunkt der Skript-Ausführung
+   * @param object $setup Konfiguration
+   * @param array $translations Übersetzungen
+   */
+  function print_error($errorMessage, $languageCode, $startupTime, &$setup, &$translations) {
+    $pageTitle = (isset($translations['errors']['warning'])) ? $translations['errors']['warning'] : 'Warning!';
+    $mainTitle = (isset($translations['errors']['anErrorOccured'])) ? $translations['errors']['anErrorOccured'] : 'An error occured!';
+    $pageHeader = '';
+    $pageContent = '<div id="openestate_error"><h1>' . $mainTitle . '</h1>' . $errorMessage . '</div>';
+    $metaRobots = 'noindex,nofollow';
+    $setup->ShowLanguageSelection = false;
+
+    $output = immotool_functions::build_page($setup, 'error', $languageCode, $mainTitle, $pageTitle, $pageHeader, $pageContent, $startupTime, $metaRobots);
+    if (is_string($setup->Charset) && strlen(trim($setup->Charset)) > 0) {
+      $output = immotool_functions::encode($output, $setup->Charset);
+    }
+    if (is_string($setup->ContentType) && strlen(trim($setup->ContentType)) > 0) {
+      header('Content-Type: ' . $setup->ContentType);
+    }
+    echo $output;
+    immotool_functions::shutdown($setup);
   }
 
   /**
@@ -426,6 +478,22 @@ class immotool_functions {
   }
 
   /**
+   * Erzeugt eine Umkreiskarten-Instanz.
+   * @param string $name Name der Umkreiskarte
+   * @return object Umkreiskarten-Objekt
+   */
+  function get_map($name) {
+    $file = IMMOTOOL_BASE_PATH . 'include/class.map_' . strtolower($name) . '.php';
+    if (!is_file($file))
+      return null;
+    $mapClass = 'ImmoToolMap_' . strtolower($name);
+    if (!class_exists($mapClass))
+      require_once( $file );
+    eval('$map = new ' . $mapClass . '();');
+    return $map;
+  }
+
+  /**
    * Liefert die Daten eines Objektes.
    * @param string $id ID des Objektes
    * @return array mit Objektdaten, oder null wenn unbekannt
@@ -439,6 +507,11 @@ class immotool_functions {
       return null;
     }
     if (!isset($GLOBALS['immotool_objects'][$id]) || !is_array($GLOBALS['immotool_objects'][$id])) {
+      $max = (int) IMMOTOOL_OBJECTS_CACHE_SIZE;
+      while (count($GLOBALS['immotool_objects']) >= $max) {
+        $keys = array_keys($GLOBALS['immotool_objects']);
+        unset($GLOBALS['immotool_objects'][$keys[0]]);
+      }
       include($file);
       if (!isset($GLOBALS['immotool_objects'][$id]) || !is_array($GLOBALS['immotool_objects'][$id])) {
         return null;
@@ -508,12 +581,33 @@ class immotool_functions {
       return null;
     }
     if (!isset($GLOBALS['immotool_texts'][$id]) || !is_array($GLOBALS['immotool_texts'][$id])) {
+      $max = (int) IMMOTOOL_TEXTS_CACHE_SIZE;
+      while (count($GLOBALS['immotool_texts']) >= $max) {
+        $keys = array_keys($GLOBALS['immotool_texts']);
+        unset($GLOBALS['immotool_texts'][$keys[0]]);
+      }
       include($file);
       if (!isset($GLOBALS['immotool_texts'][$id]) || !is_array($GLOBALS['immotool_texts'][$id])) {
         return null;
       }
     }
     return $GLOBALS['immotool_texts'][$id];
+  }
+
+  /**
+   * Erzeugt eine Video-Instanz.
+   * @param string $name Name des Video-Handlers
+   * @return object Video-Handler
+   */
+  function get_video($name) {
+    $file = IMMOTOOL_BASE_PATH . 'include/class.video_' . strtolower($name) . '.php';
+    if (!is_file($file))
+      return null;
+    $videoClass = 'ImmoToolVideo_' . strtolower($name);
+    if (!class_exists($videoClass))
+      require_once( $file );
+    eval('$video = new ' . $videoClass . '();');
+    return $video;
   }
 
   /**
@@ -541,30 +635,28 @@ class immotool_functions {
    * @param string $myconfigMethod Name der einzubindenden Funktion aus myconfig.php
    */
   function init(&$setup, $myconfigMethod = null) {
-    // Session initialisieren
-    if (!isset($_SESSION['immotool']) || !is_array($_SESSION['immotool'])) {
-      $_SESSION['immotool'] = array();
-    }
-
     // ggf. Konfiguration mit myconfig.php überschreiben
-    if (is_string($myconfigMethod) && is_callable(array('immotool_myconfig', $myconfigMethod))) {
-      eval('immotool_myconfig::' . $myconfigMethod . '( $setup );');
-    }
+    immotool_functions::init_config($setup, $myconfigMethod);
+
+    // Session initialisieren
+    immotool_functions::init_session();
 
     // ggf. die gewählte Kategorie übernehmen
     //if (is_callable(array('immotool_setup','Categories'), true)) die( 'CALLABLE' );
     //echo '<pre>'; print_r($setup); echo '</pre>';
     if (is_callable(array('immotool_setup', 'Categories'), true) && is_array($setup->Categories) && count($setup->Categories) > 0) {
       $cat = (isset($_REQUEST[IMMOTOOL_PARAM_CAT])) ? $_REQUEST[IMMOTOOL_PARAM_CAT] : null;
-      if (!is_string($cat) || array_search($cat, $setup->Categories) === false)
-        $cat = (isset($_SESSION['immotool']['cat'])) ? $_SESSION['immotool']['cat'] : $setup->Categories[0];
+      if (!is_string($cat) || array_search($cat, $setup->Categories) === false) {
+        $cat = immotool_functions::get_session_value('cat', $setup->Categories[0]);
+      }
+
       //die( 'Category: ' . $cat );
       if (array_search($cat, $setup->Categories) !== false) {
-        $_SESSION['immotool']['cat'] = $cat;
+        immotool_functions::put_session_value('cat', $cat);
         if (!defined('IMMOTOOL_CAT')) {
           define('IMMOTOOL_CAT', $cat);
 
-          // HACK: bei geänderter Kategorie ggf. die Konfiguration nochmals mit myconfig.php überschreiben
+          // Bei geänderter Kategorie ggf. die Konfiguration nochmals aus der myconfig.php initialisieren
           if (is_string($myconfigMethod) && is_callable(array('immotool_myconfig', $myconfigMethod))) {
             eval('immotool_myconfig::' . $myconfigMethod . '( $setup );');
           }
@@ -572,38 +664,23 @@ class immotool_functions {
       }
     }
 
-    // vorgemerkte Inserate ermitteln
-    if (!isset($_SESSION['immotool']['favs']) || !is_array($_SESSION['immotool']['favs'])) {
-      $_SESSION['immotool']['favs'] = array();
-
-      // Favoriten eventuell aus Cookie ermitteln
-      if (isset($_COOKIE['immotool_favs']) && is_string($_COOKIE['immotool_favs'])) {
-        foreach (explode(',', $_COOKIE['immotool_favs']) as $fav)
-          $_SESSION['immotool']['favs'][] = intval($fav);
+    // Inserate ggf. vormerken
+    if ($setup->HandleFavourites) {
+      $favs = immotool_functions::get_session_value('favs', array());
+      $favId = (isset($_REQUEST[IMMOTOOL_PARAM_FAV])) ? $_REQUEST[IMMOTOOL_PARAM_FAV] : null;
+      if (is_string($favId) && preg_match('/^\w*/i', $favId) === 1) {
+        $pos = array_search($favId, $favs);
+        if ($pos === false) {
+          $favs[] = $favId;
+        }
+        else {
+          unset($favs[$pos]);
+        }
+        immotool_functions::put_session_value('favs', $favs);
       }
     }
 
-    // Inserate ggf. vormerken
-    $favId = (isset($_REQUEST[IMMOTOOL_PARAM_FAV])) ? $_REQUEST[IMMOTOOL_PARAM_FAV] : null;
-    if (is_string($favId) && preg_match('/^\w*/i', $favId) === 1) {
-      $pos = array_search($favId, $_SESSION['immotool']['favs']);
-      if ($pos === false)
-        $_SESSION['immotool']['favs'][] = $favId;
-      else
-        unset($_SESSION['immotool']['favs'][$pos]);
-
-      setcookie(
-          'immotool_favs', // name
-          implode(',', $_SESSION['immotool']['favs']), // value
-          time() + 60 * 60 * 24 * 365, // expires after 30 days
-          '/', // path
-          '', // domain
-          false                                            // secure
-      );
-    }
-
     // ggf. die Standard-Zeitzone für Datumsformatierungen setzen
-    //if (is_callable(array('immotool_setup','Timezone'), true)) die( 'CALLABLE' );
     if (is_callable(array('immotool_setup', 'Timezone'), true) && function_exists('date_default_timezone_set')) {
       $tz = (isset($_SERVER['TZ'])) ? $_SERVER['TZ'] : null;
       if (is_string($setup->Timezone) && strlen($setup->Timezone) > 0)
@@ -611,6 +688,18 @@ class immotool_functions {
       if (is_string($tz) && strlen($tz) > 0) {
         date_default_timezone_set($tz);
       }
+    }
+  }
+
+  /**
+   * Konfiguration initialisieren.
+   * @param object $setup Konfiguration
+   * @param string $myconfigMethod Name der einzubindenden Funktion aus myconfig.php
+   */
+  function init_config(&$setup, $myconfigMethod = null) {
+    // ggf. Konfiguration mit myconfig.php überschreiben
+    if (is_string($myconfigMethod) && is_callable(array('immotool_myconfig', $myconfigMethod))) {
+      eval('immotool_myconfig::' . $myconfigMethod . '( $setup );');
     }
   }
 
@@ -625,14 +714,16 @@ class immotool_functions {
     // Übersetzungen ermitteln
     $lang = $requestedLanguage;
     if (!is_string($lang) || !immotool_functions::is_language_supported($lang)) {
-      $lang = (isset($_SESSION['immotool']['lang'])) ? $_SESSION['immotool']['lang'] : null;
-      if (!is_string($lang) || !immotool_functions::is_language_supported($lang))
+      $lang = immotool_functions::get_session_value('lang', null);
+      if (!is_string($lang) || !immotool_functions::is_language_supported($lang)) {
         $lang = $defaultLanguage;
+      }
     }
-    $_SESSION['immotool']['lang'] = $lang;
+    immotool_functions::put_session_value('lang', $lang);
     $translations = immotool_functions::get_language_translations($lang);
-    if (!is_array($translations))
+    if (!is_array($translations)) {
       die('Can\'t load translation for \'' . $lang . '\'!');
+    }
     return $lang;
   }
 
@@ -651,8 +742,8 @@ class immotool_functions {
    * @return bool true, wenn eine Vormerkung vorliegt
    */
   function has_favourite($favId) {
-    $pos = array_search($favId, $_SESSION['immotool']['favs']);
-    return $pos !== false;
+    $favs = immotool_functions::get_session_value('favs', array());
+    return array_search($favId, $favs) !== false;
   }
 
   /**
@@ -695,6 +786,28 @@ class immotool_functions {
       }
     }
     return $ids;
+  }
+
+  /**
+   * Liefert die Namen der verfügbaren Sortierungen.
+   * @return array Namen der verfügbaren Sortierungen
+   */
+  function list_available_orders() {
+    $dir = IMMOTOOL_BASE_PATH . 'include/';
+    $orders = array();
+    if (is_dir($dir)) {
+      $files = immotool_functions::list_directory($dir);
+      if (is_array($files)) {
+        foreach ($files as $file) {
+          if (is_file($dir . $file) && strpos($file, 'class.order_') === 0) {
+            $order = substr($file, strlen('class.order_'));
+            $order = substr($order, 0, -4);
+            $orders[] = $order;
+          }
+        }
+      }
+    }
+    return $orders;
   }
 
   /**
@@ -847,10 +960,18 @@ class immotool_functions {
   /**
    * Hilfsfunktion zum Lesen einer Datei aus dem Template-Verzeichnis.
    * @param string $file Name der Datei im Template-Verzeichnis
+   * @param string $subfolder Name der Unterordners, aus dem die Template-Datei bevorzugt geladen werden soll
    * @return string Inhalt der Datei
    */
-  function read_template($file) {
-    return immotool_functions::read_file(IMMOTOOL_BASE_PATH . 'templates/' . $file);
+  function read_template($file, $subfolder = 'default') {
+    if (!is_string($subfolder)) {
+      $subfolder = 'default';
+    }
+    $path = IMMOTOOL_BASE_PATH . 'templates/' . $subfolder . '/' . $file;
+    if (!is_file($path) && $subfolder != 'default') {
+      $path = IMMOTOOL_BASE_PATH . 'templates/default/' . $file;
+    }
+    return immotool_functions::read_file($path);
   }
 
   /**
@@ -889,6 +1010,130 @@ class immotool_functions {
         $src = str_replace('{.' . $varName . '}', '', $src);
       $src = str_replace('{' . $varName . '}', $value, $src);
     }
+  }
+
+  /**
+   * Session initialisieren.
+   * @return array Session-Variable
+   */
+  function init_session() {
+
+    // Prüfen, ob die Session eventuell bereits initialisiert wurde
+    if (isset($GLOBALS['immotool_session_id']) && !is_null($GLOBALS['immotool_session_id'])) {
+      return $GLOBALS['immotool_session'];
+    }
+
+    // Session-ID aus dem Cookie ermitteln
+    if (isset($_COOKIE[IMMOTOOL_SESSION_COOKIE_NAME]) && is_string($_COOKIE[IMMOTOOL_SESSION_COOKIE_NAME])) {
+      $GLOBALS['immotool_session_id'] = $_COOKIE[IMMOTOOL_SESSION_COOKIE_NAME];
+    }
+    // Neue Session-ID generieren
+    else {
+      $GLOBALS['immotool_session_id'] = sha1(IMMOTOOL_CRYPT_KEY . '-' . time() . '-' . rand(0, 99999));
+    }
+
+    // Session-ID als Cookie speichern
+    setcookie(
+        IMMOTOOL_SESSION_COOKIE_NAME, // name
+        $GLOBALS['immotool_session_id'], // value
+        time() + IMMOTOOL_SESSION_COOKIE_AGE, // expires after 30 days
+        IMMOTOOL_SESSION_COOKIE_PATH, // path
+        IMMOTOOL_SESSION_COOKIE_DOMAIN, // domain
+        IMMOTOOL_SESSION_COOKIE_SECURE   // secure
+    );
+
+    // Session-Variable aus zwischengespeicherter Datei rekonstruieren
+    $file = IMMOTOOL_BASE_PATH . 'sessions/' . sha1(IMMOTOOL_CRYPT_KEY . '-' . $GLOBALS['immotool_session_id']);
+    if (!is_file($file)) {
+      $GLOBALS['immotool_session'] = array();
+      return $GLOBALS['immotool_session'];
+    }
+    else {
+      $GLOBALS['immotool_session'] = unserialize(immotool_functions::read_file($file));
+      return $GLOBALS['immotool_session'];
+    }
+  }
+
+  /**
+   * Session speichern.
+   * @return boolean Liefert im Erfolgsfall TRUE, sonst FALSE.
+   */
+  function store_session() {
+
+    if (!isset($GLOBALS['immotool_session_id']) || !is_string($GLOBALS['immotool_session_id'])) {
+      echo 'Unknown session-id!';
+      return false;
+    }
+    if (!isset($GLOBALS['immotool_session']) || !is_array($GLOBALS['immotool_session'])) {
+      $GLOBALS['immotool_session'] = array();
+    }
+
+    // Session-Variable in Datei zwischenspeichern
+    $data = serialize($GLOBALS['immotool_session']);
+    $file = IMMOTOOL_BASE_PATH . 'sessions/' . sha1(IMMOTOOL_CRYPT_KEY . '-' . $GLOBALS['immotool_session_id']);
+    $fh = fopen($file, 'w');
+    if ($fh === false) {
+      echo 'Can\'t write file: ' . $file;
+      return false;
+    }
+    fwrite($fh, $data);
+    fclose($fh);
+
+    // abgelaufene Session-Dateien entfernen
+    $files = immotool_functions::list_directory(IMMOTOOL_BASE_PATH . 'sessions');
+    foreach ($files as $file) {
+      if ($file != '.htaccess' && $file != 'index.html') {
+        $path = IMMOTOOL_BASE_PATH . 'sessions/' . $file;
+        $sessionTime = filemtime($path);
+        $minLifeTime = time() - IMMOTOOL_SESSION_COOKIE_AGE;
+        if ($sessionTime < $minLifeTime) {
+          @unlink($path);
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Einen Wert aus der Session-Variablen ermitteln.
+   * @param string $key Bezeichner des zu ermittelnden Wertes
+   * @param mixed $defaultValue Standard-Wert, wenn zum Bezeichner kein Wert hinterlegt ist
+   * @return mixed Wert aus der Session-Variablen, oder $defaultValue wenn nicht vorhanden.
+   */
+  function get_session_value($key, $defaultValue = null) {
+    if (!isset($GLOBALS['immotool_session']) || !is_array($GLOBALS['immotool_session'])) {
+      return $defaultValue;
+    }
+    return (isset($GLOBALS['immotool_session'][$key])) ?
+        $GLOBALS['immotool_session'][$key] : $defaultValue;
+  }
+
+  /**
+   * Einen Wert in die Session-Variable schreiben.
+   * @param string $key Bezeichner des zu schreibenden Wertes
+   * @param mixed $value Der zu hinterlegende Wert, oder bei null wird der Eintrag aus der Session-Variablen entfernt.
+   */
+  function put_session_value($key, $value = null) {
+    if (!isset($GLOBALS['immotool_session']) || !is_array($GLOBALS['immotool_session'])) {
+      $GLOBALS['immotool_session'] = array();
+    }
+    if (is_null($value)) {
+      if (isset($GLOBALS['immotool_session'][$key])) {
+        unset($GLOBALS['immotool_session'][$key]);
+      }
+    }
+    else {
+      $GLOBALS['immotool_session'][$key] = $value;
+    }
+  }
+
+  /**
+   * Verarbeitung beenden.
+   * @param object $setup Konfiguration
+   */
+  function shutdown(&$setup) {
+    immotool_functions::store_session();
   }
 
   /**
@@ -938,12 +1183,14 @@ class immotool_functions {
 
     // Inhalt des BODY-Tags ermitteln
     $bodyStart = strpos(strtolower($page), '<body');
-    if ($bodyStart === false)
+    if ($bodyStart === false) {
       return '';
+    }
     $body = substr($page, strpos($page, '>', $bodyStart) + 1);
     $bodyEnd = strpos(strtolower($body), '</body');
-    if ($bodyEnd === false)
+    if ($bodyEnd === false) {
       return '';
+    }
     $body = $header . trim(substr($body, 0, $bodyEnd));
     //die( 'body: ' . htmlentities( $body ) );
     // Ersetzungen
@@ -962,6 +1209,9 @@ class immotool_functions {
       '/<a([^>]*)href="expose\.php\?([^"]*)"/is' => '<a\1href="' . $wrapperScriptUrl . $sep . 'wrap=expose&amp;\2"',
       // expose.php => Formulare
       '/<form([^>]*)action="expose\.php([^"]*)"([^>]*)>/is' => '<form\1action="' . $wrapperBaseUrl . '\2"\3><input type="hidden" name="wrap" value="expose"/>' . $hiddenInputs,
+      // download.php => Links
+      '/<a([^>]*)href="download.php"/is' => '<a\1href="' . $immotoolBaseUrl . 'download.php',
+      '/<a([^>]*)href="download.php\?([^"]*)"/is' => '<a\1href="' . $immotoolBaseUrl . 'download.php?\2"',
       // img.php
       '/<img([^>]*)src="img\.php"/is' => '<img\1src="' . $immotoolBaseUrl . 'img.php"',
       '/<img([^>]*)src="img\.php\?([^"]*)"/is' => '<img\1src="' . $immotoolBaseUrl . 'img.php?\2"',
@@ -981,6 +1231,16 @@ class immotool_functions {
       '/\'\.\/img\/([^\']*)\'/is' => '\'' . $immotoolBaseUrl . 'img/\1\'',
     );
     return preg_replace(array_keys($replacements), array_values($replacements), $body);
+  }
+
+  /**
+   * Liefert eine lesbare Ausgabe einer Byte-Anzahl.
+   * @param int $size Anzahl Bytes
+   * @return string lesbare Ausgabe der Byte-Anzahl
+   */
+  function write_bytes($size) {
+    $unit = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+    return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
   }
 
 }
