@@ -108,6 +108,8 @@ class immotool_myconfig {
     //$config->PublishTrovitFeed = false;
     //$config->AtomFeedLimit = 10;
     //$config->RssFeedLimit = 10;
+    //$config->OrderBy = 'id';
+    //$config->OrderDir = 'desc';
   }
 
   /**
