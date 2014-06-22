@@ -230,8 +230,19 @@ class immotool_expose {
             $replacement['{CONTACT_FORM_TERMS_ATTRIBS}'] = 'checked="checked"';
         }
 
+        // Spambot-Prüfung
+        $validRequest = true;
+        if (!isset($_SESSION['openestate_contact_stamp']) || !is_numeric($_SESSION['openestate_contact_stamp'])) {
+          $validRequest = false;
+        }
+        else {
+          $diff = time() - $_SESSION['openestate_contact_stamp'];
+          $validRequest = $diff > 5 && $diff < 3600;
+          //echo '<p>' . $diff . '</p>';
+        }
+
         // Die Eingaben sind unvollständig
-        if (count($errors) > 0) {
+        if (count($errors) > 0 || !$validRequest) {
           foreach ($errors as $field)
             $replacement['{CONTACT_FORM_' . strtoupper($field) . '_ERROR}'] = ' error';
 
@@ -239,8 +250,10 @@ class immotool_expose {
             $replacement['{CONTACT_FORM_' . strtoupper($key) . '_VALUE}'] = htmlentities($contact[$key], ENT_QUOTES, 'UTF-8');
 
           $replacement['{CONTACT_RESULT_TITLE}'] = $translations['errors']['cantSendMail'];
-          immotool_functions::replace_var(
-              'CONTACT_RESULT', $translations['errors']['cantSendMail.invalidInput'], $output);
+          $errorMsg = ($validRequest) ?
+              $translations['errors']['cantSendMail.invalidInput'] :
+              $translations['errors']['cantSendMail.invalidRequest'];
+          immotool_functions::replace_var('CONTACT_RESULT', $errorMsg, $output);
         }
 
         // Mailversand vorbereiten
@@ -313,6 +326,8 @@ class immotool_expose {
       $output = str_replace(array_keys($replacement), array_values($replacement), $output);
     }
     immotool_functions::replace_var('CONTACT_FORM_SUBMIT', $showContactForm, $output);
+    if ($showContactForm !== null)
+      $_SESSION['openestate_contact_stamp'] = time();
     return $output;
   }
 
@@ -733,12 +748,12 @@ else {
     }
 
     // Abschnitt: Kontaktformular
-    else if ($v == 'contact') {
+    else if ($v == 'contact' && ($setup->ShowContactForm === true || $setup->ShowContactPerson === true)) {
       $viewContent .= immotool_expose::contact($object, $setup, $translations, $lang);
     }
 
     // Abschnitt: AGB
-    else if ($v == 'terms' && $setup->ShowTerms) {
+    else if ($v == 'terms' && $setup->ShowTerms === true) {
       $viewContent .= immotool_expose::terms($setup, $translations, $lang);
     }
 

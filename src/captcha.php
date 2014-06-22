@@ -64,6 +64,9 @@ for ($i = 1; $i <= CAPTCHA_LENGTH; $i++) {
 }
 $_SESSION[CAPTCHA_VARIABLE] = $string;
 
+// clean the output buffer
+ob_clean();
+
 // Captcha ausgeben
 header('Content-type: image/png');
 imagepng($image);
