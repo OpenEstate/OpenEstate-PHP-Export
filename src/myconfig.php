@@ -20,7 +20,7 @@
  * Website-Export, individuelle Konfigurationen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -76,7 +76,7 @@ class immotool_myconfig {
     // ggf. individuelle Konfigurationswerte einfügen
     //$config->ElementsPerPage = 5;
     //$config->OrderOptions = array( 'area', 'city', 'id', 'nr', 'postal', 'price', 'rooms', 'title' );
-    //$config->FilterOptions = array( 'action', 'age', 'city', 'equipment', 'region', 'rooms', 'type', 'furnished', 'specialoffer' );
+    //$config->FilterOptions = array( 'action', 'age', 'city', 'country', 'equipment', 'furnished', 'group', 'region', 'rooms', 'specialoffer', 'type' );
     //$config->ListingImageSize = array( 100, 75 );
     //$config->GalleryImageSize = array( 150, 150 );
   }

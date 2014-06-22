@@ -20,7 +20,7 @@
  * Website-Export, Sortierung nach Preis.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -57,16 +57,16 @@ class ImmoToolOrder_price extends ImmoToolOrder {
 
     // Kauf
     if ($object['action'] == 'purchase')
-      return (isset($object['attributes']['prices']['buying_price']['value'])) ?
-          $object['attributes']['prices']['buying_price']['value'] : null;
+      return (isset($object['attributes']['prices']['purchase_price']['value'])) ?
+          $object['attributes']['prices']['purchase_price']['value'] : null;
 
     // Miete
     if ($object['action'] == 'rent')
-      return (isset($object['attributes']['prices']['rent_without_heating']['value'])) ?
-          $object['attributes']['prices']['rent_without_heating']['value'] : null;
+      return (isset($object['attributes']['prices']['rent_excluding_service_charges']['value'])) ?
+          $object['attributes']['prices']['rent_excluding_service_charges']['value'] : null;
 
     // Miete auf Zeit
-    if ($object['action'] == 'rent_in_time')
+    if ($object['action'] == 'short_term_rent')
       return (isset($object['attributes']['prices']['rent_flat_rate']['value'])) ?
           $object['attributes']['prices']['rent_flat_rate']['value'] : null;
 

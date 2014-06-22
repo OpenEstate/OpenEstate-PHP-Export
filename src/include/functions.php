@@ -20,7 +20,7 @@
  * Website-Export, Hilfsfunktionen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.6.18');
+define('IMMOTOOL_SCRIPT_VERSION', '1.6.19');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 // Parameter, allgemein
