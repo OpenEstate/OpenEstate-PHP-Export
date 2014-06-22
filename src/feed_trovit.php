@@ -109,12 +109,10 @@ foreach (immotool_functions::list_available_objects() as $id) {
     $objectTexts = array();
 
   // nur Wohnimmobilien exportieren
-  if (array_search('general_habitation', $object['type_path']) === false) {
-    if ($debugMode)
-      echo '&gt; UNSUPPORTED TYPE: ' . $object['type'] . '<br/>';
-    continue;
-  }
-
+  //if (array_search('general_habitation',$object['type_path'])===false) {
+  //  if ($debugMode) echo '&gt; UNSUPPORTED TYPE: '.$object['type'].'<br/>';
+  //  continue;
+  //}
   // Exposé-URL ermitteln
   $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
 

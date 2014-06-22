@@ -118,76 +118,104 @@ if ($debugMode) {
   echo '  <h2>RSS-Feed Debugger</h2>';
 }
 
-// absteigende Sortierung, nach Datum der letzten Änderung
+// ID's der darzustellenden Immobilien gemäß Sortierung ermitteln
 $ids = array();
-foreach (immotool_functions::list_available_objects() as $id) {
-  $stamp = immotool_functions::get_object_stamp($id);
-  if ($stamp == null)
-    $stamp = 0;
+$orderBy = @$setup->OrderBy;
+$orderDir = @$setup->OrderDir;
+$orderObj = (is_string($orderBy)) ?
+    immotool_functions::get_order($orderBy) : null;
 
-  if (!isset($ids[$stamp]))
-    $ids[$stamp] = array();
-  $ids[$stamp][] = $id;
+// gewählte Sortierung durchführen
+if ($orderObj != null && $orderObj->readOrRebuild($setup->CacheLifeTime)) {
+  $items = $orderObj->getItems($lang);
+  if (!is_array($items))
+    die('empty order: ' . $orderBy);
+  if (is_array($items)) {
+    if ($orderDir == 'desc')
+      $ids = array_reverse($items);
+    else
+      $ids = $items;
+  }
 }
-$stamps = array_keys($ids);
-rsort($stamps, SORT_NUMERIC);
+
+// absteigende Sortierung, nach Datum der letzten Änderung
+else {
+  $items = array();
+  foreach (immotool_functions::list_available_objects() as $id) {
+    $stamp = immotool_functions::get_object_stamp($id);
+    if ($stamp == null)
+      $stamp = 0;
+
+    if (!isset($items[$stamp]))
+      $items[$stamp] = array();
+    $items[$stamp][] = $id;
+  }
+  $stamps = array_keys($items);
+  rsort($stamps, SORT_NUMERIC);
+  foreach ($stamps as $stamp) {
+    foreach ($items[$stamp] as $id) {
+      $ids[] = $id;
+    }
+  }
+}
 
 // Immobilien in den Feed schreiben
 $counter = 0;
-foreach ($stamps as $stamp) {
-  foreach ($ids[$stamp] as $id) {
-    $object = immotool_functions::get_object($id);
+foreach ($ids as $id) {
+  $object = immotool_functions::get_object($id);
+  if ($debugMode)
+    echo '<h3 style="margin-top:1em;margin-bottom:0;"><a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '">property #' . $id . '</a></h3>';
+  if (!is_array($object)) {
     if ($debugMode)
-      echo '<h3 style="margin-top:1em;margin-bottom:0;"><a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '">property #' . $id . '</a></h3>';
-    if (!is_array($object)) {
-      if ($debugMode)
-        echo '&gt; NOT FOUND<br/>';
-      continue;
-    }
+      echo '&gt; NOT FOUND<br/>';
+    continue;
+  }
+  $objectStamp = immotool_functions::get_object_stamp($id);
+  $objectTexts = immotool_functions::get_text($id);
+  if (!is_array($objectTexts))
+    $objectTexts = array();
 
-    $objectTexts = immotool_functions::get_text($id);
-    if (!is_array($objectTexts))
-      $objectTexts = array();
+  // Exposé-URL ermitteln
+  $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
 
-    // Exposé-URL ermitteln
-    $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
+  // Titel ermitteln
+  $objectTitle = $object['title'][$lang];
+  if (isset($object['nr']))
+    $objectTitle = $object['nr'] . ' » ' . $objectTitle;
+  else
+    $objectTitle = '#' . $id . ' » ' . $objectTitle;
 
-    // Titel ermitteln
-    $objectTitle = $object['title'][$lang];
-    if (isset($object['nr']))
-      $objectTitle = $object['nr'] . ' » ' . $objectTitle;
-    else
-      $objectTitle = '#' . $id . ' » ' . $objectTitle;
+  // Zusammenfassung ermitteln
+  $objectSummary = '';
+  if (isset($objectTexts['short_description'][$lang]))
+    $objectSummary = $objectTexts['short_description'][$lang];
+  else if (isset($objectTexts['detailled_description'][$lang]))
+    $objectSummary = $objectTexts['detailled_description'][$lang];
+  else
+    $objectSummary = $object['title'][$lang];
 
-    // Zusammenfassung ermitteln
-    $objectSummary = '';
-    if (isset($objectTexts['short_description'][$lang]))
-      $objectSummary = $objectTexts['short_description'][$lang];
-    else if (isset($objectTexts['detailled_description'][$lang]))
-      $objectSummary = $objectTexts['detailled_description'][$lang];
-    else
-      $objectSummary = $object['title'][$lang];
+  // Immobilie in den Feed eintragen
+  $feed .= '    <item>' . "\n";
+  $feed .= '      <title>' . htmlspecialchars($objectTitle) . '</title>' . "\n";
+  $feed .= '      <link>' . $objectUrl . '</link>' . "\n";
+  $feed .= '      <description><![CDATA[' . $objectSummary . ']]></description>' . "\n";
+  if (!is_null($objectStamp))
+    $feed .= '      <pubDate>' . date('r', $objectStamp) . '</pubDate>' . "\n";
+  else
+    $feed .= '      <pubDate>' . $feedStamp . '</pubDate>' . "\n";
+  $feed .= '      <guid isPermaLink="false">' . $objectUrl . '</guid>' . "\n";
+  $feed .= '      <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
+  $feed .= '    </item>' . "\n";
 
-    // Immobilie in den Feed eintragen
-    $feed .= '    <item>' . "\n";
-    $feed .= '      <title>' . htmlspecialchars($objectTitle) . '</title>' . "\n";
-    $feed .= '      <link>' . $objectUrl . '</link>' . "\n";
-    $feed .= '      <description><![CDATA[' . $objectSummary . ']]></description>' . "\n";
-    $feed .= '      <pubDate>' . date('r', $stamp) . '</pubDate>' . "\n";
-    $feed .= '      <guid isPermaLink="false">' . $objectUrl . '</guid>' . "\n";
-    $feed .= '      <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
-    $feed .= '    </item>' . "\n";
+  if ($debugMode)
+    echo '&gt; OK<br/>';
 
+  // ggf. abbrechen, wenn das Maximum für Feed-Einträge erreicht ist
+  $counter++;
+  if (is_numeric($setup->RssFeedLimit) && $setup->RssFeedLimit > 0 && $setup->RssFeedLimit <= $counter) {
     if ($debugMode)
-      echo '&gt; OK<br/>';
-
-    // ggf. abbrechen, wenn das Maximum für Feed-Einträge erreicht ist
-    $counter++;
-    if (is_numeric($setup->RssFeedLimit) && $setup->RssFeedLimit > 0 && $setup->RssFeedLimit <= $counter) {
-      if ($debugMode)
-        echo '&gt; STOP, reached limit of ' . $setup->RssFeedLimit . ' entries<br/>';
-      break;
-    }
+      echo '&gt; STOP, reached limit of ' . $setup->RssFeedLimit . ' entries<br/>';
+    break;
   }
 }
 $feed .= '  </channel>';

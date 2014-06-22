@@ -481,4 +481,17 @@ class immotool_setup_feeds extends immotool_setup {
    */
   var $ExportPublicId = false;
 
+  /**
+   * Art der Sortierung in den erzeugten Feeds.
+   * @var string
+   */
+  var $OrderBy = null;
+
+  /**
+   * Richtung der Sortierung in den erzeugten Feeds.
+   * 'asc' für aufsteigend, 'desc' für absteigend
+   * @var string
+   */
+  var $OrderDir = null;
+
 }
