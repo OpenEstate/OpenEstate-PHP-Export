@@ -170,12 +170,13 @@ foreach ($result as $resultId) {
 
   // Dynamisch verkleinertes Titelbild ausliefern
   if ($setup->DynamicImageScaling === true && extension_loaded('gd')) {
-    $img = 'data/' . $object['id'] . '/img_0.jpg';
-    if (!is_file(IMMOTOOL_BASE_PATH . $img)) {
+    $img = (isset($object['images'][0]['name'])) ?
+        'data/' . $object['id'] . '/' . $object['images'][0]['name'] : null;
+    if ($img == null || !is_file(IMMOTOOL_BASE_PATH . $img)) {
       immotool_functions::replace_var('IMAGE', null, $listingEntry);
     }
     else {
-      $imgScaleScript = 'img.php?id=' . $object['id'] . '&amp;img=img_0.jpg';
+      $imgScaleScript = 'img.php?id=' . $object['id'] . '&amp;img=' . $object['images'][0]['name'];
       if ($mode == 'gallery')
         $imgScaleScript .= '&amp;x=' . $setup->GalleryImageSize[0] . '&amp;y=' . $setup->GalleryImageSize[1];
       else
@@ -186,13 +187,13 @@ foreach ($result as $resultId) {
 
   // Titelbild direkt ausliefern
   else {
-    $img = 'data/' . $object['id'] . '/';
+    $img = null;
     if ($mode == 'gallery')
-      $img .= 'title.jpg';
-    else
-      $img .= 'img_0.thumb.jpg';
+      $img = 'data/' . $object['id'] . '/title.jpg';
+    else if (isset($object['images'][0]['thumb']))
+      $img = 'data/' . $object['id'] . '/' . $object['images'][0]['thumb'];
 
-    if (is_file(IMMOTOOL_BASE_PATH . $img))
+    if ($img != null && is_file(IMMOTOOL_BASE_PATH . $img))
       immotool_functions::replace_var('IMAGE', $img, $listingEntry);
     else
       immotool_functions::replace_var('IMAGE', null, $listingEntry);

@@ -103,11 +103,11 @@ class ImmoToolGallery {
 
     // ggf. das Titelbild dynamisch skalieren
     if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
-      $img = 'data/' . $objectId . '/img_0.jpg';
+      $img = 'data/' . $objectId . '/' . $image['name'];
       if (!is_file(IMMOTOOL_BASE_PATH . $img))
         return null;
       $thumb = 'img.php?id=' . $objectId .
-          '&amp;img=img_0.jpg' .
+          '&amp;img=' . $image['name'] .
           '&amp;x=' . $this->exposeSetup->TitleImageSize[0] .
           '&amp;y=' . $this->exposeSetup->TitleImageSize[1];
     }
