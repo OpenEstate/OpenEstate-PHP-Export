@@ -20,7 +20,7 @@
  * Website-Export, Darstellung der Inseratsübersicht.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -168,16 +168,35 @@ foreach ($result as $resultId) {
     $title = '#' . $object['id'] . ' &raquo; ' . $title;
   immotool_functions::replace_var('TITLE', $title, $listingEntry);
 
-  // Titelbild ermitteln
-  $img = 'data/' . $object['id'] . '/';
-  if ($mode == 'gallery')
-    $img .= 'title.jpg';
-  else
-    $img .= 'img_0.thumb.jpg';
-  if (is_file(IMMOTOOL_BASE_PATH . $img))
-    immotool_functions::replace_var('IMAGE', $img, $listingEntry);
-  else
-    immotool_functions::replace_var('IMAGE', null, $listingEntry);
+  // Dynamisch verkleinertes Titelbild ausliefern
+  if ($setup->DynamicImageScaling === true && extension_loaded('gd')) {
+    $img = 'data/' . $object['id'] . '/img_0.jpg';
+    if (!is_file(IMMOTOOL_BASE_PATH . $img)) {
+      immotool_functions::replace_var('IMAGE', null, $listingEntry);
+    }
+    else {
+      $imgScaleScript = 'img.php?id=' . $object['id'] . '&amp;img=img_0.jpg';
+      if ($mode == 'gallery')
+        $imgScaleScript .= '&amp;x=' . $setup->GalleryImageSize[0] . '&amp;y=' . $setup->GalleryImageSize[1];
+      else
+        $imgScaleScript .= '&amp;x=' . $setup->ListingImageSize[0] . '&amp;y=' . $setup->ListingImageSize[1];
+      immotool_functions::replace_var('IMAGE', $imgScaleScript, $listingEntry);
+    }
+  }
+
+  // Titelbild direkt ausliefern
+  else {
+    $img = 'data/' . $object['id'] . '/';
+    if ($mode == 'gallery')
+      $img .= 'title.jpg';
+    else
+      $img .= 'img_0.thumb.jpg';
+
+    if (is_file(IMMOTOOL_BASE_PATH . $img))
+      immotool_functions::replace_var('IMAGE', $img, $listingEntry);
+    else
+      immotool_functions::replace_var('IMAGE', null, $listingEntry);
+  }
 
   // Die ersten drei Attribute jeder Gruppe darstellen
   foreach (array_keys($object['attributes']) as $group) {
@@ -284,8 +303,8 @@ if ($maxPageNumber > 1) {
 else {
   $pagination .= '<li>&nbsp;</li>';
 }
-$pagination .= '<li ' . (($view == 'fav') ? 'class="selected"' : '') . ' style="float:right;"><a href="?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['title.fav'] . '</a></li>';
-$pagination .= '<li ' . (($view == 'index') ? 'class="selected"' : '') . ' style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['title.index'] . '</a></li>';
+$pagination .= '<li ' . (($view == 'fav') ? 'class="selected"' : '') . ' style="float:right;"><a href="?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['tab.fav'] . '</a></li>';
+$pagination .= '<li ' . (($view == 'index') ? 'class="selected"' : '') . ' style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['tab.index'] . '</a></li>';
 $pagination .= '</ul>';
 
 // Menü erzeugen

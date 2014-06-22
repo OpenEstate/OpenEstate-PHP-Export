@@ -20,7 +20,7 @@
  * Website-Export, Darstellung des Atom-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -56,7 +56,7 @@ if (!is_array($translations))
   die('Can\'t load translations!');
 
 // Titel ermitteln
-$feedTitle = htmlentities($translations['labels']['title']);
+$feedTitle = htmlspecialchars($translations['labels']['title']);
 
 // Cache-Datei des Feeds
 $feedFile = IMMOTOOL_BASE_PATH . 'cache/feed.atom_' . $lang . '.xml';
@@ -103,6 +103,7 @@ if ($debugMode) {
   echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">';
   echo '  <head>';
   echo '    <title>Atom-Feed Debugger</title>';
+  echo '    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />';
   echo '    <meta http-equiv="Content-Language" content="de" />';
   echo '    <meta http-equiv="pragma" content="no-cache" />';
   echo '    <meta http-equiv="cache-control" content="no-cache" />';
@@ -171,13 +172,15 @@ foreach ($stamps as $stamp) {
     $feed .= '  <entry>' . "\n";
     $feed .= '    <id>' . $objectUrl . '</id>' . "\n";
     $feed .= '    <link href="' . $objectUrl . '" />' . "\n";
-    $feed .= '    <title>' . $objectTitle . '</title>' . "\n";
+    $feed .= '    <title>' . htmlspecialchars($objectTitle) . '</title>' . "\n";
     $feed .= '    <author>' . "\n";
     $feed .= '      <name>' . $feedTitle . '</name>' . "\n";
     $feed .= '    </author>' . "\n";
     $feed .= '    <summary type="text"><![CDATA[' . $objectSummary . ']]></summary>' . "\n";
-    if (!is_null($objectStamp))
+    if (!is_null($stamp))
       $feed .= '    <updated>' . gmdate('Y-m-d\TH:i:s\Z', $stamp) . '</updated>' . "\n";
+    else
+      $feed .= '    <updated>' . $feedStamp . '</updated>' . "\n";
     $feed .= '    <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
     $feed .= '  </entry>' . "\n";
 
@@ -198,7 +201,7 @@ $feed .= '</feed>';
 // Debug-Ausgabe des Feeds
 if ($debugMode) {
   echo '<h2>Generated XML</h2>';
-  echo '<pre>' . htmlentities($feed) . '</pre>';
+  echo '<textarea style="width:95%; height:30em; margin-bottom:1em;" readonly="readonly">' . htmlspecialchars($feed) . '</textarea>';
   echo '</body></html>';
 }
 

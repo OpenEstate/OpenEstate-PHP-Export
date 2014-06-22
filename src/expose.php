@@ -20,7 +20,7 @@
  * Website-Export, Darstellung der Exposé-Ansicht.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -83,6 +83,7 @@ class immotool_expose {
     immotool_functions::replace_var('CONTACT_PERSON', $showContactPerson, $output);
 
     // Kontaktformular kann nicht dargestellt werden
+    $mailResult = false;
     $showContactForm = null;
     if (!is_string($object['mail']) || $setup->ShowContactForm !== true) {
       immotool_functions::replace_var('CONTACT_RESULT', null, $output);
@@ -92,7 +93,6 @@ class immotool_expose {
     else {
       $showContactForm = $translations['labels']['estate.contact.form.submit'];
       $replacement = array(
-        '{CONTACT_FORM_TITLE}' => $translations['labels']['estate.contact.form'],
         '{CONTACT_FORM_NAME}' => $translations['labels']['estate.contact.form.name'] . ':',
         '{CONTACT_FORM_NAME_VALUE}' => '',
         '{CONTACT_FORM_NAME_ERROR}' => '',
@@ -326,6 +326,8 @@ class immotool_expose {
       $output = str_replace(array_keys($replacement), array_values($replacement), $output);
     }
     immotool_functions::replace_var('CONTACT_FORM_SUBMIT', $showContactForm, $output);
+    immotool_functions::replace_var('CONTACT_FORM_TITLE', ($showContactForm != null || $mailResult === true) ?
+            $translations['labels']['estate.contact.form'] : null, $output);
     if ($showContactForm !== null)
       $_SESSION['openestate_contact_stamp'] = time();
     return $output;
@@ -428,20 +430,21 @@ class immotool_expose {
       // Bild als <noscript> darstellen
       if ($galleryHandler->isJavaScriptRequired()) {
         immotool_functions::replace_var('GALLERY_IMAGE', null, $output);
-        immotool_functions::replace_var('NOSCRIPT_GALLERY_IMAGE', $galleryImageSrc, $output);
         immotool_functions::replace_var('GALLERY_IMAGE_TEXT', $galleryImageText, $output);
+        immotool_functions::replace_var('NOSCRIPT_GALLERY_IMAGE', $galleryImageSrc, $output);
       }
 
       // Bild grundsätzlich nicht darstellen
       else {
         immotool_functions::replace_var('GALLERY_IMAGE', null, $output);
-        immotool_functions::replace_var('NOSCRIPT_GALLERY_IMAGE', null, $output);
         immotool_functions::replace_var('GALLERY_IMAGE_TEXT', null, $output);
+        immotool_functions::replace_var('NOSCRIPT_GALLERY_IMAGE', null, $output);
       }
     }
     else {
       immotool_functions::replace_var('GALLERY_IMAGE', $galleryImageSrc, $output);
       immotool_functions::replace_var('GALLERY_IMAGE_TEXT', $galleryImageText, $output);
+      immotool_functions::replace_var('NOSCRIPT_GALLERY_IMAGE', null, $output);
     }
     return $output;
   }
@@ -569,9 +572,12 @@ $pageTitle = strip_tags($translations['labels']['estate'] . ' ' . $idValue);
 
 // Galerie-Handler ermitteln
 $galleryHandlerDefault = immotool_functions::get_gallery('html');
+$galleryHandlerDefault->setExposeSetup($setup);
 $galleryHandler = immotool_functions::get_gallery($setup->GalleryHandler);
 if (!is_object($galleryHandler))
   $galleryHandler = $galleryHandlerDefault;
+else
+  $galleryHandler->setExposeSetup($setup);
 
 // Inhalt der Seite erzeugen
 $expose = immotool_functions::read_template('expose.html');
@@ -584,8 +590,8 @@ $exposeMenu .= '<li><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id']
 $pdf = 'data/' . $object['id'] . '/' . $object['id'] . '_' . $lang . '.pdf';
 if (is_file(IMMOTOOL_BASE_PATH . $pdf))
   $exposeMenu .= '<li><a href="' . $pdf . '" target="_blank">' . $translations['labels']['link.expose.pdf'] . '</a></li>';
-$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav{DEFAULT_LINK_PARAMS}" rel="nofollow">' . $translations['labels']['title.fav'] . '</a></li>';
-$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_INDEX_VIEW . '=index{DEFAULT_LINK_PARAMS}">' . $translations['labels']['title.index'] . '</a></li>';
+$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav{DEFAULT_LINK_PARAMS}" rel="nofollow">' . $translations['labels']['tab.fav'] . '</a></li>';
+$exposeMenu .= '<li style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_INDEX_VIEW . '=index{DEFAULT_LINK_PARAMS}">' . $translations['labels']['tab.index'] . '</a></li>';
 $exposeMenu .= '</ul>';
 
 // Titelbild
@@ -786,8 +792,11 @@ immotool_functions::replace_var('REGION_VALUE', $addressRegion, $pageContent);
 immotool_functions::replace_var('ADDRESS2_VALUE', $addressLine2, $pageContent);
 
 $pageHeader = '';
-if (is_object($galleryHandler))
-  $pageHeader .= "\n" . $galleryHandler->getHeader();
+if (is_object($galleryHandler)) {
+  $galleryHeader = $galleryHandler->getHeader();
+  if (!is_null($galleryHeader))
+    $pageHeader .= "\n" . $galleryHeader;
+}
 
 // Ausgabe erzeugen
 $metaRobots = 'index,follow';

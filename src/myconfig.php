@@ -20,7 +20,7 @@
  * Website-Export, individuelle Konfigurationen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -40,6 +40,7 @@ class immotool_myconfig {
     //$config->AdditionalStylesheet = '';
     //$config->ShowLanguageSelection = false;
     //$config->CacheLifeTime = 86400;
+    //$config->DynamicImageScaling = false;
   }
 
   /**
@@ -57,9 +58,11 @@ class immotool_myconfig {
     //$config->ShowContactCaptcha = false;
     //$config->ShowContactTerms = true;
     //$config->ContactRequiredFields = array( 'name', 'firstname', 'email', 'message' );
-    //$config->GalleryHandler = null;
     //$config->ViewMode = 'listing';
     //$config->ViewOrder = array( 'gallery', 'texts', 'details', 'contact', 'terms' );
+    //$config->GalleryHandler = null;
+    //$config->GalleryImageSize = array( 100, 75 );
+    //$config->TitleImageSize = array( 200, 150 );
   }
 
   /**
@@ -74,6 +77,8 @@ class immotool_myconfig {
     //$config->ElementsPerPage = 5;
     //$config->OrderOptions = array( 'area', 'city', 'id', 'nr', 'postal', 'price', 'rooms', 'title' );
     //$config->FilterOptions = array( 'action', 'age', 'city', 'equipment', 'region', 'rooms', 'type', 'furnished', 'specialoffer' );
+    //$config->ListingImageSize = array( 100, 75 );
+    //$config->GalleryImageSize = array( 150, 150 );
   }
 
   /**
@@ -99,7 +104,6 @@ class immotool_myconfig {
 
     // ggf. individuelle Konfigurationswerte einfügen
     //$config->PublishAtomFeed = false;
-    //$config->PublishImmobiliareFeed = false;
     //$config->PublishRssFeed = false;
     //$config->PublishTrovitFeed = false;
     //$config->AtomFeedLimit = 10;
