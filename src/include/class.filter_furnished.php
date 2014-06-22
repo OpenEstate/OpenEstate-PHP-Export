@@ -20,7 +20,7 @@
  * Website-Export, Filter nach möblierten Inseraten.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -35,13 +35,13 @@ class ImmoToolFilter_furnished extends ImmoToolFilter {
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $value = (isset($object['attributes']['facilities']['furnished']['value'])) ?
-        $object['attributes']['facilities']['furnished']['value'] : null;
-    if (!is_string($value) && strtolower($value) != 'yes' && strtolower($value) != 'partially')
-      return;
-    if (!isset($items['1']) || !is_array($items['1']))
-      $items['1'] = array();
-    $items['1'][] = $object['id'];
+    $value = (isset($object['attributes']['features']['furnished']['value'])) ?
+        $object['attributes']['features']['furnished']['value'] : null;
+    if (strtolower($value) == 'yes' || strtolower($value) == 'partial') {
+      if (!isset($items['1']) || !is_array($items['1']))
+        $items['1'] = array();
+      $items['1'][] = $object['id'];
+    }
   }
 
   /**

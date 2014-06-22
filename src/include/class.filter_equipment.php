@@ -20,7 +20,7 @@
  * Website-Export, Filter nach Ausstattungsart.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -35,8 +35,8 @@ class ImmoToolFilter_equipment extends ImmoToolFilter {
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $value = isset($object['attributes']['facilities']['equipment']['value']) ?
-        $object['attributes']['facilities']['equipment']['value'] : null;
+    $value = isset($object['attributes']['features']['equipment']['value']) ?
+        $object['attributes']['features']['equipment']['value'] : null;
     if (!is_string($value))
       return;
     $value = strtolower($value);
@@ -70,7 +70,7 @@ class ImmoToolFilter_equipment extends ImmoToolFilter {
       return $widget;
 
     // Optionen in der Auswahlbox ermitteln
-    $options = array('basic', 'usual', 'upper', 'luxury');
+    $options = array('basic', 'standard', 'exclusive', 'luxury');
     $values = array();
     foreach ($options as $o) {
       $txt = (isset($translations['labels']['openestate.equipment.' . $o])) ?

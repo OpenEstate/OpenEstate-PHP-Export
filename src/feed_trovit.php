@@ -20,7 +20,7 @@
  * Website-Export, Darstellung des Trovit-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -144,40 +144,42 @@ foreach (immotool_functions::list_available_objects() as $id) {
   $objectPrice = '0';
   $objectPriceAttribs = '';
   $objectPriceHidden = isset($object['hidden_price']) && $object['hidden_price'] === true;
+
+  // Kauf
   if ($object['action'] == 'purchase') {
     $objectAction = 'For Sale';
-    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['prices']['buying_price']['value'])) ?
-        $object['attributes']['prices']['buying_price']['value'] : null;
+    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['prices']['purchase_price']['value'])) ?
+        $object['attributes']['prices']['purchase_price']['value'] : null;
   }
+
+  // Miete
   else if ($object['action'] == 'rent') {
     $objectAction = 'For Rent';
-    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['prices']['rent_without_heating']['value'])) ?
-        $object['attributes']['prices']['rent_without_heating']['value'] : null;
+    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['prices']['rent_excluding_service_charges']['value'])) ?
+        $object['attributes']['prices']['rent_excluding_service_charges']['value'] : null;
     $mietePro = (isset($object['attributes']['prices']['rent_flat_rate_per'])) ?
         $object['attributes']['prices']['rent_flat_rate_per']['value'] : null;
-    if ($mietePro == 'WOCHE')
+    if (is_string($mietePro) && strtolower($mietePro) == 'week')
       $objectPriceAttribs = (!$objectPriceHidden) ? ' period="weekly"' : '';
     else
       $objectPriceAttribs = (!$objectPriceHidden) ? ' period="monthly"' : '';
   }
-  else if ($object['action'] == 'rent_on_time') {
+
+  // Miete auf Zeit
+  else if ($object['action'] == 'short_term_rent') {
     $objectAction = 'For Rent';
     $objectPrice = (!$objectPriceHidden && isset($object['attributes']['prices']['rent_flat_rate']['value'])) ?
         $object['attributes']['prices']['rent_flat_rate']['value'] : null;
     $mietePro = (isset($object['attributes']['prices']['rent_flat_rate_per']['value'])) ?
         $object['attributes']['prices']['rent_flat_rate_per']['value'] : null;
-    if ($mietePro == 'WOCHE')
+    if (is_string($mietePro) && strtolower($mietePro) == 'week')
       $objectPriceAttribs = (!$objectPriceHidden) ? ' period="weekly"' : '';
     else
       $objectPriceAttribs = (!$objectPriceHidden) ? ' period="monthly"' : '';
   }
-  else if ($object['action'] == 'lease') {
-    $objectAction = 'For Rent';
-    $objectPrice = (!$objectPriceHidden && isset($object['attributes']['prices']['lease']['value'])) ?
-        $object['attributes']['prices']['lease']['value'] : null;
-    $objectPriceAttribs = (!$objectPriceHidden) ? ' period="monthly"' : '';
-  }
-  else if ($object['action'] == 'emphyteusis') {
+
+  // Pacht / Erbpacht
+  else if ($object['action'] == 'lease' || $object['action'] == 'emphyteusis') {
     $objectAction = 'For Rent';
     $objectPrice = (!$objectPriceHidden && isset($object['attributes']['prices']['lease']['value'])) ?
         $object['attributes']['prices']['lease']['value'] : null;
@@ -196,7 +198,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
 
   // Fläche ermitteln
   $objectArea = null;
-  foreach (array('TOTAL_AREA', 'RESIDENTIAL_AREA', 'PLOT_AREA', 'STORAGE_AREA', 'USABLE_AREA') as $area) {
+  foreach (array('TOTAL_AREA', 'RESIDENTIAL_AREA', 'PLOT_AREA', 'STORAGE_AREA', 'RETAIL_AREA', 'SALES_AREA', 'USABLE_AREA') as $area) {
     $area = strtolower($area);
     if (!isset($object['attributes']['measures'][$area]['value']))
       continue;
@@ -234,9 +236,9 @@ foreach (immotool_functions::list_available_objects() as $id) {
   else
     $objectBathrooms = intval($objectBathrooms);
 
-  // Anzahl Zimmer ermitteln
-  $objectFloorNumber = (isset($object['attributes']['facilities']['count_floors']['value'])) ?
-      $object['attributes']['facilities']['count_floors']['value'] : null;
+  // Anzahl Etagen ermitteln
+  $objectFloorNumber = (isset($object['attributes']['features']['count_floors']['value'])) ?
+      $object['attributes']['features']['count_floors']['value'] : null;
   if (!is_numeric($objectFloorNumber))
     $objectFloorNumber = 0;
   else
@@ -249,13 +251,13 @@ foreach (immotool_functions::list_available_objects() as $id) {
 
   // Möblierung ermitteln
   $objectIsFurnished = null;
-  $moebliert = (isset($object['attributes']['facilities']['furnished']['value'])) ?
-      $object['attributes']['facilities']['furnished']['value'] : null;
+  $moebliert = (isset($object['attributes']['features']['furnished']['value'])) ?
+      $object['attributes']['features']['furnished']['value'] : null;
   if ($moebliert == null)
     $objectIsFurnished = null;
   else if (strtolower($moebliert) == 'yes')
     $objectIsFurnished = 1;
-  else if (strtolower($moebliert) == 'partially')
+  else if (strtolower($moebliert) == 'partial')
     $objectIsFurnished = 1;
   else if (strtolower($moebliert) == 'no')
     $objectIsFurnished = 0;

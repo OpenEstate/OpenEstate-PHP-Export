@@ -20,7 +20,7 @@
  * Website-Export, Filter nach Sonderangeboten.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -37,11 +37,11 @@ class ImmoToolFilter_specialoffer extends ImmoToolFilter {
   function filter($object, &$items) {
     $value = (isset($object['attributes']['prices']['special_offer']['value'])) ?
         $object['attributes']['prices']['special_offer']['value'] : null;
-    if (!is_bool($value) || $value == false)
-      return;
-    if (!isset($items['1']) || !is_array($items['1']))
-      $items['1'] = array();
-    $items['1'][] = $object['id'];
+    if ($value === true) {
+      if (!isset($items['1']) || !is_array($items['1']))
+        $items['1'] = array();
+      $items['1'][] = $object['id'];
+    }
   }
 
   /**

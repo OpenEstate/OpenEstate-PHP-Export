@@ -20,7 +20,7 @@
  * Website-Export, Sortierung nach Fläche.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2011, OpenEstate.org
+ * @copyright 2009-2012, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -32,7 +32,7 @@ require_once( IMMOTOOL_BASE_PATH . 'include/class.order.php' );
 class ImmoToolOrder_area extends ImmoToolOrder {
 
   // Diese Flächenattribute werden zur Ermittlung des Sortierungswertes herangezogen.
-  var $lookupFields = array('total_area', 'residential_area', 'plot_area', 'storage_area', 'usable_area');
+  var $lookupFields = array('total_area', 'residential_area', 'plot_area', 'storage_area', 'retail_area', 'sales_area', 'usable_area');
 
   /**
    * Name des Filters.
