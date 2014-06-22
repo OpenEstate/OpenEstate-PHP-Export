@@ -20,7 +20,7 @@
  * Website-Export, Darstellung des RSS-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -56,7 +56,7 @@ if (!is_array($translations))
   die('Can\'t load translations!');
 
 // Titel ermitteln
-$feedTitle = htmlentities($translations['labels']['title']);
+$feedTitle = htmlspecialchars($translations['labels']['title']);
 
 // Cache-Datei des Feeds
 $feedFile = IMMOTOOL_BASE_PATH . 'cache/feed.rss_' . $lang . '.xml';
@@ -81,11 +81,11 @@ $feedUrl .= '/feed_rss.php';
 $feedUrl .= '?' . IMMOTOOL_PARAM_LANG . '=' . $lang;
 
 // Timestamp
-$feedStamp = date('D, d M Y H:i:s T');
+$feedStamp = date('r');
 
 // Feed erzeugen
 $feed = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-$feed .= '<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">' . "\n";
+$feed .= '<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">' . "\n";
 $feed .= '  <channel>' . "\n";
 $feed .= '    <title>' . $feedTitle . '</title>' . "\n";
 $feed .= '    <link>' . $feedUrl . '</link>' . "\n";
@@ -95,16 +95,15 @@ $feed .= '    <copyright>' . $feedTitle . '</copyright>' . "\n";
 $feed .= '    <pubDate>' . $feedStamp . '</pubDate>' . "\n";
 $feed .= '    <lastBuildDate>' . $feedStamp . '</lastBuildDate>' . "\n";
 $feed .= '    <generator>OpenEstate-ImmoTool, PHP-Export v' . IMMOTOOL_SCRIPT_VERSION . '</generator>' . "\n";
+$feed .= '    <atom:link href="' . $feedUrl . '" rel="self" type="application/rss+xml" />' . "\n";
 $feed .= '    <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
-$feed .= '    <dc:date>' . $feedStamp . '</dc:date>' . "\n";
-$feed .= '    <dc:language>' . $lang . '</dc:language>' . "\n";
-$feed .= '    <dc:rights>' . $feedTitle . '</dc:rights>' . "\n";
 
 if ($debugMode) {
   echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
   echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">';
   echo '  <head>';
   echo '    <title>RSS-Feed Debugger</title>';
+  echo '    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />';
   echo '    <meta http-equiv="Content-Language" content="de" />';
   echo '    <meta http-equiv="pragma" content="no-cache" />';
   echo '    <meta http-equiv="cache-control" content="no-cache" />';
@@ -171,10 +170,10 @@ foreach ($stamps as $stamp) {
 
     // Immobilie in den Feed eintragen
     $feed .= '    <item>' . "\n";
-    $feed .= '      <title>' . $objectTitle . '</title>' . "\n";
+    $feed .= '      <title>' . htmlspecialchars($objectTitle) . '</title>' . "\n";
     $feed .= '      <link>' . $objectUrl . '</link>' . "\n";
     $feed .= '      <description><![CDATA[' . $objectSummary . ']]></description>' . "\n";
-    $feed .= '      <pubDate>' . date('D, d M Y H:i:s T', $stamp) . '</pubDate>' . "\n";
+    $feed .= '      <pubDate>' . date('r', $stamp) . '</pubDate>' . "\n";
     $feed .= '      <guid isPermaLink="false">' . $objectUrl . '</guid>' . "\n";
     $feed .= '      <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
     $feed .= '    </item>' . "\n";
@@ -197,7 +196,7 @@ $feed .= '</rss>';
 // Debug-Ausgabe des Feeds
 if ($debugMode) {
   echo '<h2>Generated XML</h2>';
-  echo '<pre>' . htmlentities($feed) . '</pre>';
+  echo '<textarea style="width:95%; height:30em; margin-bottom:1em;" readonly="readonly">' . htmlspecialchars($feed) . '</textarea>';
   echo '</body></html>';
 }
 

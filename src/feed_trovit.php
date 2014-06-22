@@ -20,7 +20,7 @@
  * Website-Export, Darstellung des Trovit-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -79,6 +79,7 @@ if ($debugMode) {
   echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">';
   echo '  <head>';
   echo '    <title>Trovit-Feed Debugger</title>';
+  echo '    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />';
   echo '    <meta http-equiv="Content-Language" content="de" />';
   echo '    <meta http-equiv="pragma" content="no-cache" />';
   echo '    <meta http-equiv="cache-control" content="no-cache" />';
@@ -108,7 +109,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
     $objectTexts = array();
 
   // nur Wohnimmobilien exportieren
-  if (array_search('main_wohnen', $object['type_path']) === false) {
+  if (array_search('general_habitation', $object['type_path']) === false) {
     if ($debugMode)
       echo '&gt; UNSUPPORTED TYPE: ' . $object['type'] . '<br/>';
     continue;
@@ -370,7 +371,7 @@ $feed .= '</trovit>';
 // Debug-Ausgabe des Feeds
 if ($debugMode) {
   echo '<h2>Generated XML</h2>';
-  echo '<pre>' . htmlentities($feed) . '</pre>';
+  echo '<textarea style="width:95%; height:30em; margin-bottom:1em;" readonly="readonly">' . htmlspecialchars($feed) . '</textarea>';
   echo '</body></html>';
 }
 
