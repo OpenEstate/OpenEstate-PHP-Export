@@ -20,7 +20,7 @@
  * Website-Export, Filter nach Land.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2010, OpenEstate.org
+ * @copyright 2009-2011, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -31,12 +31,22 @@ require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
 
 class ImmoToolFilter_country extends ImmoToolFilter {
 
+  var $countryNames = null;
+
+  /**
+   * Ein Filter-Array erzeugen.
+   */
+  function build() {
+    $this->countryNames = array();
+    return parent::build();
+  }
+
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
   function filter($object, &$items) {
-    $value = (isset($object['adress']['country'])) ?
-        $object['adress']['country'] : null;
+    $value = (isset($object['address']['country'])) ?
+        $object['address']['country'] : null;
     if (!is_string($value))
       return;
     $value = trim($value);
@@ -45,6 +55,17 @@ class ImmoToolFilter_country extends ImmoToolFilter {
     if (!isset($items[$value]) || !is_array($items[$value]))
       $items[$value] = array();
     $items[$value][] = $object['id'];
+
+    // Landesname zum Landeskürzel ermitteln und zwischenspeichern
+    if (!isset($this->countryNames[$value]))
+      $this->countryNames[$value] = array();
+    if (is_array($object['address']['country_name'])) {
+      foreach ($object['address']['country_name'] as $lang => $countryName) {
+        if (isset($this->countryNames[$value][$lang]))
+          continue;
+        $this->countryNames[$value][$lang] = $countryName;
+      }
+    }
   }
 
   /**
@@ -78,11 +99,58 @@ class ImmoToolFilter_country extends ImmoToolFilter {
       $widget .= '<option value="">[ ' . $by . ' ]</option>';
       foreach ($options as $country) {
         $selected = ($selectedValue == $country) ? 'selected="selected"' : '';
-        $widget .= '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+        $countryName = (is_array($this->countryNames) && isset($this->countryNames[$country][$lang])) ?
+            $this->countryNames[$country][$lang] : $country;
+        $widget .= '<option value="' . $country . '" ' . $selected . '>' . $countryName . '</option>';
       }
       $widget .= '</select>';
     }
     return $widget;
+  }
+
+  /**
+   * Filter-Array aus der Cache-Datei erzeugen.
+   */
+  function read($maxLifeTime = 0) {
+    $res = parent::read($maxLifeTime);
+    if ($res !== true)
+      return false;
+
+    // Landesnamen aus separater Cache-Datei ermitteln
+    $file = $this->getFile() . '.names';
+    if (!is_file($file))
+      return false;
+
+    // abgelaufene Cache-Datei ggf. löschen
+    if ($maxLifeTime > 0 && !immotool_functions::check_file_age($file, $maxLifeTime)) {
+      unlink($file);
+      return false;
+    }
+
+    // Array mit Landesnamen aus separater Cache-Datei erzeugen
+    $data = immotool_functions::read_file($file);
+    if (!is_string($data))
+      return false;
+    $this->countryNames = unserialize($data);
+    //echo '<pre>'; print_r( $this->countryNames ); echo '</pre>';
+    //die( 'read ' . $file );
+    return true;
+  }
+
+  /**
+   * Filter-Array serialisieren.
+   */
+  function write() {
+    parent::write();
+
+    // Landesnamen als separate Cache-Datei speichern
+    if (is_array($this->countryNames)) {
+      $data = serialize($this->countryNames);
+      $file = $this->getFile() . '.names';
+      $fh = fopen($file, 'w') or die('can\'t write file: ' . $file);
+      fwrite($fh, $data);
+      fclose($fh);
+    }
   }
 
 }
