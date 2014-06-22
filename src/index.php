@@ -20,22 +20,22 @@
  * Website-Export, Darstellung der Inseratsübersicht.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung
+// Initialisierung der Skript-Umgebung
 $startupTime = microtime();
 define('IN_WEBSITE', 1);
 if (!defined('IMMOTOOL_BASE_PATH')) {
   define('IMMOTOOL_BASE_PATH', '');
 }
-include(IMMOTOOL_BASE_PATH . 'config.php');
-include(IMMOTOOL_BASE_PATH . 'private.php');
-include(IMMOTOOL_BASE_PATH . 'include/functions.php');
-include(IMMOTOOL_BASE_PATH . 'data/language.php');
+require_once(IMMOTOOL_BASE_PATH . 'config.php');
+require_once(IMMOTOOL_BASE_PATH . 'private.php');
+require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
+require_once(IMMOTOOL_BASE_PATH . 'data/language.php');
 
-// Initialisierungen
+// Initialisierung der Immobilien-Übersicht
 $setup = new immotool_setup_index();
 $exposeSetup = new immotool_setup_expose();
 immotool_functions::init($setup, 'load_config_index');
@@ -51,6 +51,11 @@ $translations = null;
 $lang = (isset($_REQUEST[IMMOTOOL_PARAM_LANG])) ? $_REQUEST[IMMOTOOL_PARAM_LANG] : null;
 $lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $translations);
 if (!is_array($translations)) {
+  if (!headers_sent()) {
+    // 500-Fehlercode zurückliefern,
+    // wenn die Übersetzungstexte nicht geladen werden konnten
+    header('HTTP/1.0 500 Internal Server Error');
+  }
   immotool_functions::print_error('Can\'t load translations!', $lang, $startupTime, $setup, $translations);
   return;
 }
@@ -142,14 +147,16 @@ $totalCount = 0;
 $listing = immotool_functions::read_template('listing.html', $setup->TemplateFolder);
 $favIds = ($view == 'fav') ? immotool_functions::get_session_value('favs', array()) : null;
 $result = immotool_functions::list_objects($page, $elementsPerPage, $orderBy, $orderDir, $filters, $totalCount, $lang, $setup->CacheLifeTime, $favIds);
+$hiddenAttribs = (isset($setup->HiddenAttributes) && is_array($setup->HiddenAttributes)) ? $setup->HiddenAttributes : array();
 $counter = 0;
 foreach ($result as $resultId) {
   $counter++;
   $bg = (($counter % 2) == 0) ? 'openestate_light' : 'openestate_dark';
   $object = immotool_functions::get_object($resultId);
   $listingEntry = immotool_functions::read_template('listing_' . $mode . '.html', $setup->TemplateFolder);
-  if (!is_string($listingEntry))
+  if (!is_string($listingEntry)) {
     $listingEntry = immotool_functions::read_template('listing_entry.html', $setup->TemplateFolder);
+  }
   immotool_functions::replace_var('ID', $object['id'], $listingEntry);
   immotool_functions::replace_var('BG', $bg, $listingEntry);
   immotool_functions::replace_var('ACTION', $translations['openestate']['actions'][$object['action']], $listingEntry);
@@ -158,12 +165,26 @@ foreach ($result as $resultId) {
   immotool_functions::replace_var('CITY', $object['adress']['city'], $listingEntry);
   immotool_functions::replace_var('COUNTRY', $object['adress']['country_name'][$lang], $listingEntry);
 
-  // Titel ermitteln
+  // ggf. Straße & Haus-Nr einfügen
+  if (!isset($object['adress']['street']) || !is_string($object['adress']['street'])) {
+    immotool_functions::replace_var('STREET', null, $listingEntry);
+  }
+  else {
+    $street = $object['adress']['street'];
+    if (isset($object['adress']['street_nr']) && is_string($object['adress']['street_nr'])) {
+      $street .= ' ' . $object['adress']['street_nr'];
+    }
+    immotool_functions::replace_var('STREET', $street, $listingEntry);
+  }
+
+  // Titel ermitteln und einfügen
   $title = $object['title'][$lang];
-  if (!is_null($object['nr']))
+  if (!is_null($object['nr'])) {
     $title = $object['nr'] . ' &raquo; ' . $title;
-  else
+  }
+  else {
     $title = '#' . $object['id'] . ' &raquo; ' . $title;
+  }
   immotool_functions::replace_var('TITLE', $title, $listingEntry);
 
   // Dynamisch verkleinertes Titelbild ausliefern
@@ -202,28 +223,28 @@ foreach ($result as $resultId) {
     // Namen der darstellbaren Attribute ermitteln
     $attribs = array_keys($object['attributes'][$group]);
 
-    // HACK: Angaben zur Courtage nicht darstellen
-    if ($group == 'preise') {
-      $pos = array_search('courtage_aussen', $attribs);
-      if ($pos !== false)
+    // ignorierte Attribute nicht darstellen
+    foreach ($attribs as $pos => $attrib) {
+      $attribKey = strtolower(trim($group) . '.' . trim($attrib));
+      if (array_search($attribKey, $hiddenAttribs) !== false) {
         unset($attribs[$pos]);
-      $pos = array_search('courtage_aussen_tax', $attribs);
-      if ($pos !== false)
-        unset($attribs[$pos]);
+      }
     }
 
     // HACK: Warmmiete & Kaltmiete nicht gemeinsam darstellen
     if ($group == 'preise' && array_search('kaltmiete', $attribs) !== false) {
       $pos = array_search('warmmiete', $attribs);
-      if ($pos !== false)
+      if ($pos !== false) {
         unset($attribs[$pos]);
+      }
     }
 
     // HACK: Bruttofläche & Wohnfläche nicht gemeinsam darstellen
     if ($group == 'flaechen' && array_search('bruttoflaeche', $attribs) !== false) {
       $pos = array_search('wohnflaeche', $attribs);
-      if ($pos !== false)
+      if ($pos !== false) {
         unset($attribs[$pos]);
+      }
     }
 
     // Darstellung der ersten drei Attribute pro Gruppe
@@ -231,14 +252,17 @@ foreach ($result as $resultId) {
     $attribs = array_values($attribs);
     for ($i = 1; $i <= 3; $i++) {
       $pos = strpos($listingEntry, '{' . strtoupper($group) . '_' . $i . '}');
-      if ($pos === false)
+      if ($pos === false) {
         break;
+      }
       $attribTitle = null;
       $attribValue = null;
       if (isset($attribs[$i - 1]) && $attribs[$i - 1] != false) {
         $attrib = $attribs[$i - 1];
         $attribTitle = $translations['openestate']['attributes'][$group][$attrib];
-        $attribValue = $object['attributes'][$group][$attrib][$lang];
+        $value = (isset($object['attributes'][$group][$attrib])) ?
+            $object['attributes'][$group][$attrib] : null;
+        $attribValue = immotool_functions::write_attribute_value($group, $attrib, $value, $translations, $lang);
       }
       immotool_functions::replace_var(strtoupper($group) . '_' . $i, $attribValue, $listingEntry);
       immotool_functions::replace_var(strtoupper($group) . '_' . $i . '_TITLE', $attribTitle, $listingEntry);
@@ -262,7 +286,7 @@ foreach ($result as $resultId) {
   }
 
   // contact link
-  if (array_search('contact', $exposeSetup->ViewOrder) !== false && ($exposeSetup->ShowContactForm === true || $exposeSetup->ShowContactPerson === true)) {
+  if (immotool_functions::can_show_expose_contact($object, $exposeSetup)) {
     immotool_functions::replace_var('LINK_CONTACT', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=contact', $listingEntry);
     immotool_functions::replace_var('LINK_CONTACT_TEXT', $translations['labels']['link.expose.contact'], $listingEntry);
   }

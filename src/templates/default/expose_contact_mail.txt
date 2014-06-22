@@ -11,6 +11,7 @@ Kontaktanfrage zum Inserat {SUBJECT_ID}
 ----------------------------------------
  Details zur Kontaktanfrage
 ----------------------------------------
+ Inserat    : {REQUEST_OBJECT_TITLE}
  Inserat-ID : {REQUEST_OBJECT_ID}
  Inserat-Nr : {REQUEST_OBJECT_NR}
  Webseite   : {REQUEST_URL}

@@ -20,7 +20,7 @@
  * Website-Export, individuelle Konfigurationen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -161,6 +161,19 @@ class immotool_myconfig {
    * @return mixed Im Erfolgsfall 'true', sonst eine Fehlermeldung oder 'null' wenn kein Versand über die Funktion stattfand
    */
   function send_mail(&$setup, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
+    return null;
+  }
+
+  /**
+   * Liefert die lesbare Ausgabe eines Attribut-Wertes.
+   * @param string $group Name der Attribut-Gruppe
+   * @param string $attrib Name des Attributes
+   * @param array $value Attribut-Werte
+   * @param array $translations Übersetzungen in der angeforderten Sprache
+   * @param string $lang Sprache
+   * @return string lesbare Ausgabe des Attribut-Wertes
+   */
+  function write_attribute_value($group, $attrib, &$value, &$translations, $lang) {
     return null;
   }
 

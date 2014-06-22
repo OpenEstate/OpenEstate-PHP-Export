@@ -20,7 +20,7 @@
  * Website-Export, JS-Galerie, basierend auf Colorbox.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @link http://colorpowered.com/colorbox/
  */
@@ -113,9 +113,9 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
       $headerOptions[] = $key . ': ' . $value;
     $header[] = '<script type="text/javascript">
 <!--
-$(document).ready(function(){
-  $("a[rel=\'gallery\']").colorbox(' . implode(', ', $headerOptions) . ');
-  $("a[rel=\'title\']").colorbox(' . implode(', ', $headerOptions) . ');
+jQuery(document).ready(function(){
+  jQuery("a[rel=\'gallery\']").colorbox(' . implode(', ', $headerOptions) . ');
+  jQuery("a[rel=\'title\']").colorbox(' . implode(', ', $headerOptions) . ');
 });
 //-->
 </script>';

@@ -20,7 +20,7 @@
  * Website-Export, Konfigurationen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -276,8 +276,9 @@ class immotool_setup_index extends immotool_setup {
 
   /**
    * Alle verfügbaren Immobilienarten filtern.
-   * Wenn aktiviert (true), werden alle verfügbaren Immobilienarten als Filterkriterium dargestellt.
-   * Wenn nicht aktiviert (false), werden nur die verfügbaren Haupt-Immobilienarten als Filterkriterium dargestellt.
+   * Wenn aktiviert (true), werden alle verfügbaren Immobilienarten als
+   * Filterkriterium dargestellt. Wenn nicht aktiviert (false), werden nur die
+   * verfügbaren Haupt-Immobilienarten als Filterkriterium dargestellt.
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
@@ -304,6 +305,13 @@ class immotool_setup_index extends immotool_setup {
    * @var array
    */
   var $GalleryImageSize = array(150, 150);
+
+  /**
+   * Auflistung von Attributen, die in der Immobilien-Übersicht grundsätzlich
+   * nicht dargestellt werden sollen.
+   * @var array
+   */
+  var $HiddenAttributes = array('preise.sonderangebot', 'preise.courtage_aussen', 'preise.courtage_aussen_tax');
 
 }
 
@@ -410,6 +418,21 @@ class immotool_setup_expose extends immotool_setup {
    * @var array
    */
   var $GalleryImageSize = array(100, 75);
+
+  /**
+   * Textfelder, die als META-Description verwendet werden sollen. Das erste
+   * Textfeld in der Liste, zu welchem ein Text eingetragen wurde, wird als
+   * META-Description in der Exposé-Ansicht dargestellt.
+   * @var array
+   */
+  var $MetaDescriptionTexts = array('kurz_beschr', 'objekt_beschr');
+
+  /**
+   * Auflistung von Attributen, die in der Exposé-Ansicht grundsätzlich
+   * nicht dargestellt werden sollen.
+   * @var array
+   */
+  var $HiddenAttributes = array('preise.sonderangebot', 'freitexte.keywords');
 
 }
 
