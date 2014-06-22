@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.6.30');
+define('IMMOTOOL_SCRIPT_VERSION', '1.6.31');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 
