@@ -93,12 +93,12 @@ LightboxOptions = Object.extend({
     fileBottomNavCloseImage: \'./img/lightbox2/closelabel.gif\',
     overlayOpacity: 0.5,
     animate: true,
-    resizeSpeed: 7,
+    resizeSpeed: 8,
     borderSize: 10,
     labelImage: "Image",
     labelOf: "of"
 }, window.LightboxOptions || {});
--->
+//-->
 </script>
 <script type="text/javascript" src="include/lightbox2/js/lightbox.js"></script>
 <link rel="stylesheet" href="include/lightbox2/css/lightbox.css" type="text/css" media="screen" />';

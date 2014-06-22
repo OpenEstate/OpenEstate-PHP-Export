@@ -85,14 +85,14 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
       $fullHeader .= '<script type="text/javascript" src="include/colorbox/jquery.min.js"></script>';
     }
     return $fullHeader . '
-<script type="text/javascript" src="include/colorbox/jquery.colorbox.js"></script>
+<script type="text/javascript" src="include/colorbox/jquery.colorbox-min.js"></script>
 <script type="text/javascript">
 <!--
 $(document).ready(function(){
-  $("a[rel=\'gallery\']").colorbox({transition:"fade"});
-  $("a[rel=\'title\']").colorbox({transition:"fade"});
+  $("a[rel=\'gallery\']").colorbox();
+  $("a[rel=\'title\']").colorbox();
 });
--->
+//-->
 </script>
 <link rel="stylesheet" href="include/colorbox/colorbox.css" type="text/css" media="screen" />';
   }
