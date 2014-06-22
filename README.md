@@ -8,6 +8,7 @@ OpenEstate-PHP-Export was developed as a part of the freeware real estate softwa
 * detailled view of a single real estate (see `expose.php`)
   * image gallery via [Colorbox](http://www.jacklmoore.com/colorbox/) or [Lightbox2](http://www.lokeshdhakar.com/projects/lightbox2/) (see `include/class.gallery_*.php`)
   * embedded maps via [OpenStreetMap](http://www.openstreetmap.org/) or [Google Maps](https://www.google.com/) (see `include/class.map_*.php`)
+  * embedded videos via [YouTube.com](http://www.youtube.com/) and some other providers (see `include/class.video_*.php`)
   * contact form
 * a lot of configuration options (see `config.php` & `myconfig.php`)
 * wrapper modules for [WordPress](http://wordpress.org/), [CMS made simple](http://www.cmsmadesimple.org/), [WebsiteBaker](http://www.websitebaker.org/) & [Joomla](http://www.joomla.org/) available
