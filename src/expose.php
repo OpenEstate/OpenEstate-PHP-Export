@@ -348,22 +348,47 @@ if (!class_exists('immotool_expose')) {
       $output = '<h2>' . $translations['labels']['estate.details.title'] . '</h2>';
       $groups = (isset($setup->DetailsOrder) && is_array($setup->DetailsOrder)) ? $setup->DetailsOrder : array_keys($object['attributes']);
       $hiddenAttribs = (isset($setup->HiddenAttributes) && is_array($setup->HiddenAttributes)) ? $setup->HiddenAttributes : array();
+      $preferredAttribs = (isset($setup->PreferredAttributes) && is_array($setup->PreferredAttributes)) ? $setup->PreferredAttributes : array();
       foreach ($groups as $group) {
         $values = (isset($object['attributes'][$group])) ? $object['attributes'][$group] : null;
         if (!is_array($values) || count($values) < 1) {
           continue;
         }
+
+        // Namen der darstellbaren Attribute ermitteln
+        //$attribs = array_keys($values);
+        $attribs = array();
+        foreach ($preferredAttribs as $attribKey) {
+          //if (array_search($attribKey, $hiddenAttribs)!==false) continue;
+          $attrib = explode('.', strtolower(trim($attribKey)));
+          if (count($attrib) != 2)
+            continue;
+          if ($attrib[0] != $group)
+            continue;
+          if (!isset($values[$attrib[1]]))
+            continue;
+          $attribs[] = $attrib[1];
+        }
+        foreach (array_keys($values) as $attrib) {
+          $attribKey = strtolower(trim($group) . '.' . trim($attrib));
+          if (array_search($attribKey, $hiddenAttribs) !== false)
+            continue;
+          if (array_search($attrib, $attribs) !== false)
+            continue;
+          $attribs[] = $attrib;
+        }
+
         $groupName = $translations['openestate']['groups'][$group];
         if (is_null($groupName)) {
           $groupName = $group;
         }
         $groupNameWritten = false;
-        foreach ($values as $attrib => $value) {
+        foreach ($attribs as $attrib) {
           $attribKey = strtolower(trim($group) . '.' . trim($attrib));
           if (array_search($attribKey, $hiddenAttribs) !== false) {
             continue;
           }
-          $attribValue = immotool_functions::write_attribute_value($group, $attrib, $value, $translations, $lang);
+          $attribValue = immotool_functions::write_attribute_value($group, $attrib, $values[$attrib], $translations, $lang);
           if (!is_string($attribValue) || strlen(trim($attribValue)) < 1) {
             continue;
           }
@@ -779,6 +804,30 @@ if (is_string($object['address']['country_name'][$lang])) {
   $addressRegion .= $object['address']['country_name'][$lang];
   if (is_string($object['address']['region']) && strlen($object['address']['region']) > 0)
     $addressRegion .= ' / ' . $object['address']['region'];
+}
+
+// Titel-Attribute
+$titleAttribTemplate = immotool_functions::get_string_between($expose, '{ATTRIBUTE_VALUE.}', '{.ATTRIBUTE_VALUE}');
+if (is_string($titleAttribTemplate) && strlen($titleAttribTemplate) > 0) {
+  $titleAttribs = '';
+  if (isset($setup->TitleAttributes) && is_array($setup->TitleAttributes)) {
+    foreach ($setup->TitleAttributes as $attribKey) {
+      $attrib = explode('.', strtolower(trim($attribKey)));
+      if (!isset($object['attributes'][$attrib[0]][$attrib[1]]))
+        continue;
+      $attribTitle = $translations['openestate']['attributes'][$attrib[0]][$attrib[1]];
+      $attribValue = immotool_functions::write_attribute_value(
+              $group, $attrib, $object['attributes'][$attrib[0]][$attrib[1]], $translations, $lang);
+      //$titleAttribs .= '<li><div>'.$attribTitle.':</div>'.$attribValue.'</li>';
+
+      $replacement = array(
+        '{ATTRIBUTE_TITLE}' => $attribTitle,
+        '{ATTRIBUTE_VALUE}' => $attribValue);
+
+      $titleAttribs .= str_replace(array_keys($replacement), array_values($replacement), $titleAttribTemplate);
+    }
+  }
+  $expose = str_replace('{ATTRIBUTE_VALUE.}' . $titleAttribTemplate . '{.ATTRIBUTE_VALUE}', $titleAttribs, $expose);
 }
 
 // Ansichten erzeugen

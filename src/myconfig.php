@@ -73,6 +73,9 @@ class immotool_myconfig {
     //$config->GalleryHandler = null;
     //$config->GalleryImageSize = array( 100, 75 );
     //$config->TitleImageSize = array( 200, 150 );
+    //$config->TitleAttributes = array( 'prices.rent_excluding_service_charges', 'prices.purchase_price' );
+    //$config->PreferredAttributes = array( 'prices.purchase_price', 'prices.rent_excluding_service_charges', 'prices.service_charges', 'prices.heating_costs', 'prices.rent_including_service_charges' );
+    //$config->HiddenAttributes = array( 'prices.special_offer', 'prices.agent_fee', 'prices.agent_fee_including_vat', 'descriptions.keywords' );
   }
 
   /**
@@ -89,6 +92,9 @@ class immotool_myconfig {
     //$config->FilterOptions = array( 'action', 'age', 'city', 'country', 'equipment', 'furnished', 'group', 'region', 'rooms', 'specialoffer', 'type' );
     //$config->ListingImageSize = array( 100, 75 );
     //$config->GalleryImageSize = array( 150, 150 );
+    //$config->AttributesPerGroup = 3;
+    //$config->PreferredAttributes = array( 'prices.purchase_price', 'prices.nettorendite', 'prices.rent_excluding_service_charges', 'prices.service_charges' );
+    //$config->HiddenAttributes = array( 'prices.special_offer', 'prices.agent_fee', 'prices.agent_fee_including_vat' );
   }
 
   /**

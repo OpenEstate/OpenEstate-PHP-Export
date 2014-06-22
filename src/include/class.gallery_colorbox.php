@@ -114,8 +114,8 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
     $header[] = '<script type="text/javascript">
 <!--
 jQuery(document).ready(function(){
-  jQuery("a[rel=\'gallery\']").colorbox(' . implode(', ', $headerOptions) . ');
-  jQuery("a[rel=\'title\']").colorbox(' . implode(', ', $headerOptions) . ');
+  jQuery("a[rel=\'gallery\']").colorbox({' . implode(', ', $headerOptions) . '});
+  jQuery("a[rel=\'title\']").colorbox({' . implode(', ', $headerOptions) . '});
 });
 //-->
 </script>';
@@ -134,8 +134,10 @@ jQuery(document).ready(function(){
    */
   function getHeaderOptions() {
     return array(
-        //'transition' => '"fade"',
-        //'speed' => '350',
+      //'transition' => '"fade"',
+      //'speed' => '350',
+      'maxWidth' => '"90%"',
+      'maxHeight' => '"90%"',
     );
   }
 

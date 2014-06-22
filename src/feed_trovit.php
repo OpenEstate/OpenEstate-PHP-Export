@@ -371,7 +371,7 @@ foreach (immotool_functions::list_available_objects() as $id) {
   if (is_numeric($objectPlotArea) && $objectPlotArea > 0)
     $feed .= '    <plot_area><![CDATA[' . $objectPlotArea . ']]></plot_area>' . "\n";
   if (is_numeric($objectFloorNumber) && $objectFloorNumber > 0)
-    $feed .= '    <floor_numbers><![CDATA[' . $objectFloorNumber . ']]></floor_numbers>' . "\n";
+    $feed .= '    <floor_number><![CDATA[' . $objectFloorNumber . ']]></floor_number>' . "\n";
   //$feed .= '    <orientation><![CDATA['..']]></orientation>' . "\n";
   //$feed .= '    <foreclosure><![CDATA['..']]></foreclosure>' . "\n";
   if (is_numeric($objectIsFurnished))
