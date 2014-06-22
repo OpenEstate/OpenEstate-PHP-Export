@@ -272,7 +272,7 @@ class immotool_setup_index extends immotool_setup {
    * Verwendete Filter-Optionen.
    * @var array
    */
-  var $FilterOptions = array('action', 'type', 'alter');
+  var $FilterOptions = array('action', 'type');
 
   /**
    * Alle verfügbaren Immobilienarten filtern.
