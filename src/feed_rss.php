@@ -20,20 +20,20 @@
  * Website-Export, Darstellung des RSS-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung
+// Initialisierung der Skript-Umgebung
 $startup = microtime();
 define('IN_WEBSITE', 1);
 if (!defined('IMMOTOOL_BASE_PATH')) {
   define('IMMOTOOL_BASE_PATH', '');
 }
-include(IMMOTOOL_BASE_PATH . 'config.php');
-include(IMMOTOOL_BASE_PATH . 'private.php');
-include(IMMOTOOL_BASE_PATH . 'include/functions.php');
-include(IMMOTOOL_BASE_PATH . 'data/language.php');
+require_once(IMMOTOOL_BASE_PATH . 'config.php');
+require_once(IMMOTOOL_BASE_PATH . 'private.php');
+require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
+require_once(IMMOTOOL_BASE_PATH . 'data/language.php');
 $debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
 
 // Konfiguration ermitteln
@@ -43,7 +43,13 @@ if (is_callable(array('immotool_myconfig', 'load_config_feeds'))) {
 }
 immotool_functions::init($setup);
 if (!$setup->PublishRssFeed) {
-  die('RSS-Feed is disabled!');
+  if (!headers_sent()) {
+    // 500-Fehlercode zurückliefern,
+    // wenn der Feed in der Konfiguration deaktiviert wurde
+    header('HTTP/1.0 500 Internal Server Error');
+  }
+  echo 'RSS feed is disabled!';
+  exit;
 }
 
 // Übersetzungen ermitteln
@@ -51,7 +57,13 @@ $translations = null;
 $lang = (isset($_REQUEST[IMMOTOOL_PARAM_LANG])) ? $_REQUEST[IMMOTOOL_PARAM_LANG] : $setup->DefaultLanguage;
 $lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $translations);
 if (!is_array($translations)) {
-  die('Can\'t load translations!');
+  if (!headers_sent()) {
+    // 500-Fehlercode zurückliefern,
+    // wenn die Übersetzungstexte nicht geladen werden konnten
+    header('HTTP/1.0 500 Internal Server Error');
+  }
+  echo 'Can\'t load translations!';
+  exit;
 }
 
 // Header senden
@@ -134,13 +146,20 @@ $orderObj = (is_string($orderBy)) ?
 // gewählte Sortierung durchführen
 if ($orderObj != null && $orderObj->readOrRebuild($setup->CacheLifeTime)) {
   $items = $orderObj->getItems($lang);
-  if (!is_array($items))
-    die('empty order: ' . $orderBy);
-  if (is_array($items)) {
-    if ($orderDir == 'desc')
-      $ids = array_reverse($items);
-    else
-      $ids = $items;
+  if (!is_array($items)) {
+    if (!headers_sent()) {
+      // 500-Fehlercode zurückliefern,
+      // wenn die Sortierung nicht durchgeführt werden konnte
+      header('HTTP/1.0 500 Internal Server Error');
+    }
+    echo 'Ordering by \'' . $orderBy . '\' failed!';
+    exit;
+  }
+  if ($orderDir == 'desc') {
+    $ids = array_reverse($items);
+  }
+  else {
+    $ids = $items;
   }
 }
 
@@ -192,15 +211,17 @@ foreach ($ids as $id) {
     $objectTitle = trim('#' . $id . ' » ' . $objectTitle);
 
   // Zusammenfassung ermitteln
-  $objectSummary = '';
-  if (isset($objectTexts['kurz_beschr'][$lang]))
-    $objectSummary = $objectTexts['kurz_beschr'][$lang];
-  else if (isset($objectTexts['objekt_beschr'][$lang]))
-    $objectSummary = $objectTexts['objekt_beschr'][$lang];
-  else
+  $objectSummary = null;
+  if (is_null($objectSummary) && isset($objectTexts['kurz_beschr']))
+    $objectSummary = immotool_functions::write_attribute_value('freitexte', 'kurz_beschr', $objectTexts['kurz_beschr'], $translations, $lang);
+  if (is_null($objectSummary) && isset($objectTexts['objekt_beschr']))
+    $objectSummary = immotool_functions::write_attribute_value('freitexte', 'objekt_beschr', $objectTexts['objekt_beschr'], $translations, $lang);
+  if (is_null($objectSummary) && isset($object['title'][$lang]))
     $objectSummary = $object['title'][$lang];
+  if (is_null($objectSummary))
+    $objectSummary = '';
 
-  // Bild ggf. einfügen
+  // ggf. Bild in Zusammenfassung einfügen
   if ($setup->RssFeedWithImage === true) {
     $titleImg = 'data/' . $object['id'] . '/title.jpg';
     if (is_file(IMMOTOOL_BASE_PATH . $titleImg)) {
@@ -245,8 +266,18 @@ if ($debugMode) {
 
 // normale Ausgabe des Feeds
 else {
+
   // Feed cachen
-  $fh = fopen($feedFile, 'w') or die('can\'t write file: ' . $feedFile);
+  $fh = @fopen($feedFile, 'w');
+  if (!$fh) {
+    if (!headers_sent()) {
+      // 500-Fehlercode zurückliefern,
+      // wenn die Feed-Datei nicht geschrieben werden kann
+      header('HTTP/1.0 500 Internal Server Error');
+    }
+    echo 'Can\'t write feed to: ' . $feedFile;
+    return;
+  }
   fwrite($fh, $feed);
   fclose($fh);
 

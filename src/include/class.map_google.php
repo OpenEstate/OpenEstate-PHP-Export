@@ -20,7 +20,7 @@
  * Website-Export, Umkreiskarte, bereitgestellt von Google Maps.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @link http://www.openstreetmap.org/
  * @link http://wiki.openstreetmap.org/wiki/DE:Karte_in_Webseite_einbinden

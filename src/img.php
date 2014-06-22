@@ -20,38 +20,70 @@
  * Website-Export, Skalierung & Beschneidung der Objekt-Bilder auf eine vorgegebene Größe.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung
+// Initialisierung der Skript-Umgebung
 define('IN_WEBSITE', 1);
 if (!defined('IMMOTOOL_BASE_PATH'))
   define('IMMOTOOL_BASE_PATH', '');
-if (!extension_loaded('gd'))
-  die('It seems like GD is not installed!');
+if (!extension_loaded('gd')) {
+  if (!headers_sent()) {
+    // 500-Fehlercode zurückliefern,
+    // wenn das GD-PHP-Modul nicht verfügbar ist
+    header('HTTP/1.0 500 Internal Server Error');
+  }
+  echo 'It seems like GD is not installed!';
+  return;
+}
 ob_start();
-include(IMMOTOOL_BASE_PATH . 'config.php');
-include(IMMOTOOL_BASE_PATH . 'include/functions.php');
+require_once(IMMOTOOL_BASE_PATH . 'config.php');
+require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
 ob_end_clean();
 
-// Konfiguration ermitteln
+// Initialisierung des Immobilien-Bildes
 $setup = new immotool_setup();
 if (is_callable(array('immotool_myconfig', 'load_config_default')))
   immotool_myconfig::load_config_default($setup);
 
-// Bild ermitteln
-if (!isset($_REQUEST['id']) || !is_string($_REQUEST['id']))
-  die('No id defined!');
-if (strpos($_REQUEST['id'], '..') !== false)
-  die('Invalid image defined!');
-if (!isset($_REQUEST['img']) || !is_string($_REQUEST['img']))
-  die('No image defined!');
-if (strpos($_REQUEST['img'], '..') !== false)
-  die('Invalid image defined!');
-$imgPath = IMMOTOOL_BASE_PATH . 'data/' . $_REQUEST['id'] . '/' . $_REQUEST['img'];
-if (!is_file($imgPath))
-  die('File not found!');
+// angeforderte Objekt-ID ermitteln
+$objectId = (isset($_REQUEST['id']) && is_string($_REQUEST['id'])) ?
+    trim(basename($_REQUEST['id'])) : null;
+if (is_null($objectId) || strlen($objectId) < 1) {
+  if (!headers_sent()) {
+    // 400-Fehlercode zurückliefern,
+    // wenn keine gültige Objekt-ID übermittelt wurde
+    header('HTTP/1.0 400 Bad Request');
+  }
+  echo 'No id defined!';
+  exit;
+}
+
+// angefordertes Bild ermitteln
+$imgName = (isset($_REQUEST['img']) && is_string($_REQUEST['img'])) ?
+    trim(basename($_REQUEST['img'])) : null;
+if (is_null($imgName) || strlen($imgName) < 1) {
+  if (!headers_sent()) {
+    // 400-Fehlercode zurückliefern,
+    // wenn keine gültiger Bild-Name übermittelt wurde
+    header('HTTP/1.0 400 Bad Request');
+  }
+  echo 'No img defined!';
+  exit;
+}
+
+// Pfad des Bildes auf dem Server ermitteln
+$imgPath = IMMOTOOL_BASE_PATH . 'data/' . $objectId . '/' . $imgName;
+if (!is_file($imgPath)) {
+  if (!headers_sent()) {
+    // 404-Fehlercode zurückliefern,
+    // wenn das angeforderte Bild nicht auf dem Server existiert
+    header('HTTP/1.0 404 Not Found');
+  }
+  echo 'Image file not found!';
+  exit;
+}
 
 // Maße ermitteln
 $x = 100;
@@ -70,14 +102,21 @@ if (is_file($cacheFile)) {
 
   // Cache-Datei nach Ablauf der Vorhaltezeit ggf. löschen
   if (!immotool_functions::check_file_age($cacheFile, $setup->CacheLifeTime)) {
-    unlink($cacheFile);
+    @unlink($cacheFile);
   }
 
   // Cache-Datei ausliefern
   else {
     $cacheImg = file_get_contents($cacheFile);
-    if ($cacheImg === false)
-      die('Can\'t load cache image!');
+    if ($cacheImg === false) {
+      if (!headers_sent()) {
+        // 500-Fehlercode zurückliefern,
+        // wenn die Cache-Datei nicht geladen werden konnte
+        header('HTTP/1.0 500 Internal Server Error');
+      }
+      echo 'Can\'t load image from cache!';
+      exit;
+    }
     header('Content-type: image/jpeg');
     echo $cacheImg;
     return;
@@ -111,14 +150,24 @@ else {
 //die( "SRC [x=$src_x, y=$src_y], DEST [x=$dest_x, y=$dest_y]" );
 
 $srcImg = null;
-if ($type == 1)
+if ($type == 1) {
   $srcImg = imagecreatefromgif($imgPath);
-else if ($type == 2)
+}
+else if ($type == 2) {
   $srcImg = imagecreatefromjpeg($imgPath);
-else if ($type == 3)
+}
+else if ($type == 3) {
   $srcImg = imagecreatefrompng($imgPath);
-else
-  die('Invalid image type!');
+}
+else {
+  if (!headers_sent()) {
+    // 400-Fehlercode zurückliefern,
+    // wenn keine gültiges Bild angefordert wurde
+    header('HTTP/1.0 400 Bad Request');
+  }
+  echo 'Invalid image type!';
+  exit;
+}
 
 $scaledImg = imagecreatetruecolor($x, $y);
 $bgRgb = immotool_functions::get_rgb_from_hex($bg);
@@ -133,3 +182,4 @@ imagejpeg($scaledImg, $cacheFile, 90);
 header('Content-type: image/jpeg');
 imagejpeg($scaledImg, null, 90);
 imagedestroy($scaledImg);
+exit;
