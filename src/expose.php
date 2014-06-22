@@ -202,7 +202,7 @@ if (!class_exists('immotool_expose')) {
               $errors[] = 'postal';
           }
           if (array_search('email', $requiredFields) !== false) {
-            if (!is_string($contact['email']) || preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^i", $contact['email']) !== 1)
+            if (!is_string($contact['email']) || immotool_functions::is_valid_mail_address($contact['email']) !== true)
               $errors[] = 'email';
           }
           if (array_search('phone', $requiredFields) !== false) {

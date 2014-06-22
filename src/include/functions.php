@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.5.30');
+define('IMMOTOOL_SCRIPT_VERSION', '1.5.31');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 
@@ -1402,6 +1402,83 @@ class immotool_functions {
   function write_bytes($size) {
     $unit = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
     return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
+  }
+
+  /**
+   * Überprüfung, ob ein Hostname gültig ist.
+   * siehe http://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
+   * @param string $hostname Der zu prüfende Hostname
+   * @return bool Liefert true, wenn es sich um einen gültigen Hostnamen handelt.
+   */
+  function is_valid_hostname($hostname) {
+
+    if (!is_string($hostname))
+      return false;
+    $len = strlen($hostname);
+    $hostname = strtolower(trim($hostname));
+    if (strlen($hostname) < 1)
+      return false;
+    if (strlen($hostname) != $len)
+      return false;
+
+    $shortPattern = '/^[a-z0-9]+$/';
+    $longPattern = '/^[a-z0-9][a-z0-9\\-]*[a-z0-9]$/';
+    $labels = explode('.', $hostname);
+    foreach ($labels as $label) {
+      if (!is_string($label))
+        return false;
+      if (strlen($label) < 1)
+        return false;
+      $idnLabel = immotool_functions::encode_mail($label);
+      if (strlen($idnLabel) < 3) {
+        if (preg_match($shortPattern, $idnLabel) !== 1) {
+          //echo '<p>INVALID LABEL: ' . $idnLabel . '</p>';
+          return false;
+        }
+      }
+      else {
+        if (preg_match($longPattern, $idnLabel) !== 1) {
+          //echo '<p>INVALID LABEL: ' . $idnLabel . '</p>';
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Überprüfung, ob eine E-Mailadresse gültig ist.
+   * siehe http://en.wikipedia.org/wiki/Email_address#Syntax
+   * @param string $hostname Die zu prüfende E-Mailadresse
+   * @return bool Liefert true, wenn es sich um eine gültige E-Mailadresse handelt.
+   */
+  function is_valid_mail_address($email) {
+    //echo '<p>VALIDATE ' . $email . '</p>';
+    if (!is_string($email))
+      return false;
+    $email = trim($email);
+    if (strlen($email) < 1)
+      return false;
+
+    $values = explode('@', $email);
+    if (!is_array($values) || count($values) != 2)
+      return false;
+
+    // Domain-Part prüfen
+    if (immotool_functions::is_valid_hostname($values[1]) !== true) {
+      //echo '<p>INVALID DOMAIN-PART: ' . $values[1] . '</p>';
+      return false;
+    }
+
+    // Local-Part prüfen
+    $pattern = '/^[a-zA-Z0-9!#\$%&\'*+\-\/=?^_`\{\|\}\.]+$/';
+    if (preg_match($pattern, $values[0]) !== 1) {
+      //echo '<p>INVALID LOCAL-PART: ' . $values[0] . '</p>';
+      return false;
+    }
+
+    return true;
   }
 
 }

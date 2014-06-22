@@ -26,6 +26,7 @@
 
 if (!defined('IN_WEBSITE'))
   exit;
+
 require_once( IMMOTOOL_BASE_PATH . 'include/class.gallery.php' );
 
 class ImmoToolGallery_html extends ImmoToolGallery {
