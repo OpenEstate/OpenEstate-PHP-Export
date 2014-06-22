@@ -27,33 +27,39 @@
 // Initialisierung
 $startup = microtime();
 define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH'))
+if (!defined('IMMOTOOL_BASE_PATH')) {
   define('IMMOTOOL_BASE_PATH', '');
+}
 include(IMMOTOOL_BASE_PATH . 'config.php');
 include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 include(IMMOTOOL_BASE_PATH . 'data/language.php');
-if (session_id() == '')
-  session_start();
 $debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
-if ($debugMode)
-  header('Content-Type: text/html; charset=utf-8');
-else
-  header('Content-Type: text/xml; charset=utf-8');
 
 // Konfiguration ermitteln
 $setup = new immotool_setup_feeds();
-if (is_callable(array('immotool_myconfig', 'load_config_feeds')))
+if (is_callable(array('immotool_myconfig', 'load_config_feeds'))) {
   immotool_myconfig::load_config_feeds($setup);
+}
 immotool_functions::init($setup);
-if (!$setup->PublishTrovitFeed)
+if (!$setup->PublishTrovitFeed) {
   die('Trovit-Feed is disabled!');
+}
 
 // Übersetzungen ermitteln
 $translations = null;
 $lang = (isset($_REQUEST[IMMOTOOL_PARAM_LANG])) ? $_REQUEST[IMMOTOOL_PARAM_LANG] : $setup->DefaultLanguage;
 $lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $translations);
-if (!is_array($translations))
+if (!is_array($translations)) {
   die('Can\'t load translations!');
+}
+
+// Header senden
+if ($debugMode) {
+  header('Content-Type: text/html; charset=utf-8');
+}
+else {
+  header('Content-Type: text/xml; charset=utf-8');
+}
 
 // Cache-Datei des Feeds
 $feedFile = IMMOTOOL_BASE_PATH . 'cache/feed.trovit_' . $lang . '.xml';
@@ -385,3 +391,4 @@ else {
   // Feed ausgeben
   echo $feed;
 }
+immotool_functions::shutdown($setup);

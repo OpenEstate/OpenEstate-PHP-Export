@@ -124,7 +124,7 @@ $scaledImg = imagecreatetruecolor($x, $y);
 $bgRgb = immotool_functions::get_rgb_from_hex($bg);
 $bgColor = imagecolorallocate($scaledImg, $bgRgb['r'], $bgRgb['g'], $bgRgb['b']);
 imagefilledrectangle($scaledImg, 0, 0, $x, $y, $bgColor);
-imagecopyresized($scaledImg, $srcImg, $move_x, $move_y, 0, 0, $dest_x, $dest_y, $src_x, $src_y);
+imagecopyresampled($scaledImg, $srcImg, $move_x, $move_y, 0, 0, $dest_x, $dest_y, $src_x, $src_y);
 
 // Verkleinertes Bild im Cache-Verzeichnis speichern
 imagejpeg($scaledImg, $cacheFile, 90);

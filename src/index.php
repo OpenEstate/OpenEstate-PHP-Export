@@ -25,114 +25,111 @@
  */
 
 // Initialisierung
-$startup = microtime();
+$startupTime = microtime();
 define('IN_WEBSITE', 1);
 if (!defined('IMMOTOOL_BASE_PATH'))
   define('IMMOTOOL_BASE_PATH', '');
 include(IMMOTOOL_BASE_PATH . 'config.php');
+include(IMMOTOOL_BASE_PATH . 'private.php');
 include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 include(IMMOTOOL_BASE_PATH . 'data/language.php');
-if (session_id() == '')
-  session_start();
-
-// Favoriten ggf. entfernen
-if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR]) && is_string($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR])) {
-  if (isset($_SESSION['immotool']['favs']))
-    $_SESSION['immotool']['favs'] = array();
-  if (isset($_COOKIE['immotool_favs']))
-    unset($_COOKIE['immotool_favs']);
-  setcookie(
-      'immotool_favs', // name
-      '', // value
-      time() + 60 * 60 * 24 * 365, // expires after 365 days
-      '/', // path
-      '', // domain
-      false // secure
-  );
-}
 
 // Initialisierungen
 $setup = new immotool_setup_index();
+$exposeSetup = new immotool_setup_expose();
 immotool_functions::init($setup, 'load_config_index');
+immotool_functions::init_config($exposeSetup, 'load_config_expose');
+
+// Favoriten ggf. entfernen
+if ($setup->HandleFavourites && isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR]) && is_string($_REQUEST[IMMOTOOL_PARAM_INDEX_FAVS_CLEAR])) {
+  immotool_functions::put_session_value('favs', null);
+}
 
 // Übersetzungen ermitteln
 $translations = null;
 $lang = (isset($_REQUEST[IMMOTOOL_PARAM_LANG])) ? $_REQUEST[IMMOTOOL_PARAM_LANG] : null;
 $lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $translations);
-if (!is_array($translations))
-  die('Can\'t load translations!');
+if (!is_array($translations)) {
+  immotool_functions::print_error('Can\'t load translations!', $lang, $startupTime, $setup, $translations);
+  return;
+}
 
 // Ansicht ermitteln
 $view = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_VIEW])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_VIEW] : null;
-if ($view != 'fav')
+if ($view != 'fav' || !$setup->HandleFavourites) {
   $view = 'index';
+}
 
 // Modus ermitteln
 $mode = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_MODE])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_MODE] : null;
-if (!is_string($mode) || strlen($mode) <= 0)
-  $mode = (isset($_SESSION['immotool']['mode'])) ? $_SESSION['immotool']['mode'] : null;
-if ($mode != 'gallery' && $mode != 'entry')
+if (!is_string($mode) || strlen($mode) <= 0) {
+  $mode = immotool_functions::get_session_value('mode', null);
+}
+if ($mode != 'gallery' && $mode != 'entry') {
   $mode = $setup->DefaultMode;
-$_SESSION['immotool']['mode'] = $mode;
+}
+immotool_functions::put_session_value('mode', $mode);
 
 // Sortierung & Filterkriterien ignorieren und aus der Session entfernen
 if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_RESET]) && is_string($_REQUEST[IMMOTOOL_PARAM_INDEX_RESET])) {
-  unset($_SESSION['immotool']['orderBy']);
-  unset($_SESSION['immotool']['orderDir']);
-  unset($_SESSION['immotool']['filter']);
-  unset($_SESSION['immotool']['page']);
-  if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER]))
+  immotool_functions::put_session_value('orderBy', null);
+  immotool_functions::put_session_value('orderDir', null);
+  immotool_functions::put_session_value('filter', null);
+  immotool_functions::put_session_value('page', null);
+  if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER])) {
     unset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER]);
-  if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER]))
+  }
+  if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER])) {
     unset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER]);
-  if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE]))
+  }
+  if (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE])) {
     unset($_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE]);
+  }
 }
 
 // Seitenzahl ermitteln
 $elementsPerPage = $setup->ElementsPerPage;
 $page = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_PAGE] : null;
 if (!is_numeric($page) || $page <= 0) {
-  $page = (isset($_SESSION['immotool']['page'])) ? $_SESSION['immotool']['page'] : null;
-  if (!is_numeric($page) || $page <= 0)
+  $page = immotool_functions::get_session_value('page', null);
+  if (!is_numeric($page) || $page <= 0) {
     $page = 1;
+  }
 }
-$_SESSION['immotool']['page'] = $page;
+immotool_functions::put_session_value('page', $page);
 
 // Sortierung ermitteln
 $order = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_ORDER] : '';
 $order = explode('-', $order);
 $orderBy = (isset($order[0]) && strlen($order[0]) > 0) ? $order[0] : '';
 if (!is_string($orderBy) || trim($orderBy) == '') {
-  $orderBy = (isset($_SESSION['immotool']['orderBy'])) ? $_SESSION['immotool']['orderBy'] : null;
-  if (!is_string($orderBy) || trim($orderBy) == '')
+  $orderBy = immotool_functions::get_session_value('orderBy', null);
+  if (!is_string($orderBy) || trim($orderBy) == '') {
     $orderBy = $setup->DefaultOrderBy;
+  }
 }
 $orderDir = (isset($order[1]) && strlen($order[1]) > 0) ? $order[1] : '';
 if (!is_string($orderDir) || trim($orderDir) == '') {
-  $orderDir = (isset($_SESSION['immotool']['orderDir'])) ? $_SESSION['immotool']['orderDir'] : null;
-  if (!is_string($orderDir) || trim($orderDir) == '')
+  $orderDir = immotool_functions::get_session_value('orderDir', null);
+  if (!is_string($orderDir) || trim($orderDir) == '') {
     $orderDir = $setup->DefaultOrderDir;
+  }
 }
-$_SESSION['immotool']['orderBy'] = $orderBy;
-$_SESSION['immotool']['orderDir'] = $orderDir;
+immotool_functions::put_session_value('orderBy', $orderBy);
+immotool_functions::put_session_value('orderDir', $orderDir);
 
 // Filterkriterien ermitteln
 $filters = array();
 if ($view != 'fav') {
   $filters = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER] : null;
   $filterClear = (isset($_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER_CLEAR])) ? $_REQUEST[IMMOTOOL_PARAM_INDEX_FILTER_CLEAR] : null;
-  if ($filterClear == '1') {
-    $_SESSION['immotool']['filter'] = array();
-    if (!is_array($filters))
-      $filters = array();
+  if ($filterClear != '1' && !is_array($filters)) {
+    $filters = immotool_functions::get_session_value('filter', null);
   }
-  else if (!is_array($filters)) {
-    $filters = (isset($_SESSION['immotool']['filter'])) ? $_SESSION['immotool']['filter'] : null;
-    if (!is_array($filters))
-      $filters = array();
+  if (!is_array($filters)) {
+    $filters = array();
   }
-  $_SESSION['immotool']['filter'] = $filters;
+  immotool_functions::put_session_value('filter', $filters);
 }
 
 // Parameter der Seite
@@ -141,17 +138,17 @@ $pageTitle = ($view == 'fav') ? $translations['labels']['title.fav'] : $translat
 
 // Inhalt der Seite erzeugen
 $totalCount = 0;
-$listing = immotool_functions::read_template('listing.html');
-$favIds = ($view == 'fav') ? $_SESSION['immotool']['favs'] : null;
+$listing = immotool_functions::read_template('listing.html', $setup->TemplateFolder);
+$favIds = ($view == 'fav') ? immotool_functions::get_session_value('favs', array()) : null;
 $result = immotool_functions::list_objects($page, $elementsPerPage, $orderBy, $orderDir, $filters, $totalCount, $lang, $setup->CacheLifeTime, $favIds);
 $counter = 0;
 foreach ($result as $resultId) {
   $counter++;
   $bg = (($counter % 2) == 0) ? 'openestate_light' : 'openestate_dark';
   $object = immotool_functions::get_object($resultId);
-  $listingEntry = immotool_functions::read_template('listing_' . $mode . '.html');
+  $listingEntry = immotool_functions::read_template('listing_' . $mode . '.html', $setup->TemplateFolder);
   if (!is_string($listingEntry))
-    $listingEntry = immotool_functions::read_template('listing_entry.html');
+    $listingEntry = immotool_functions::read_template('listing_entry.html', $setup->TemplateFolder);
   immotool_functions::replace_var('ID', $object['id'], $listingEntry);
   immotool_functions::replace_var('BG', $bg, $listingEntry);
   immotool_functions::replace_var('ACTION', $translations['openestate']['actions'][$object['action']], $listingEntry);
@@ -247,19 +244,56 @@ foreach ($result as $resultId) {
     }
   }
 
-  // Darstellung der Links
-  $favTitle = immotool_functions::has_favourite($object['id']) ?
-      $translations['labels']['link.expose.unfav'] : $translations['labels']['link.expose.fav'];
-
+  // exposé link
   immotool_functions::replace_var('LINK_EXPOSE', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'], $listingEntry);
   immotool_functions::replace_var('LINK_EXPOSE_TEXT', $translations['labels']['link.expose.view'], $listingEntry);
-  immotool_functions::replace_var('LINK_FAV', '?' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view . '&amp;' . IMMOTOOL_PARAM_INDEX_MODE . '=' . $mode, $listingEntry);
-  immotool_functions::replace_var('LINK_FAV_TEXT', $favTitle, $listingEntry);
-  immotool_functions::replace_var('LINK_CONTACT', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=contact', $listingEntry);
-  immotool_functions::replace_var('LINK_CONTACT_TEXT', $translations['labels']['link.expose.contact'], $listingEntry);
+
+  // favourite link
+  if ($setup->HandleFavourites) {
+    $favTitle = immotool_functions::has_favourite($object['id']) ?
+        $translations['labels']['link.expose.unfav'] : $translations['labels']['link.expose.fav'];
+    immotool_functions::replace_var('LINK_FAV', '?' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_INDEX_VIEW . '=' . $view . '&amp;' . IMMOTOOL_PARAM_INDEX_MODE . '=' . $mode, $listingEntry);
+    immotool_functions::replace_var('LINK_FAV_TEXT', $favTitle, $listingEntry);
+  }
+  else {
+    immotool_functions::replace_var('LINK_FAV', null, $listingEntry);
+    immotool_functions::replace_var('LINK_FAV_TEXT', null, $listingEntry);
+  }
+
+  // contact link
+  if (array_search('contact', $exposeSetup->ViewOrder) !== false && ($exposeSetup->ShowContactForm === true || $exposeSetup->ShowContactPerson === true)) {
+    immotool_functions::replace_var('LINK_CONTACT', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=contact', $listingEntry);
+    immotool_functions::replace_var('LINK_CONTACT_TEXT', $translations['labels']['link.expose.contact'], $listingEntry);
+  }
+  else {
+    immotool_functions::replace_var('LINK_CONTACT', null, $listingEntry);
+    immotool_functions::replace_var('LINK_CONTACT_TEXT', null, $listingEntry);
+  }
+
+  // video link
+  $hasVideoLink = false;
+  if (array_search('media', $exposeSetup->ViewOrder) !== false && isset($object['links']) && is_array($object['links']) && count($object['links']) > 0) {
+    foreach ($object['links'] as $link) {
+      if (isset($link['provider']) && strpos($link['provider'], 'video@') === 0) {
+        $hasVideoLink = true;
+        break;
+      }
+    }
+  }
+  if ($hasVideoLink === true) {
+    immotool_functions::replace_var('LINK_VIDEOS', 'expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=media', $listingEntry);
+    immotool_functions::replace_var('LINK_VIDEOS_TEXT', $translations['labels']['link.expose.videos'], $listingEntry);
+  }
+  else {
+    immotool_functions::replace_var('LINK_VIDEOS', null, $listingEntry);
+    immotool_functions::replace_var('LINK_VIDEOS_TEXT', null, $listingEntry);
+  }
+
+  // pdf link
   $pdf = 'data/' . $object['id'] . '/' . $object['id'] . '_' . $lang . '.pdf';
   if (is_file(IMMOTOOL_BASE_PATH . $pdf)) {
-    immotool_functions::replace_var('LINK_PDF', $pdf, $listingEntry);
+    $pdfLink = 'download.php?id=' . $object['id'] . '&amp;lang=' . $lang;
+    immotool_functions::replace_var('LINK_PDF', $pdfLink, $listingEntry);
     immotool_functions::replace_var('LINK_PDF_TEXT', $translations['labels']['link.expose.pdf'], $listingEntry);
   }
   else {
@@ -305,8 +339,10 @@ if ($maxPageNumber > 1) {
 else {
   $pagination .= '<li>&nbsp;</li>';
 }
-$pagination .= '<li ' . (($view == 'fav') ? 'class="selected"' : '') . ' style="float:right;"><a href="?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav&amp;' . IMMOTOOL_PARAM_INDEX_MODE . '=' . $mode . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['tab.fav'] . '</a></li>';
-$pagination .= '<li ' . (($view == 'index') ? 'class="selected"' : '') . ' style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['tab.index'] . '</a></li>';
+if ($setup->HandleFavourites) {
+  $pagination .= '<li ' . (($view == 'fav') ? 'class="selected"' : '') . ' style="float:right;"><a href="?' . IMMOTOOL_PARAM_INDEX_VIEW . '=fav&amp;' . IMMOTOOL_PARAM_INDEX_MODE . '=' . $mode . '&amp;' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['tab.fav'] . '</a></li>';
+  $pagination .= '<li ' . (($view == 'index') ? 'class="selected"' : '') . ' style="float:right;"><a href="index.php?' . IMMOTOOL_PARAM_LANG . '=' . $lang . '" rel="nofollow">' . $translations['labels']['tab.index'] . '</a></li>';
+}
 $pagination .= '</ul>';
 
 // Menü erzeugen
@@ -398,9 +434,7 @@ $pageHeader = '';
 $metaRobots = 'noindex,follow';
 $metaKeywords = null;
 $metaDescription = null;
-$linkParam = '';
-$buildTime = microtime() - $startup;
-$output = immotool_functions::build_page('index', $lang, $mainTitle, $pageTitle, $pageHeader, $pageContent, $buildTime, $setup->AdditionalStylesheet, $setup->ShowLanguageSelection, $metaRobots, $linkParam, $metaKeywords, $metaDescription);
+$output = immotool_functions::build_page($setup, 'index', $lang, $mainTitle, $pageTitle, $pageHeader, $pageContent, $startupTime, $metaRobots, $metaKeywords, $metaDescription);
 if (is_string($setup->Charset) && strlen(trim($setup->Charset)) > 0) {
   $output = immotool_functions::encode($output, $setup->Charset);
 }
@@ -408,3 +442,4 @@ if (is_string($setup->ContentType) && strlen(trim($setup->ContentType)) > 0) {
   header('Content-Type: ' . $setup->ContentType);
 }
 echo $output;
+immotool_functions::shutdown($setup);

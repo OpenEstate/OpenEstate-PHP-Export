@@ -26,10 +26,14 @@
 
 // Initialisierung
 define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH'))
+if (!defined('IMMOTOOL_BASE_PATH')) {
   define('IMMOTOOL_BASE_PATH', '');
-if (!extension_loaded('gd'))
+}
+if (!extension_loaded('gd')) {
   die('It seems like GD is not installed!');
+}
+include(IMMOTOOL_BASE_PATH . 'config.php');
+include(IMMOTOOL_BASE_PATH . 'private.php');
 include(IMMOTOOL_BASE_PATH . 'include/functions.php');
 define('CAPTCHA_FONT_PATH', IMMOTOOL_BASE_PATH . 'include/fonts');
 define('CAPTCHA_LENGTH', 5);
@@ -38,16 +42,25 @@ define('CAPTCHA_SYMBOLS', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789');
 define('CAPTCHA_SIZE_X', 125);
 define('CAPTCHA_SIZE_Y', 30);
 define('CAPTCHA_SIZE_FONT', 25);
-define('CAPTCHA_VARIABLE', 'captchacode');
-if (is_string($_REQUEST['sess']) && strlen($_REQUEST['sess']) > 0)
-  session_name($_REQUEST['sess']);
-if (session_id() == '')
-  session_start();
+define('CAPTCHA_VARIABLE', 'captchaCode');
+
+$setup = new immotool_setup();
+immotool_functions::init_config($setup, 'load_config_default');
+immotool_functions::init_session();
 
 // zufällige TTF Schriftart ermitteln
-$fonts = immotool_functions::list_directory(CAPTCHA_FONT_PATH);
-if (!is_array($fonts) || count($fonts) <= 0)
+$fonts = array();
+$files = immotool_functions::list_directory(CAPTCHA_FONT_PATH);
+if (is_array($files)) {
+  foreach ($files as $file) {
+    if (substr(strtolower($file), -4) === '.ttf') {
+      $fonts[] = $file;
+    }
+  }
+}
+if (count($fonts) < 1) {
   die('No font was found in path \'' . CAPTCHA_FONT_PATH . '\'!');
+}
 $font = CAPTCHA_FONT_PATH . '/' . $fonts[array_rand($fonts)];
 
 // Captcha rendern
@@ -62,14 +75,12 @@ for ($i = 1; $i <= CAPTCHA_LENGTH; $i++) {
   imagettftext($image, 25, rand(-10, 10), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 200, 200, 200), $font, $sign);
   imagettftext($image, 16, rand(-15, 15), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 69, 103, 137), $font, $sign);
 }
-$_SESSION[CAPTCHA_VARIABLE] = $string;
-
-// clean the output buffer
-ob_clean();
+immotool_functions::put_session_value(CAPTCHA_VARIABLE, $string);
+immotool_functions::shutdown($setup);
 
 // Captcha ausgeben
+ob_clean();
 header('Content-type: image/png');
 imagepng($image);
 imagedestroy($image);
-session_write_close();
 exit();

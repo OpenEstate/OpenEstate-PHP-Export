@@ -35,12 +35,18 @@ class immotool_myconfig {
    * @param object $config Konfigurations-Objekt
    */
   function load_config_default(&$config) {
+    // Keinen Content-Type verwenden, wenn eine Einbindung durch einen Wrapper stattfindet
+    if (defined('OPENESTATE_WRAPPER'))
+      $config->ContentType = null;
+
     // ggf. individuelle Konfigurationswerte einfügen
     //$config->DefaultLanguage = 'en';
     //$config->AdditionalStylesheet = '';
     //$config->ShowLanguageSelection = false;
     //$config->CacheLifeTime = 86400;
     //$config->DynamicImageScaling = false;
+    //$config->HandleFavourites = false;
+    //$config->TemplateFolder = 'default';
   }
 
   /**
@@ -59,7 +65,11 @@ class immotool_myconfig {
     //$config->ShowContactTerms = true;
     //$config->ContactRequiredFields = array( 'name', 'firstname', 'email', 'message' );
     //$config->ViewMode = 'listing';
-    //$config->ViewOrder = array( 'gallery', 'texts', 'details', 'contact', 'terms' );
+    //$config->ViewOrder = array( 'gallery', 'texts', 'details', 'map', 'contact', 'terms' );
+    //$config->DetailsOrder = array( 'prices', 'measures', 'features', 'surroundings', 'condition', 'administration' );
+    //$config->TextOrder = array( 'detailled_description', 'location_description', 'feature_description', 'price_description', 'agent_fee_information', 'additional_information', 'short_description' );
+    //$config->MapHandler = 'google';
+    //$config->VideoHandler = 'custom';
     //$config->GalleryHandler = null;
     //$config->GalleryImageSize = array( 100, 75 );
     //$config->TitleImageSize = array( 200, 150 );
@@ -89,9 +99,17 @@ class immotool_myconfig {
     // allgemeine Konfiguration (siehe oben)
     immotool_myconfig::load_config_default($config);
 
+    // Keine allgemeinen Stylesheets verwenden, wenn eine Einbindung durch einen Wrapper stattfindet
+    $config->ShowGeneralStyles = !defined('OPENESTATE_WRAPPER');
+
     // ggf. individuelle Konfigurationswerte einfügen
-    //$config->ShowGeneralStyles = false;
-    //$config->GeneralTextColor = 'black';
+    //$config->GeneralTextColor = '#303030';
+    //$config->GeneralTextFont = 'sans-serif';
+    //$config->BodyBackgroundColor = '#ffffff';
+    //$config->BodyFontSize = '12px';
+    //$config->LightBackgroundColor = '#ffffff';
+    //$config->DarkBackgroundColor = '#e6ffe6';
+    //$config->BorderColor = '#6c6';
   }
 
   /**
@@ -107,7 +125,9 @@ class immotool_myconfig {
     //$config->PublishRssFeed = false;
     //$config->PublishTrovitFeed = false;
     //$config->AtomFeedLimit = 10;
+    //$config->AtomFeedWithImage = false;
     //$config->RssFeedLimit = 10;
+    //$config->RssFeedWithImage = false;
     //$config->OrderBy = 'id';
     //$config->OrderDir = 'desc';
   }

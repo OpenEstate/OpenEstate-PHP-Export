@@ -122,6 +122,24 @@ background-color: <?php echo $setup->DarkBackgroundColor; ?>;
 
 
 /**
+* Allgemein, Fehlermeldungen
+*/
+
+#openestate_error {
+border: 1px solid <?php echo $setup->BorderColor; ?>;
+background-color: <?php echo $setup->DarkBackgroundColor; ?>;
+margin: 1em;
+padding: 1em;
+text-align: center;
+}
+
+#openestate_error h1 {
+margin: 0;
+margin-bottom: 5px;
+}
+
+
+/**
 * Allgemein, Sprachauswahl
 */
 
@@ -766,4 +784,17 @@ width: 100px;
 margin-right: 1em;
 font-weight: normal;
 letter-spacing: 0;
+}
+
+/**
+* Exposéansicht, Umkreiskarte
+*/
+#openestate_map {
+margin-bottom: 1em;
+}
+
+#openestate_map iframe {
+width: 100%;
+height: 500px;
+border: 1px solid <?php echo $setup->BorderColor; ?>;
 }
