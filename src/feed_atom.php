@@ -222,8 +222,8 @@ foreach ($ids as $id) {
     $objectSummary = '';
 
   // ggf. Bild in Zusammenfassung einfügen
-  if ($setup->AtomFeedWithImage === true) {
-    $titleImg = 'data/' . $object['id'] . '/title.jpg';
+  if ($setup->AtomFeedWithImage === true && isset($object['images'][0]['thumb']) && is_string($object['images'][0]['thumb'])) {
+    $titleImg = 'data/' . $object['id'] . '/' . $object['images'][0]['thumb'];
     if (is_file(IMMOTOOL_BASE_PATH . $titleImg)) {
       $objectSummary = '<img src="' . $baseUrl . $titleImg . '" alt="" align="left" /> ' . $objectSummary;
     }
