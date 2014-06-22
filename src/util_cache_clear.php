@@ -20,16 +20,16 @@
  * Website-Export, Einträge aus dem Cache-Verzeichnis explizit löschen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung
+// Initialisierung der Skript-Umgebung
 define('IN_WEBSITE', 1);
 if (!defined('IMMOTOOL_BASE_PATH')) {
   define('IMMOTOOL_BASE_PATH', '');
 }
-include(IMMOTOOL_BASE_PATH . 'include/functions.php');
+require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
 define('CACHE_PATH', IMMOTOOL_BASE_PATH . 'cache');
 
 // Einträge im Cache-Verzeichnis ermitteln

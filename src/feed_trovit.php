@@ -20,19 +20,19 @@
  * Website-Export, Darstellung des Trovit-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2012, OpenEstate.org
+ * @copyright 2009-2013, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung
+// Initialisierung der Skript-Umgebung
 $startup = microtime();
 define('IN_WEBSITE', 1);
 if (!defined('IMMOTOOL_BASE_PATH')) {
   define('IMMOTOOL_BASE_PATH', '');
 }
-include(IMMOTOOL_BASE_PATH . 'config.php');
-include(IMMOTOOL_BASE_PATH . 'include/functions.php');
-include(IMMOTOOL_BASE_PATH . 'data/language.php');
+require_once(IMMOTOOL_BASE_PATH . 'config.php');
+require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
+require_once(IMMOTOOL_BASE_PATH . 'data/language.php');
 $debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
 
 // Konfiguration ermitteln
@@ -42,7 +42,13 @@ if (is_callable(array('immotool_myconfig', 'load_config_feeds'))) {
 }
 immotool_functions::init($setup);
 if (!$setup->PublishTrovitFeed) {
-  die('Trovit-Feed is disabled!');
+  if (!headers_sent()) {
+    // 500-Fehlercode zurückliefern,
+    // wenn der Feed in der Konfiguration deaktiviert wurde
+    header('HTTP/1.0 500 Internal Server Error');
+  }
+  echo 'Trovit feed is disabled!';
+  exit;
 }
 
 // Übersetzungen ermitteln
@@ -50,7 +56,13 @@ $translations = null;
 $lang = (isset($_REQUEST[IMMOTOOL_PARAM_LANG])) ? $_REQUEST[IMMOTOOL_PARAM_LANG] : $setup->DefaultLanguage;
 $lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $translations);
 if (!is_array($translations)) {
-  die('Can\'t load translations!');
+  if (!headers_sent()) {
+    // 500-Fehlercode zurückliefern,
+    // wenn die Übersetzungstexte nicht geladen werden konnten
+    header('HTTP/1.0 500 Internal Server Error');
+  }
+  echo 'Can\'t load translations!';
+  exit;
 }
 
 // Header senden
@@ -138,11 +150,13 @@ foreach (immotool_functions::list_available_objects() as $id) {
       $object['title'][$lang] : '';
   $objectContent = $objectTitle;
   foreach ($objectTexts as $key => $text) {
-    if ($key == 'id')
+    if ($key == 'id') {
       continue;
-    if (!is_string($text[$lang]) || trim($text[$lang]) == '')
-      continue;
-    $objectContent .= '<hr/>' . trim($text[$lang]);
+    }
+    $value = immotool_functions::write_attribute_value('descriptions', $key, $text, $translations, $lang);
+    if (!is_null($value) && trim($value) != '') {
+      $objectContent .= '<hr/>' . trim($value);
+    }
   }
 
   // Vermarktungsart & Preis ermitteln
@@ -383,8 +397,18 @@ if ($debugMode) {
 
 // normale Ausgabe des Feeds
 else {
+
   // Feed cachen
-  $fh = fopen($feedFile, 'w') or die('can\'t write file: ' . $feedFile);
+  $fh = @fopen($feedFile, 'w');
+  if (!$fh) {
+    if (!headers_sent()) {
+      // 500-Fehlercode zurückliefern,
+      // wenn die Feed-Datei nicht geschrieben werden kann
+      header('HTTP/1.0 500 Internal Server Error');
+    }
+    echo 'Can\'t write feed to: ' . $feedFile;
+    return;
+  }
   fwrite($fh, $feed);
   fclose($fh);
 
