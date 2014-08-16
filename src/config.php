@@ -61,7 +61,7 @@ class immotool_setup {
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $ShowLanguageSelection = false;
+  var $ShowLanguageSelection = true;
 
   /**
    * Verwendeter Zeichensatz für erzeugte Inhalte.
