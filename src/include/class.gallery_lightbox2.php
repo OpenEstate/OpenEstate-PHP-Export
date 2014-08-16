@@ -175,11 +175,13 @@ LightboxOptions = Object.extend({
    */
   function getTitleImage($objectId, &$image, $lang) {
 
+    $file = 'data/' . $objectId . '/' . $image['name'];
+    if (!is_file(IMMOTOOL_BASE_PATH . $file)) {
+      return null;
+    }
+
     // ggf. das Titelbild dynamisch skalieren
     if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
-      $img = 'data/' . $objectId . '/' . $image['name'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $img))
-        return null;
       $thumb = 'img.php?id=' . $objectId .
           '&amp;img=' . $image['name'] .
           '&amp;x=' . $this->exposeSetup->TitleImageSize[0] .
@@ -188,12 +190,12 @@ LightboxOptions = Object.extend({
 
     // Titelbild direkt ausliefern
     else {
-      $thumb = 'data/' . $objectId . '/title.jpg';
-      if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
+      $thumb = 'data/' . $objectId . '/' . $image['thumb'];
+      if (!is_file(IMMOTOOL_BASE_PATH . $thumb)) {
         return null;
+      }
     }
 
-    $file = 'data/' . $objectId . '/' . $image['name'];
     $link = '?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $objectId . '&amp;' . IMMOTOOL_PARAM_EXPOSE_VIEW . '=gallery&amp;' . IMMOTOOL_PARAM_EXPOSE_IMG . '=1#img';
     $title = (isset($image['title'][$lang])) ? $image['title'][$lang] : '';
     if (!is_string($title))
