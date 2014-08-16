@@ -18,7 +18,6 @@
 
 /**
  * Website-Export, Inserat #2, Objektdaten.
- * $Id$
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2014, OpenEstate.org

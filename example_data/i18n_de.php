@@ -18,7 +18,6 @@
 
 /**
  * Website-Export, Übersetzungen, Deutsch / Deutsch.
- * $Id$
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2014, OpenEstate.org
