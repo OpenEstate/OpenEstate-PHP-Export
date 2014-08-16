@@ -1,4 +1,4 @@
-# OpenEstate-PHP-Export 1.5.x
+# OpenEstate-PHP-Export 1.5.34
 OpenEstate-PHP-Export was developed as a part of the freeware real estate software [OpenEstate-ImmoTool](http://openestate.org/). When a user exports his properties to his website in PHP format, these scripts are transferred to the webspace including real estate data in the `data` folder. This solution started as an experiment, how to publish real estates from [OpenEstate-ImmoTool](http://openestate.org/) on a website with as minimal effort as possible for the user.
 
 ## Features

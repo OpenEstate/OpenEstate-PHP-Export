@@ -17,7 +17,7 @@
  */
 
 /**
- * Website-Export, Allgemeine Geschäftsbedingungen.
+ * Website-Export, private Konfigurationen.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2014, OpenEstate.org
@@ -28,7 +28,16 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-$GLOBALS['immotool_terms'] = array(
-  'en' => 'The general terms and conditions of the real estate agency.',
-  'de' => 'Die allgemeinen Geschäftsbedigungen der Immobilienagentur.',
-);
+/**
+ * Geheimer Krypto-Schlüssel
+ * Wird z.B. zur Erzeugung sicherer Session-ID's verwendet.
+ */
+if (!defined('IMMOTOOL_CRYPT_KEY')) {
+
+  //
+  // PLEASE ENTER YOUR PRIVATE CRYPTO KEY HERE !
+  // You can choose any random value.
+  //
+
+  //define('IMMOTOOL_CRYPT_KEY', '');
+}
