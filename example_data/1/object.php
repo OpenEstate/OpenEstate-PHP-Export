@@ -30,6 +30,7 @@ if (!defined('IN_WEBSITE')) {
 
 $GLOBALS['immotool_objects']['1'] = array(
   'id' => '1',
+  'status' => 'published',
   'action' => 'rent',
   'type' => 'higher_floor_apartment',
   'type_path' => array('general_residence', 'residence', 'higher_floor_apartment'),

@@ -30,6 +30,7 @@ if (!defined('IN_WEBSITE')) {
 
 $GLOBALS['immotool_objects']['2'] = array(
   'id' => '2',
+  'status' => 'published',
   'action' => 'purchase',
   'type' => 'multi_family_house',
   'type_path' => array('general_residence', 'house', 'multi_family_house'),
