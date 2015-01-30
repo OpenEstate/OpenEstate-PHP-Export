@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2014 OpenEstate.org
+ * Copyright (C) 2009-2015 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -30,6 +30,7 @@ if (!defined('IN_WEBSITE')) {
 
 $GLOBALS['immotool_objects']['2'] = array(
   'id' => '2',
+  'status' => 'published',
   'action' => 'purchase',
   'type' => 'multi_family_house',
   'type_path' => array('general_residence', 'house', 'multi_family_house'),

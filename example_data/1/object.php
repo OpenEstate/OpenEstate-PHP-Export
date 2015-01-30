@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2014 OpenEstate.org
+ * Copyright (C) 2009-2015 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -30,6 +30,7 @@ if (!defined('IN_WEBSITE')) {
 
 $GLOBALS['immotool_objects']['1'] = array(
   'id' => '1',
+  'status' => 'published',
   'action' => 'rent',
   'type' => 'higher_floor_apartment',
   'type_path' => array('general_residence', 'residence', 'higher_floor_apartment'),
