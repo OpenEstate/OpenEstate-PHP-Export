@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2014 OpenEstate.org
+ * Copyright (C) 2009-2015 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -28,7 +28,7 @@ if (!defined('IN_WEBSITE')) {
   exit;
 }
 
-define('IMMOTOOL_SCRIPT_VERSION', '1.5.34');
+define('IMMOTOOL_SCRIPT_VERSION', '1.5.35');
 //error_reporting( E_ALL );
 //ini_set('display_errors','1');
 
