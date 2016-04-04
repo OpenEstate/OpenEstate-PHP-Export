@@ -190,6 +190,44 @@ class ImmoToolVideo_default extends ImmoToolVideo {
   }
 
   /**
+   * Eine externe Galerie von panocreator.com einbinden.
+   * @param string $linkId ID der Galerie beim Provider.
+   * @param string $linkTitle Galerie der Videos.
+   * @param string $linkUrl URL zum Direktaufruf der Galerie.
+   * @param int $width Breite der eingebundenen Galerie in Pixeln.
+   * @param int $height Höhe der eingebundenen Galerie in Pixeln.
+   * @return string HTML-Code der eingebundenen Galerie.
+   */
+  function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+    //$width = ($width > 0) ? $width : 600;
+    $height = ($height > 0) ? $height : 500;
+    return '<div class="gallery_panocreator_com" style="width:100%; margin-bottom:0.5em; margin-top:0.5em;">'
+        . "\n"
+
+        // IFrame
+        . '<div class="gallery_container" style="width:100%; height:' . $height . 'px;">'
+        . '<iframe src="https://panocreator.com/view/gallery/id/' . $linkId . '"'
+        . ' width="100%"'
+        . ' height="' . $height . '"'
+        . ' align="left"'
+        . ' marginheight="0"'
+        . ' marginwidth="0"'
+        . ' frameborder="0"'
+        . ' scrolling="no">'
+        . '</iframe>'
+        . '</div>'
+        . "\n"
+
+        // Provider-Link
+        . '<div class="gallery_provider" style="text-align:right;">'
+        . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
+        . ' @ <a href="http://www.panocreator.com/" target="_blank">panocreator.com</a>'
+        . '</div>'
+        . "\n"
+        . '</div>';
+  }
+
+  /**
    * Ein externes Video von sevenload.com einbinden.
    * @param string $linkId ID des Videos beim Provider.
    * @param string $linkTitle Titel des Videos.
