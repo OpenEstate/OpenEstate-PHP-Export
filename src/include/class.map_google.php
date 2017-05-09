@@ -50,8 +50,8 @@ class ImmoToolMap_google extends ImmoToolMap {
     //$lat += (rand(1,999)/rand(1,999));
     //$lon -= (rand(1,999)/rand(1,999));
     // Links erzeugen
-    $iframeSrc = 'http://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom . '&amp;output=embed';
-    $directLink = 'http://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom;
+    $iframeSrc = 'https://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom . '&amp;output=embed';
+    $directLink = 'https://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom;
 
     // Ausgabe erzeugen
     $output = '<iframe' .

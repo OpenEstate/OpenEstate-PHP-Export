@@ -130,7 +130,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
 
         // IFrame
         . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-        . '<iframe src="http://www.dailymotion.com/embed/video/' . $linkId . '"'
+        . '<iframe src="https://www.dailymotion.com/embed/video/' . $linkId . '"'
         . ' width="' . $width . '"'
         . ' height="' . $height . '"'
         . ' align="left"'
@@ -145,7 +145,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
         // Provider-Link
         . '<div class="video_provider" style="text-align:right;">'
         . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-        . ' @ <a href="http://www.dailymotion.com/" target="_blank">dailymotion.com</a>'
+        . ' @ <a href="https://www.dailymotion.com/" target="_blank">dailymotion.com</a>'
         . '</div>'
         . "\n"
         . '</div>';
@@ -168,7 +168,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
 
         // IFrame
         . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-        . '<iframe src="http://www.myvideo.de/embed/' . $linkId . '"'
+        . '<iframe src="https://www.myvideo.de/embed/' . $linkId . '"'
         . ' width="' . $width . '"'
         . ' height="' . $height . '"'
         . ' align="left"'
@@ -183,7 +183,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
         // Provider-Link
         . '<div class="video_provider" style="text-align:right;">'
         . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-        . ' @ <a href="http://www.myvideo.de/" target="_blank">myvideo.de</a>'
+        . ' @ <a href="https://www.myvideo.de/" target="_blank">myvideo.de</a>'
         . '</div>'
         . "\n"
         . '</div>';
@@ -325,7 +325,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
 
         // IFrame
         . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-        . '<iframe src="http://player.vimeo.com/video/' . $linkId . '?title=0&amp;byline=0&amp;portrait=0"'
+        . '<iframe src="https://player.vimeo.com/video/' . $linkId . '?title=0&amp;byline=0&amp;portrait=0"'
         . ' width="' . $width . '"'
         . ' height="' . $height . '"'
         . ' align="left"'
@@ -340,7 +340,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
         // Provider-Link
         . '<div class="video_provider" style="text-align:right;">'
         . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-        . ' @ <a href="http://vimeo.com/" target="_blank">vimeo.com</a>'
+        . ' @ <a href="https://vimeo.com/" target="_blank">vimeo.com</a>'
         . '</div>'
         . "\n"
         . '</div>';
@@ -363,7 +363,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
 
         // IFrame
         . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-        . '<iframe src="http://www.youtube-nocookie.com/embed/' . $linkId . '?rel=0"'
+        . '<iframe src="https://www.youtube-nocookie.com/embed/' . $linkId . '?rel=0"'
         . ' width="' . $width . '"'
         . ' height="' . $height . '"'
         . ' align="left"'
@@ -378,7 +378,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
         // Provider-Link
         . '<div class="video_provider" style="text-align:right;">'
         . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-        . ' @ <a href="http://www.youtube.com/" target="_blank">youtube.com</a>'
+        . ' @ <a href="https://www.youtube.com/" target="_blank">youtube.com</a>'
         . '</div>'
         . "\n"
         . '</div>';

@@ -56,8 +56,8 @@ class ImmoToolMap_osm extends ImmoToolMap {
     $bbox = ($lon2 - $diff) . ',' . ($lat2 - $diff) . ',' . ($lon2 + $diff) . ',' . ($lat2 + $diff);
 
     // Links erzeugen
-    $iframeSrc = 'http://www.openstreetmap.org/export/embed.html?bbox=' . $bbox . '&amp;layer=mapnik';
-    $directLink = 'http://www.openstreetmap.org/?lat=' . $lat . '&amp;lon=' . $lon . '&amp;zoom=12&amp;layers=M';
+    $iframeSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=' . $bbox . '&amp;layer=mapnik';
+    $directLink = 'https://www.openstreetmap.org/?lat=' . $lat . '&amp;lon=' . $lon . '&amp;zoom=12&amp;layers=M';
     if ($this->showPositionMarker === true) {
       $iframeSrc .= '&amp;marker=' . $lat . ',' . $lon;
       $directLink .= '&amp;mlat=' . $lat . '&amp;mlon=' . $lon;
