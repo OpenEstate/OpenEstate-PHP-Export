@@ -1,4 +1,4 @@
-OpenEstate-PHP-Export 1.6.35
+OpenEstate-PHP-Export 1.6.36
 ============================
 
 OpenEstate-PHP-Export was developed as a part of the freeware real estate

@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2015 OpenEstate.org
+ * Copyright (C) 2009-2017 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -45,15 +45,8 @@ class ImmoToolVideo {
    * @return string HTML-Code des eingebundenen Videos.
    */
   function embed($linkId, $linkTitle, $linkUrl, $provider) {
-    /* if (!is_array($link)) return null;
-
-      $url = (isset($link['url']))? $link['url']: null;
-      $id = (isset($link['id']))? $link['id']: null;
-      $provider = (isset($link['provider']))? $link['provider']: null;
-      if (!is_string($id) || !is_string($provider)) return null;
-
-      $title = (isset($link['title'][$lang]))? $link['title'][$lang]: null;
-      if (!is_string($title) || strlen($title)<1) $title = $id; */
+    if ($provider == 'gallery@panocreator.com')
+      return $this->embed_panocreator_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
 
     if ($provider == 'video@clipfish.de')
       return $this->embed_clipfish_de($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
@@ -131,6 +124,19 @@ class ImmoToolVideo {
    * @return string HTML-Code des eingebundenen Videos.
    */
   function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+    return null;
+  }
+
+  /**
+   * Eine externe Galerie von panocreator.com einbinden.
+   * @param string $linkId ID der Galerie beim Provider.
+   * @param string $linkTitle Galerie der Videos.
+   * @param string $linkUrl URL zum Direktaufruf der Galerie.
+   * @param int $width Breite der eingebundenen Galerie in Pixeln.
+   * @param int $height Höhe der eingebundenen Galerie in Pixeln.
+   * @return string HTML-Code der eingebundenen Galerie.
+   */
+  function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 

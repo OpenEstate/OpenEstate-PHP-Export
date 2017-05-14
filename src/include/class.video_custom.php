@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2015 OpenEstate.org
+ * Copyright (C) 2009-2017 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -95,6 +95,21 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
 
     // Standard-Einbindung von myvideo.de erzeugen
     return parent::embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width, $height);
+  }
+
+  /**
+   * Eine externe Galerie von panocreator.com einbinden.
+   * @param string $linkId ID der Galerie beim Provider.
+   * @param string $linkTitle Galerie der Videos.
+   * @param string $linkUrl URL zum Direktaufruf der Galerie.
+   * @param int $width Breite der eingebundenen Galerie in Pixeln.
+   * @param int $height Höhe der eingebundenen Galerie in Pixeln.
+   * @return string HTML-Code der eingebundenen Galerie.
+   */
+  function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+
+    // Standard-Einbindung von panocreator.com erzeugen
+    return parent::embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width, $height);
   }
 
   /**

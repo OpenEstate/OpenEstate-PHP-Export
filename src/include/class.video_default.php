@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2015 OpenEstate.org
+ * Copyright (C) 2009-2017 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -130,7 +130,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
 
         // IFrame
         . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-        . '<iframe src="http://www.dailymotion.com/embed/video/' . $linkId . '"'
+        . '<iframe src="https://www.dailymotion.com/embed/video/' . $linkId . '"'
         . ' width="' . $width . '"'
         . ' height="' . $height . '"'
         . ' align="left"'
@@ -145,7 +145,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
         // Provider-Link
         . '<div class="video_provider" style="text-align:right;">'
         . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-        . ' @ <a href="http://www.dailymotion.com/" target="_blank">dailymotion.com</a>'
+        . ' @ <a href="https://www.dailymotion.com/" target="_blank">dailymotion.com</a>'
         . '</div>'
         . "\n"
         . '</div>';
@@ -168,7 +168,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
 
         // IFrame
         . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-        . '<iframe src="http://www.myvideo.de/embed/' . $linkId . '"'
+        . '<iframe src="https://www.myvideo.de/embed/' . $linkId . '"'
         . ' width="' . $width . '"'
         . ' height="' . $height . '"'
         . ' align="left"'
@@ -183,7 +183,45 @@ class ImmoToolVideo_default extends ImmoToolVideo {
         // Provider-Link
         . '<div class="video_provider" style="text-align:right;">'
         . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-        . ' @ <a href="http://www.myvideo.de/" target="_blank">myvideo.de</a>'
+        . ' @ <a href="https://www.myvideo.de/" target="_blank">myvideo.de</a>'
+        . '</div>'
+        . "\n"
+        . '</div>';
+  }
+
+  /**
+   * Eine externe Galerie von panocreator.com einbinden.
+   * @param string $linkId ID der Galerie beim Provider.
+   * @param string $linkTitle Galerie der Videos.
+   * @param string $linkUrl URL zum Direktaufruf der Galerie.
+   * @param int $width Breite der eingebundenen Galerie in Pixeln.
+   * @param int $height Höhe der eingebundenen Galerie in Pixeln.
+   * @return string HTML-Code der eingebundenen Galerie.
+   */
+  function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+    //$width = ($width > 0) ? $width : 600;
+    $height = ($height > 0) ? $height : 500;
+    return '<div class="gallery_panocreator_com" style="width:100%; margin-bottom:0.5em; margin-top:0.5em;">'
+        . "\n"
+
+        // IFrame
+        . '<div class="gallery_container" style="width:100%; height:' . $height . 'px;">'
+        . '<iframe src="https://panocreator.com/view/gallery/id/' . $linkId . '"'
+        . ' width="100%"'
+        . ' height="' . $height . '"'
+        . ' align="left"'
+        . ' marginheight="0"'
+        . ' marginwidth="0"'
+        . ' frameborder="0"'
+        . ' scrolling="no">'
+        . '</iframe>'
+        . '</div>'
+        . "\n"
+
+        // Provider-Link
+        . '<div class="gallery_provider" style="text-align:right;">'
+        . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
+        . ' @ <a href="http://www.panocreator.com/" target="_blank">panocreator.com</a>'
         . '</div>'
         . "\n"
         . '</div>';
@@ -287,7 +325,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
 
         // IFrame
         . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-        . '<iframe src="http://player.vimeo.com/video/' . $linkId . '?title=0&amp;byline=0&amp;portrait=0"'
+        . '<iframe src="https://player.vimeo.com/video/' . $linkId . '?title=0&amp;byline=0&amp;portrait=0"'
         . ' width="' . $width . '"'
         . ' height="' . $height . '"'
         . ' align="left"'
@@ -302,7 +340,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
         // Provider-Link
         . '<div class="video_provider" style="text-align:right;">'
         . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-        . ' @ <a href="http://vimeo.com/" target="_blank">vimeo.com</a>'
+        . ' @ <a href="https://vimeo.com/" target="_blank">vimeo.com</a>'
         . '</div>'
         . "\n"
         . '</div>';
@@ -325,7 +363,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
 
         // IFrame
         . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-        . '<iframe src="http://www.youtube-nocookie.com/embed/' . $linkId . '?rel=0"'
+        . '<iframe src="https://www.youtube-nocookie.com/embed/' . $linkId . '?rel=0"'
         . ' width="' . $width . '"'
         . ' height="' . $height . '"'
         . ' align="left"'
@@ -340,7 +378,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
         // Provider-Link
         . '<div class="video_provider" style="text-align:right;">'
         . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-        . ' @ <a href="http://www.youtube.com/" target="_blank">youtube.com</a>'
+        . ' @ <a href="https://www.youtube.com/" target="_blank">youtube.com</a>'
         . '</div>'
         . "\n"
         . '</div>';
