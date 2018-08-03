@@ -46,7 +46,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
 
     // Standard-Einbindung von clipfish.de erzeugen
     return parent::embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width, $height);
@@ -61,7 +61,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
 
     // Standard-Einbindung von clipshack.com erzeugen
     return parent::embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width, $height);
@@ -76,7 +76,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
 
     // Standard-Einbindung von dailymotion.com erzeugen
     return parent::embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width, $height);
@@ -91,7 +91,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
 
     // Standard-Einbindung von myvideo.de erzeugen
     return parent::embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width, $height);
@@ -106,7 +106,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * @param int $height Höhe der eingebundenen Galerie in Pixeln.
    * @return string HTML-Code der eingebundenen Galerie.
    */
-  function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
 
     // Standard-Einbindung von panocreator.com erzeugen
     return parent::embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width, $height);
@@ -121,7 +121,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
 
     // Standard-Einbindung von sevenload.com erzeugen
     return parent::embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width, $height);
@@ -136,7 +136,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_veoh_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_veoh_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
 
     // Standard-Einbindung von veoh.com erzeugen
     return parent::embed_veoh_com($linkId, $linkTitle, $linkUrl, $width, $height);
@@ -151,7 +151,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
 
     // Standard-Einbindung von vimeo.com erzeugen
     return parent::embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width, $height);
@@ -166,7 +166,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_youtube_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_youtube_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
 
     // Standard-Einbindung von youtube.com erzeugen
     return parent::embed_youtube_com($linkId, $linkTitle, $linkUrl, $width, $height);
@@ -176,7 +176,7 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default {
    * Name des Video-Handlers.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return 'custom';
   }
 

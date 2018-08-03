@@ -31,12 +31,12 @@ require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
 
 class ImmoToolFilter_country extends ImmoToolFilter {
 
-  var $countryNames = null;
+  public $countryNames = null;
 
   /**
    * Ein Filter-Array erzeugen.
    */
-  function build() {
+  public function build() {
     $this->countryNames = array();
     return parent::build();
   }
@@ -44,7 +44,7 @@ class ImmoToolFilter_country extends ImmoToolFilter {
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
-  function filter($object, &$items) {
+  public function filter($object, &$items) {
     $value = (isset($object['address']['country'])) ?
         $object['address']['country'] : null;
     if (!is_string($value))
@@ -71,14 +71,14 @@ class ImmoToolFilter_country extends ImmoToolFilter {
   /**
    * Name des Filters.
    */
-  function getName() {
+  public function getName() {
     return 'country';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     $title = (isset($translations['labels']['estate.country'])) ?
         $translations['labels']['estate.country'] : null;
     return is_string($title) ? $title : $this->getName();
@@ -87,7 +87,7 @@ class ImmoToolFilter_country extends ImmoToolFilter {
   /**
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
-  function getWidget($selectedValue, $lang, &$translations, &$setup) {
+  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
     if (!$this->readOrRebuild($setup->CacheLifeTime))
       return null;
     $widget = '';
@@ -111,7 +111,7 @@ class ImmoToolFilter_country extends ImmoToolFilter {
   /**
    * Filter-Array aus der Cache-Datei erzeugen.
    */
-  function read($maxLifeTime = 0) {
+  public function read($maxLifeTime = 0) {
     $res = parent::read($maxLifeTime);
     if ($res !== true)
       return false;
@@ -140,7 +140,7 @@ class ImmoToolFilter_country extends ImmoToolFilter {
   /**
    * Filter-Array serialisieren.
    */
-  function write() {
+  public function write() {
     parent::write();
 
     // Landesnamen als separate Cache-Datei speichern

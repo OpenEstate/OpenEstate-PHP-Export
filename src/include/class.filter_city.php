@@ -34,7 +34,7 @@ class ImmoToolFilter_city extends ImmoToolFilter {
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
-  function filter($object, &$items) {
+  public function filter($object, &$items) {
     $value = (isset($object['address']['city'])) ?
         $object['address']['city'] : null;
     if (!is_string($value))
@@ -50,14 +50,14 @@ class ImmoToolFilter_city extends ImmoToolFilter {
   /**
    * Name des Filters.
    */
-  function getName() {
+  public function getName() {
     return 'city';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     $title = (isset($translations['labels']['estate.city'])) ?
         $translations['labels']['estate.city'] : null;
     return is_string($title) ? $title : $this->getName();
@@ -66,7 +66,7 @@ class ImmoToolFilter_city extends ImmoToolFilter {
   /**
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
-  function getWidget($selectedValue, $lang, &$translations, &$setup) {
+  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
     if (!$this->readOrRebuild($setup->CacheLifeTime))
       return null;
     $widget = '';

@@ -35,12 +35,12 @@ class ImmoToolFilter_rooms extends ImmoToolFilter {
    * Anzahl der maximal zu filternden Zimmer
    * @var int Anzahl
    */
-  var $roomCount = 6;
+  public $roomCount = 6;
 
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
-  function filter($object, &$items) {
+  public function filter($object, &$items) {
     $value = isset($object['attributes']['measures']['count_rooms']['value']) ?
         $object['attributes']['measures']['count_rooms']['value'] : null;
     if (!is_numeric($value) || $value <= 0)
@@ -59,7 +59,7 @@ class ImmoToolFilter_rooms extends ImmoToolFilter {
     $items[$key][] = $object['id'];
   }
 
-  function getMax() {
+  public function getMax() {
     return (is_int($this->roomCount) && $this->roomCount > 0) ?
         $this->roomCount : 5;
   }
@@ -67,14 +67,14 @@ class ImmoToolFilter_rooms extends ImmoToolFilter {
   /**
    * Name des Filters.
    */
-  function getName() {
+  public function getName() {
     return 'rooms';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     $title = (isset($translations['labels']['openestate.count_rooms'])) ?
         $translations['labels']['openestate.count_rooms'] : null;
     return is_string($title) ? $title : $this->getName();
@@ -83,7 +83,7 @@ class ImmoToolFilter_rooms extends ImmoToolFilter {
   /**
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
-  function getWidget($selectedValue, $lang, &$translations, &$setup) {
+  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
     $widget = '';
     if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
       return $widget;

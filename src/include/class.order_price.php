@@ -34,14 +34,14 @@ class ImmoToolOrder_price extends ImmoToolOrder {
   /**
    * Name des Filters.
    */
-  function getName() {
+  public function getName() {
     return 'price';
   }
 
   /**
    * Titel der Sortierung, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     $title = (isset($translations['labels']['estate.price'])) ?
         $translations['labels']['estate.price'] : null;
     return is_string($title) ? $title : $this->getName();
@@ -50,7 +50,7 @@ class ImmoToolOrder_price extends ImmoToolOrder {
   /**
    * Liefert das Sortierungsfeld eines Objektes.
    */
-  function sort_field(&$object, $lang) {
+  public function sort_field(&$object, $lang) {
     // Preisangaben verstecken
     if ($object['hidden_price'] === true)
       return null;
@@ -82,7 +82,7 @@ class ImmoToolOrder_price extends ImmoToolOrder {
    * Liefert das Sortierungs-Flag
    * siehe http://www.php.net/manual/en/function.sort.php
    */
-  function sort_flag() {
+  public function sort_flag() {
     return SORT_NUMERIC;
   }
 

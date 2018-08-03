@@ -36,37 +36,37 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery {
    * Header inkl. Abhängigkeiten erzeugen.
    * @var bool
    */
-  var $CompleteHeader = true;
+  public $CompleteHeader = true;
 
   /**
    * Pfad zum Prototype-Javascript
    * @var string
    */
-  var $PrototypeScript = 'include/lightbox2/js/prototype.js';
+  public $PrototypeScript = 'include/lightbox2/js/prototype.js';
 
   /**
    * Pfad zum Scriptaculous-Javascript
    * @var string
    */
-  var $ScriptaculousScript = 'include/lightbox2/js/scriptaculous.js?load=effects,builder';
+  public $ScriptaculousScript = 'include/lightbox2/js/scriptaculous.js?load=effects,builder';
 
   /**
    * Pfad zum Lightbox-Javascript
    * @var string
    */
-  var $LightboxScript = 'include/lightbox2/js/lightbox.js';
+  public $LightboxScript = 'include/lightbox2/js/lightbox.js';
 
   /**
    * Pfad zum Lightbox-Stylesheet
    * @var string
    */
-  var $LightboxStyle = 'include/lightbox2/css/lightbox.css';
+  public $LightboxStyle = 'include/lightbox2/css/lightbox.css';
 
   /**
    * Liefert HTML-Code zur Darstellung eines Fotos in der Galerie.
    * @return string HTML-Code
    */
-  function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
+  public function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
 
     // ggf. das Galeriebild dynamisch skalieren
     if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
@@ -103,7 +103,7 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery {
    * Liefert HTML-Code Einbindung der Galerie-Bibliothek erzeugen.
    * @return string HTML-Code
    */
-  function getHeader() {
+  public function getHeader() {
     $header = array();
 
     // include Prototype
@@ -148,7 +148,7 @@ LightboxOptions = Object.extend({
    * Liefert ein Array mit Konfigurations-Werten der Lightbox-Galerie.
    * @return array Lightbox-Konfiguration
    */
-  function getHeaderOptions() {
+  public function getHeaderOptions() {
     return array(
       'fileLoadingImage' => '"./img/lightbox2/loading.gif"',
       'fileBottomNavCloseImage' => '"./img/lightbox2/closelabel.gif"',
@@ -165,7 +165,7 @@ LightboxOptions = Object.extend({
    * Name der Galerie.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return 'lightbox2';
   }
 
@@ -173,7 +173,7 @@ LightboxOptions = Object.extend({
    * HTML-Code zum Titelbild.
    * @return string
    */
-  function getTitleImage($objectId, &$image, $lang) {
+  public function getTitleImage($objectId, &$image, $lang) {
 
     $file = 'data/' . $objectId . '/' . $image['name'];
     if (!is_file(IMMOTOOL_BASE_PATH . $file)) {
@@ -229,7 +229,7 @@ LightboxOptions = Object.extend({
    * Die Galerie setzt JavaScript vorraus.
    * @return bool
    */
-  function isJavaScriptRequired() {
+  public function isJavaScriptRequired() {
     return true;
   }
 
@@ -237,7 +237,7 @@ LightboxOptions = Object.extend({
    * Das gewählte Bild unterhalb der Galerie darstellen.
    * @return bool
    */
-  function isSelectedImagePrinted() {
+  public function isSelectedImagePrinted() {
     return false;
   }
 

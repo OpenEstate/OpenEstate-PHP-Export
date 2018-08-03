@@ -33,7 +33,7 @@ class ImmoToolMap {
    * Hilfsfunktion zur Überprüfung, ob Geo-Koordinaten bei einer Immobilie hinterlegt wurden.
    * @return boolean
    */
-  function canShowForObject(&$object) {
+  public function canShowForObject(&$object) {
     return isset($object['address']['latitude']) && isset($object['address']['longitude']) && is_numeric($object['address']['latitude']) && is_numeric($object['address']['longitude']);
   }
 
@@ -41,7 +41,7 @@ class ImmoToolMap {
    * Body-Daten der Umkreiskarte.
    * @return string Name
    */
-  function getBodyContent(&$object, &$translations, $lang) {
+  public function getBodyContent(&$object, &$translations, $lang) {
     return null;
   }
 
@@ -49,7 +49,7 @@ class ImmoToolMap {
    * Header-Daten der Umkreiskarte.
    * @return string Name
    */
-  function getHeaderContent(&$object, &$translations, $lang) {
+  public function getHeaderContent(&$object, &$translations, $lang) {
     return null;
   }
 
@@ -58,7 +58,7 @@ class ImmoToolMap {
    * @param array $object Immobilie
    * @return float Wert des Breitengrades oder null, wenn nicht angegeben
    */
-  function getLatitude(&$object) {
+  public function getLatitude(&$object) {
     return (isset($object['address']['latitude'])) ? $object['address']['latitude'] : null;
   }
 
@@ -67,7 +67,7 @@ class ImmoToolMap {
    * @param array $object Immobilie
    * @return float Wert des Längengrades oder null, wenn nicht angegeben
    */
-  function getLongitude(&$object) {
+  public function getLongitude(&$object) {
     return (isset($object['address']['longitude'])) ? $object['address']['longitude'] : null;
   }
 
@@ -75,7 +75,7 @@ class ImmoToolMap {
    * Name der Umkreiskarte.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return null;
   }
 

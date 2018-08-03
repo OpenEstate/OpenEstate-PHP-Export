@@ -29,13 +29,13 @@ if (!defined('IN_WEBSITE'))
 
 class ImmoToolGallery {
 
-  var $exposeSetup = null;
+  public $exposeSetup = null;
 
   /**
    * Liefert HTML-Code zur Darstellung der Galerie.
    * @return string HTML-Code
    */
-  function getGallery(&$object, $selectedImg, $lang) {
+  public function getGallery(&$object, $selectedImg, $lang) {
     $list = '';
     if (isset($object['images']) && is_array($object['images'])) {
       foreach ($object['images'] as $pos => $image) {
@@ -49,7 +49,7 @@ class ImmoToolGallery {
    * Liefert HTML-Code zur Darstellung eines Fotos in der Galerie.
    * @return string HTML-Code
    */
-  function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
+  public function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
 
     // ggf. das Galeriebild dynamisch skalieren
     if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
@@ -83,7 +83,7 @@ class ImmoToolGallery {
     return '<li ' . $class . '><a href="' . $link . '" title="' . $title . '"><img src="' . $thumb . '" title="' . $title . '" alt="" border="0"/></a></li>';
   }
 
-  function getHeader() {
+  public function getHeader() {
     return null;
   }
 
@@ -91,7 +91,7 @@ class ImmoToolGallery {
    * Name der Galerie.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return null;
   }
 
@@ -99,7 +99,7 @@ class ImmoToolGallery {
    * HTML-Code zum Titelbild.
    * @return string
    */
-  function getTitleImage($objectId, &$image, $lang) {
+  public function getTitleImage($objectId, &$image, $lang) {
 
     $file = 'data/' . $objectId . '/' . $image['name'];
     if (!is_file(IMMOTOOL_BASE_PATH . $file)) {
@@ -135,7 +135,7 @@ class ImmoToolGallery {
    * Die Galerie setzt JavaScript vorraus.
    * @return bool
    */
-  function isJavaScriptRequired() {
+  public function isJavaScriptRequired() {
     return false;
   }
 
@@ -143,14 +143,14 @@ class ImmoToolGallery {
    * Das gewählte Bild unterhalb der Galerie darstellen.
    * @return bool
    */
-  function isSelectedImagePrinted() {
+  public function isSelectedImagePrinted() {
     return true;
   }
 
   /**
    * Registriert die Konfiguration des aufrufenden Exposés.
    */
-  function setExposeSetup(&$setup) {
+  public function setExposeSetup(&$setup) {
     $this->exposeSetup = $setup;
   }
 

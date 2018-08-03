@@ -39,7 +39,7 @@ if (!class_exists('immotool_expose')) {
      * @param string $lang Sprache
      * @return string HTML-Code
      */
-    function contact(&$object, &$setup, &$translations, $lang) {
+    public static function contact(&$object, &$setup, &$translations, $lang) {
       $output = '<h2>' . $translations['labels']['estate.contact.title'] . '</h2>';
       $output .= immotool_functions::read_template('expose_contact.html', $setup->TemplateFolder);
 
@@ -344,7 +344,7 @@ if (!class_exists('immotool_expose')) {
      * @param string $lang Sprache
      * @return string HTML-Code
      */
-    function details(&$object, &$setup, &$translations, $lang) {
+    public static function details(&$object, &$setup, &$translations, $lang) {
       $output = '<h2>' . $translations['labels']['estate.details.title'] . '</h2>';
       $groups = (isset($setup->DetailsOrder) && is_array($setup->DetailsOrder)) ? $setup->DetailsOrder : array_keys($object['attributes']);
       $hiddenAttribs = (isset($setup->HiddenAttributes) && is_array($setup->HiddenAttributes)) ? $setup->HiddenAttributes : array();
@@ -419,7 +419,7 @@ if (!class_exists('immotool_expose')) {
      * @param object $galleryHandlerDefault
      * @return string HTML-Code
      */
-    function gallery(&$object, &$setup, &$translations, $lang, &$galleryHandler, &$galleryHandlerDefault) {
+    public static function gallery(&$object, &$setup, &$translations, $lang, &$galleryHandler, &$galleryHandlerDefault) {
       $output = '<h2>' . $translations['labels']['estate.gallery.title'] . '</h2>';
       $output .= immotool_functions::read_template('expose_gallery.html', $setup->TemplateFolder);
       $galleryImageSrc = null;
@@ -501,7 +501,7 @@ if (!class_exists('immotool_expose')) {
      * @param string $lang Sprache
      * @return string HTML-Code
      */
-    function map(&$object, &$setup, &$translations, $lang, &$mapHandler) {
+    public static function map(&$object, &$setup, &$translations, $lang, &$mapHandler) {
       $output = '<h2>' . $translations['labels']['estate.map.title'] . '</h2>';
       $mapHeader = $mapHandler->getHeaderContent($object, $translations, $lang);
       if (is_string($mapHeader))
@@ -520,7 +520,7 @@ if (!class_exists('immotool_expose')) {
      * @param string $lang Sprache
      * @return string HTML-Code
      */
-    function media(&$object, &$setup, &$translations, $lang) {
+    public static function media(&$object, &$setup, &$translations, $lang) {
       $output = '<h2>' . $translations['labels']['estate.media.title'] . '</h2>';
       $mediaCount = (isset($object['media']) && is_array($object['media'])) ? count($object['media']) : 0;
       $linkCount = (isset($object['links']) && is_array($object['links'])) ? count($object['links']) : 0;
@@ -627,7 +627,7 @@ if (!class_exists('immotool_expose')) {
      * @param string $lang Sprache
      * @return string HTML-Code
      */
-    function terms(&$setup, &$translations, $lang) {
+    public static function terms(&$setup, &$translations, $lang) {
       $terms = immotool_functions::get_terms();
       $output = '<h2>' . $translations['labels']['estate.terms.title'] . '</h2>';
       if (is_string($terms[$lang]))
@@ -645,7 +645,7 @@ if (!class_exists('immotool_expose')) {
      * @param string $lang Sprache
      * @return string HTML-Code
      */
-    function texts(&$objectTexts, &$setup, &$translations, $lang) {
+    public static function texts(&$objectTexts, &$setup, &$translations, $lang) {
       $output = '<h2>' . $translations['labels']['estate.texts.title'] . '</h2>';
       $attribs = (isset($setup->TextOrder) && is_array($setup->TextOrder)) ? $setup->TextOrder : array_keys($objectTexts);
       $hiddenAttribs = (isset($setup->HiddenAttributes) && is_array($setup->HiddenAttributes)) ? $setup->HiddenAttributes : array();

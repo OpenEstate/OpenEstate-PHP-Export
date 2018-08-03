@@ -33,16 +33,16 @@ require_once( IMMOTOOL_BASE_PATH . 'include/class.map.php' );
 class ImmoToolMap_osm extends ImmoToolMap {
 
   /** Positions-Markierung auf der Karte darstellen. */
-  var $showPositionMarker = true;
+  public $showPositionMarker = true;
 
   /** Direkt-Link zur Großansicht der Karte darstellen. */
-  var $showDirectLink = true;
+  public $showDirectLink = true;
 
   /**
    * Body-Daten der Umkreiskarte.
    * @return string Name
    */
-  function getBodyContent(&$object, &$translations, $lang) {
+  public function getBodyContent(&$object, &$translations, $lang) {
     $lat = $this->getLatitude($object);
     $lon = $this->getLongitude($object);
     if (!is_numeric($lat) || !is_numeric($lon))
@@ -88,7 +88,7 @@ class ImmoToolMap_osm extends ImmoToolMap {
    * Header-Daten der Umkreiskarte.
    * @return string Name
    */
-  function getHeaderContent(&$object, &$translations, $lang) {
+  public function getHeaderContent(&$object, &$translations, $lang) {
     return null;
   }
 
@@ -96,7 +96,7 @@ class ImmoToolMap_osm extends ImmoToolMap {
    * Name der Umkreiskarte.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return 'osm';
   }
 

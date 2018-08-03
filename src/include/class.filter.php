@@ -29,12 +29,12 @@ if (!defined('IN_WEBSITE'))
 
 class ImmoToolFilter {
 
-  var $items = array();
+  public $items = array();
 
   /**
    * Ein Filter-Array erzeugen.
    */
-  function build() {
+  public function build() {
     $this->items = array();
     $ids = immotool_functions::list_available_objects();
     if (!is_array($ids))
@@ -51,49 +51,49 @@ class ImmoToolFilter {
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
-  function filter($object, &$items) {
+  public function filter($object, &$items) {
 
   }
 
   /**
    * Liefert das Filter-Array.
    */
-  function getItems($value) {
+  public function getItems($value) {
     return (is_array($this->items[$value])) ? $this->items[$value] : array();
   }
 
   /**
    * Name des Filters.
    */
-  function getName() {
+  public function getName() {
     return null;
   }
 
   /**
    * Pfad zur Cache-Datei des Filters.
    */
-  function getFile() {
+  public function getFile() {
     return IMMOTOOL_BASE_PATH . 'cache/filter.' . $this->getName();
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     return null;
   }
 
   /**
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
-  function getWidget($selectedValue, $lang, &$translations, &$setup) {
+  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
     return null;
   }
 
   /**
    * Filter-Array aus der Cache-Datei erzeugen.
    */
-  function read($maxLifeTime = 0) {
+  public function read($maxLifeTime = 0) {
     $file = $this->getFile();
     if (!is_file($file))
       return false;
@@ -118,7 +118,7 @@ class ImmoToolFilter {
    * Filter-Array aus der Cache-Datei erzeugen.
    * Wenn keine Cache-Datei vorhanden ist, wird diese erzeugt.
    */
-  function readOrRebuild($maxLifeTime = 0) {
+  public function readOrRebuild($maxLifeTime = 0) {
     if ($this->read($maxLifeTime))
       return true;
     if (!$this->build())
@@ -130,7 +130,7 @@ class ImmoToolFilter {
   /**
    * Filter-Array serialisieren.
    */
-  function write() {
+  public function write() {
     $data = serialize($this->items);
     $file = $this->getFile();
     $fh = fopen($file, 'w') or die('can\'t write file: ' . $file);

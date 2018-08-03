@@ -29,12 +29,12 @@ if (!defined('IN_WEBSITE'))
 
 class ImmoToolOrder {
 
-  var $items = array();
+  public $items = array();
 
   /**
    * Ein Sortierungs-Array erzeugen.
    */
-  function build() {
+  public function build() {
     $this->items = array();
     $ids = immotool_functions::list_available_objects();
     //echo '<pre>'; print_r($ids); echo '</pre>';
@@ -102,35 +102,35 @@ class ImmoToolOrder {
   /**
    * Pfad zur Cache-Datei der Sortierung.
    */
-  function getFile() {
+  public function getFile() {
     return IMMOTOOL_BASE_PATH . 'cache/order.' . $this->getName();
   }
 
   /**
    * Liefert das Sortierungs-Array.
    */
-  function getItems($lang) {
+  public function getItems($lang) {
     return ($this->isLanguageSpecific()) ? $this->items[$lang] : $this->items;
   }
 
   /**
    * Name der Sortierung.
    */
-  function getName() {
+  public function getName() {
     return null;
   }
 
   /**
    * Titel der Sortierung, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     return null;
   }
 
   /**
    * Liefert true, wenn für jede Sprache eine separate Sortierung erfolgen soll.
    */
-  function isLanguageSpecific() {
+  public function isLanguageSpecific() {
     return false;
   }
 
@@ -139,7 +139,7 @@ class ImmoToolOrder {
    * @param int $maxLifeTime Maximale Lebenszeit einer Cache-Datei in Sekunden
    * @return array Sortierungs-Array
    */
-  function read($maxLifeTime = 0) {
+  public function read($maxLifeTime = 0) {
     $file = $this->getFile();
     if (!is_file($file))
       return false;
@@ -166,7 +166,7 @@ class ImmoToolOrder {
    * @param int $maxLifeTime Maximale Lebenszeit einer Cache-Datei in Sekunden
    * @return array Sortierungs-Array
    */
-  function readOrRebuild($maxLifeTime = 0) {
+  public function readOrRebuild($maxLifeTime = 0) {
     if ($this->read($maxLifeTime))
       return true;
     if (!$this->build())
@@ -178,7 +178,7 @@ class ImmoToolOrder {
   /**
    * Liefert das Sortierungsfeld eines Objektes.
    */
-  function sort_field(&$object, $lang) {
+  public function sort_field(&$object, $lang) {
     return null;
   }
 
@@ -186,14 +186,14 @@ class ImmoToolOrder {
    * Liefert das Sortierungs-Flag
    * siehe http://www.php.net/manual/en/function.sort.php
    */
-  function sort_flag() {
+  public function sort_flag() {
     return SORT_STRING;
   }
 
   /**
    * Sortierungs-Array serialisieren.
    */
-  function write() {
+  public function write() {
     $data = serialize($this->items);
     $file = $this->getFile();
     $fh = fopen($file, 'w') or die('can\'t write file: ' . $file);

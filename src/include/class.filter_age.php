@@ -34,7 +34,7 @@ class ImmoToolFilter_age extends ImmoToolFilter {
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
-  function filter($object, &$items) {
+  public function filter($object, &$items) {
     $value = (isset($object['attributes']['condition']['age']['value'])) ?
         $object['attributes']['condition']['age']['value'] : null;
     if (!is_string($value))
@@ -48,14 +48,14 @@ class ImmoToolFilter_age extends ImmoToolFilter {
   /**
    * Name des Filters.
    */
-  function getName() {
+  public function getName() {
     return 'age';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     $title = (isset($translations['labels']['openestate.age'])) ?
         $translations['labels']['openestate.age'] : null;
     return is_string($title) ? $title : $this->getName();
@@ -64,7 +64,7 @@ class ImmoToolFilter_age extends ImmoToolFilter {
   /**
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
-  function getWidget($selectedValue, $lang, &$translations, &$setup) {
+  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
     $widget = '';
     if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
       return $widget;

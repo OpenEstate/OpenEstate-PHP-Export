@@ -126,7 +126,7 @@ class immotool_functions {
    * @param string $linkParam zusätzliche Parameter für Links, z.B. in der Sprachauswahl
    * @return string HTML-Code der erzeugten Seite
    */
-  function build_page(&$setup, $pageId, $languageCode, $mainTitle, $pageTitle, $pageHeader, &$pageContent, $startupTime, $metaRobots = 'index,follow', $metaKeywords = null, $metaDescription = null, $linkParam = '') {
+  public static function build_page(&$setup, $pageId, $languageCode, $mainTitle, $pageTitle, $pageHeader, &$pageContent, $startupTime, $metaRobots = 'index,follow', $metaKeywords = null, $metaDescription = null, $linkParam = '') {
 
     $page = null;
     if (defined('IMMOTOOL_CAT'))
@@ -256,7 +256,7 @@ class immotool_functions {
    * @param object $setup Konfiguration
    * @param array $translations Übersetzungen
    */
-  function print_error($errorMessage, $languageCode, $startupTime, &$setup, &$translations) {
+  public static function print_error($errorMessage, $languageCode, $startupTime, &$setup, &$translations) {
     $pageTitle = (isset($translations['errors']['warning'])) ? $translations['errors']['warning'] : 'Warning!';
     $mainTitle = (isset($translations['errors']['anErrorOccured'])) ? $translations['errors']['anErrorOccured'] : 'An error occured!';
     $pageHeader = '';
@@ -281,7 +281,7 @@ class immotool_functions {
    * @param int $maxLifetime maximale Lebenszeit der Datei in Sekunden
    * @return bool Liefert true, wenn die Datei noch nicht die maximale Lebenszeit überschritten hat
    */
-  function check_file_age($file, $maxLifetime) {
+  public static function check_file_age($file, $maxLifetime) {
     if (!is_file($file))
       return false;
     $fileTime = filemtime($file) + $maxLifetime;
@@ -294,7 +294,7 @@ class immotool_functions {
    * @param string $targetEncoding Zeichensatz
    * @return string Ausgabe
    */
-  function encode(&$input, $targetEncoding) {
+  public static function encode(&$input, $targetEncoding) {
 
     if (!function_exists('mb_detect_encoding') || !function_exists('iconv'))
       return $input;
@@ -320,7 +320,7 @@ class immotool_functions {
    * @param bool $escapeXmlSpecialChars HTML-/XML-Sonderzeichen umwandeln
    * return string URL zum Exposé
    */
-  function get_expose_url($id, $lang, $urlTemplate = null, $escapeXmlSpecialChars = false) {
+  public static function get_expose_url($id, $lang, $urlTemplate = null, $escapeXmlSpecialChars = false) {
 
     $url = null;
 
@@ -355,7 +355,7 @@ class immotool_functions {
    * @param string $name Name des Filters
    * @return object Filter-Objekt
    */
-  function get_filter($name) {
+  public static function get_filter($name) {
     $file = IMMOTOOL_BASE_PATH . 'include/class.filter_' . strtolower($name) . '.php';
     if (!is_file($file))
       return null;
@@ -370,7 +370,7 @@ class immotool_functions {
    * Liefert die ISO-Codes der verfügbaren Sprachen.
    * @return array ISO-Codes der verfügbaren Sprachen
    */
-  function get_language_codes() {
+  public static function get_language_codes() {
     return array_keys($GLOBALS['immotool_languages']);
   }
 
@@ -379,7 +379,7 @@ class immotool_functions {
    * @param string $code ISO-Sprach-Code
    * @return string Bezeichnung der Sprache, oder null wenn unbekannt
    */
-  function get_language_name($code) {
+  public static function get_language_name($code) {
     if (!isset($GLOBALS['immotool_languages'][$code]) || !is_string($GLOBALS['immotool_languages'][$code]))
       return null;
     else
@@ -391,7 +391,7 @@ class immotool_functions {
    * @param string $code ISO-Sprach-Code
    * @return array Übersetzungs-Array, oder null wenn unbekannt
    */
-  function get_language_translations($code) {
+  public static function get_language_translations($code) {
     if (!is_string($code)) {
       return null;
     }
@@ -418,7 +418,7 @@ class immotool_functions {
    * @param object $setup Konfiguration
    * @return object PHP-Mailer
    */
-  function get_phpmailer(&$setup) {
+  public static function get_phpmailer(&$setup) {
 
     // Instanz des PHPMailers erzeugen
     if (!class_exists('PHPMailer'))
@@ -436,7 +436,7 @@ class immotool_functions {
    * @param object $setup Konfiguration
    * @return object PHP-Mailer
    */
-  function setup_phpmailer(&$mailer, &$setup) {
+  public static function setup_phpmailer(&$mailer, &$setup) {
     // Mailer konfigurieren
     $mailer->IsHTML(false);
     $mailer->CharSet = 'UTF-8';
@@ -465,7 +465,7 @@ class immotool_functions {
    * @param string $email Mailadresse
    * @return umgewandelte Mailadresse
    */
-  function encode_mail($email) {
+  public static function encode_mail($email) {
     if (!isset($GLOBALS['immotool_idna']) || !is_object($GLOBALS['immotool_idna'])) {
       include_once( IMMOTOOL_BASE_PATH . 'include/Net/IDNA.php' );
       $GLOBALS['immotool_idna'] = Net_IDNA::getInstance();
@@ -478,7 +478,7 @@ class immotool_functions {
    * @param string $name Name der Galerie
    * @return object Galerie-Objekt
    */
-  function get_gallery($name) {
+  public static function get_gallery($name) {
     $file = IMMOTOOL_BASE_PATH . 'include/class.gallery_' . strtolower($name) . '.php';
     if (!is_file($file))
       return null;
@@ -494,7 +494,7 @@ class immotool_functions {
    * @param string $name Name der Umkreiskarte
    * @return object Umkreiskarten-Objekt
    */
-  function get_map($name) {
+  public static function get_map($name) {
     $file = IMMOTOOL_BASE_PATH . 'include/class.map_' . strtolower($name) . '.php';
     if (!is_file($file))
       return null;
@@ -510,7 +510,7 @@ class immotool_functions {
    * @param string $id ID des Objektes
    * @return array mit Objektdaten, oder null wenn unbekannt
    */
-  function get_object($id = null) {
+  public static function get_object($id = null) {
     if ($id == null || preg_match('/^\w*/i', $id) !== 1) {
       return null;
     }
@@ -537,7 +537,7 @@ class immotool_functions {
    * @param string $id ID des Objektes
    * @return int Timestamp der letzten Änderung der object.php, oder null wenn nicht ermittelbar
    */
-  function get_object_stamp($id = null) {
+  public static function get_object_stamp($id = null) {
     if ($id == null || preg_match('/^\w*/i', $id) !== 1) {
       return null;
     }
@@ -550,7 +550,7 @@ class immotool_functions {
    * @param string $name Name der Sortierung
    * @return object Sortierungs-Objekt
    */
-  function get_order($name) {
+  public static function get_order($name) {
     $file = IMMOTOOL_BASE_PATH . 'include/class.order_' . strtolower($name) . '.php';
     if (!is_file($file))
       return null;
@@ -565,7 +565,7 @@ class immotool_functions {
    * Liefert die AGB des Anbieters.
    * @return array AGB-Array, oder null wenn unbekannt
    */
-  function get_terms() {
+  public static function get_terms() {
     $file = IMMOTOOL_BASE_PATH . 'data/terms.php';
     if (!is_file($file)) {
       return null;
@@ -584,7 +584,7 @@ class immotool_functions {
    * @param string $id ID des Objektes
    * @return array mit Objekttexten, oder null wenn unbekannt
    */
-  function get_text($id = null) {
+  public static function get_text($id = null) {
     if ($id == null || preg_match('/^\w*/i', $id) !== 1) {
       return null;
     }
@@ -611,7 +611,7 @@ class immotool_functions {
    * @param string $name Name des Video-Handlers
    * @return object Video-Handler
    */
-  function get_video($name) {
+  public static function get_video($name) {
     $file = IMMOTOOL_BASE_PATH . 'include/class.video_' . strtolower($name) . '.php';
     if (!is_file($file))
       return null;
@@ -628,7 +628,7 @@ class immotool_functions {
    * @param string $hex Hex-Farbcode, z.B. #c0c0c0
    * @return array Ermittelte RGB-Farbwerte als Array
    */
-  function get_rgb_from_hex($hex) {
+  public static function get_rgb_from_hex($hex) {
     if (strlen($hex) > 0 && substr($hex, 0, 1) == '#')
       $hex = substr($hex, 1);
     if (strlen($hex) >= 6) {
@@ -646,7 +646,7 @@ class immotool_functions {
    * @param object $setup Konfiguration
    * @param string $myconfigMethod Name der einzubindenden Funktion aus myconfig.php
    */
-  function init(&$setup, $myconfigMethod = null) {
+  public static function init(&$setup, $myconfigMethod = null) {
     // ggf. Konfiguration mit myconfig.php überschreiben
     immotool_functions::init_config($setup, $myconfigMethod);
 
@@ -708,7 +708,7 @@ class immotool_functions {
    * @param object $setup Konfiguration
    * @param string $myconfigMethod Name der einzubindenden Funktion aus myconfig.php
    */
-  function init_config(&$setup, $myconfigMethod = null) {
+  public static function init_config(&$setup, $myconfigMethod = null) {
     // ggf. Konfiguration mit myconfig.php überschreiben
     if (is_string($myconfigMethod) && is_callable(array('immotool_myconfig', $myconfigMethod))) {
       eval('immotool_myconfig::' . $myconfigMethod . '( $setup );');
@@ -722,7 +722,7 @@ class immotool_functions {
    * @param array $translations Container, zur Übergabe der Übersetzungen
    * @return string verwendeter Sprachcode
    */
-  function init_language($requestedLanguage, $defaultLanguage, &$translations) {
+  public static function init_language($requestedLanguage, $defaultLanguage, &$translations) {
     // Übersetzungen ermitteln
     $lang = $requestedLanguage;
     if (!is_string($lang) || !immotool_functions::is_language_supported($lang)) {
@@ -744,7 +744,7 @@ class immotool_functions {
    * @param string $code ISO-Sprachcode
    * @return boolean true, wenn der Sprachcode unterstützt wird
    */
-  function is_language_supported($code) {
+  public static function is_language_supported($code) {
     return in_array($code, immotool_functions::get_language_codes(), false);
   }
 
@@ -753,7 +753,7 @@ class immotool_functions {
    * @param string $favId ID der Immobilie
    * @return bool true, wenn eine Vormerkung vorliegt
    */
-  function has_favourite($favId) {
+  public static function has_favourite($favId) {
     $favs = immotool_functions::get_session_value('favs', array());
     return array_search($favId, $favs) !== false;
   }
@@ -762,7 +762,7 @@ class immotool_functions {
    * Liefert die Namen der verfügbaren Filter.
    * @return array Namen der verfügbaren Filter
    */
-  function list_available_filters() {
+  public static function list_available_filters() {
     $dir = IMMOTOOL_BASE_PATH . 'include/';
     $filters = array();
     if (is_dir($dir)) {
@@ -784,7 +784,7 @@ class immotool_functions {
    * Liefert die ID's der verfügbaren Immobilien.
    * @return array ID's der verfügbaren Immobilien
    */
-  function list_available_objects() {
+  public static function list_available_objects() {
     $dir = IMMOTOOL_BASE_PATH . 'data/';
     $ids = array();
     if (is_dir($dir)) {
@@ -804,7 +804,7 @@ class immotool_functions {
    * Liefert die Namen der verfügbaren Sortierungen.
    * @return array Namen der verfügbaren Sortierungen
    */
-  function list_available_orders() {
+  public static function list_available_orders() {
     $dir = IMMOTOOL_BASE_PATH . 'include/';
     $orders = array();
     if (is_dir($dir)) {
@@ -827,7 +827,7 @@ class immotool_functions {
    * @param string $directory Pfad zum Verzeichnis
    * @return array Namen der Dateien / Unterordner des Verzeichnisses
    */
-  function list_directory($directory) {
+  public static function list_directory($directory) {
     $results = array();
     $handler = opendir($directory);
     while ($file = readdir($handler)) {
@@ -851,7 +851,7 @@ class immotool_functions {
    * @param array $favIds Array mit ID's der vorgemerkten Inserate
    * @return array Liste mit ID's der Immobilien auf der angeforderten Seite
    */
-  function list_objects($pageNumber, $elementsPerPage, $orderBy, $orderDir, $filters, &$totalCount, $lang, $maxLifeTime, $favIds) {
+  public static function list_objects($pageNumber, $elementsPerPage, $orderBy, $orderDir, $filters, &$totalCount, $lang, $maxLifeTime, $favIds) {
     // ID's der Inserate ermitteln
     $ids = null;
     if (is_string($orderBy)) {
@@ -939,7 +939,7 @@ class immotool_functions {
    * @param string $replyToName Name des Antwortempfängers
    * @return mixed Im Erfolgsfall 'true', sonst eine Fehlermeldung
    */
-  function send_mail(&$setup, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
+  public static function send_mail(&$setup, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
 
     // Mailversand über ein externes Framework
     if (is_callable(array('immotool_myconfig', 'send_mail'))) {
@@ -963,7 +963,7 @@ class immotool_functions {
    * @param string $replyToName Name des Antwortempfängers
    * @return mixed Im Erfolgsfall 'true', sonst eine Fehlermeldung
    */
-  function send_mail_via_phpmailer(&$mailer, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
+  public static function send_mail_via_phpmailer(&$mailer, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
 
     // Mailversand via PHP-Mailer
     $mailer->Body = $body;
@@ -980,7 +980,7 @@ class immotool_functions {
    * @param string $file Pfad zur Datei
    * @return string Inhalt der Datei
    */
-  function read_file($file) {
+  public static function read_file($file) {
     return (is_string($file) && is_file($file)) ? file_get_contents($file) : false;
   }
 
@@ -990,7 +990,7 @@ class immotool_functions {
    * @param string $subfolder Name der Unterordners, aus dem die Template-Datei bevorzugt geladen werden soll
    * @return string Inhalt der Datei
    */
-  function read_template($file, $subfolder = 'default') {
+  public static function read_template($file, $subfolder = 'default') {
     if (!is_string($subfolder)) {
       $subfolder = 'default';
     }
@@ -1006,7 +1006,7 @@ class immotool_functions {
    * @param string $text Eingabetext
    * @return string Ausgabetext
    */
-  function replace_links(&$text) {
+  public static function replace_links(&$text) {
     $replacements = array(
       '#(https?|ftps?|mailto):\/\/([&;:=\.\/\-\?\w]+)#i' => '<a href="\1://\2" target="_blank" rel="follow">\1://\2</a>',
     );
@@ -1019,7 +1019,7 @@ class immotool_functions {
    * @param string $value Wert im einzufügenden Platzhalter
    * @param string $src Eingabetext
    */
-  function replace_var($varName, $value, &$src) {
+  public static function replace_var($varName, $value, &$src) {
     $posBegin = strpos($src, '{' . $varName . '.}');
     $posEnd = strpos($src, '{.' . $varName . '}');
     if (is_null($value) || trim($value) == '') {
@@ -1047,7 +1047,7 @@ class immotool_functions {
    * @return string Textausschnitt des Eingabetextes,
    *   der sich zwischen den beiden Begrenzungstexten befindet.
    */
-  function get_string_between($string, $start, $end) {
+  public static function get_string_between($string, $start, $end) {
     $string = " " . $string;
     $ini = strpos($string, $start);
     if ($ini == 0)
@@ -1061,7 +1061,7 @@ class immotool_functions {
    * Session initialisieren.
    * @return array Session-Variable
    */
-  function init_session() {
+  public static function init_session() {
 
     // Prüfen, ob die Session eventuell bereits initialisiert wurde
     if (isset($GLOBALS['immotool_session_id']) && !is_null($GLOBALS['immotool_session_id'])) {
@@ -1105,7 +1105,7 @@ class immotool_functions {
    * Session speichern.
    * @return boolean Liefert im Erfolgsfall TRUE, sonst FALSE.
    */
-  function store_session() {
+  public static function store_session() {
 
     if (!isset($GLOBALS['immotool_session_id']) || !is_string($GLOBALS['immotool_session_id'])) {
       echo 'Unknown session-id!';
@@ -1138,7 +1138,7 @@ class immotool_functions {
    * @param mixed $defaultValue Standard-Wert, wenn zum Bezeichner kein Wert hinterlegt ist
    * @return mixed Wert aus der Session-Variablen, oder $defaultValue wenn nicht vorhanden.
    */
-  function get_session_value($key, $defaultValue = null) {
+  public static function get_session_value($key, $defaultValue = null) {
     if (!isset($GLOBALS['immotool_session']) || !is_array($GLOBALS['immotool_session'])) {
       return $defaultValue;
     }
@@ -1151,7 +1151,7 @@ class immotool_functions {
    * @param string $key Bezeichner des zu schreibenden Wertes
    * @param mixed $value Der zu hinterlegende Wert, oder bei null wird der Eintrag aus der Session-Variablen entfernt.
    */
-  function put_session_value($key, $value = null) {
+  public static function put_session_value($key, $value = null) {
     if (!isset($GLOBALS['immotool_session']) || !is_array($GLOBALS['immotool_session'])) {
       $GLOBALS['immotool_session'] = array();
     }
@@ -1170,7 +1170,7 @@ class immotool_functions {
    * @param boolean $force Bereinigung erzwingen, auch wenn in den letzten 24 Stunden bereits eine Bereinigung durchgeführt wurde.
    * @return array Namen der gelöschten Session-Dateien
    */
-  function cleanup_sessions($force = false) {
+  public static function cleanup_sessions($force = false) {
     $sessionDir = IMMOTOOL_BASE_PATH . 'sessions';
     if (!is_dir($sessionDir))
       return array();
@@ -1211,7 +1211,7 @@ class immotool_functions {
    * Verarbeitung beenden.
    * @param object $setup Konfiguration
    */
-  function shutdown(&$setup) {
+  public static function shutdown(&$setup) {
     immotool_functions::store_session();
   }
 
@@ -1221,7 +1221,7 @@ class immotool_functions {
    * @param object $setup Exposé-Konfiguration
    * @return bool Liefert true, wenn der Kontakt-Reiter für eine Immobilie angezeigt werden kann.
    */
-  function can_show_expose_contact(&$object, &$setup) {
+  public static function can_show_expose_contact(&$object, &$setup) {
     $tabEnabled = array_search('contact', $setup->ViewOrder) !== false;
     $hasContactPerson = isset($object['contact']) && is_array($object['contact']) && count($object['contact']) > 0;
     $hasContactMail = isset($object['mail']) && is_string($object['mail']) && strlen(trim($object['mail'])) > 0;
@@ -1237,7 +1237,7 @@ class immotool_functions {
    * @param object $setup Exposé-Konfiguration
    * @return bool Liefert true, wenn der Galerie-Reiter für eine Immobilie angezeigt werden kann.
    */
-  function can_show_expose_gallery(&$object, &$setup) {
+  public static function can_show_expose_gallery(&$object, &$setup) {
     $tabEnabled = array_search('gallery', $setup->ViewOrder) !== false;
     return $tabEnabled && isset($object['images']) && is_array($object['images']) && count($object['images']) > 0;
   }
@@ -1249,7 +1249,7 @@ class immotool_functions {
    * @param object $mapHandler Handler zur Karten-Darstellung
    * @return bool Liefert true, wenn der Karten-Reiter für eine Immobilie angezeigt werden kann.
    */
-  function can_show_expose_map(&$object, &$setup, &$mapHandler) {
+  public static function can_show_expose_map(&$object, &$setup, &$mapHandler) {
     $tabEnabled = array_search('map', $setup->ViewOrder) !== false;
     return $tabEnabled && is_object($mapHandler) && $mapHandler->canShowForObject($object);
   }
@@ -1260,7 +1260,7 @@ class immotool_functions {
    * @param object $setup Exposé-Konfiguration
    * @return bool Liefert true, wenn der Medien-Reiter für eine Immobilie angezeigt werden kann.
    */
-  function can_show_expose_media(&$object, &$setup) {
+  public static function can_show_expose_media(&$object, &$setup) {
     $tabEnabled = array_search('media', $setup->ViewOrder) !== false;
     $hasMedia = isset($object['media']) && is_array($object['media']) && count($object['media']) > 0;
     $hasLinks = isset($object['links']) && is_array($object['links']) && count($object['links']) > 0;
@@ -1272,7 +1272,7 @@ class immotool_functions {
    * @param object $setup Exposé-Konfiguration
    * @return bool Liefert true, wenn der AGB-Reiter für eine Immobilie angezeigt werden kann.
    */
-  function can_show_expose_terms(&$setup) {
+  public static function can_show_expose_terms(&$setup) {
     $tabEnabled = array_search('terms', $setup->ViewOrder) !== false;
     return $tabEnabled && $setup->ShowTerms;
   }
@@ -1284,7 +1284,7 @@ class immotool_functions {
    * @param string $lang Aktuelle Sprache
    * @return bool Liefert true, wenn der Texte-Reiter für eine Immobilie angezeigt werden kann.
    */
-  function can_show_expose_texts(&$objectTexts, &$setup, $lang) {
+  public static function can_show_expose_texts(&$objectTexts, &$setup, $lang) {
     $tabEnabled = array_search('texts', $setup->ViewOrder) !== false;
     $hasTexts = false;
     if (is_array($objectTexts)) {
@@ -1314,7 +1314,7 @@ class immotool_functions {
    * @param array $hiddenParams Key-Value-Paar mit zusätzlichen Parametern
    * @return string HTML-Code der 'gewrappten' Seite
    */
-  function wrap_page(&$page, $wrapType, $wrapperScriptUrl, $immotoolBaseUrl, $stylesheets, $hiddenParams = null) {
+  public static function wrap_page(&$page, $wrapType, $wrapperScriptUrl, $immotoolBaseUrl, $stylesheets, $hiddenParams = null) {
     // Stylesheets importieren
     $header = '';
     if (is_array($stylesheets) && count($stylesheets) > 0) {
@@ -1409,7 +1409,7 @@ class immotool_functions {
    * @param string $lang Sprache
    * @return string lesbare Ausgabe des Attribut-Wertes
    */
-  function write_attribute_value($group, $attrib, &$value, &$translations, $lang) {
+  public static function write_attribute_value($group, $attrib, &$value, &$translations, $lang) {
     if (!is_array($value)) {
       return null;
     }
@@ -1449,7 +1449,7 @@ class immotool_functions {
    * @param int $size Anzahl Bytes
    * @return string lesbare Ausgabe der Byte-Anzahl
    */
-  function write_bytes($size) {
+  public static function write_bytes($size) {
     $unit = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
     return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
   }
@@ -1460,7 +1460,7 @@ class immotool_functions {
    * @param string $hostname Der zu prüfende Hostname
    * @return bool Liefert true, wenn es sich um einen gültigen Hostnamen handelt.
    */
-  function is_valid_hostname($hostname) {
+  public static function is_valid_hostname($hostname) {
 
     if (!is_string($hostname))
       return false;
@@ -1503,7 +1503,7 @@ class immotool_functions {
    * @param string $hostname Die zu prüfende E-Mailadresse
    * @return bool Liefert true, wenn es sich um eine gültige E-Mailadresse handelt.
    */
-  function is_valid_mail_address($email) {
+  public static function is_valid_mail_address($email) {
     //echo '<p>VALIDATE ' . $email . '</p>';
     if (!is_string($email))
       return false;

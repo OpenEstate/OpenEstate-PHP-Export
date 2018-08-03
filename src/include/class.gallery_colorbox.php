@@ -36,25 +36,25 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
    * Pfad zum JQuery-Javascript
    * @var string
    */
-  var $JQueryScript = 'include/colorbox/jquery.min.js';
+  public $JQueryScript = 'include/colorbox/jquery.min.js';
 
   /**
    * Pfad zum Colorbox-Javascript
    * @var string
    */
-  var $ColorboxScript = 'include/colorbox/jquery.colorbox-min.js';
+  public $ColorboxScript = 'include/colorbox/jquery.colorbox-min.js';
 
   /**
    * Pfad zum Colorbox-Stylesheet
    * @var string
    */
-  var $ColorboxStyle = 'include/colorbox/colorbox.css';
+  public $ColorboxStyle = 'include/colorbox/colorbox.css';
 
   /**
    * Liefert HTML-Code zur Darstellung eines Fotos in der Galerie.
    * @return string HTML-Code
    */
-  function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
+  public function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
 
     // ggf. das Galeriebild dynamisch skalieren
     if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
@@ -91,7 +91,7 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
    * Liefert HTML-Code Einbindung der Galerie-Bibliothek erzeugen.
    * @return string HTML-Code
    */
-  function getHeader() {
+  public function getHeader() {
     $header = array();
 
     // include JQuery
@@ -132,7 +132,7 @@ jQuery(document).ready(function(){
    * Liefert ein Array mit Konfigurations-Werten der Colorbox-Galerie.
    * @return array Colorbox-Konfiguration
    */
-  function getHeaderOptions() {
+  public function getHeaderOptions() {
     return array(
       //'transition' => '"fade"',
       //'speed' => '350',
@@ -145,7 +145,7 @@ jQuery(document).ready(function(){
    * Name der Galerie.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return 'colorbox';
   }
 
@@ -153,7 +153,7 @@ jQuery(document).ready(function(){
    * HTML-Code zum Titelbild.
    * @return string
    */
-  function getTitleImage($objectId, &$image, $lang) {
+  public function getTitleImage($objectId, &$image, $lang) {
 
     $file = 'data/' . $objectId . '/' . $image['name'];
     if (!is_file(IMMOTOOL_BASE_PATH . $file)) {
@@ -209,7 +209,7 @@ jQuery(document).ready(function(){
    * Die Galerie setzt JavaScript vorraus.
    * @return bool
    */
-  function isJavaScriptRequired() {
+  public function isJavaScriptRequired() {
     return true;
   }
 
@@ -217,7 +217,7 @@ jQuery(document).ready(function(){
    * Das gewählte Bild unterhalb der Galerie darstellen.
    * @return bool
    */
-  function isSelectedImagePrinted() {
+  public function isSelectedImagePrinted() {
     return false;
   }
 

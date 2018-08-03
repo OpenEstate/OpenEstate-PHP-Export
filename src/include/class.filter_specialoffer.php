@@ -34,7 +34,7 @@ class ImmoToolFilter_specialoffer extends ImmoToolFilter {
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
-  function filter($object, &$items) {
+  public function filter($object, &$items) {
     $value = (isset($object['attributes']['prices']['special_offer']['value'])) ?
         $object['attributes']['prices']['special_offer']['value'] : null;
     if ($value === true) {
@@ -47,14 +47,14 @@ class ImmoToolFilter_specialoffer extends ImmoToolFilter {
   /**
    * Name des Filters.
    */
-  function getName() {
+  public function getName() {
     return 'specialoffer';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     $title = (isset($translations['labels']['openestate.special_offer'])) ?
         $translations['labels']['openestate.special_offer'] : null;
     return is_string($title) ? $title : $this->getName();
@@ -63,7 +63,7 @@ class ImmoToolFilter_specialoffer extends ImmoToolFilter {
   /**
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
-  function getWidget($selectedValue, $lang, &$translations, &$setup) {
+  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
     $checked = ($selectedValue == '1') ? 'checked="checked"' : '';
     $widget = '<div class="nowrap">';
     $widget .= '<input id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']" value="1" type="checkbox" ' . $checked . '/>';

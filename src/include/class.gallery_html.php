@@ -35,7 +35,7 @@ class ImmoToolGallery_html extends ImmoToolGallery {
    * Name der Galerie.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return 'html';
   }
 

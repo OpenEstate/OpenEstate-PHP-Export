@@ -34,7 +34,7 @@ class ImmoToolFilter_type extends ImmoToolFilter {
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
-  function filter($object, &$items) {
+  public function filter($object, &$items) {
     $types = (isset($object['type_path'])) ? $object['type_path'] : null;
     if (!is_array($types))
       $types = array($object['type']);
@@ -48,14 +48,14 @@ class ImmoToolFilter_type extends ImmoToolFilter {
   /**
    * Name des Filters.
    */
-  function getName() {
+  public function getName() {
     return 'type';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     $title = (isset($translations['labels']['estate.type'])) ?
         $translations['labels']['estate.type'] : null;
     return is_string($title) ? $title : $this->getName();
@@ -64,7 +64,7 @@ class ImmoToolFilter_type extends ImmoToolFilter {
   /**
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
-  function getWidget($selectedValue, $lang, &$translations, &$setup) {
+  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
     $widget = '';
     if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
       return $widget;
