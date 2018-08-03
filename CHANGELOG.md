@@ -2,8 +2,8 @@ Changelog for OpenEstate-PHP-Export
 ===================================
 
 
-1.6.37 (not released yet)
--------------------------
+1.7.0 (not released yet)
+------------------------
 
 
 1.6.36 (14 May 2017)
