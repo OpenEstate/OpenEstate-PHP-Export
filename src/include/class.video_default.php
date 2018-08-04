@@ -24,17 +24,12 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
-require_once( IMMOTOOL_BASE_PATH . 'include/class.video.php' );
+require_once( __DIR__ . '/class.video.php' );
 
 class ImmoToolVideo_default extends ImmoToolVideo {
 
   function __construct() {
-    parent::__construct();
-    $this->width = 560;
-    $this->height = 315;
+    parent::__construct(560,315);
   }
 
   /**

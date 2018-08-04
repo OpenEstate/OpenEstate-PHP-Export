@@ -24,9 +24,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
 class ImmoToolFilter {
 
   public $items = array();
@@ -73,7 +70,7 @@ class ImmoToolFilter {
    * Pfad zur Cache-Datei des Filters.
    */
   public function getFile() {
-    return IMMOTOOL_BASE_PATH . 'cache/filter.' . $this->getName();
+    return immotool_functions::get_path('cache/filter.' . $this->getName());
   }
 
   /**

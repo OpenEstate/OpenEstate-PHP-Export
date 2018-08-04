@@ -24,13 +24,10 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung der Skript-Umgebung
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH'))
-  define('IMMOTOOL_BASE_PATH', '');
+// Initialisierung
 ob_start();
-require_once(IMMOTOOL_BASE_PATH . 'config.php');
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
+require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/include/functions.php');
 ob_end_clean();
 
 // Initialisierung des Exposé-Downloads
@@ -78,7 +75,7 @@ if (!is_array($object)) {
 
 // Pfad zur auszuliefernden PDF-Datei ermitteln
 $path = 'data/' . $objectId . '/' . $objectId . '_' . $lang . '.pdf';
-$fullPath = IMMOTOOL_BASE_PATH . $path;
+$fullPath = immotool_functions::get_path($path);
 if (!is_file($fullPath)) {
   if (!headers_sent()) {
     // 404-Fehlercode zurückliefern,

@@ -24,13 +24,9 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung der Skript-Umgebung
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH')) {
-  define('IMMOTOOL_BASE_PATH', '');
-}
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
-define('CACHE_PATH', IMMOTOOL_BASE_PATH . 'cache');
+// Initialisierung
+require_once(__DIR__ . '/include/functions.php');
+define('CACHE_PATH', immotool_functions::get_path('cache'));
 
 // Einträge im Cache-Verzeichnis ermitteln
 $files = immotool_functions::list_directory(CACHE_PATH);

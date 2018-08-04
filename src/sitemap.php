@@ -24,16 +24,12 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung der Skript-Umgebung
+// Initialisierung
 $startup = microtime();
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH')) {
-  define('IMMOTOOL_BASE_PATH', '');
-}
-require_once(IMMOTOOL_BASE_PATH . 'config.php');
-require_once(IMMOTOOL_BASE_PATH . 'private.php');
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
-require_once(IMMOTOOL_BASE_PATH . 'data/language.php');
+require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/private.php');
+require_once(__DIR__ . '/include/functions.php');
+require_once(__DIR__ . '/data/language.php');
 $debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
 
 // Konfiguration ermitteln
@@ -59,7 +55,7 @@ else {
 }
 
 // Cache-Datei der Sitemap
-$cacheFile = IMMOTOOL_BASE_PATH . 'cache/sitemap.' . $lang . '.xml';
+$cacheFile = immotool_functions::get_path('cache/sitemap.' . $lang . '.xml');
 if (!$debugMode && is_file($cacheFile)) {
   if (!immotool_functions::check_file_age($cacheFile, $setup->CacheLifeTime)) {
     // abgelaufene Cache-Datei entfernen

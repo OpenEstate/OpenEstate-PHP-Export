@@ -677,16 +677,12 @@ if (!class_exists('immotool_expose')) {
 
 }
 
-// Initialisierung der Skript-Umgebung
+// Initialisierung
 $startupTime = microtime();
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH')) {
-  define('IMMOTOOL_BASE_PATH', '');
-}
-require_once(IMMOTOOL_BASE_PATH . 'config.php');
-require_once(IMMOTOOL_BASE_PATH . 'private.php');
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
-require_once(IMMOTOOL_BASE_PATH . 'data/language.php');
+require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/private.php');
+require_once(__DIR__ . '/include/functions.php');
+require_once(__DIR__ . '/data/language.php');
 
 // Initialisierung der Immobilien-Ansicht
 $setup = new immotool_setup_expose();
@@ -761,7 +757,7 @@ if ($setup->HandleFavourites) {
   $exposeMenu .= '<li><a href="?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $object['id'] . '&amp;' . IMMOTOOL_PARAM_FAV . '=' . $object['id'] . '{DEFAULT_LINK_PARAMS}" rel="nofollow">' . $favTitle . '</a></li>';
 }
 $pdf = 'data/' . $object['id'] . '/' . $object['id'] . '_' . $lang . '.pdf';
-if (is_file(IMMOTOOL_BASE_PATH . $pdf)) {
+if (is_file(immotool_functions::get_path($pdf))) {
   $pdfLink = 'download.php?id=' . $object['id'] . '&amp;lang=' . $lang;
   $exposeMenu .= '<li><a href="' . $pdfLink . '" target="_blank">' . $translations['labels']['link.expose.pdf'] . '</a></li>';
 }

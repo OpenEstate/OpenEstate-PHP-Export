@@ -25,10 +25,6 @@
  */
 
 // Initialisierung
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH')) {
-  define('IMMOTOOL_BASE_PATH', '');
-}
 if (!extension_loaded('gd')) {
   if (!headers_sent()) {
     // 500-Fehlercode zurückliefern,
@@ -38,10 +34,12 @@ if (!extension_loaded('gd')) {
   echo 'It seems like GD is not installed!';
   return;
 }
-require_once(IMMOTOOL_BASE_PATH . 'config.php');
-require_once(IMMOTOOL_BASE_PATH . 'private.php');
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
-define('CAPTCHA_FONT_PATH', IMMOTOOL_BASE_PATH . 'include/fonts');
+
+require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/private.php');
+require_once(__DIR__ . '/include/functions.php');
+
+define('CAPTCHA_FONT_PATH', immotool_functions::get_path('include/fonts'));
 define('CAPTCHA_LENGTH', 5);
 //define( 'CAPTCHA_SYMBOLS', 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789');
 define('CAPTCHA_SYMBOLS', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789');

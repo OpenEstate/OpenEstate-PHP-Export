@@ -24,12 +24,9 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung der Skript-Umgebung
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH'))
-  define('IMMOTOOL_BASE_PATH', '');
-require_once(IMMOTOOL_BASE_PATH . 'config.php');
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
+// Initialisierung
+require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/include/functions.php');
 header('Content-Type: text/css; charset=utf-8');
 
 // Konfiguration ermitteln

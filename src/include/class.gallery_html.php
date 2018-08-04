@@ -24,10 +24,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
-require_once( IMMOTOOL_BASE_PATH . 'include/class.gallery.php' );
+require_once( __DIR__ . '/class.gallery.php' );
 
 class ImmoToolGallery_html extends ImmoToolGallery {
 

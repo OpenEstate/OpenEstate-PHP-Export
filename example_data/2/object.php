@@ -24,10 +24,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE')) {
-  exit;
-}
-
 $GLOBALS['immotool_objects']['2'] = array(
   'id' => '2',
   'status' => 'published',

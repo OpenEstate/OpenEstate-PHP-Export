@@ -25,10 +25,7 @@
  * @link http://colorpowered.com/colorbox/
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
-require_once( IMMOTOOL_BASE_PATH . 'include/class.gallery.php' );
+require_once( __DIR__ . '/class.gallery.php' );
 
 class ImmoToolGallery_colorbox extends ImmoToolGallery {
 
@@ -61,7 +58,7 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
       if (!isset($image['name']) || !is_string($image['name']))
         return '';
       $img = 'data/' . $objectId . '/' . $image['name'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $img))
+      if (!is_file(immotool_functions::get_path($img)))
         return null;
       $thumb = 'img.php?id=' . $objectId .
           '&amp;img=' . $image['name'] .
@@ -74,7 +71,7 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
       if (!isset($image['thumb']) || !is_string($image['thumb']))
         return '';
       $thumb = 'data/' . $objectId . '/' . $image['thumb'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
+      if (!is_file(immotool_functions::get_path($thumb)))
         return null;
     }
 
@@ -156,7 +153,7 @@ jQuery(document).ready(function(){
   public function getTitleImage($objectId, &$image, $lang) {
 
     $file = 'data/' . $objectId . '/' . $image['name'];
-    if (!is_file(IMMOTOOL_BASE_PATH . $file)) {
+    if (!is_file(immotool_functions::get_path($file))) {
       return null;
     }
 
@@ -171,7 +168,7 @@ jQuery(document).ready(function(){
     // Titelbild direkt ausliefern
     else {
       $thumb = 'data/' . $objectId . '/' . $image['thumb'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $thumb)) {
+      if (!is_file(immotool_functions::get_path($thumb))) {
         return null;
       }
     }

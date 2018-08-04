@@ -24,15 +24,12 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung der Skript-Umgebung
+// Initialisierung
 $startupTime = microtime();
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH'))
-  define('IMMOTOOL_BASE_PATH', '');
-require_once(IMMOTOOL_BASE_PATH . 'config.php');
-require_once(IMMOTOOL_BASE_PATH . 'private.php');
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
-require_once(IMMOTOOL_BASE_PATH . 'data/language.php');
+require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/private.php');
+require_once(__DIR__ . '/include/functions.php');
+require_once(__DIR__ . '/data/language.php');
 
 // Initialisierung der Immobilien-Übersicht
 $setup = new immotool_setup_index();
@@ -192,7 +189,7 @@ foreach ($result as $resultId) {
   if ($setup->DynamicImageScaling === true && extension_loaded('gd')) {
     $img = (isset($object['images'][0]['name'])) ?
         'data/' . $object['id'] . '/' . $object['images'][0]['name'] : null;
-    if ($img == null || !is_file(IMMOTOOL_BASE_PATH . $img)) {
+    if ($img == null || !is_file(immotool_functions::get_path($img))) {
       immotool_functions::replace_var('IMAGE', null, $listingEntry);
     }
     else {
@@ -213,7 +210,7 @@ foreach ($result as $resultId) {
     else if (isset($object['images'][0]['thumb']))
       $img = 'data/' . $object['id'] . '/' . $object['images'][0]['thumb'];
 
-    if ($img != null && is_file(IMMOTOOL_BASE_PATH . $img))
+    if ($img != null && is_file(immotool_functions::get_path($img)))
       immotool_functions::replace_var('IMAGE', $img, $listingEntry);
     else
       immotool_functions::replace_var('IMAGE', null, $listingEntry);
@@ -329,7 +326,7 @@ foreach ($result as $resultId) {
 
   // pdf link
   $pdf = 'data/' . $object['id'] . '/' . $object['id'] . '_' . $lang . '.pdf';
-  if (is_file(IMMOTOOL_BASE_PATH . $pdf)) {
+  if (is_file(immotool_functions::get_path($pdf))) {
     $pdfLink = 'download.php?id=' . $object['id'] . '&amp;lang=' . $lang;
     immotool_functions::replace_var('LINK_PDF', $pdfLink, $listingEntry);
     immotool_functions::replace_var('LINK_PDF_TEXT', $translations['labels']['link.expose.pdf'], $listingEntry);

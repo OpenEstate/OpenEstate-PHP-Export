@@ -24,16 +24,14 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
 class ImmoToolVideo {
 
   public $width = 0;
   public $height = 0;
 
-  function __construct() {
-
+  function __construct($width=0, $height=0) {
+    $this->width = $width;
+    $this->height = $height;
   }
 
   /**

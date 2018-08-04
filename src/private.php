@@ -24,10 +24,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE')) {
-  exit;
-}
-
 /**
  * Geheimer Krypto-Schlüssel
  * Wird z.B. zur Erzeugung sicherer Session-ID's verwendet.

@@ -24,9 +24,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
 class ImmoToolOrder {
 
   public $items = array();
@@ -37,7 +34,6 @@ class ImmoToolOrder {
   public function build() {
     $this->items = array();
     $ids = immotool_functions::list_available_objects();
-    //echo '<pre>'; print_r($ids); echo '</pre>';
     if (!is_array($ids))
       return false;
 
@@ -103,7 +99,7 @@ class ImmoToolOrder {
    * Pfad zur Cache-Datei der Sortierung.
    */
   public function getFile() {
-    return IMMOTOOL_BASE_PATH . 'cache/order.' . $this->getName();
+    return immotool_functions::get_path('cache/order.' . $this->getName());
   }
 
   /**

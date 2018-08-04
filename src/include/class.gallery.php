@@ -24,9 +24,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
 class ImmoToolGallery {
 
   public $exposeSetup = null;
@@ -56,7 +53,7 @@ class ImmoToolGallery {
       if (!isset($image['name']) || !is_string($image['name']))
         return '';
       $img = 'data/' . $objectId . '/' . $image['name'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $img))
+      if (!is_file(immotool_functions::get_path($img)))
         return null;
       $thumb = 'img.php?id=' . $objectId .
           '&amp;img=' . $image['name'] .
@@ -69,7 +66,7 @@ class ImmoToolGallery {
       if (!isset($image['thumb']) || !is_string($image['thumb']))
         return '';
       $thumb = 'data/' . $objectId . '/' . $image['thumb'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
+      if (!is_file(immotool_functions::get_path($thumb)))
         return null;
     }
 
@@ -102,7 +99,7 @@ class ImmoToolGallery {
   public function getTitleImage($objectId, &$image, $lang) {
 
     $file = 'data/' . $objectId . '/' . $image['name'];
-    if (!is_file(IMMOTOOL_BASE_PATH . $file)) {
+    if (!is_file(immotool_functions::get_path($file))) {
       return null;
     }
 
@@ -117,7 +114,7 @@ class ImmoToolGallery {
     // Titelbild direkt ausliefern
     else {
       $thumb = 'data/' . $objectId . '/' . $image['thumb'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $thumb)) {
+      if (!is_file(immotool_functions::get_path($thumb))) {
         return null;
       }
     }

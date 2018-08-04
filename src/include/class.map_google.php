@@ -25,10 +25,7 @@
  * @link http://maps.google.com/
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
-require_once( IMMOTOOL_BASE_PATH . 'include/class.map.php' );
+require_once( __DIR__ . '/class.map.php' );
 
 class ImmoToolMap_google extends ImmoToolMap {
 

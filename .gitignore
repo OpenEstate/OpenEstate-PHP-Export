@@ -1,1 +1,8 @@
 /nbproject/private/
+/src/cache/*
+/src/data/*
+/src/sessions/*
+
+!/src/cache/index.html
+!/src/data/index.html
+!/src/sessions/index.html
