@@ -7,6 +7,7 @@ Changelog for OpenEstate-PHP-Export
 
 -   increased minimal requirements to PHP 5.6
 -   fixed PHP warnings about class definitions
+-   replaced dependency *Net_IDNA* with *php-punycode*
 
 
 1.6.36 (14 May 2017)

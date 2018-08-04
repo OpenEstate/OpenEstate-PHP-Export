@@ -110,6 +110,7 @@ if (is_file(dirname(__DIR__) . '/myconfig.php')) {
   require_once( dirname(__DIR__) . '/myconfig.php' );
 }
 
+
 /**
  * Hilfsfunktionen des ImmoTool PHP-Exports.
  */
@@ -485,16 +486,47 @@ class immotool_functions {
   }
 
   /**
-   * Wandelt eine Mailadresse in Punycode um.
+   * Wandelt einen Hostnamen in Punycode um.
+   * @param string $host Hostname
+   * @return umgewandelter Hostname
+   */
+  public static function encode_host($host) {
+    if (function_exists('idn_to_ascii')) {
+      return idn_to_ascii($host);
+    }
+    try {
+      if (!isset($GLOBALS['immotool_punycode']) || !is_object($GLOBALS['immotool_punycode'])) {
+        require_once( __DIR__ . '/TrueBV/Punycode.php' );
+        $GLOBALS['immotool_punycode'] = new TrueBV\Punycode();
+      }
+      return $GLOBALS['immotool_punycode']->encode($host);
+    } catch (Exception $e) {
+      return null;
+    }
+  }
+
+  /**
+   * Wandelt den Hostnamen einer Mailadresse in Punycode um.
    * @param string $email Mailadresse
-   * @return umgewandelte Mailadresse
+   * @return umgewandelte Mailadresse oder null, falls diese ungültig ist
    */
   public static function encode_mail($email) {
-    if (!isset($GLOBALS['immotool_idna']) || !is_object($GLOBALS['immotool_idna'])) {
-      include_once(self::get_path('include/Net/IDNA.php'));
-      $GLOBALS['immotool_idna'] = Net_IDNA::getInstance();
+    // Ggf. Sonderzeichen in Domain der E-Mailadresse in ASCII umwandeln.
+    if (strpos( $email, '@' )!==false) {
+      $val = explode( '@', $email, 2 );
+
+      // Internationalen Domain-Namen mit Punycode-Bibliothek umwandeln
+      try {
+        $Punycode = new Punycode();
+        $emailEncoded = $val[0] . '@' . self::encode_host( $val[1] );
+      }
+      catch(Exception $e) {
+        $emailEncoded = $val[0] . '@';
+      }
     }
-    return $GLOBALS['immotool_idna']->encode($email, 'utf8');
+
+    // Gefilterte E-Mailadresse zurückliefern.
+    return filter_var( $emailEncoded, FILTER_VALIDATE_EMAIL );
   }
 
   /**
@@ -1503,7 +1535,7 @@ class immotool_functions {
         return false;
       if (strlen($label) < 1)
         return false;
-      $idnLabel = self::encode_mail($label);
+      $idnLabel = self::encode_host($label);
       if (strlen($idnLabel) < 3) {
         if (preg_match($shortPattern, $idnLabel) !== 1) {
           //echo '<p>INVALID LABEL: ' . $idnLabel . '</p>';
