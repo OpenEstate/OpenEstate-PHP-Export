@@ -36,7 +36,7 @@ Requirements
 -   client side
     -   [OpenEstate-ImmoTool](http://openestate.org/) 1.0-beta
 -   webspace side
-    -   PHP 5 (PHP 4 might work, but is not supported anymore)
+    -   PHP 5.6 or newer
     -   [PHP GD extension](http://www.php.net/manual/en/book.image.php)
     -   [PHP mbstring extension](http://www.php.net/manual/en/book.mbstring.php) (optional)
     -   [PHP iconv extension](http://de1.php.net/manual/en/book.iconv.php) (optional)
@@ -60,8 +60,6 @@ License
 Todo
 ----
 
--   increase minimal PHP version to 5.2 or 5.3
--   fix PHP notice / deprecation issues
 -   complete API documentation in english language
 -   make API documentation publicly available (via
     [phpDocumentor](http://www.phpdoc.org/) or [apigen](http://apigen.org/))
