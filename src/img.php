@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,14 +20,11 @@
  * Website-Export, Skalierung & Beschneidung der Objekt-Bilder auf eine vorgegebene Größe.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung der Skript-Umgebung
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH'))
-  define('IMMOTOOL_BASE_PATH', '');
+// Initialisierung
 if (!extension_loaded('gd')) {
   if (!headers_sent()) {
     // 500-Fehlercode zurückliefern,
@@ -38,8 +35,8 @@ if (!extension_loaded('gd')) {
   return;
 }
 ob_start();
-require_once(IMMOTOOL_BASE_PATH . 'config.php');
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
+require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/include/functions.php');
 ob_end_clean();
 
 // Initialisierung des Immobilien-Bildes
@@ -74,7 +71,7 @@ if (is_null($imgName) || strlen($imgName) < 1) {
 }
 
 // Pfad des Bildes auf dem Server ermitteln
-$imgPath = IMMOTOOL_BASE_PATH . 'data/' . $objectId . '/' . $imgName;
+$imgPath = immotool_functions::get_path('data/' . $objectId . '/' . $imgName);
 if (!is_file($imgPath)) {
   if (!headers_sent()) {
     // 404-Fehlercode zurückliefern,
@@ -97,7 +94,7 @@ if (isset($_REQUEST['y']) && is_numeric($_REQUEST['y']))
 $bg = (isset($_REQUEST['bg']) && is_string($_REQUEST['bg'])) ? $_REQUEST['bg'] : 'ffffff';
 
 // Prüfen, ob das skalierte Bild bereits im Cache-Verzeichnis vorhanden ist
-$cacheFile = IMMOTOOL_BASE_PATH . 'cache/img.' . md5($imgPath . '-' . $x . '-' . $y . '-' . $bg) . '.jpg';
+$cacheFile = immotool_functions::get_path('cache/img.' . md5($imgPath . '-' . $x . '-' . $y . '-' . $bg) . '.jpg');
 if (is_file($cacheFile)) {
 
   // Cache-Datei nach Ablauf der Vorhaltezeit ggf. löschen

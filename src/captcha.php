@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,15 +20,11 @@
  * Website-Export, Darstellung einer Captcha-Grafik.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
 // Initialisierung
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH')) {
-  define('IMMOTOOL_BASE_PATH', '');
-}
 if (!extension_loaded('gd')) {
   if (!headers_sent()) {
     // 500-Fehlercode zurückliefern,
@@ -38,10 +34,12 @@ if (!extension_loaded('gd')) {
   echo 'It seems like GD is not installed!';
   return;
 }
-require_once(IMMOTOOL_BASE_PATH . 'config.php');
-require_once(IMMOTOOL_BASE_PATH . 'private.php');
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
-define('CAPTCHA_FONT_PATH', IMMOTOOL_BASE_PATH . 'include/fonts');
+
+require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/private.php');
+require_once(__DIR__ . '/include/functions.php');
+
+define('CAPTCHA_FONT_PATH', immotool_functions::get_path('include/fonts'));
 define('CAPTCHA_LENGTH', 5);
 //define( 'CAPTCHA_SYMBOLS', 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789');
 define('CAPTCHA_SYMBOLS', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789');

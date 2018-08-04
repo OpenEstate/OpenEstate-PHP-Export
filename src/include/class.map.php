@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,12 +20,9 @@
  * Website-Export, allgemeine Umkreiskarte.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-
-if (!defined('IN_WEBSITE'))
-  exit;
 
 class ImmoToolMap {
 
@@ -33,7 +30,7 @@ class ImmoToolMap {
    * Hilfsfunktion zur Überprüfung, ob Geo-Koordinaten bei einer Immobilie hinterlegt wurden.
    * @return boolean
    */
-  function canShowForObject(&$object) {
+  public function canShowForObject(&$object) {
     return isset($object['address']['latitude']) && isset($object['address']['longitude']) && is_numeric($object['address']['latitude']) && is_numeric($object['address']['longitude']);
   }
 
@@ -41,7 +38,7 @@ class ImmoToolMap {
    * Body-Daten der Umkreiskarte.
    * @return string Name
    */
-  function getBodyContent(&$object, &$translations, $lang) {
+  public function getBodyContent(&$object, &$translations, $lang) {
     return null;
   }
 
@@ -49,7 +46,7 @@ class ImmoToolMap {
    * Header-Daten der Umkreiskarte.
    * @return string Name
    */
-  function getHeaderContent(&$object, &$translations, $lang) {
+  public function getHeaderContent(&$object, &$translations, $lang) {
     return null;
   }
 
@@ -58,7 +55,7 @@ class ImmoToolMap {
    * @param array $object Immobilie
    * @return float Wert des Breitengrades oder null, wenn nicht angegeben
    */
-  function getLatitude(&$object) {
+  public function getLatitude(&$object) {
     return (isset($object['address']['latitude'])) ? $object['address']['latitude'] : null;
   }
 
@@ -67,7 +64,7 @@ class ImmoToolMap {
    * @param array $object Immobilie
    * @return float Wert des Längengrades oder null, wenn nicht angegeben
    */
-  function getLongitude(&$object) {
+  public function getLongitude(&$object) {
     return (isset($object['address']['longitude'])) ? $object['address']['longitude'] : null;
   }
 
@@ -75,7 +72,7 @@ class ImmoToolMap {
    * Name der Umkreiskarte.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return null;
   }
 

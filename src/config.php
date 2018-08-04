@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,13 +20,9 @@
  * Website-Export, Konfigurationen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-
-if (!defined('IN_WEBSITE')) {
-  exit;
-}
 
 /**
  * Allgemeine Konfiguration
@@ -38,14 +34,14 @@ class immotool_setup {
    * Erlaubt sind ISO-Sprachcodes, für die eine Übersetzung hinterlegt ist.
    * @var string
    */
-  var $DefaultLanguage = 'de';
+  public $DefaultLanguage = 'de';
 
   /**
    * Zusätzlich verwendeter CSS-Stylesheet.
    * Dies erlaubt Anpassungen am Layout, ohne bestehende Skripte zu ändern.
    * @var string
    */
-  var $AdditionalStylesheet = '';
+  public $AdditionalStylesheet = '';
 
   /**
    * Standardmäßig verwendete Zeitzone.
@@ -53,7 +49,7 @@ class immotool_setup {
    * Wenn keine Zeitzone angegeben wurde, wird die Zeitzone des Servers verwendet.
    * @var string
    */
-  var $Timezone = 'Europe/Berlin';
+  public $Timezone = 'Europe/Berlin';
 
   /**
    * Sprachauswahl anzeigen.
@@ -61,7 +57,7 @@ class immotool_setup {
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $ShowLanguageSelection = true;
+  public $ShowLanguageSelection = true;
 
   /**
    * Verwendeter Zeichensatz für erzeugte Inhalte.
@@ -69,7 +65,7 @@ class immotool_setup {
    * Erlaubt sind die in der PHP-Installation unterstützten Zeichensätze.
    * @var string
    */
-  var $Charset = 'UTF-8';
+  public $Charset = 'UTF-8';
 
   /**
    * Verwendeter Content-Type für erzeugte Inhalte.
@@ -77,7 +73,7 @@ class immotool_setup {
    * der HTTP-Response dargestellt.
    * @var string
    */
-  var $ContentType = 'text/html; charset=UTF-8';
+  public $ContentType = 'text/html; charset=UTF-8';
 
   /**
    * Verzeichnis, aus welchem die Templates bevorzugt geladen werden.
@@ -86,61 +82,61 @@ class immotool_setup {
    * enthält.
    * @var string
    */
-  var $TemplateFolder = 'default';
+  public $TemplateFolder = 'default';
 
   /**
    * Diese E-Mailadresse wird als Absender in den versendeten E-Mails verwendet.
    * @var string
    */
-  var $MailFrom = 'max@mustermann.de';
+  public $MailFrom = 'max@mustermann.de';
 
   /**
    * Diese Name wird als Absender in den versendeten E-Mails verwendet.
    * @var string
    */
-  var $MailFromName = 'Max Mustermann';
+  public $MailFromName = 'Max Mustermann';
 
   /**
    * An diese E-Mailadresse wird eine Kopie der versendeten E-Mails versendet.
    * Wenn keine Adresse hinterlegt ist, wird keine Kopie versendet.
    * @var string
    */
-  var $MailToCC = '';
+  public $MailToCC = '';
 
   /**
    * An diese E-Mailadresse wird eine Blindkopie der versendeten E-Mails versendet.
    * Wenn keine Adresse hinterlegt ist, wird keine Blindkopie versendet.
    * @var string
    */
-  var $MailToBCC = '';
+  public $MailToBCC = '';
 
   /**
    * Art des Mailversands.
    * mögliche Optionen sind 'mail', 'sendmail', 'smtp'
    * @var string
    */
-  var $MailMethod = 'mail';
+  public $MailMethod = 'mail';
 
   /**
    * Pfad zum Sendmail-Programm.
    * wenn $MailMethod='sendmail'
    * @var string
    */
-  var $MailSendmailPath = '/usr/sbin/sendmail';
+  public $MailSendmailPath = '/usr/sbin/sendmail';
 
   /**
    * Hostname für Mailversand via SMTP.
    * wenn $MailMethod='smtp'
    * @var string
    */
-  var $MailSmtpHost = 'localhost';
+  public $MailSmtpHost = 'localhost';
 
   /**
    * Port-Nummer für Mailversand via SMTP.
    * wenn $MailMethod='smtp'
    * @var int
    */
-  var $MailSmtpPort = 25;
+  public $MailSmtpPort = 25;
 
   /**
    * Verschlüsselung des Mailversandes via SMTP.
@@ -148,7 +144,7 @@ class immotool_setup {
    * wenn $MailMethod='smtp'
    * @var string
    */
-  var $MailSmtpSecurity = '';
+  public $MailSmtpSecurity = '';
 
   /**
    * Anmeldung am SMTP-Server.
@@ -156,21 +152,21 @@ class immotool_setup {
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $MailSmtpAuth = false;
+  public $MailSmtpAuth = false;
 
   /**
    * Benutzername zur Anmeldung am SMTP-Server.
    * wenn $MailMethod='smtp' und $MailSmtpAuth=true
    * @var string
    */
-  var $MailSmtpAuthLogin = '';
+  public $MailSmtpAuthLogin = '';
 
   /**
    * Passwort zur Anmeldung am SMTP-Server.
    * wenn $MailMethod='smtp' und $MailSmtpAuth=true
    * @var string
    */
-  var $MailSmtpAuthPassword = '';
+  public $MailSmtpAuthPassword = '';
 
   /**
    * Den SMTP-Versand im 'debug'-Modus ausführen.
@@ -179,7 +175,7 @@ class immotool_setup {
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $MailSmtpDebug = false;
+  public $MailSmtpDebug = false;
 
   /**
    * URL-Vorlage für Exposé-Links.
@@ -188,7 +184,7 @@ class immotool_setup {
    * $ExposeUrlTemplate = 'http://www.mustermann-makler.de/immobilien/expose.php?id={ID}&lang={LANG}';
    * @var string
    */
-  var $ExposeUrlTemplate = null;
+  public $ExposeUrlTemplate = null;
 
   /**
    * Kategorien.
@@ -198,7 +194,7 @@ class immotool_setup {
    * $Categories = array( 'wohnen', 'gewerbe', 'anlage' );
    * @var string
    */
-  var $Categories = array();
+  public $Categories = array();
 
   /**
    * Lebensdauer von Cache-Dateien.
@@ -210,7 +206,7 @@ class immotool_setup {
    * $CacheLifeTime = 86400; // ein Tag
    * @var int
    */
-  var $CacheLifeTime = 10800; // drei Stunden
+  public $CacheLifeTime = 10800; // drei Stunden
 
   /**
    * Verkleinerte Vorschaubilder dynamisch via PHP erzeugen.
@@ -218,14 +214,14 @@ class immotool_setup {
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $DynamicImageScaling = true;
+  public $DynamicImageScaling = true;
 
   /**
    * Vormerkungen von Immobilien aktivieren.
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $HandleFavourites = true;
+  public $HandleFavourites = true;
 
 }
 
@@ -238,27 +234,27 @@ class immotool_setup_index extends immotool_setup {
    * Anzahl der Einträge, die auf einer Index-Seite dargestellt werden
    * @var int
    */
-  var $ElementsPerPage = 10;
+  public $ElementsPerPage = 10;
 
   /**
    * Verwendete Sortierungs-Optionen.
    * @var array
    */
-  var $OrderOptions = array('id', 'city', 'postal', 'title', 'price', 'rooms', 'area');
+  public $OrderOptions = array('id', 'city', 'postal', 'title', 'price', 'rooms', 'area');
 
   /**
    * Art der Sortierung beim ersten Besuch der Index-Ansicht.
    * Muss in $OrderOptions enthalten sein.
    * @var string
    */
-  var $DefaultOrderBy = 'id';
+  public $DefaultOrderBy = 'id';
 
   /**
    * Richtung der Sortierung beim ersten Besuch der Index-Ansicht.
    * 'asc' für aufsteigend, 'desc' für absteigend
    * @var string
    */
-  var $DefaultOrderDir = 'asc';
+  public $DefaultOrderDir = 'asc';
 
   /**
    * Standardmäßig als Tabelle oder Galerie darstellen.
@@ -266,13 +262,13 @@ class immotool_setup_index extends immotool_setup {
    * 'gallery' für Galerie-Darstellungen
    * @var string
    */
-  var $DefaultMode = 'entry';
+  public $DefaultMode = 'entry';
 
   /**
    * Verwendete Filter-Optionen.
    * @var array
    */
-  var $FilterOptions = array('action', 'type');
+  public $FilterOptions = array('action', 'type');
 
   /**
    * Alle verfügbaren Immobilienarten filtern.
@@ -282,7 +278,7 @@ class immotool_setup_index extends immotool_setup {
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $FilterAllEstateTypes = true;
+  public $FilterAllEstateTypes = true;
 
   /**
    * Größe der verkleinerten Vorschaubilder in der Listenansicht der
@@ -293,7 +289,7 @@ class immotool_setup_index extends immotool_setup {
    * Erlaubt sind ganze Zahlen größer 0.
    * @var array
    */
-  var $ListingImageSize = array(100, 75);
+  public $ListingImageSize = array(100, 75);
 
   /**
    * Größe der verkleinerten Vorschaubilder in der Galerieansicht der
@@ -304,28 +300,28 @@ class immotool_setup_index extends immotool_setup {
    * Erlaubt sind ganze Zahlen größer 0.
    * @var array
    */
-  var $GalleryImageSize = array(150, 150);
+  public $GalleryImageSize = array(150, 150);
 
   /**
    * Anzahl der Attribute, die pro Attributgruppe für eine Immobilie in der
    * Immobilien-Übersicht dargestellt werden.
    * @var int
    */
-  var $AttributesPerGroup = 2;
+  public $AttributesPerGroup = 2;
 
   /**
    * Auflistung von Attributen, die in der Immobilien-Übersicht bevorzugt
    * dargestellt werden sollen.
    * @var array
    */
-  var $PreferredAttributes = array();
+  public $PreferredAttributes = array();
 
   /**
    * Auflistung von Attributen, die in der Immobilien-Übersicht nicht
    * dargestellt werden sollen.
    * @var array
    */
-  var $HiddenAttributes = array('prices.special_offer', 'prices.agent_fee', 'prices.agent_fee_including_vat');
+  public $HiddenAttributes = array('prices.special_offer', 'prices.agent_fee', 'prices.agent_fee_including_vat');
 
 }
 
@@ -339,85 +335,85 @@ class immotool_setup_expose extends immotool_setup {
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $ShowTerms = true;
+  public $ShowTerms = true;
 
   /**
    * Kontaktperson im Exposé darstellen.
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $ShowContactPerson = true;
+  public $ShowContactPerson = true;
 
   /**
    * Kontaktformular im Exposé darstellen.
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $ShowContactForm = true;
+  public $ShowContactForm = true;
 
   /**
    * Grafischen Bestätigungscode (CAPTCHA) im Exposé-Kontaktformular darstellen.
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $ShowContactCaptcha = true;
+  public $ShowContactCaptcha = true;
 
   /**
    * Text mit rechtlichen Richtlinien im Kontaktformular bestätigen.
    * Erlaubt ist true (=ja) oder false (=nein)
    * @var bool
    */
-  var $ShowContactTerms = false;
+  public $ShowContactTerms = false;
 
   /**
    * Pflichtfelder bei der Verarbeitung des Kontaktformulares.
    * Felder, bei denen die Eingabe keine Pflicht ist, können aus dem Array entfernt werden.
    * @var array
    */
-  var $ContactRequiredFields = array('name', 'firstname', 'email', 'phone', 'street', 'streetnr', 'city', 'postal', 'message');
+  public $ContactRequiredFields = array('name', 'firstname', 'email', 'phone', 'street', 'streetnr', 'city', 'postal', 'message');
 
   /**
    * Einbindung einer externen Bildergalerie.
    * @var string
    */
-  var $GalleryHandler = 'colorbox';
+  public $GalleryHandler = 'colorbox';
 
   /**
    * Einbindung einer Umkreiskarte.
    * @var string
    */
-  var $MapHandler = 'osm';
+  public $MapHandler = 'osm';
 
   /**
    * Einbindung externer Videos.
    * @var string
    */
-  var $VideoHandler = 'default';
+  public $VideoHandler = 'default';
 
   /**
    * Art der Darstellung.
    * Erlaubt ist 'tabular' (=Reiterdarstellung) oder 'listing' (=hintereinander)
    * @var string
    */
-  var $ViewMode = 'tabular';
+  public $ViewMode = 'tabular';
 
   /**
    * Reihenfolge der Darstellung.
    * @var array
    */
-  var $ViewOrder = array('details', 'texts', 'gallery', 'map', 'media', 'contact', 'terms');
+  public $ViewOrder = array('details', 'texts', 'gallery', 'map', 'media', 'contact', 'terms');
 
   /**
    * Reihenfolge der dargestellten Attribut-Gruppen im Reiter 'Details'.
    * @var array
    */
-  var $DetailsOrder = array('prices', 'measures', 'features', 'surroundings', 'condition', 'administration', 'energy_certificate');
+  public $DetailsOrder = array('prices', 'measures', 'features', 'surroundings', 'condition', 'administration', 'energy_certificate');
 
   /**
    * Reihenfolge der dargestellten Beschreibungstexte im Reiter 'Beschreibung'.
    * @var array
    */
-  var $TextOrder = array('detailled_description', 'location_description', 'feature_description', 'price_description', 'agent_fee_information', 'additional_information', 'short_description');
+  public $TextOrder = array('detailled_description', 'location_description', 'feature_description', 'price_description', 'agent_fee_information', 'additional_information', 'short_description');
 
   /**
    * Größe des verkleinerten Titelbildes in der Exposéansicht (in Pixel).
@@ -427,7 +423,7 @@ class immotool_setup_expose extends immotool_setup {
    * Erlaubt sind ganze Zahlen größer 0.
    * @var array
    */
-  var $TitleImageSize = array(200, 150);
+  public $TitleImageSize = array(200, 150);
 
   /**
    * Größe der verkleinerten Galeriebilder in der Exposéansicht (in Pixel).
@@ -437,7 +433,7 @@ class immotool_setup_expose extends immotool_setup {
    * Erlaubt sind ganze Zahlen größer 0.
    * @var array
    */
-  var $GalleryImageSize = array(100, 75);
+  public $GalleryImageSize = array(100, 75);
 
   /**
    * Textfelder, die als META-Description verwendet werden sollen. Das erste
@@ -445,28 +441,28 @@ class immotool_setup_expose extends immotool_setup {
    * META-Description in der Exposé-Ansicht dargestellt.
    * @var array
    */
-  var $MetaDescriptionTexts = array('short_description', 'detailled_description');
+  public $MetaDescriptionTexts = array('short_description', 'detailled_description');
 
   /**
    * Auflistung von Attributen, die in der Exposé-Ansicht im Titelbereich
    * dargestellt werden sollen.
    * @var array
    */
-  var $TitleAttributes = array();
+  public $TitleAttributes = array();
 
   /**
    * Auflistung von Attributen, die in der Exposé-Ansicht an oberster Stelle
    * innerhalb ihrer Gruppe dargestellt werden sollen.
    * @var array
    */
-  var $PreferredAttributes = array();
+  public $PreferredAttributes = array();
 
   /**
    * Auflistung von Attributen, die in der Exposé-Ansicht grundsätzlich
    * nicht dargestellt werden sollen.
    * @var array
    */
-  var $HiddenAttributes = array('prices.special_offer', 'descriptions.keywords');
+  public $HiddenAttributes = array('prices.special_offer', 'descriptions.keywords');
 
 }
 
@@ -479,53 +475,53 @@ class immotool_setup_style extends immotool_setup {
    * Allgemeine Stylesheets definieren (body, h1, h2, h3, a ...).
    * @var bool
    */
-  var $ShowGeneralStyles = true;
+  public $ShowGeneralStyles = true;
 
   /**
    * Allgemein verwendete Textfarbe.
    * wenn $ShowGeneralStyles = true
    * @var string
    */
-  var $GeneralTextColor = '#303030';
+  public $GeneralTextColor = '#303030';
 
   /**
    * Allgemein verwendete Schriftart.
    * wenn $ShowGeneralStyles = true
    * @var string
    */
-  var $GeneralTextFont = 'sans-serif';
+  public $GeneralTextFont = 'sans-serif';
 
   /**
    * Allgemein verwendete Hintergrundfarbe.
    * wenn $ShowGeneralStyles = true
    * @var string
    */
-  var $BodyBackgroundColor = '#ffffff';
+  public $BodyBackgroundColor = '#ffffff';
 
   /**
    * Allgemein verwendete Schriftgröße.
    * wenn $ShowGeneralStyles = true
    * @var string
    */
-  var $BodyFontSize = '12px';
+  public $BodyFontSize = '12px';
 
   /**
    * Hintergrund, hell.
    * @var string
    */
-  var $LightBackgroundColor = '#ffffff';
+  public $LightBackgroundColor = '#ffffff';
 
   /**
    * Hintergrund, dunkel.
    * @var string
    */
-  var $DarkBackgroundColor = '#e6ffe6';
+  public $DarkBackgroundColor = '#e6ffe6';
 
   /**
    * Farbwert für Umrandungen / Rahmen.
    * @var string
    */
-  var $BorderColor = '#6c6';
+  public $BorderColor = '#6c6';
 
 }
 
@@ -538,63 +534,63 @@ class immotool_setup_feeds extends immotool_setup {
    * Atom-Feed veröffentlichen.
    * @var bool
    */
-  var $PublishAtomFeed = true;
+  public $PublishAtomFeed = true;
 
   /**
    * RSS-Feed veröffentlichen.
    * @var bool
    */
-  var $PublishRssFeed = true;
+  public $PublishRssFeed = true;
 
   /**
    * Trovit-Feed veröffentlichen.
    * @var bool
    */
-  var $PublishTrovitFeed = false;
+  public $PublishTrovitFeed = false;
 
   /**
    * Anzahl maximaler Einträge im Atom-Feed.
    * Zur unlimitierten Darstellung: $AtomFeedLimit = null;
    * @var int
    */
-  var $AtomFeedLimit = 15;
+  public $AtomFeedLimit = 15;
 
   /**
    * Titelbild der Immobilie im Atom-Feed anzeigen.
    * @var bool
    */
-  var $AtomFeedWithImage = true;
+  public $AtomFeedWithImage = true;
 
   /**
    * Anzahl maximaler Einträge im RSS-Feed.
    * Zur unlimitierten Darstellung: $RssFeedLimit = null;
    * @var int
    */
-  var $RssFeedLimit = 15;
+  public $RssFeedLimit = 15;
 
   /**
    * Titelbild der Immobilie im RSS-Feed anzeigen.
    * @var bool
    */
-  var $RssFeedWithImage = true;
+  public $RssFeedWithImage = true;
 
   /**
    * Objekt-Nummer an Stelle der Objekt-ID bei Feed-Exporten veröffentlichen.
    * @var bool
    */
-  var $ExportPublicId = false;
+  public $ExportPublicId = false;
 
   /**
    * Art der Sortierung in den erzeugten Feeds.
    * @var string
    */
-  var $OrderBy = 'lastmod';
+  public $OrderBy = 'lastmod';
 
   /**
    * Richtung der Sortierung in den erzeugten Feeds.
    * 'asc' für aufsteigend, 'desc' für absteigend
    * @var string
    */
-  var $OrderDir = 'desc';
+  public $OrderDir = 'desc';
 
 }

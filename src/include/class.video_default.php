@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,21 +20,16 @@
  * Website-Export, standardmäßige Video-Einbindung.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
-require_once( IMMOTOOL_BASE_PATH . 'include/class.video.php' );
+require_once( __DIR__ . '/class.video.php' );
 
 class ImmoToolVideo_default extends ImmoToolVideo {
 
   function __construct() {
-    parent::__construct();
-    $this->width = 560;
-    $this->height = 315;
+    parent::__construct(560,315);
   }
 
   /**
@@ -46,7 +41,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     $width = ($width > 0) ? $width : 464;
     $height = ($height > 0) ? $height : 384;
     return '<div class="video_clipfish_de" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
@@ -85,7 +80,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     $width = ($width > 0) ? $width : 400;
     $height = ($height > 0) ? $height : 320;
     return '<div class="video_clipshack_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
@@ -122,7 +117,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     $width = ($width > 0) ? $width : 480;
     $height = ($height > 0) ? $height : 270;
     return '<div class="video_dailymotion_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
@@ -160,7 +155,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     $width = ($width > 0) ? $width : 611;
     $height = ($height > 0) ? $height : 383;
     return '<div class="video_myvideo_de" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
@@ -198,7 +193,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * @param int $height Höhe der eingebundenen Galerie in Pixeln.
    * @return string HTML-Code der eingebundenen Galerie.
    */
-  function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     //$width = ($width > 0) ? $width : 600;
     $height = ($height > 0) ? $height : 500;
     return '<div class="gallery_panocreator_com" style="width:100%; margin-bottom:0.5em; margin-top:0.5em;">'
@@ -236,7 +231,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     $width = ($width > 0) ? $width : 500;
     $height = ($height > 0) ? $height : 408;
     return '<div class="video_sevenload_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
@@ -273,7 +268,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_veoh_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_veoh_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     $width = ($width > 0) ? $width : 410;
     $height = ($height > 0) ? $height : 341;
     return '<div class="video_veoh_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
@@ -317,7 +312,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     $width = ($width > 0) ? $width : 533;
     $height = ($height > 0) ? $height : 300;
     return '<div class="video_vimeo_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
@@ -355,7 +350,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_youtube_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_youtube_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     $width = ($width > 0) ? $width : 560;
     $height = ($height > 0) ? $height : 315;
     return '<div class="video_youtube_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
@@ -388,7 +383,7 @@ class ImmoToolVideo_default extends ImmoToolVideo {
    * Name des Video-Handlers.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return 'default';
   }
 

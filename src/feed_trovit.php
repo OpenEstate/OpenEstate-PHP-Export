@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,19 +20,15 @@
  * Website-Export, Darstellung des Trovit-Feeds.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung der Skript-Umgebung
+// Initialisierung
 $startup = microtime();
-define('IN_WEBSITE', 1);
-if (!defined('IMMOTOOL_BASE_PATH')) {
-  define('IMMOTOOL_BASE_PATH', '');
-}
-require_once(IMMOTOOL_BASE_PATH . 'config.php');
-require_once(IMMOTOOL_BASE_PATH . 'include/functions.php');
-require_once(IMMOTOOL_BASE_PATH . 'data/language.php');
+require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/include/functions.php');
+require_once(__DIR__ . '/data/language.php');
 $debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
 
 // Konfiguration ermitteln
@@ -74,7 +70,7 @@ else {
 }
 
 // Cache-Datei des Feeds
-$feedFile = IMMOTOOL_BASE_PATH . 'cache/feed.trovit_' . $lang . '.xml';
+$feedFile = immotool_functions::get_path('cache/feed.trovit_' . $lang . '.xml');
 if (!$debugMode && is_file($feedFile)) {
   if (!immotool_functions::check_file_age($feedFile, $setup->CacheLifeTime)) {
     // abgelaufene Cache-Datei entfernen

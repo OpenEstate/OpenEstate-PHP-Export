@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,20 +20,18 @@
  * Website-Export, allgemeine Video-Einbindung.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
 class ImmoToolVideo {
 
-  var $width = 0;
-  var $height = 0;
+  public $width = 0;
+  public $height = 0;
 
-  function __construct() {
-
+  function __construct($width=0, $height=0) {
+    $this->width = $width;
+    $this->height = $height;
   }
 
   /**
@@ -44,7 +42,7 @@ class ImmoToolVideo {
    * @param string $provider Name des Providers.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed($linkId, $linkTitle, $linkUrl, $provider) {
+  public function embed($linkId, $linkTitle, $linkUrl, $provider) {
     if ($provider == 'gallery@panocreator.com')
       return $this->embed_panocreator_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
 
@@ -84,7 +82,7 @@ class ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 
@@ -97,7 +95,7 @@ class ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 
@@ -110,7 +108,7 @@ class ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 
@@ -123,7 +121,7 @@ class ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 
@@ -136,7 +134,7 @@ class ImmoToolVideo {
    * @param int $height Höhe der eingebundenen Galerie in Pixeln.
    * @return string HTML-Code der eingebundenen Galerie.
    */
-  function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 
@@ -149,7 +147,7 @@ class ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 
@@ -162,7 +160,7 @@ class ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_veoh_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_veoh_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 
@@ -175,7 +173,7 @@ class ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 
@@ -188,7 +186,7 @@ class ImmoToolVideo {
    * @param int $height Höhe des eingebundenen Videos in Pixeln.
    * @return string HTML-Code des eingebundenen Videos.
    */
-  function embed_youtube_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+  public function embed_youtube_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
     return null;
   }
 
@@ -196,7 +194,7 @@ class ImmoToolVideo {
    * Name des Video-Handlers.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return null;
   }
 

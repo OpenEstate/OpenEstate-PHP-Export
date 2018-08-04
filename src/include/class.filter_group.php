@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,21 +20,18 @@
  * Website-Export, Filter nach Gruppen-Nummer.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
-require_once( IMMOTOOL_BASE_PATH . 'include/class.filter.php' );
+require_once( __DIR__ . '/class.filter.php' );
 
 class ImmoToolFilter_group extends ImmoToolFilter {
 
   /**
    * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
    */
-  function filter($object, &$items) {
+  public function filter($object, &$items) {
     $value = (isset($object['group_nr'])) ?
         $object['group_nr'] : null;
     if (!is_numeric($value))
@@ -47,14 +44,14 @@ class ImmoToolFilter_group extends ImmoToolFilter {
   /**
    * Name des Filters.
    */
-  function getName() {
+  public function getName() {
     return 'group';
   }
 
   /**
    * Titel des Filters, abhängig von der Sprache.
    */
-  function getTitle(&$translations, $lang) {
+  public function getTitle(&$translations, $lang) {
     $title = (isset($translations['labels']['estate.group'])) ?
         $translations['labels']['estate.group'] : null;
     return is_string($title) ? $title : $this->getName();
@@ -63,7 +60,7 @@ class ImmoToolFilter_group extends ImmoToolFilter {
   /**
    * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
    */
-  function getWidget($selectedValue, $lang, &$translations, &$setup) {
+  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
     $widget = '';
     if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
       return $widget;

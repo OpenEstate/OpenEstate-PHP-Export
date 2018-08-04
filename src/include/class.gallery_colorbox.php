@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,15 +20,12 @@
  * Website-Export, JS-Galerie, basierend auf Colorbox.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @link http://colorpowered.com/colorbox/
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
-require_once( IMMOTOOL_BASE_PATH . 'include/class.gallery.php' );
+require_once( __DIR__ . '/class.gallery.php' );
 
 class ImmoToolGallery_colorbox extends ImmoToolGallery {
 
@@ -36,32 +33,32 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
    * Pfad zum JQuery-Javascript
    * @var string
    */
-  var $JQueryScript = 'include/colorbox/jquery.min.js';
+  public $JQueryScript = 'include/colorbox/jquery.min.js';
 
   /**
    * Pfad zum Colorbox-Javascript
    * @var string
    */
-  var $ColorboxScript = 'include/colorbox/jquery.colorbox-min.js';
+  public $ColorboxScript = 'include/colorbox/jquery.colorbox-min.js';
 
   /**
    * Pfad zum Colorbox-Stylesheet
    * @var string
    */
-  var $ColorboxStyle = 'include/colorbox/colorbox.css';
+  public $ColorboxStyle = 'include/colorbox/colorbox.css';
 
   /**
    * Liefert HTML-Code zur Darstellung eines Fotos in der Galerie.
    * @return string HTML-Code
    */
-  function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
+  public function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
 
     // ggf. das Galeriebild dynamisch skalieren
     if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
       if (!isset($image['name']) || !is_string($image['name']))
         return '';
       $img = 'data/' . $objectId . '/' . $image['name'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $img))
+      if (!is_file(immotool_functions::get_path($img)))
         return null;
       $thumb = 'img.php?id=' . $objectId .
           '&amp;img=' . $image['name'] .
@@ -74,7 +71,7 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
       if (!isset($image['thumb']) || !is_string($image['thumb']))
         return '';
       $thumb = 'data/' . $objectId . '/' . $image['thumb'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
+      if (!is_file(immotool_functions::get_path($thumb)))
         return null;
     }
 
@@ -91,7 +88,7 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
    * Liefert HTML-Code Einbindung der Galerie-Bibliothek erzeugen.
    * @return string HTML-Code
    */
-  function getHeader() {
+  public function getHeader() {
     $header = array();
 
     // include JQuery
@@ -132,7 +129,7 @@ jQuery(document).ready(function(){
    * Liefert ein Array mit Konfigurations-Werten der Colorbox-Galerie.
    * @return array Colorbox-Konfiguration
    */
-  function getHeaderOptions() {
+  public function getHeaderOptions() {
     return array(
       //'transition' => '"fade"',
       //'speed' => '350',
@@ -145,7 +142,7 @@ jQuery(document).ready(function(){
    * Name der Galerie.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return 'colorbox';
   }
 
@@ -153,10 +150,10 @@ jQuery(document).ready(function(){
    * HTML-Code zum Titelbild.
    * @return string
    */
-  function getTitleImage($objectId, &$image, $lang) {
+  public function getTitleImage($objectId, &$image, $lang) {
 
     $file = 'data/' . $objectId . '/' . $image['name'];
-    if (!is_file(IMMOTOOL_BASE_PATH . $file)) {
+    if (!is_file(immotool_functions::get_path($file))) {
       return null;
     }
 
@@ -171,7 +168,7 @@ jQuery(document).ready(function(){
     // Titelbild direkt ausliefern
     else {
       $thumb = 'data/' . $objectId . '/' . $image['thumb'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $thumb)) {
+      if (!is_file(immotool_functions::get_path($thumb))) {
         return null;
       }
     }
@@ -209,7 +206,7 @@ jQuery(document).ready(function(){
    * Die Galerie setzt JavaScript vorraus.
    * @return bool
    */
-  function isJavaScriptRequired() {
+  public function isJavaScriptRequired() {
     return true;
   }
 
@@ -217,7 +214,7 @@ jQuery(document).ready(function(){
    * Das gewählte Bild unterhalb der Galerie darstellen.
    * @return bool
    */
-  function isSelectedImagePrinted() {
+  public function isSelectedImagePrinted() {
     return false;
   }
 

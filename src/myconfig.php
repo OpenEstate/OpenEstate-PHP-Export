@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,13 +20,9 @@
  * Website-Export, individuelle Konfigurationen.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-
-if (!defined('IN_WEBSITE')) {
-  exit;
-}
 
 class immotool_myconfig {
 
@@ -34,7 +30,7 @@ class immotool_myconfig {
    * Allgemeine Konfiguration überschreiben.
    * @param object $config Konfigurations-Objekt
    */
-  function load_config_default(&$config) {
+  public static function load_config_default(&$config) {
     // Keinen Content-Type verwenden, wenn eine Einbindung durch einen Wrapper stattfindet
     if (defined('OPENESTATE_WRAPPER'))
       $config->ContentType = null;
@@ -53,7 +49,7 @@ class immotool_myconfig {
    * Konfiguration der Exposédarstellung überschreiben.
    * @param object $config Konfigurations-Objekt
    */
-  function load_config_expose(&$config) {
+  public static function load_config_expose(&$config) {
     // allgemeine Konfiguration (siehe oben)
     immotool_myconfig::load_config_default($config);
 
@@ -82,7 +78,7 @@ class immotool_myconfig {
    * Konfiguration der Immobilienübersicht überschreiben.
    * @param object $config Konfigurations-Objekt
    */
-  function load_config_index(&$config) {
+  public static function load_config_index(&$config) {
     // allgemeine Konfiguration (siehe oben)
     immotool_myconfig::load_config_default($config);
 
@@ -101,7 +97,7 @@ class immotool_myconfig {
    * Konfiguration des Stylesheets überschreiben.
    * @param object $config Konfigurations-Objekt
    */
-  function load_config_style(&$config) {
+  public static function load_config_style(&$config) {
     // allgemeine Konfiguration (siehe oben)
     immotool_myconfig::load_config_default($config);
 
@@ -122,7 +118,7 @@ class immotool_myconfig {
    * Konfiguration der Immobilien-Feeds überschreiben.
    * @param object $config Konfigurations-Objekt
    */
-  function load_config_feeds(&$config) {
+  public static function load_config_feeds(&$config) {
     // allgemeine Konfiguration (siehe oben)
     immotool_myconfig::load_config_default($config);
 
@@ -143,7 +139,7 @@ class immotool_myconfig {
    * @param array $translations verwendete Übersetzungen
    * @param string $lang zweistelliger ISO-Sprachcode
    */
-  function load_translations(&$translations, $lang) {
+  public static function load_translations(&$translations, $lang) {
     // ggf. individuelle Übersetzungen einfügen
     //if ($lang=='de')
     //{
@@ -167,7 +163,7 @@ class immotool_myconfig {
    * @param string $replyToName Name des Antwort-Empfängers
    * @return mixed Im Erfolgsfall 'true', sonst eine Fehlermeldung oder 'null' wenn kein Versand über die Funktion stattfand
    */
-  function send_mail(&$setup, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
+  public static function send_mail(&$setup, $subject, $body, $mailToAdress, $replyToAdress, $replyToName) {
     return null;
   }
 
@@ -180,7 +176,7 @@ class immotool_myconfig {
    * @param string $lang Sprache
    * @return string lesbare Ausgabe des Attribut-Wertes
    */
-  function write_attribute_value($group, $attrib, &$value, &$translations, $lang) {
+  public static function write_attribute_value($group, $attrib, &$value, &$translations, $lang) {
     return null;
   }
 

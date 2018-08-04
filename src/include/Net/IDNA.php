@@ -46,7 +46,7 @@ class Net_IDNA {
     $version = explode('.', phpversion());
     $handler = ((int) $version[0] > 4) ? 'php5' : 'php4';
     $class = 'Net_IDNA_' . $handler;
-    $classfile = IMMOTOOL_BASE_PATH . 'include/Net/IDNA/' . $handler . '.php';
+    $classfile = immotool_functions::get_path('include/IDNA/' . $handler . '.php');
 
     /*
      * Attempt to include our version of the named class, but don't treat

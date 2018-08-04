@@ -1,7 +1,7 @@
 <?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright (C) 2009-2018 OpenEstate.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -20,22 +20,19 @@
  * Website-Export, allgemeine Galerie.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
+ * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
-
 class ImmoToolGallery {
 
-  var $exposeSetup = null;
+  public $exposeSetup = null;
 
   /**
    * Liefert HTML-Code zur Darstellung der Galerie.
    * @return string HTML-Code
    */
-  function getGallery(&$object, $selectedImg, $lang) {
+  public function getGallery(&$object, $selectedImg, $lang) {
     $list = '';
     if (isset($object['images']) && is_array($object['images'])) {
       foreach ($object['images'] as $pos => $image) {
@@ -49,14 +46,14 @@ class ImmoToolGallery {
    * Liefert HTML-Code zur Darstellung eines Fotos in der Galerie.
    * @return string HTML-Code
    */
-  function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
+  public function getGalleryImage($objectId, &$image, $index, $selectedImg, $lang) {
 
     // ggf. das Galeriebild dynamisch skalieren
     if ($this->exposeSetup != null && $this->exposeSetup->DynamicImageScaling === true && extension_loaded('gd')) {
       if (!isset($image['name']) || !is_string($image['name']))
         return '';
       $img = 'data/' . $objectId . '/' . $image['name'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $img))
+      if (!is_file(immotool_functions::get_path($img)))
         return null;
       $thumb = 'img.php?id=' . $objectId .
           '&amp;img=' . $image['name'] .
@@ -69,7 +66,7 @@ class ImmoToolGallery {
       if (!isset($image['thumb']) || !is_string($image['thumb']))
         return '';
       $thumb = 'data/' . $objectId . '/' . $image['thumb'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $thumb))
+      if (!is_file(immotool_functions::get_path($thumb)))
         return null;
     }
 
@@ -83,7 +80,7 @@ class ImmoToolGallery {
     return '<li ' . $class . '><a href="' . $link . '" title="' . $title . '"><img src="' . $thumb . '" title="' . $title . '" alt="" border="0"/></a></li>';
   }
 
-  function getHeader() {
+  public function getHeader() {
     return null;
   }
 
@@ -91,7 +88,7 @@ class ImmoToolGallery {
    * Name der Galerie.
    * @return string Name
    */
-  function getName() {
+  public function getName() {
     return null;
   }
 
@@ -99,10 +96,10 @@ class ImmoToolGallery {
    * HTML-Code zum Titelbild.
    * @return string
    */
-  function getTitleImage($objectId, &$image, $lang) {
+  public function getTitleImage($objectId, &$image, $lang) {
 
     $file = 'data/' . $objectId . '/' . $image['name'];
-    if (!is_file(IMMOTOOL_BASE_PATH . $file)) {
+    if (!is_file(immotool_functions::get_path($file))) {
       return null;
     }
 
@@ -117,7 +114,7 @@ class ImmoToolGallery {
     // Titelbild direkt ausliefern
     else {
       $thumb = 'data/' . $objectId . '/' . $image['thumb'];
-      if (!is_file(IMMOTOOL_BASE_PATH . $thumb)) {
+      if (!is_file(immotool_functions::get_path($thumb))) {
         return null;
       }
     }
@@ -135,7 +132,7 @@ class ImmoToolGallery {
    * Die Galerie setzt JavaScript vorraus.
    * @return bool
    */
-  function isJavaScriptRequired() {
+  public function isJavaScriptRequired() {
     return false;
   }
 
@@ -143,14 +140,14 @@ class ImmoToolGallery {
    * Das gewählte Bild unterhalb der Galerie darstellen.
    * @return bool
    */
-  function isSelectedImagePrinted() {
+  public function isSelectedImagePrinted() {
     return true;
   }
 
   /**
    * Registriert die Konfiguration des aufrufenden Exposés.
    */
-  function setExposeSetup(&$setup) {
+  public function setExposeSetup(&$setup) {
     $this->exposeSetup = $setup;
   }
 

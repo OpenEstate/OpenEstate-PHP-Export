@@ -5,6 +5,8 @@ Changelog for OpenEstate-PHP-Export
 1.6.37 (not released yet)
 -------------------------
 
+-   fixed PHP warnings about class definitions
+
 
 1.6.36 (14 May 2017)
 --------------------
