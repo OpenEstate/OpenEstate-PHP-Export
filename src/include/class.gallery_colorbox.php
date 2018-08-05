@@ -33,7 +33,7 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery {
    * Pfad zum JQuery-Javascript
    * @var string
    */
-  public $JQueryScript = 'include/colorbox/jquery.min.js';
+  public $JQueryScript = 'include/jquery/jquery.min.js';
 
   /**
    * Pfad zum Colorbox-Javascript

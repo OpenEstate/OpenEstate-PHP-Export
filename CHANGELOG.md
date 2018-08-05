@@ -9,6 +9,7 @@ Changelog for OpenEstate-PHP-Export
 -   fixed *PHP* warnings about class definitions
 -   replaced *Net_IDNA* with *php-punycode*
 -   updated to *PHPMailer* 6.0.5
+-   updated to *jQuery* 3.3.1
 -   updated to *Colorbox* 1.6.4
 
 
