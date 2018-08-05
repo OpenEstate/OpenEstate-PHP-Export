@@ -36,28 +36,22 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery {
   public $CompleteHeader = true;
 
   /**
-   * Pfad zum Prototype-Javascript
+   * Pfad zum JQuery-Javascript
    * @var string
    */
-  public $PrototypeScript = 'include/lightbox2/js/prototype.js';
-
-  /**
-   * Pfad zum Scriptaculous-Javascript
-   * @var string
-   */
-  public $ScriptaculousScript = 'include/lightbox2/js/scriptaculous.js?load=effects,builder';
+  public $JQueryScript = 'include/jquery/jquery.min.js';
 
   /**
    * Pfad zum Lightbox-Javascript
    * @var string
    */
-  public $LightboxScript = 'include/lightbox2/js/lightbox.js';
+  public $LightboxScript = 'include/lightbox2/lightbox.min.js';
 
   /**
    * Pfad zum Lightbox-Stylesheet
    * @var string
    */
-  public $LightboxStyle = 'include/lightbox2/css/lightbox.css';
+  public $LightboxStyle = 'include/lightbox2/css/lightbox.min.css';
 
   /**
    * Liefert HTML-Code zur Darstellung eines Fotos in der Galerie.
@@ -93,7 +87,7 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery {
       $title = '';
     else
       $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-    return '<li><a href="' . $file . '" rel="lightbox[gallery]" title="' . $title . '"><img src="' . $thumb . '" title="' . $title . '" alt="" border="0"/></a></li>';
+    return '<li><a href="' . $file . '" data-lightbox="gallery" data-title="' . $title . '" title="' . $title . '"><img src="' . $thumb . '" title="' . $title . '" alt="" border="0"/></a></li>';
   }
 
   /**
@@ -103,14 +97,9 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery {
   public function getHeader() {
     $header = array();
 
-    // include Prototype
-    if (is_string($this->PrototypeScript)) {
-      $header[] = '<script type="text/javascript" src="' . $this->PrototypeScript . '"></script>';
-    }
-
-    // include Scriptaculous
-    if (is_string($this->ScriptaculousScript)) {
-      $header[] = '<script type="text/javascript" src="' . $this->ScriptaculousScript . '"></script>';
+    // include JQuery
+    if (is_string($this->JQueryScript)) {
+      $header[] = '<script type="text/javascript" src="' . $this->JQueryScript . '"></script>';
     }
 
     // init Lightbox
@@ -122,9 +111,9 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery {
       $headerOptions[] = $key . ': ' . $value;
     $header[] = '<script type="text/javascript">
 <!--
-LightboxOptions = Object.extend({
+lightbox.option({
   ' . implode(",\n  ", $headerOptions) . '
-}, window.LightboxOptions || {});
+});
 //-->
 </script>';
 
@@ -147,14 +136,8 @@ LightboxOptions = Object.extend({
    */
   public function getHeaderOptions() {
     return array(
-      'fileLoadingImage' => '"./img/lightbox2/loading.gif"',
-      'fileBottomNavCloseImage' => '"./img/lightbox2/closelabel.gif"',
-      'overlayOpacity' => '0.5',
-      'animate' => 'true',
-      'resizeSpeed' => '8',
-      'borderSize' => '10',
-      'labelImage' => '"Image"',
-      'labelOf' => '"of"',
+      'albumLabel' => '"Image %1 of %2"',
+      'wrapAround' => 'true'
     );
   }
 
@@ -199,7 +182,7 @@ LightboxOptions = Object.extend({
       $title = '';
     else
       $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-    $html = '<a href="' . $file . '" rel="lightbox[title]" title="' . $title . '"><img src="' . $thumb . '" alt="" title="' . $title . '" border="0"/></a>';
+    $html = '<a href="' . $file . '" data-lightbox="title" data-title="' . $title . '" title="' . $title . '"><img src="' . $thumb . '" alt="" title="' . $title . '" border="0"/></a>';
 
     // Weitere Galeriebilder versteckt anzeigen,
     // um bei Klick auf das Titelbild eine Galerie-Navigation zu ermöglichen.
@@ -215,7 +198,7 @@ LightboxOptions = Object.extend({
           $title = '';
         else
           $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-        $html .= '<a href="' . $file . '" rel="lightbox[title]" title="' . $title . '">&nbsp;</a>';
+        $html .= '<a href="' . $file . '" data-lightbox="title" data-title="' . $title . '" title="' . $title . '">&nbsp;</a>';
       }
       $html .= '</div>';
     }

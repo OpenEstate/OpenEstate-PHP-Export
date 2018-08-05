@@ -11,6 +11,7 @@ Changelog for OpenEstate-PHP-Export
 -   updated to *PHPMailer* 6.0.5
 -   updated to *jQuery* 3.3.1
 -   updated to *Colorbox* 1.6.4
+-   updated to *Lightbox* 2.10.0
 
 
 1.6.36 (14 May 2017)
