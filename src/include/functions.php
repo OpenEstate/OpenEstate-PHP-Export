@@ -28,7 +28,7 @@
 //ini_set('display_errors','1');
 
 if (!defined('IMMOTOOL_SCRIPT_VERSION'))
-  define('IMMOTOOL_SCRIPT_VERSION', '1.6-dev');
+  define('IMMOTOOL_SCRIPT_VERSION', '1.7-dev');
 
 if (!defined('IMMOTOOL_CRYPT_KEY'))
   define('IMMOTOOL_CRYPT_KEY', 'ZtKMCpjIamND3MN3cx8I1pFGZ1Pul4h4pnujtUlnCUDkTMfXPO');

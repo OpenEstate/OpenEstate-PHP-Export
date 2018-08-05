@@ -2,8 +2,8 @@ Changelog for OpenEstate-PHP-Export
 ===================================
 
 
-1.6.37 (not released yet)
--------------------------
+1.7.0 (not released yet)
+------------------------
 
 -   increased minimal requirements to *PHP* 5.6
 -   fixed *PHP* warnings about class definitions
