@@ -35,6 +35,7 @@ if (!extension_loaded('gd')) {
   return;
 }
 
+ob_start();
 require_once(__DIR__ . '/config.php');
 require_once(__DIR__ . '/private.php');
 require_once(__DIR__ . '/include/functions.php');
