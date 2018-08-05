@@ -446,9 +446,12 @@ class immotool_functions {
   public static function get_phpmailer(&$setup) {
 
     // Instanz des PHPMailers erzeugen
-    if (!class_exists('PHPMailer'))
-      include_once(self::get_path('include/class.phpmailer.php'));
-    $mailer = new PHPMailer();
+    if (!class_exists('PHPMailer\\PHPMailer\\PHPMailer')) {
+      require_once(self::get_path('include/PHPMailer/PHPMailer.php'));
+      require_once(self::get_path('include/PHPMailer/SMTP.php'));
+      require_once(self::get_path('include/PHPMailer/Exception.php'));
+    }
+    $mailer = new PHPMailer\PHPMailer\PHPMailer();
 
     // Mailer konfigurieren
     self::setup_phpmailer($mailer, $setup);
@@ -465,8 +468,7 @@ class immotool_functions {
     // Mailer konfigurieren
     $mailer->IsHTML(false);
     $mailer->CharSet = 'UTF-8';
-    $mailer->From = self::encode_mail($setup->MailFrom);
-    $mailer->FromName = $setup->MailFromName;
+    $mailer->From = self::encode_mail($setup->MailFrom, $setup->MailFromName);
     if (is_string($setup->MailToCC) && strlen(trim($setup->MailToCC)) > 0)
       $mailer->AddCC(self::encode_mail($setup->MailToCC));
     if (is_string($setup->MailToBCC) && strlen(trim($setup->MailToBCC)) > 0)
@@ -517,7 +519,6 @@ class immotool_functions {
 
       // Internationalen Domain-Namen mit Punycode-Bibliothek umwandeln
       try {
-        $Punycode = new Punycode();
         $emailEncoded = $val[0] . '@' . self::encode_host( $val[1] );
       }
       catch(Exception $e) {
