@@ -12,6 +12,7 @@ Changelog for OpenEstate-PHP-Export
 -   updated to *jQuery* 3.3.1
 -   updated to *Colorbox* 1.6.4
 -   updated to *Lightbox* 2.10.0
+-   updated license headers
 
 
 1.6.36 (14 May 2017)
