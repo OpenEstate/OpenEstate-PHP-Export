@@ -24,7 +24,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-$GLOBALS['immotool_objects']['1'] = array(
+return array(
   'id' => '1',
   'status' => 'published',
   'action' => 'rent',

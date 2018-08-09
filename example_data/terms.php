@@ -24,7 +24,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-$GLOBALS['immotool_terms'] = array(
+return array(
   'en' => 'The general terms and conditions of the real estate agency.',
   'de' => 'Die allgemeinen Geschäftsbedigungen der Immobilienagentur.',
 );

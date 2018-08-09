@@ -24,8 +24,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-$GLOBALS['immotool_translations'] = array();
-$GLOBALS['immotool_languages'] = array(
+return array(
   'en' => 'English',
   'de' => 'Deutsch',
 );

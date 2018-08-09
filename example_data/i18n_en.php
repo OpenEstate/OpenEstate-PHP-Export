@@ -24,7 +24,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-$GLOBALS['immotool_translations']['en'] = array(
+return array(
   'labels' => array(
     'title' => 'Beispielfirma',
     'title.index' => 'Summary',
