@@ -17,30 +17,32 @@
  */
 
 /**
- * Website-Export, Darstellung einer Captcha-Grafik.
+ * Generate and send a captcha image.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung
+// initialization
 if (!extension_loaded('gd')) {
-  if (!headers_sent()) {
-    // 500-Fehlercode zurückliefern,
-    // wenn das GD-PHP-Modul nicht verfügbar ist
-    header('HTTP/1.0 500 Internal Server Error');
-  }
-  echo 'It seems like GD is not installed!';
-  return;
+    if (!headers_sent())
+        header('HTTP/1.0 500 Internal Server Error');
+
+    echo 'It seems like GD is not installed!';
+    return;
 }
+//ob_start();
+$startupTime = microtime();
+require(__DIR__ . '/include/init.php');
 
-ob_start();
-require_once(__DIR__ . '/config.php');
-require_once(__DIR__ . '/private.php');
-require_once(__DIR__ . '/include/functions.php');
+// load environment
+//echo 'loading environment ' . \OpenEstate\PhpExport\VERSION . '<hr>';
+$env = new OpenEstate\PhpExport\Environment(__DIR__);
+$env->init();
 
-define('CAPTCHA_FONT_PATH', immotool_functions::get_path('include/fonts'));
+// setup captcha
+define('CAPTCHA_FONT_PATH', $env->getPath('assets/fonts'));
 define('CAPTCHA_LENGTH', 5);
 //define( 'CAPTCHA_SYMBOLS', 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789');
 define('CAPTCHA_SYMBOLS', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789');
@@ -49,42 +51,42 @@ define('CAPTCHA_SIZE_Y', 30);
 define('CAPTCHA_SIZE_FONT', 25);
 define('CAPTCHA_VARIABLE', 'captchaCode');
 
-$setup = new immotool_setup();
-immotool_functions::init_config($setup, 'load_config_default');
-immotool_functions::init_session();
-
-// zufällige TTF Schriftart ermitteln
+// get a random true type font
 $fonts = array();
-$files = immotool_functions::list_directory(CAPTCHA_FONT_PATH);
+$files = \OpenEstate\PhpExport\Utils::listDirectory(CAPTCHA_FONT_PATH);
 if (is_array($files)) {
-  foreach ($files as $file) {
-    if (substr(strtolower($file), -4) === '.ttf') {
-      $fonts[] = $file;
+    foreach ($files as $file) {
+        if (substr(strtolower($file), -4) === '.ttf') {
+            $fonts[] = $file;
+        }
     }
-  }
 }
 if (count($fonts) < 1) {
-  die('No font was found in path \'' . CAPTCHA_FONT_PATH . '\'!');
+    if (!headers_sent())
+        header('HTTP/1.0 500 Internal Server Error');
+
+    echo 'No captcha font was found!';
+    return;
 }
 $font = CAPTCHA_FONT_PATH . '/' . $fonts[array_rand($fonts)];
 
-// Captcha rendern
+// render captcha image
 $image = imagecreate(CAPTCHA_SIZE_X, CAPTCHA_SIZE_Y);
 imagecolorallocate($image, 255, 255, 255);
 $left = 0;
 $signs = CAPTCHA_SYMBOLS;
 $string = '';
 for ($i = 1; $i <= CAPTCHA_LENGTH; $i++) {
-  $sign = $signs{rand(0, strlen($signs) - 1)};
-  $string .= $sign;
-  imagettftext($image, 25, rand(-10, 10), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 200, 200, 200), $font, $sign);
-  imagettftext($image, 16, rand(-15, 15), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 69, 103, 137), $font, $sign);
+    $sign = $signs{rand(0, strlen($signs) - 1)};
+    $string .= $sign;
+    imagettftext($image, 25, rand(-10, 10), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 200, 200, 200), $font, $sign);
+    imagettftext($image, 16, rand(-15, 15), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 69, 103, 137), $font, $sign);
 }
-immotool_functions::put_session_value(CAPTCHA_VARIABLE, $string);
-immotool_functions::shutdown($setup);
+$env->setSessionValue(CAPTCHA_VARIABLE, $string);
+$env->shutdown();
 
-// Captcha ausgeben
-ob_clean();
+// send captcha image
+//ob_clean();
 header('Content-type: image/png');
 imagepng($image);
 imagedestroy($image);

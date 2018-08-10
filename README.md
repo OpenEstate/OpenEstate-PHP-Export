@@ -42,6 +42,13 @@ Requirements
     -   [PHP iconv extension](http://de1.php.net/manual/en/book.iconv.php) (optional)
 
 
+Third party components
+----------------------
+
+-   [PHPMailer](https://github.com/PHPMailer/PHPMailer) v6.0.5
+-   [Punycode](https://github.com/true/php-punycode) v2.1.1
+
+
 Limitations
 -----------
 
