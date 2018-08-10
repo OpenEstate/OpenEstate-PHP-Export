@@ -60,7 +60,7 @@ abstract class AbstractOrder
     function __construct($name, $maxLifeTime = null)
     {
         $this->name = $name;
-        $this->$maxLifeTime = (\is_int($maxLifeTime) && $maxLifeTime >= 0) ?
+        $this->maxLifeTime = (\is_int($maxLifeTime) && $maxLifeTime >= 0) ?
             $maxLifeTime : 60 * 60 * 24;
     }
 

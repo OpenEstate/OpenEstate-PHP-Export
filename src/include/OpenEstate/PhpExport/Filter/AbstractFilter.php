@@ -60,7 +60,7 @@ abstract class AbstractFilter
     function __construct($name, $maxLifeTime = null)
     {
         $this->name = $name;
-        $this->$maxLifeTime = (\is_int($maxLifeTime) && $maxLifeTime >= 0) ?
+        $this->maxLifeTime = (\is_int($maxLifeTime) && $maxLifeTime >= 0) ?
             $maxLifeTime : 60 * 60 * 24;
     }
 

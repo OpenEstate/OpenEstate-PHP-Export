@@ -63,7 +63,14 @@ class ListingHtml extends AbstractHtmlView
     public $filtersParam = 'filter';
 
     /**
-     * Ordering used on this page.
+     * Orders used on this page.
+     *
+     * @var array
+     */
+    public $orders = array();
+
+    /**
+     * Current order used on this page.
      *
      * @var \OpenEstate\PhpExport\Order\AbstractOrder
      */

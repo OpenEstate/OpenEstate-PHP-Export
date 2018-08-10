@@ -182,6 +182,20 @@ class Meta extends AbstractHeadElement
     }
 
     /**
+     * Create meta element for the generator.
+     *
+     * @param string $generator
+     * generator
+     *
+     * @return Meta
+     * created meta element
+     */
+    public static function newGenerator($generator)
+    {
+        return Meta::newName('meta-generator', 'generator', $generator);
+    }
+
+    /**
      * Create meta element for page keywords.
      *
      * @param string $keywords

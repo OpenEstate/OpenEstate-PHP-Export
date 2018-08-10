@@ -107,7 +107,7 @@ abstract class AbstractView
      * @return string
      * theme name
      */
-    public function getThemeName()
+    public function getTheme()
     {
         return $this->theme;
     }
@@ -239,5 +239,16 @@ abstract class AbstractView
         }
 
         return $this->generate($env);
+    }
+
+    /**
+     * Set the name of the theme.
+     *
+     * @param string $theme
+     * theme name
+     */
+    public function setTheme($theme)
+    {
+        $this->theme = $theme;
     }
 }
