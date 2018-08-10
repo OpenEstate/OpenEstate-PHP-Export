@@ -16,28 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Don't execute the file, if is not properly loaded.
+// Don't execute the file, if it is not properly loaded.
 if (!isset($this) || !\is_object($this)) return;
 
 use \OpenEstate\PhpExport\Html\Stylesheet;
 use \OpenEstate\PhpExport\Html\Javascript;
 use \OpenEstate\PhpExport\Html\Meta;
 
-$this->setTitle('Aktuelle Immobilienangebote');
+$t = $env->i18n();
+$this->setTitle($t->gettext('Current real estate offers.'));
 $this->addHeader(Meta::newRobots('noindex,follow'), 500);
-$this->addHeader(Stylesheet::newLink('theme-css', $this->getThemeUrl('css/theme.css')), 1000);
-$this->addHeader(Javascript::newLink('theme-js', $this->getThemeUrl('js/theme.js')), 1001);
+$this->addHeader(Stylesheet::newLink('theme-css', $this->getThemeUrl($env, 'css/theme.css')), 1000);
+$this->addHeader(Javascript::newLink('theme-js', $this->getThemeUrl($env, 'js/theme.js')), 1001);
 $this->addHeaders($env->getAssets()->jquery(), 600);
 
 // Write document header.
 if (!$this->isBodyOnly()) include('snippets/document-begin.php');
 include('snippets/body-begin.php');
 
-?>
 
-    <p>Dies ist ein Beispiel...</p>
+echo '<p>' . $t->gettext('This is an example...') . '</p>';
 
-<?php
 
 // Write document footer.
 include('snippets/body-end.php');

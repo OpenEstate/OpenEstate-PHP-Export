@@ -77,6 +77,13 @@ class Environment
     private $languages = null;
 
     /**
+     * Translator.
+     *
+     * var \Gettext\BaseTranslator
+     */
+    private $i18n = null;
+
+    /**
      * Environment constructor.
      *
      * @param string $basePath
@@ -340,17 +347,36 @@ class Environment
     }
 
     /**
+     * Get the translator.
+     *
+     * @return \Gettext\BaseTranslator
+     * translator
+     */
+    public function i18n()
+    {
+        return $this->i18n;
+    }
+
+    /**
      * Initialize the export environment.
      */
     public function init()
     {
         // init languages
         $languageFile = $this->getPath('data/language.php');
-
         /** @noinspection PhpIncludeInspection */
         $this->languages = (\is_file($languageFile)) ?
-            $this->languages = require($languageFile) :
-            array();
+            require $languageFile : array();
+
+        // init gettext translator
+        //$this->i18n = new \Gettext\GettextTranslator();
+        //$this->i18n->setLanguage('de');
+        //$this->i18n->loadDomain('openestate-php-export', $this->getPath('locale'));
+        //$this->i18n->register();
+
+        // init custom translator
+        $this->i18n = new \Gettext\Translator();
+        $this->i18n->loadTranslations(\Gettext\Translations::fromMoFile($this->getPath('locale/de.mo')));
 
         // init session
         $this->session = new Session\CookieSession();

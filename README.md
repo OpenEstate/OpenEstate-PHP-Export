@@ -46,6 +46,8 @@ Third party components
 ----------------------
 
 -   [PHPMailer](https://github.com/PHPMailer/PHPMailer) v6.0.5
+-   [Gettext](https://github.com/oscarotero/Gettext) v4.6.0
+-   [Gettext CLDR data](https://github.com/mlocati/cldr-to-gettext-plural-rules) v2.4.0
 -   [Punycode](https://github.com/true/php-punycode) v2.1.1
 
 
