@@ -72,6 +72,7 @@ abstract class AbstractHtmlView extends AbstractView
         parent::__construct($name, $theme);
         $this->charset = (\is_string($charset)) ?
             $charset : 'UTF-8';
+        $view->addHeader(Html\Meta::newGenerator('OpenEstate-PHP-Export'), -1);
     }
 
     /**

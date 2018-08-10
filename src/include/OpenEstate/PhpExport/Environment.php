@@ -28,6 +28,13 @@ namespace OpenEstate\PhpExport;
 class Environment
 {
     /**
+     * Configuration of the export environment.
+     *
+     * @var Config
+     */
+    private $config;
+
+    /**
      * Absolute path, that points to the root of the export environment.
      *
      * @var string
@@ -103,6 +110,19 @@ class Environment
         $this->basePath = $basePath;
         $this->baseUrl = (\is_string($baseUrl)) ?
             $baseUrl : './';
+
+        // init configuration
+        $myConfig = $this->getPath('config.php');
+        $this->config = null;
+        if (\is_file($myConfig) && \is_readable($myConfig)) {
+            $this->config = require $myConfig;
+        }
+        if (!($this->config instanceof Config)) {
+            $this->config = new Config();
+        }
+        $this->config->setupEnvironment($this);
+
+        // create asset factory
         $this->assets = new Assets($this);
     }
 
@@ -113,6 +133,7 @@ class Environment
     {
         $this->shutdown();
         $this->assets = null;
+        $this->config = null;
         $this->objects = null;
         $this->session = null;
     }
@@ -125,6 +146,17 @@ class Environment
     public function getAssets()
     {
         return $this->assets;
+    }
+
+    /**
+     * Get export configuration.
+     *
+     * @return Config
+     * configuration
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**
