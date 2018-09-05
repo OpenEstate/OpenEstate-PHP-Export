@@ -143,7 +143,7 @@ class Contact extends AbstractAction
         if (!isset($contact['name']) || Utils::isBlankString($contact['name']))
             $validation['name'] = _('Please enter your name.');
         else if (\strlen($contact['name']) < 5 || \strlen($contact['name']) > 100)
-            $validation['name'] = _('Your name should contain at least %1$s and maximal %2$s characters.', 5, 100);
+            $validation['name'] = _('Your name should contain at least {1} and maximal {2} characters.', 5, 100);
         else if ($contact['name'] !== \strip_tags($contact['name']))
             $validation['name'] = _('HTML code is not allowed.');
 
@@ -151,7 +151,7 @@ class Contact extends AbstractAction
         if (!isset($contact['phone']) || Utils::isBlankString($contact['phone']))
             $validation['phone'] = _('Please enter your phone number.');
         else if (\strlen($contact['phone']) < 5 || \strlen($contact['phone']) > 100)
-            $validation['phone'] = _('Your phone number should contain at least %1$s and maximal %2$s characters.', 5, 100);
+            $validation['phone'] = _('Your phone number should contain at least {1} and maximal {2} characters.', 5, 100);
         else if ($contact['phone'] !== \strip_tags($contact['phone']))
             $validation['phone'] = _('HTML code is not allowed.');
 
@@ -165,7 +165,7 @@ class Contact extends AbstractAction
         if (!isset($contact['message']) || Utils::isBlankString($contact['message']))
             $validation['message'] = _('Please enter your message.');
         else if (\strlen($contact['message']) < 10)
-            $validation['message'] = _('Your message should contain at least %1$s characters.', 10);
+            $validation['message'] = _('Your message should contain at least {1} characters.', 10);
         else if ($contact['message'] !== \strip_tags($contact['message']))
             $validation['message'] = _('HTML code is not allowed.');
 
@@ -219,8 +219,8 @@ class Contact extends AbstractAction
             $mailer->isHTML(false);
             $mailer->addAddress($mailTo);
             $mailer->addReplyTo($contact['email'], $contact['name']);
-            $mailer->Subject = $t->gettext('Contact request for object %1$s', $objectKey);
-            $mailer->Body = $t->gettext('A contact request was sent for object %1$s.', $objectKey) . "\n";
+            $mailer->Subject = $t->gettext('Contact request for object {1}', $objectKey);
+            $mailer->Body = $t->gettext('A contact request was sent for object {1}.', $objectKey) . "\n";
             $mailer->Body .= "\n";
             $mailer->Body .= \str_repeat('-', 50) . "\n";
             $mailer->Body .= "\n";

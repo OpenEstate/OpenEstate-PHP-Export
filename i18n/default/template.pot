@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export (default theme) 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-09-04 22:07+0200\n"
+"POT-Creation-Date: 2018-09-05 16:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,8 +19,7 @@ msgstr ""
 
 #: themes/default/expose.php:68 themes/default/expose.php:234
 #: themes/default/fav.php:291 themes/default/listing.php:357
-#, php-format
-msgid "Real estate %1$s"
+msgid "Real estate {1}"
 msgstr ""
 
 #: themes/default/expose.php:221
@@ -95,8 +94,7 @@ msgid "Your message"
 msgstr ""
 
 #: themes/default/expose.php:452
-#, php-format
-msgid "I am interested in your offer \"%1$s\". Please get in contact with me."
+msgid "I am interested in your offer \"{1}\". Please get in contact with me."
 msgstr ""
 
 #: themes/default/expose.php:461 themes/default/expose.php:465
@@ -113,6 +111,10 @@ msgstr ""
 
 #: themes/default/expose.php:499
 msgid "Send message"
+msgstr ""
+
+#: themes/default/expose.php:509
+msgid "Images"
 msgstr ""
 
 #: themes/default/fav.php:103 themes/default/fav.php:178

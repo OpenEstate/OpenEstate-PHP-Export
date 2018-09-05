@@ -75,15 +75,19 @@ class Translator extends \Gettext\Translator
      *
      * {@inheritdoc}
      */
-    public function gettext($original)
+    public function gettext($original, ...$parameters)
     {
         $lang = $this->getLanguage();
         $translation = $this->env->getConfig()->i18nGettext($lang, $original);
         if (!\is_string($translation))
             $translation = $this->env->getTheme()->i18nGettext($lang, $original);
-        return (\is_string($translation)) ?
+
+        $text = (\is_string($translation)) ?
             $translation :
             parent::gettext($original);
+
+        return (Utils::isEmptyArray($parameters))?
+            $text : $this->replaceParameters($text, $parameters);
     }
 
     /**
@@ -91,15 +95,19 @@ class Translator extends \Gettext\Translator
      *
      * {@inheritdoc}
      */
-    public function ngettext($original, $plural, $value)
+    public function ngettext($original, $plural, $value, ...$parameters)
     {
         $lang = $this->getLanguage();
         $translation = $this->env->getConfig()->i18nGettextPlural($lang, $original, $plural, $value);
         if (!\is_string($translation))
             $translation = $this->env->getTheme()->i18nGettextPlural($lang, $original, $plural, $value);
-        return (\is_string($translation)) ?
+
+        $text = (\is_string($translation)) ?
             $translation :
             parent::ngettext($original, $plural, $value);
+
+        return (Utils::isEmptyArray($parameters))?
+            $text : $this->replaceParameters($text, $parameters);
     }
 
     /**
@@ -110,5 +118,36 @@ class Translator extends \Gettext\Translator
     public static function includeFunctions()
     {
         include_once __DIR__ . '/translator_functions.php';
+    }
+
+    /**
+     * Replace parameters in a translated text.
+     *
+     * @param string $text
+     * translated text with placeholders
+     *
+     * @param array $parameters
+     * variables
+     *
+     * @return string
+     * translated text with replaced parameters
+     */
+    protected function replaceParameters($text, array $parameters)
+    {
+        if (Utils::isEmptyArray($parameters))
+            return $text;
+
+        //echo '<pre>'.print_r($parameters).'</pre>';
+
+        $replacement = array();
+        for ($i = 0; $i < \count($parameters); $i++) {
+            $replacement['{' . ($i + 1) . '}'] = $parameters[$i];
+        }
+
+        return \str_replace(
+            \array_keys($replacement),
+            \array_values($replacement),
+            $text
+        );
     }
 }

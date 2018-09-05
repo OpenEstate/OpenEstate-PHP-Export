@@ -65,7 +65,7 @@ $objectKey = (isset($objectData['nr']) && \is_string($objectData['nr'])) ?
 // get object title
 $objectTitle = (isset($objectData['title'][$languageCode])) ?
     $objectData['title'][$languageCode] :
-    _('Real estate %1$s', $objectKey);
+    _('Real estate {1}', $objectKey);
 
 // get object type
 $objectType = (isset($objectData['type'])) ? $objectData['type'] : null;
@@ -231,7 +231,7 @@ include('snippets/body-begin.php');
 
         <div class="openestate-header">
             <div class="openestate-header-bar">
-                <h3 class="openestate-header-title"><?= _('Real estate %1$s', $objectKey) ?></h3>
+                <h3 class="openestate-header-title"><?= _('Real estate {1}', $objectKey) ?></h3>
                 <div class="openestate-header-actions">
                     <a class="openestate-action-listing"
                        href="<?= \htmlspecialchars($env->getConfig()->getListingUrl()) ?>"
@@ -449,7 +449,7 @@ include('snippets/body-begin.php');
                             <label for="contactMessage-<?= $uid ?>"><?= _('Your message') ?>:</label>
                             <textarea id="contactMessage-<?= $uid ?>"
                                       name="<?= $contactAction->getVar('message') ?>"
-                                      class="pure-input-1 openestate-expose-contact-field"><?= \htmlspecialchars(_('I am interested in your offer "%1$s". Please get in contact with me.', $objectKey)) ?></textarea>
+                                      class="pure-input-1 openestate-expose-contact-field"><?= \htmlspecialchars(_('I am interested in your offer "{1}". Please get in contact with me.', $objectKey)) ?></textarea>
                             <span class="openestate-expose-contact-validation pure-form-message">
                                 <i class="openestate-icon-attention"></i>
                                 <span class="openestate-expose-contact-validation-message"></span>

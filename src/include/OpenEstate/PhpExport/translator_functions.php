@@ -1,36 +1,34 @@
 <?php
 
 namespace OpenEstate\PhpExport;
+
 use Gettext\BaseTranslator;
 
 /**
  * Returns the translation of a string.
  *
  * @param string $original
+ * original message
+ *
+ * @param array $parameters
+ * optional parameters to replace
  *
  * @return string
+ * translated message
  */
-function gettext($original)
+function gettext($original, ...$parameters)
 {
-    $text = BaseTranslator::$current->gettext($original);
-
-    if (\func_num_args() === 1) {
-        return $text;
-    }
-
-    $args = \array_slice(\func_get_args(), 1);
-
-    return \is_array($args[0]) ?
-        \strtr($text, $args[0]) :
-        \vsprintf($text, $args);
+    return BaseTranslator::$current->gettext($original, ...$parameters);
 }
 
 /**
- * Noop, marks the string for translation but returns it unchanged.
+ * Marks a string for translation and returns it unchanged.
  *
  * @param string $original
+ * original message
  *
  * @return string
+ * original message
  */
 function noop($original)
 {
@@ -38,73 +36,24 @@ function noop($original)
 }
 
 /**
- * Returns the singular/plural translation of a string.
+ * Returns the translation of a string in singular or plural form.
  *
  * @param string $original
+ * original message
+ *
  * @param string $plural
- * @param string $value
+ * plural form of the original message
+ *
+ * @param int $value
+ * value to determine between singular and plural form
+ *
+ * @param array $parameters
+ * optional parameters to replace
  *
  * @return string
+ * translated message
  */
-function ngettext($original, $plural, $value)
+function ngettext($original, $plural, $value, ...$parameters)
 {
-    $text = BaseTranslator::$current->ngettext($original, $plural, $value);
-
-    if (\func_num_args() === 3) {
-        return $text;
-    }
-
-    $args = \array_slice(\func_get_args(), 3);
-
-    return \is_array($args[0]) ?
-        \strtr($text, $args[0]) :
-        \vsprintf($text, $args);
-}
-
-/**
- * Returns the translation of a string in a specific domain.
- *
- * @param string $domain
- * @param string $original
- *
- * @return string
- */
-function dgettext($domain, $original)
-{
-    $text = BaseTranslator::$current->dgettext($domain, $original);
-
-    if (\func_num_args() === 2) {
-        return $text;
-    }
-
-    $args = \array_slice(\func_get_args(), 2);
-
-    return \is_array($args[0]) ?
-        \strtr($text, $args[0]) :
-        \vsprintf($text, $args);
-}
-
-/**
- * Returns the singular/plural translation of a string in a specific domain.
- *
- * @param string $domain
- * @param string $original
- * @param string $plural
- * @param string $value
- *
- * @return string
- */
-function dngettext($domain, $original, $plural, $value)
-{
-    $text = BaseTranslator::$current->dngettext($domain, $original, $plural, $value);
-
-    if (\func_num_args() === 4) {
-        return $text;
-    }
-
-    $args = \array_slice(\func_get_args(), 4);
-
-    return \is_array($args[0]) ?
-        \strtr($text, $args[0]) :
-        \vsprintf($text, $args);
+    return BaseTranslator::$current->ngettext($original, $plural, $value, ...$parameters);
 }

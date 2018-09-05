@@ -288,7 +288,7 @@ include('snippets/body-begin.php');
                 $objectUrl = $env->getConfig()->getExposeUrl($exposeView->getParameters($objectId));
                 $objectTitle = (isset($objectData['title'][$languageCode])) ?
                     $objectData['title'][$languageCode] :
-                    _('Real estate %1$s', $objectKey);
+                    _('Real estate {1}', $objectKey);
                 $objectImage = (isset($objectData['images']) && \is_array($objectData['images']) && \count($objectData['images']) > 0) ?
                     $objectData['images'][0] : null;
                 $objectImageLink = (\is_array($objectImage)) ?

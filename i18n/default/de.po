@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Default Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-09-04 22:00+0200\n"
-"PO-Revision-Date: 2018-09-04 22:02+0200\n"
+"POT-Creation-Date: 2018-09-05 16:04+0200\n"
+"PO-Revision-Date: 2018-09-05 16:06+0200\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
 "Language-Team: i18n@openestate.org\n"
 "Language: de\n"
@@ -19,9 +19,8 @@ msgstr ""
 
 #: themes/default/expose.php:68 themes/default/expose.php:234
 #: themes/default/fav.php:291 themes/default/listing.php:357
-#, php-format
-msgid "Real estate %1$s"
-msgstr "Immobilie %1$s"
+msgid "Real estate {1}"
+msgstr "Immobilie {1}"
 
 #: themes/default/expose.php:221
 msgid "The offer was not found. Maybe it is not published anymore."
@@ -100,10 +99,9 @@ msgid "Your message"
 msgstr "Ihre Mitteilung"
 
 #: themes/default/expose.php:452
-#, php-format
-msgid "I am interested in your offer \"%1$s\". Please get in contact with me."
+msgid "I am interested in your offer \"{1}\". Please get in contact with me."
 msgstr ""
-"Ich interessiere mich für Ihr Angebot \"%1$s\". Bitte nehmen Sie mit mir "
+"Ich interessiere mich für Ihr Angebot \"{1}\". Bitte nehmen Sie mit mir "
 "Kontakt auf."
 
 #: themes/default/expose.php:461 themes/default/expose.php:465
@@ -121,6 +119,10 @@ msgstr "Ja, ich bestätige die AGB und Datenschutzerklärung."
 #: themes/default/expose.php:499
 msgid "Send message"
 msgstr "Mitteilung abschicken"
+
+#: themes/default/expose.php:509
+msgid "Images"
+msgstr "Fotos"
 
 #: themes/default/fav.php:103 themes/default/fav.php:178
 msgid "My favored objects"

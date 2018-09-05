@@ -76,7 +76,7 @@ class Group extends AbstractFilter
         $values = array();
         $values[''] = '[ ' . $this->getTitle($lang) . ' ]';
         foreach ($options as $o) {
-            $values[(string)$o] = _('group %1$s', $o);
+            $values[(string)$o] = _('group {1}', $o);
         }
 
         return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
