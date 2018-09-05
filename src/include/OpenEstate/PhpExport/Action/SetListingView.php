@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Action;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
 
 /**
@@ -39,7 +40,7 @@ class SetListingView extends AbstractAction
     /**
      * SetListingView constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      */
     function __construct($name = 'SetListingView')
@@ -47,7 +48,7 @@ class SetListingView extends AbstractAction
         parent::__construct($name);
     }
 
-    public function execute(\OpenEstate\PhpExport\Environment $env)
+    public function execute(Environment $env)
     {
         $view = (isset($_REQUEST[$this->viewParameter])) ?
             $_REQUEST[$this->viewParameter] : null;
@@ -62,7 +63,7 @@ class SetListingView extends AbstractAction
     /**
      * Get parameter values for this action.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @param string|null $view
@@ -71,7 +72,7 @@ class SetListingView extends AbstractAction
      * @return array
      * associative array with parameter values
      */
-    public function getParameters(\OpenEstate\PhpExport\Environment $env, $view = null)
+    public function getParameters(Environment $env, $view = null)
     {
         $params = parent::getParameters($env);
         if ($view !== null && \is_string($view))

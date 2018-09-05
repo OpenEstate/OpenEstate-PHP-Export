@@ -72,29 +72,29 @@ class Checkbox extends AbstractInputElement
     /**
      * Checkbox constructor.
      *
-     * @param string $id
-     * id attribute
-     *
-     * @param string $class
-     * class attribute
-     *
      * @param string $name
      * name of the input field
      *
-     * @param string $value
+     * @param string|null $id
+     * id attribute
+     *
+     * @param string|null $class
+     * class attribute
+     *
+     * @param string|null $value
      * value of the input field
      *
-     * @param bool $checked
+     * @param bool|null $checked
      * set checkbox checked
      *
-     * @param string $label
+     * @param string|null $label
      * label, that is shown together with the checkbox
      */
     function __construct($name, $id = null, $class = null, $value = '1', $checked = false, $label = null)
     {
         parent::__construct($name, $id, $class);
         $this->value = $value;
-        $this->checked = $checked;
+        $this->checked = (\is_bool($checked))? $checked: false;
         $this->label = $label;
     }
 
@@ -158,10 +158,10 @@ class Checkbox extends AbstractInputElement
      * @param string $value
      * value of the form field
      *
-     * @param bool $checked
+     * @param bool|null $checked
      * set checkbox checked
      *
-     * @param string $label
+     * @param string|null $label
      * label, that is shown together with the checkbox
      *
      * @return Checkbox

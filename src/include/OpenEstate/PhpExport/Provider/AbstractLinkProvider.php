@@ -52,13 +52,13 @@ abstract class AbstractLinkProvider extends AbstractProvider
     /**
      * Get HTML code for the embedded view.
      *
-     * @param $linkId
+     * @param string $linkId
      * ID, that is used by the provider to identify the target
      *
-     * @param $linkTitle
+     * @param string $linkTitle
      * link title
      *
-     * @param $linkUrl
+     * @param string $linkUrl
      * link URL
      *
      * @return string

@@ -18,7 +18,10 @@
 
 namespace OpenEstate\PhpExport\View;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
+use OpenEstate\PhpExport\Filter\AbstractFilter;
+use OpenEstate\PhpExport\Order\AbstractOrder;
 
 /**
  * A view for a listing of real estate objects.
@@ -40,7 +43,7 @@ class ListingHtml extends AbstractHtmlView
      * Available filters in the listing.
      *
      * @var array
-     * @see \OpenEstate\PhpExport\Filter\AbstractFilter
+     * @see AbstractFilter
      */
     public $filters = array();
 
@@ -55,7 +58,7 @@ class ListingHtml extends AbstractHtmlView
      * Available orderings in the listing.
      *
      * @var array
-     * @see \OpenEstate\PhpExport\Order\AbstractOrder
+     * @see AbstractOrder
      */
     public $orders = array();
 
@@ -105,10 +108,10 @@ class ListingHtml extends AbstractHtmlView
     /**
      * ListingHtml constructor.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      */
-    function __construct(\OpenEstate\PhpExport\Environment $env)
+    function __construct(Environment $env)
     {
         parent::__construct($env);
     }
@@ -159,7 +162,7 @@ class ListingHtml extends AbstractHtmlView
      * @return array
      * column definitions
      */
-    public function getObjectColumns(&$object, $lang)
+    public function getObjectColumns(array &$object, $lang)
     {
         return $this->objectColumns;
     }
@@ -170,19 +173,19 @@ class ListingHtml extends AbstractHtmlView
      * @param array $object
      * object data
      *
-     * @param $field
+     * @param string $field
      * name of the field to show
      *
-     * @param $i18n
+     * @param array $i18n
      * translations
      *
-     * @param $lang
+     * @param string $lang
      * language code
      *
      * @return null|string
      * HTML encoded value for the requested field
      */
-    public function getObjectColumnValue(&$object, $field, &$i18n, $lang)
+    public function getObjectColumnValue(array &$object, $field, array &$i18n, $lang)
     {
         return Utils::writeObjectField($object, $field, $i18n, $lang);
     }
@@ -198,7 +201,7 @@ class ListingHtml extends AbstractHtmlView
         // get specified order instance
         $orderName = $this->getOrder();
         $order = null;
-        /** @var \OpenEstate\PhpExport\Order\AbstractOrder $o */
+        /** @var AbstractOrder $o */
         foreach ($this->orders as $o) {
             if ($o->getName() === $orderName) {
                 $order = $o;
@@ -240,7 +243,7 @@ class ListingHtml extends AbstractHtmlView
 
                 $filter = null;
 
-                /** @var \OpenEstate\PhpExport\Filter\AbstractFilter $f */
+                /** @var AbstractFilter $f */
                 foreach ($this->filters as $f) {
                     if ($f->getName() === $filterName) {
                         $filter = $f;
@@ -279,13 +282,13 @@ class ListingHtml extends AbstractHtmlView
     /**
      * Reduce the list of object ID's to the current page.
      *
-     * @param $objectIds
+     * @param array $objectIds
      * array of object ID's
      *
      * @return array
      * array of object ID's to show on the current page
      */
-    public function getObjectIdsOnThisPage($objectIds)
+    public function getObjectIdsOnThisPage(array $objectIds)
     {
         // make sure, that the page number is not bigger then the maximum number of pages
         $pageNumber = $this->getPage();
@@ -350,7 +353,7 @@ class ListingHtml extends AbstractHtmlView
     /**
      * Get the number of pages to show the objects on this view.
      *
-     * @param $numberOfObjects
+     * @param int $numberOfObjects
      * total number of objects
      *
      * @return int

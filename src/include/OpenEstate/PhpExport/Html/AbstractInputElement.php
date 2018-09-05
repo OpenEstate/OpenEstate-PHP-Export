@@ -33,13 +33,13 @@ abstract class AbstractInputElement extends AbstractBodyElement
     /**
      * AbstractInputElement constructor.
      *
-     * @param string $name
+     * @param string|null $name
      * name of the input field
      *
-     * @param string $id
+     * @param string|null $id
      * id attribute
      *
-     * @param string $class
+     * @param string|null $class
      * class attribute
      */
     function __construct($name, $id = null, $class = null)

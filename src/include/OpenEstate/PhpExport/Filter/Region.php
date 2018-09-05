@@ -18,7 +18,9 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
+use OpenEstate\PhpExport\Html\Select;
 use function OpenEstate\PhpExport\gettext as _;
 
 /**
@@ -33,10 +35,10 @@ class Region extends AbstractFilter
     /**
      * Region constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name = 'Region', $maxLifeTime = null)
@@ -44,7 +46,7 @@ class Region extends AbstractFilter
         parent::__construct($name, $maxLifeTime);
     }
 
-    protected function filter(&$object, &$items)
+    protected function filter(array &$object, array &$items)
     {
         $value = (isset($object['address']['region'])) ?
             $object['address']['region'] : null;
@@ -64,7 +66,7 @@ class Region extends AbstractFilter
         return _('region');
     }
 
-    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
+    public function getWidget(Environment $env, $selectedValue = null)
     {
         if (!$this->readOrRebuild($env) || !\is_array($this->items))
             return null;
@@ -80,7 +82,7 @@ class Region extends AbstractFilter
             $values[$o] = $o;
         }
 
-        return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
+        return Select::newSingleSelect(
             'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',

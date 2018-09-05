@@ -44,7 +44,7 @@ class Environment
     /**
      * Configured theme.
      *
-     * @var \OpenEstate\PhpExport\Theme\AbstractTheme
+     * @var Theme\AbstractTheme
      */
     private $theme = null;
 
@@ -500,10 +500,10 @@ class Environment
      * @param string $theme
      * theme name
      *
-     * @param string $path
+     * @param string|null $path
      * file name within the theme
      *
-     * @param $parameters
+     * @param array|null $parameters
      * associative array of URL parameters
      *
      * @return string
@@ -551,10 +551,10 @@ class Environment
     /**
      * Get the URL of a file in the export environment.
      *
-     * @param string $path
+     * @param string|null $path
      * relative path of a file in the export environment
      *
-     * @param $parameters
+     * @param array|null $parameters
      * associative array of URL parameters
      *
      * @return string
@@ -596,7 +596,7 @@ class Environment
     /**
      * Create an action instance.
      *
-     * @param $name
+     * @param string $name
      * name of requested action
      *
      * @return Action\AbstractAction

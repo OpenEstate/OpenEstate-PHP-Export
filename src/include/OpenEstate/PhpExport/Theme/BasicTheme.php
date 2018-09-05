@@ -18,6 +18,11 @@
 
 namespace OpenEstate\PhpExport\Theme;
 
+use OpenEstate\PhpExport\Environment;
+use OpenEstate\PhpExport\View\ExposeHtml;
+use OpenEstate\PhpExport\View\FavoriteHtml;
+use OpenEstate\PhpExport\View\ListingHtml;
+
 /**
  * A theme with basic functionality.
  *
@@ -33,38 +38,38 @@ class BasicTheme extends AbstractTheme
      * @param string $name
      * internal name of the theme
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      */
-    function __construct($name, \OpenEstate\PhpExport\Environment $env)
+    function __construct($name, Environment $env)
     {
         parent::__construct($name, $env);
     }
 
     public function newExposeHtml()
     {
-        return new \OpenEstate\PhpExport\View\ExposeHtml($this->getEnvironment());
+        return new ExposeHtml($this->getEnvironment());
     }
 
     public function newFavoriteHtml()
     {
-        return new \OpenEstate\PhpExport\View\FavoriteHtml($this->getEnvironment());
+        return new FavoriteHtml($this->getEnvironment());
     }
 
     public function newListingHtml()
     {
-        return new \OpenEstate\PhpExport\View\ListingHtml($this->getEnvironment());
+        return new ListingHtml($this->getEnvironment());
     }
 
-    public function setupExposeHtml(\OpenEstate\PhpExport\View\ExposeHtml $view)
+    public function setupExposeHtml(ExposeHtml $view)
     {
     }
 
-    public function setupFavoriteHtml(\OpenEstate\PhpExport\View\FavoriteHtml $view)
+    public function setupFavoriteHtml(FavoriteHtml $view)
     {
     }
 
-    public function setupListingHtml(\OpenEstate\PhpExport\View\ListingHtml $view)
+    public function setupListingHtml(ListingHtml $view)
     {
     }
 }

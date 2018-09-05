@@ -63,10 +63,10 @@ class Meta extends AbstractHeadElement
     /**
      * Meta constructor.
      *
-     * @param string $id
+     * @param string|null $id
      * id attribute
      *
-     * @param string $class
+     * @param string|null $class
      * class attribute
      */
     function __construct($id = null, $class = null)
@@ -167,7 +167,7 @@ class Meta extends AbstractHeadElement
      * @param string $httpEquiv
      * http-equiv attribute
      *
-     * @param string $content
+     * @param string|null $content
      * content attribute
      *
      * @return Meta
@@ -218,7 +218,7 @@ class Meta extends AbstractHeadElement
      * @param string $name
      * name attribute
      *
-     * @param string $content
+     * @param string|null $content
      * content attribute
      *
      * @return Meta
@@ -238,7 +238,7 @@ class Meta extends AbstractHeadElement
      * @param string $url
      * URL, that is called for refresh
      *
-     * @param int $delay
+     * @param int|null $delay
      * duration to wait for refresh in seconds
      *
      * @return Meta
@@ -246,7 +246,7 @@ class Meta extends AbstractHeadElement
      */
     public static function newRefresh($url, $delay = 0)
     {
-        return Meta::newHttpEquiv('meta-refresh', 'refresh', $delay . ',url=' . $url);
+        return Meta::newHttpEquiv('meta-refresh', 'refresh', (\is_int($delay))? $delay: 0 . ',url=' . $url);
     }
 
     /**

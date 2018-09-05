@@ -30,10 +30,10 @@ abstract class AbstractHeadElement extends AbstractHtmlElement
     /**
      * AbstractHeadElement constructor.
      *
-     * @param string $id
+     * @param string|null $id
      * id attribute
      *
-     * @param string $class
+     * @param string|null $class
      * class attribute
      */
     function __construct($id = null, $class = null)

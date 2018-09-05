@@ -160,7 +160,7 @@ class Config
      * @return string
      * URL
      */
-    public function getActionUrl($parameters=null)
+    public function getActionUrl($parameters = null)
     {
         return $this->baseUrl
             . '/action.php'
@@ -176,7 +176,7 @@ class Config
      * @return string
      * URL
      */
-    public function getExposeUrl($parameters=null)
+    public function getExposeUrl($parameters = null)
     {
         return $this->baseUrl
             . '/expose.php'
@@ -192,7 +192,7 @@ class Config
      * @return string
      * URL
      */
-    public function getFavoriteUrl($parameters=null)
+    public function getFavoriteUrl($parameters = null)
     {
         return $this->baseUrl
             . '/fav.php'
@@ -208,7 +208,7 @@ class Config
      * @return string
      * URL
      */
-    public function getListingUrl($parameters=null)
+    public function getListingUrl($parameters = null)
     {
         return $this->baseUrl
             . '/index.php'
@@ -243,10 +243,10 @@ class Config
      * @param string $original
      * original string to translate
      *
-     * @param $plural
+     * @param string $plural
      * plural form of the original string
      *
-     * @param $value
+     * @param string $value
      * value to determine plural forms
      *
      * @return string
@@ -262,7 +262,7 @@ class Config
     /**
      * Create an action instance.
      *
-     * @param $name
+     * @param string $name
      * name of requested action
      *
      * @return Action\AbstractAction
@@ -326,7 +326,7 @@ class Config
     /**
      * Create a session instance.
      *
-     * @param $env
+     * @param Environment $env
      * export environment
      *
      * @return Session\AbstractSession

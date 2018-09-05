@@ -151,7 +151,7 @@ class Assets
     /**
      * Create JavaScript header for Colorbox translations.
      *
-     * @param $lang
+     * @param string $lang
      * language
      *
      * @param bool $minimized

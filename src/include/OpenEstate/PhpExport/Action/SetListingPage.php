@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Action;
 
+use OpenEstate\PhpExport\Environment;
+
 /**
  * Change page of the listing view.
  *
@@ -37,7 +39,7 @@ class SetListingPage extends AbstractAction
     /**
      * SetListingPage constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      */
     function __construct($name = 'SetListingPage')
@@ -45,7 +47,7 @@ class SetListingPage extends AbstractAction
         parent::__construct($name);
     }
 
-    public function execute(\OpenEstate\PhpExport\Environment $env)
+    public function execute(Environment $env)
     {
         $page = (isset($_REQUEST[$this->pageParameter])) ?
             $_REQUEST[$this->pageParameter] : null;
@@ -65,7 +67,7 @@ class SetListingPage extends AbstractAction
     /**
      * Get parameter values for this action.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @param int|null $page
@@ -74,7 +76,7 @@ class SetListingPage extends AbstractAction
      * @return array
      * associative array with parameter values
      */
-    public function getParameters(\OpenEstate\PhpExport\Environment $env, $page = null)
+    public function getParameters(Environment $env, $page = null)
     {
         $params = parent::getParameters($env);
         if ($page !== null && \is_numeric($page))

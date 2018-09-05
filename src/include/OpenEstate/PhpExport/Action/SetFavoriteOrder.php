@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Action;
 
+use OpenEstate\PhpExport\Environment;
+
 /**
  * Change ordering of the favorite view.
  *
@@ -44,7 +46,7 @@ class SetFavoriteOrder extends AbstractAction
     /**
      * SetFavoriteOrder constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      */
     function __construct($name = 'SetFavoriteOrder')
@@ -52,7 +54,7 @@ class SetFavoriteOrder extends AbstractAction
         parent::__construct($name);
     }
 
-    public function execute(\OpenEstate\PhpExport\Environment $env)
+    public function execute(Environment $env)
     {
         $order = (isset($_REQUEST[$this->orderParameter])) ?
             $_REQUEST[$this->orderParameter] : null;
@@ -75,7 +77,7 @@ class SetFavoriteOrder extends AbstractAction
     /**
      * Get parameter values for this action.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @param string|null $order
@@ -87,7 +89,7 @@ class SetFavoriteOrder extends AbstractAction
      * @return array
      * associative array with parameter values
      */
-    public function getParameters(\OpenEstate\PhpExport\Environment $env, $order = null, $direction = null)
+    public function getParameters(Environment $env, $order = null, $direction = null)
     {
         $params = parent::getParameters($env);
         if ($order !== null && \is_string($order))

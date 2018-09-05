@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Session;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
 
 /**
@@ -41,13 +42,13 @@ class PhpSession extends AbstractSession
     /**
      * PhpSession constructor.
      *
-     * @param $env
+     * @param Environment $env
      * export environment
      *
      * @param string $root
      * name of the root variable within $_SESSION
      */
-    function __construct(\OpenEstate\PhpExport\Environment $env, $root = null)
+    function __construct(Environment $env, $root = null)
     {
         parent::__construct($env);
         $this->root = (Utils::isNotBlankString($root)) ?

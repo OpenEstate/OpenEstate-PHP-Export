@@ -76,16 +76,16 @@ class Select extends AbstractInputElement
      * @param string $name
      * name of the input field
      *
-     * @param string $id
+     * @param string|null $id
      * id attribute
      *
-     * @param string $class
+     * @param string|null $class
      * class attribute
      *
-     * @param string $value
+     * @param string|null $value
      * value of the input field
      *
-     * @param $options
+     * @param array|null $options
      * selection options
      */
     function __construct($name, $id = null, $class = null, $value = null, $options = null)
@@ -124,7 +124,7 @@ class Select extends AbstractInputElement
 
         if (\is_array($this->options)) {
             foreach ($this->options as $key => $value) {
-                $key = (string) $key;
+                $key = (string)$key;
                 if ($this->multiple === true)
                     $selected = (\in_array($key, $this->value)) ? ' selected' : '';
                 else
@@ -140,22 +140,22 @@ class Select extends AbstractInputElement
     /**
      * Create a multiple selection.
      *
-     * @param string $id
-     * id attribute
-     *
-     * @param string $class
-     * class attribute
-     *
      * @param string $name
      * name of the form field
      *
-     * @param string $value
+     * @param string|null $id
+     * id attribute
+     *
+     * @param string|null $class
+     * class attribute
+     *
+     * @param string|null $value
      * value of the form field
      *
-     * @param $options
+     * @param array|null $options
      * selection options
      *
-     * @param int $size
+     * @param int|null $size
      * size of the select field
      *
      * @return Select
@@ -164,7 +164,7 @@ class Select extends AbstractInputElement
     public static function newMultiSelect($name, $id = null, $class = null, $value = null, $options = null, $size = 4)
     {
         $select = new Select($name, $id, $class, $value, $options);
-        $select->size = $size;
+        $select->size = (\is_int($size)) ? $size : 4;
         $select->multiple = true;
         return $select;
     }
@@ -172,19 +172,19 @@ class Select extends AbstractInputElement
     /**
      * Create a single selection.
      *
-     * @param string $id
-     * id attribute
-     *
-     * @param string $class
-     * class attribute
-     *
      * @param string $name
      * name of the form field
      *
-     * @param string $value
+     * @param string|null $id
+     * id attribute
+     *
+     * @param string|null $class
+     * class attribute
+     *
+     * @param string|null $value
      * value of the form field
      *
-     * @param $options
+     * @param array|null $options
      * selection options
      *
      * @return Select

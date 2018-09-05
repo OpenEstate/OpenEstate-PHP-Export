@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Action;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
 
 /**
@@ -46,7 +47,7 @@ class SetListingFilter extends AbstractAction
     /**
      * SetListingFilter constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      */
     function __construct($name = 'SetListingFilter')
@@ -54,7 +55,7 @@ class SetListingFilter extends AbstractAction
         parent::__construct($name);
     }
 
-    public function execute(\OpenEstate\PhpExport\Environment $env)
+    public function execute(Environment $env)
     {
         $filter = (isset($_REQUEST[$this->filterParameter])) ?
             $_REQUEST[$this->filterParameter] : null;
@@ -81,7 +82,7 @@ class SetListingFilter extends AbstractAction
     /**
      * Get parameter values for this action.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @param array|null $filter
@@ -93,7 +94,7 @@ class SetListingFilter extends AbstractAction
      * @return array
      * associative array with parameter values
      */
-    public function getParameters(\OpenEstate\PhpExport\Environment $env, $filter = null, $clear = null)
+    public function getParameters(Environment $env, $filter = null, $clear = null)
     {
         $params = parent::getParameters($env);
         if ($filter !== null && \is_array($filter))

@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use OpenEstate\PhpExport\Environment;
+use OpenEstate\PhpExport\Html\Select;
 use function OpenEstate\PhpExport\gettext as _;
 
 /**
@@ -32,10 +34,10 @@ class Group extends AbstractFilter
     /**
      * Group constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name = 'Group', $maxLifeTime = null)
@@ -43,7 +45,7 @@ class Group extends AbstractFilter
         parent::__construct($name, $maxLifeTime);
     }
 
-    protected function filter(&$object, &$items)
+    protected function filter(array &$object, array &$items)
     {
         $value = (isset($object['group_nr'])) ?
             $object['group_nr'] : null;
@@ -63,7 +65,7 @@ class Group extends AbstractFilter
         return _('group');
     }
 
-    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
+    public function getWidget(Environment $env, $selectedValue = null)
     {
         if (!$this->readOrRebuild($env) || !\is_array($this->items))
             return null;
@@ -79,7 +81,7 @@ class Group extends AbstractFilter
             $values[(string)$o] = _('group {1}', $o);
         }
 
-        return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
+        return Select::newSingleSelect(
             'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',

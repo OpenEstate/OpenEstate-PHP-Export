@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use OpenEstate\PhpExport\Environment;
+use OpenEstate\PhpExport\Html\Checkbox;
 use function OpenEstate\PhpExport\gettext as _;
 
 /**
@@ -32,10 +34,10 @@ class SpecialOffer extends AbstractFilter
     /**
      * SpecialOffer constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name = 'SpecialOffer', $maxLifeTime = null)
@@ -43,7 +45,7 @@ class SpecialOffer extends AbstractFilter
         parent::__construct($name, $maxLifeTime);
     }
 
-    protected function filter(&$object, &$items)
+    protected function filter(array &$object, array &$items)
     {
         $value = (isset($object['attributes']['prices']['special_offer']['value'])) ?
             $object['attributes']['prices']['special_offer']['value'] : null;
@@ -65,7 +67,7 @@ class SpecialOffer extends AbstractFilter
         return _('special offer');
     }
 
-    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
+    public function getWidget(Environment $env, $selectedValue = null)
     {
         if (!$this->readOrRebuild($env) || !\is_array($this->items)) {
             return null;
@@ -76,7 +78,7 @@ class SpecialOffer extends AbstractFilter
 
         $selectedValue = (string)$selectedValue;
         $checked = $selectedValue == '1';
-        return \OpenEstate\PhpExport\Html\Checkbox::newBox(
+        return Checkbox::newBox(
             'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',

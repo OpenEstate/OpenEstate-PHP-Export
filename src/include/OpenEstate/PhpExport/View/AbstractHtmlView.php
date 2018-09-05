@@ -22,6 +22,7 @@ use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Html\Meta;
 use OpenEstate\PhpExport\Html\Stylesheet;
 use OpenEstate\PhpExport\Utils;
+use OpenEstate\PhpExport\Html\AbstractHeadElement;
 
 /**
  * An abstract HTML document.
@@ -91,7 +92,7 @@ abstract class AbstractHtmlView extends AbstractView
     /**
      * Register a header element.
      *
-     * @param \OpenEstate\PhpExport\Html\AbstractHeadElement $element
+     * @param AbstractHeadElement $element
      * header element
      *
      * @param int $priority
@@ -99,7 +100,7 @@ abstract class AbstractHtmlView extends AbstractView
      */
     public function addHeader($element, $priority = 100)
     {
-        if ($element instanceof \OpenEstate\PhpExport\Html\AbstractHeadElement) {
+        if ($element instanceof AbstractHeadElement) {
             $this->headerElements[$element->id] = $element;
             $this->headerElementsPriority[$element->id] = (is_int($priority)) ? $priority : 100;
         }
@@ -114,7 +115,7 @@ abstract class AbstractHtmlView extends AbstractView
      * @param int $priority
      * priority of the elements
      */
-    public function addHeaders($elements, $priority = 100)
+    public function addHeaders(array $elements, $priority = 100)
     {
         if (!\is_array($elements)) {
             return;
@@ -203,7 +204,7 @@ abstract class AbstractHtmlView extends AbstractView
     /**
      * Remove a previously registered header element.
      *
-     * @param $elementId
+     * @param string $elementId
      * ID of the header element to remove
      */
     public function removeHeader($elementId)

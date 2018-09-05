@@ -56,10 +56,10 @@ class Stylesheet extends AbstractHeadElement
     /**
      * Stylesheet constructor.
      *
-     * @param string $id
+     * @param string|null $id
      * id attribute
      *
-     * @param string $class
+     * @param string|null $class
      * class attribute
      */
     function __construct($id = null, $class = null)
@@ -115,7 +115,7 @@ class Stylesheet extends AbstractHeadElement
      * @param string $content
      * Stylesheet code
      *
-     * @param string $media
+     * @param string|null $media
      * media types
      *
      * @return Stylesheet
@@ -138,7 +138,7 @@ class Stylesheet extends AbstractHeadElement
      * @param string $href
      * URL of the external Stylesheet
      *
-     * @param string $media
+     * @param string|null $media
      * media types
      *
      * @return Stylesheet

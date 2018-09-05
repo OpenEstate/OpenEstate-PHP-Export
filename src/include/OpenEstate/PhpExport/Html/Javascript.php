@@ -78,10 +78,10 @@ class Javascript extends AbstractHeadElement
     /**
      * Javascript constructor.
      *
-     * @param string $id
+     * @param string|null $id
      * id attribute
      *
-     * @param string $class
+     * @param string|null $class
      * class attribute
      */
     function __construct($id = null, $class = null)
@@ -157,16 +157,16 @@ class Javascript extends AbstractHeadElement
      * @param string $src
      * URL of the external JavaScript
      *
-     * @param string $onload
+     * @param string|null $onload
      * Javascript, that is executed after the external JavaScript file was loaded.
      *
-     * @param string $charset
+     * @param string|null $charset
      * charset of the external JavaScript
      *
-     * @param bool $defer
+     * @param bool|null $defer
      * defer execution of the external JavaScript
      *
-     * @param bool $async
+     * @param bool|null $async
      * load external JavaScript asynchronously.
      *
      * @return Javascript
@@ -178,8 +178,8 @@ class Javascript extends AbstractHeadElement
         $script->src = $src;
         $script->onload = $onload;
         $script->charset = $charset;
-        $script->defer = $defer;
-        $script->async = $async;
+        $script->defer = (\is_bool($defer)) ? $defer : false;
+        $script->async = (\is_bool($async)) ? $async : false;
         return $script;
     }
 }

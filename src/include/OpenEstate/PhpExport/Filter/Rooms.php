@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use OpenEstate\PhpExport\Environment;
+use OpenEstate\PhpExport\Html\Select;
 use function OpenEstate\PhpExport\gettext as _;
 use function OpenEstate\PhpExport\ngettext;
 
@@ -43,10 +45,10 @@ class Rooms extends AbstractFilter
      * @param string $name
      * internal name
      *
-     * @param int $roomCount
+     * @param int|null $roomCount
      * maximal number of rooms to filter
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name = 'Rooms', $roomCount = null, $maxLifeTime = null)
@@ -56,7 +58,7 @@ class Rooms extends AbstractFilter
             $roomCount : 6;
     }
 
-    protected function filter(&$object, &$items)
+    protected function filter(array &$object, array &$items)
     {
         $value = isset($object['attributes']['measures']['count_rooms']['value']) ?
             $object['attributes']['measures']['count_rooms']['value'] : null;
@@ -93,7 +95,7 @@ class Rooms extends AbstractFilter
         return _('number of rooms');
     }
 
-    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
+    public function getWidget(Environment $env, $selectedValue = null)
     {
         if (!$this->readOrRebuild($env) || !\is_array($this->items))
             return null;
@@ -109,7 +111,7 @@ class Rooms extends AbstractFilter
         }
         $values[(string)$max] = ngettext('{1} room', '{1} rooms', $max, $max . '+');
 
-        return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
+        return Select::newSingleSelect(
             'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',

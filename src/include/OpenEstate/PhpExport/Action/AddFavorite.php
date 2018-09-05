@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Action;
 
+use OpenEstate\PhpExport\Environment;
+
 /**
  * Add an object ID to the list of favored objects.
  *
@@ -37,7 +39,7 @@ class AddFavorite extends AbstractAction
     /**
      * AddFavorite constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      */
     function __construct($name = 'AddFavorite')
@@ -45,7 +47,7 @@ class AddFavorite extends AbstractAction
         parent::__construct($name);
     }
 
-    public function execute(\OpenEstate\PhpExport\Environment $env)
+    public function execute(Environment $env)
     {
         $objectId = (isset($_REQUEST[$this->objectIdParameter]))?
             $_REQUEST[$this->objectIdParameter]: null;
@@ -59,7 +61,7 @@ class AddFavorite extends AbstractAction
     /**
      * Get parameter values for this action.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @param int|string|null $objectId
@@ -68,7 +70,7 @@ class AddFavorite extends AbstractAction
      * @return array
      * associative array with parameter values
      */
-    public function getParameters(\OpenEstate\PhpExport\Environment $env, $objectId = null)
+    public function getParameters(Environment $env, $objectId = null)
     {
         $params = parent::getParameters($env);
         if ($objectId !== null && (\is_string($objectId) || \is_int($objectId)))

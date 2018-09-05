@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Action;
 
+use OpenEstate\PhpExport\Environment;
+
 /**
  * Select current language.
  *
@@ -37,7 +39,7 @@ class SetLanguage extends AbstractAction
     /**
      * SetLanguage constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      */
     function __construct($name = 'SetLanguage')
@@ -45,7 +47,7 @@ class SetLanguage extends AbstractAction
         parent::__construct($name);
     }
 
-    public function execute(\OpenEstate\PhpExport\Environment $env)
+    public function execute(Environment $env)
     {
         $language = (isset($_REQUEST[$this->languageParameter])) ?
             $_REQUEST[$this->languageParameter] : null;
@@ -63,7 +65,7 @@ class SetLanguage extends AbstractAction
     /**
      * Get parameter values for this action.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @param string|null $language
@@ -72,7 +74,7 @@ class SetLanguage extends AbstractAction
      * @return array
      * associative array with parameter values
      */
-    public function getParameters(\OpenEstate\PhpExport\Environment $env, $language = null)
+    public function getParameters(Environment $env, $language = null)
     {
         $params = parent::getParameters($env);
         if ($language !== null && \is_string($language))

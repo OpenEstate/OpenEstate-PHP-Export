@@ -18,6 +18,11 @@
 
 namespace OpenEstate\PhpExport\Theme;
 
+use OpenEstate\PhpExport\Environment;
+use OpenEstate\PhpExport\View\ExposeHtml;
+use OpenEstate\PhpExport\View\FavoriteHtml;
+use OpenEstate\PhpExport\View\ListingHtml;
+
 /**
  * An abstract theme.
  *
@@ -37,7 +42,7 @@ abstract class AbstractTheme
     /**
      * Export environment.
      *
-     * @var \OpenEstate\PhpExport\Environment
+     * @var Environment
      */
     protected $env;
 
@@ -47,10 +52,10 @@ abstract class AbstractTheme
      * @param string $name
      * internal name of the theme
      *
-     * @param $env
+     * @param Environment $env
      * export environment
      */
-    function __construct($name, \OpenEstate\PhpExport\Environment $env)
+    function __construct($name, Environment $env)
     {
         $this->name = $name;
         $this->env = $env;
@@ -66,7 +71,7 @@ abstract class AbstractTheme
     /**
      * Get the export environment.
      *
-     * @return \OpenEstate\PhpExport\Environment
+     * @return Environment
      * export environment
      */
     public function getEnvironment()
@@ -105,7 +110,7 @@ abstract class AbstractTheme
      * @param string $path
      * file name within the theme
      *
-     * @param $parameters
+     * @param array|null $parameters
      * associative array of URL parameters
      *
      * @return string
@@ -144,10 +149,10 @@ abstract class AbstractTheme
      * @param string $original
      * original string to translate
      *
-     * @param $plural
+     * @param string $plural
      * plural form of the original string
      *
-     * @param $value
+     * @param string $value
      * value to determine plural forms
      *
      * @return string
@@ -163,7 +168,7 @@ abstract class AbstractTheme
     /**
      * Create the HTML view with object details.
      *
-     * @return \OpenEstate\PhpExport\View\ExposeHtml
+     * @return ExposeHtml
      * created view
      */
     abstract public function newExposeHtml();
@@ -171,7 +176,7 @@ abstract class AbstractTheme
     /**
      * Create the HTML view with favorite listing.
      *
-     * @return \OpenEstate\PhpExport\View\FavoriteHtml
+     * @return FavoriteHtml
      * created view
      */
     abstract public function newFavoriteHtml();
@@ -179,7 +184,7 @@ abstract class AbstractTheme
     /**
      * Create the HTML view with object listing.
      *
-     * @return \OpenEstate\PhpExport\View\ListingHtml
+     * @return ListingHtml
      * created view
      */
     abstract public function newListingHtml();
@@ -187,24 +192,24 @@ abstract class AbstractTheme
     /**
      * Set default configuration for the HTML view with object details.
      *
-     * @param \OpenEstate\PhpExport\View\ExposeHtml $view
+     * @param ExposeHtml $view
      * view to configure
      */
-    abstract public function setupExposeHtml(\OpenEstate\PhpExport\View\ExposeHtml $view);
+    abstract public function setupExposeHtml(ExposeHtml $view);
 
     /**
      * Set default configuration for the HTML view with favorite listing.
      *
-     * @param \OpenEstate\PhpExport\View\FavoriteHtml $view
+     * @param FavoriteHtml $view
      * view to configure
      */
-    abstract public function setupFavoriteHtml(\OpenEstate\PhpExport\View\FavoriteHtml $view);
+    abstract public function setupFavoriteHtml(FavoriteHtml $view);
 
     /**
      * Set default configuration for the HTML view with object listing.
      *
-     * @param \OpenEstate\PhpExport\View\ListingHtml $view
+     * @param ListingHtml $view
      * view to configure
      */
-    abstract public function setupListingHtml(\OpenEstate\PhpExport\View\ListingHtml $view);
+    abstract public function setupListingHtml(ListingHtml $view);
 }

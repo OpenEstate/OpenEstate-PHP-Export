@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use OpenEstate\PhpExport\Environment;
 use function OpenEstate\PhpExport\gettext as _;
 
 /**
@@ -43,10 +44,10 @@ class Area extends AbstractOrder
      * @param string $name
      * internal name
      *
-     * @param array $lookupFields
+     * @param array|null $lookupFields
      * attributes names, that are used to lookup the area of an object
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name = 'Area', $lookupFields = null, $maxLifeTime = null)
@@ -61,7 +62,7 @@ class Area extends AbstractOrder
         return SORT_NUMERIC;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
+    protected function getSortValue(Environment $env, array &$object, $lang)
     {
         foreach ($this->lookupFields as $field) {
             $value = (isset($object['attributes']['measures'][$field]['value'])) ?

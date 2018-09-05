@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use OpenEstate\PhpExport\Environment;
 use function OpenEstate\PhpExport\gettext as _;
 
 /**
@@ -32,10 +33,10 @@ class Postal extends AbstractOrder
     /**
      * Postal constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name = 'Postal', $maxLifeTime = null)
@@ -48,7 +49,7 @@ class Postal extends AbstractOrder
         return SORT_STRING;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
+    protected function getSortValue(Environment $env, array &$object, $lang)
     {
         return (isset($object['address']['postal'])) ?
             $object['address']['postal'] : null;

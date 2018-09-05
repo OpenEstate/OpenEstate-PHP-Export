@@ -18,7 +18,9 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
+use OpenEstate\PhpExport\Html\Select;
 use function OpenEstate\PhpExport\gettext as _;
 
 /**
@@ -40,10 +42,10 @@ class Country extends AbstractFilter
     /**
      * Country constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name = 'Country', $maxLifeTime = null)
@@ -51,13 +53,13 @@ class Country extends AbstractFilter
         parent::__construct($name, $maxLifeTime);
     }
 
-    public function build(\OpenEstate\PhpExport\Environment $env)
+    public function build(Environment $env)
     {
         $this->countryNames = array();
         return parent::build($env);
     }
 
-    protected function filter(&$object, &$items)
+    protected function filter(array &$object, array &$items)
     {
         $value = (isset($object['address']['country'])) ?
             $object['address']['country'] : null;
@@ -89,7 +91,7 @@ class Country extends AbstractFilter
         return _('country');
     }
 
-    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
+    public function getWidget(Environment $env, $selectedValue = null)
     {
         if (!$this->readOrRebuild($env) || !\is_array($this->items))
             return null;
@@ -106,7 +108,7 @@ class Country extends AbstractFilter
                 $this->countryNames[$o][$lang] : $o;
         }
 
-        return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
+        return Select::newSingleSelect(
             'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',
@@ -115,7 +117,7 @@ class Country extends AbstractFilter
         );
     }
 
-    public function read(\OpenEstate\PhpExport\Environment $env)
+    public function read(Environment $env)
     {
         $file = $this->getFile($env);
         if (!\is_file($file))
@@ -141,7 +143,7 @@ class Country extends AbstractFilter
         return true;
     }
 
-    public function write(\OpenEstate\PhpExport\Environment $env)
+    public function write(Environment $env)
     {
         $values = array(
             'items' => $this->items,

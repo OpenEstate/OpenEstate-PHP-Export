@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Action;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
 use function OpenEstate\PhpExport\gettext as _;
 
@@ -82,7 +83,7 @@ class Contact extends AbstractAction
     /**
      * Contact constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      */
     function __construct($name = 'Contact')
@@ -94,7 +95,7 @@ class Contact extends AbstractAction
         $this->captchaVerification = Utils::isGdExtensionAvailable();
     }
 
-    public function execute(\OpenEstate\PhpExport\Environment $env)
+    public function execute(Environment $env)
     {
         if (\is_int($this->delay) && $this->delay > 0)
             \sleep($this->delay);
@@ -253,7 +254,7 @@ class Contact extends AbstractAction
     /**
      * Get the variable name of a contact value.
      *
-     * @param $name
+     * @param string $name
      * value name
      *
      * @return string

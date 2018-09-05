@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Session;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
 
 /**
@@ -32,17 +33,17 @@ abstract class AbstractSession
     /**
      * Export environment.
      *
-     * @var \OpenEstate\PhpExport\Environment
+     * @var Environment
      */
     protected $env;
 
     /**
      * AbstractSession constructor.
      *
-     * @param $env
+     * @param Environment $env
      * export environment
      */
-    function __construct(\OpenEstate\PhpExport\Environment $env)
+    function __construct(Environment $env)
     {
         $this->env = $env;
     }
@@ -103,7 +104,7 @@ abstract class AbstractSession
     /**
      * Get the export environment.
      *
-     * @return \OpenEstate\PhpExport\Environment
+     * @return Environment
      * export environment
      */
     public function getEnvironment()

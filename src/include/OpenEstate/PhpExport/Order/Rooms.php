@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use OpenEstate\PhpExport\Environment;
 use function OpenEstate\PhpExport\gettext as _;
 
 /**
@@ -32,10 +33,10 @@ class Rooms extends AbstractOrder
     /**
      * Rooms constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name = 'Rooms', $maxLifeTime = null)
@@ -48,7 +49,7 @@ class Rooms extends AbstractOrder
         return SORT_NUMERIC;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
+    protected function getSortValue(Environment $env, array &$object, $lang)
     {
         return (isset($object['attributes']['measures']['count_rooms']['value'])) ?
             $object['attributes']['measures']['count_rooms']['value'] : null;

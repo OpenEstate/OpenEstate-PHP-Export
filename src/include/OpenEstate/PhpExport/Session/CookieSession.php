@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Session;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
 
 /**
@@ -53,7 +54,7 @@ class CookieSession extends AbstractSession
     /**
      * CookieSession constructor.
      *
-     * @param $env
+     * @param Environment $env
      * export environment
      *
      * @param string $cookieName
@@ -62,7 +63,7 @@ class CookieSession extends AbstractSession
      * @param int $cookieLifeTime
      * lifetime of the session cookie in seconds
      */
-    function __construct(\OpenEstate\PhpExport\Environment $env, $cookieName = null, $cookieLifeTime = null)
+    function __construct(Environment $env, $cookieName = null, $cookieLifeTime = null)
     {
         parent::__construct($env);
         $this->cookieName = (Utils::isNotBlankString($cookieName)) ?

@@ -58,7 +58,7 @@ abstract class AbstractMapProvider extends AbstractProvider
      * @return boolean
      * true, if the object provides geo coordinates
      */
-    public function canShowForObject(&$object)
+    public function canShowForObject(array &$object)
     {
         return isset($object['address']['latitude'])
             && isset($object['address']['longitude'])
@@ -81,7 +81,7 @@ abstract class AbstractMapProvider extends AbstractProvider
      * @return string
      * generated HTML code
      */
-    abstract public function getBody(&$object, &$translations, $lang);
+    abstract public function getBody(array &$object, array &$translations, $lang);
 
     /**
      * Get latitude value from a real estate object.
@@ -92,7 +92,7 @@ abstract class AbstractMapProvider extends AbstractProvider
      * @return float|null
      * latitude value or null, if not found
      */
-    public function getLatitude(&$object)
+    public function getLatitude(array &$object)
     {
         return (isset($object['address']['latitude'])) ?
             $object['address']['latitude'] : null;
@@ -107,7 +107,7 @@ abstract class AbstractMapProvider extends AbstractProvider
      * @return float|null
      * longitude value or null, if not found
      */
-    public function getLongitude(&$object)
+    public function getLongitude(array &$object)
     {
         return (isset($object['address']['longitude'])) ?
             $object['address']['longitude'] :

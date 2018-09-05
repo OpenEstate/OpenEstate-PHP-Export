@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
 
 /**
@@ -53,10 +54,10 @@ abstract class AbstractOrder
     /**
      * AbstractOrder constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name, $maxLifeTime = null)
@@ -76,13 +77,13 @@ abstract class AbstractOrder
     /**
      * Create an ordered array of object ID's.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @return bool
      * true, if the data was successfully loaded
      */
-    public function build(\OpenEstate\PhpExport\Environment $env)
+    public function build(Environment $env)
     {
         $this->items = array();
         $ids = $env->getObjectIds();
@@ -151,13 +152,13 @@ abstract class AbstractOrder
     /**
      * Get the path to the cache file for this order.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @return string
      * absolute path to the cache file
      */
-    public function getFile(\OpenEstate\PhpExport\Environment $env)
+    public function getFile(Environment $env)
     {
         return $env->getPath('cache/order.' . $this->getName());
     }
@@ -205,19 +206,19 @@ abstract class AbstractOrder
     /**
      * Get the sorted value of an object.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
-     * @param $object
+     * @param array $object
      * array with object data
      *
-     * @param $lang
+     * @param string $lang
      * language code
      *
      * @return string|int|float
      * value used to sort the object
      */
-    abstract protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang);
+    abstract protected function getSortValue(Environment $env, array &$object, $lang);
 
     /**
      * Get the order title for the current language.
@@ -244,13 +245,13 @@ abstract class AbstractOrder
     /**
      * Load array with ordering values from cache file.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @return bool
      * true, if the cache file was loaded, otherwise false
      */
-    public function read(\OpenEstate\PhpExport\Environment $env)
+    public function read(Environment $env)
     {
         $file = $this->getFile($env);
         if (!\is_file($file))
@@ -277,13 +278,13 @@ abstract class AbstractOrder
      * Load array with ordering values from cache file.
      * If no valid cache file is available, load the data from available objects.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @return bool
      * true, if the filter values were loaded, otherwise false
      */
-    public function readOrRebuild(\OpenEstate\PhpExport\Environment $env)
+    public function readOrRebuild(Environment $env)
     {
         // Try reading ordering values from cache.
         if ($this->read($env))
@@ -306,13 +307,13 @@ abstract class AbstractOrder
     /**
      * Write ordering values into the cache file.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @throws \Exception
      * if the cache file is not writable
      */
-    public function write(\OpenEstate\PhpExport\Environment $env)
+    public function write(Environment $env)
     {
         $data = \serialize($this->items);
         $file = $this->getFile($env);

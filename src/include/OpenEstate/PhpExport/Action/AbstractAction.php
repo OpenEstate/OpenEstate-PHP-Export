@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Action;
 
+use OpenEstate\PhpExport\Environment;
+
 /**
  * An abstract action.
  *
@@ -37,7 +39,7 @@ abstract class AbstractAction
     /**
      * AbstractAction constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      */
     function __construct($name)
@@ -55,13 +57,13 @@ abstract class AbstractAction
     /**
      * Execute this action.
      *
-     * @param \OpenEstate\PhpExport\Environment
+     * @param Environment $env
      * export environment
      *
      * @return mixed
      * action result
      */
-    abstract public function execute(\OpenEstate\PhpExport\Environment $env);
+    abstract public function execute(Environment $env);
 
     /**
      * Get the internal action name.
@@ -77,13 +79,13 @@ abstract class AbstractAction
     /**
      * Get parameter values for this action.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      *
      * @return array
      * associative array with parameter values
      */
-    public function getParameters(\OpenEstate\PhpExport\Environment $env)
+    public function getParameters(Environment $env)
     {
         return array(
             $env->actionParameter => $this->name

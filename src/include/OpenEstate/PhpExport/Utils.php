@@ -19,7 +19,7 @@
 namespace OpenEstate\PhpExport;
 
 use \TrueBV\Punycode;
-use function \OpenEstate\PhpExport\gettext as _;
+use function gettext as _;
 
 /**
  * Static helper methods.
@@ -146,7 +146,7 @@ class Utils
      * @return string
      * readable output of the attribute value
      */
-    public static function getAttributeValue($group, $attribute, $value, &$i18n, $lang)
+    public static function getAttributeValue($group, $attribute, array $value, array &$i18n, $lang)
     {
         if (!\is_array($value) || !isset($value['value']))
             return null;
@@ -227,7 +227,7 @@ class Utils
     /**
      * Convert a variable to JSON.
      *
-     * @param $obj
+     * @param mixed $obj
      * variable to convert
      *
      * @param bool $json
@@ -284,7 +284,7 @@ class Utils
     /**
      * Returns minimized HTML code.
      *
-     * @param $html
+     * @param string $html
      * HTML code to minimize
      *
      * @return string
@@ -311,10 +311,10 @@ class Utils
     /**
      * Returns the number of pages required to show a certain list of objects.
      *
-     * @param $numberOfObjects
+     * @param int $numberOfObjects
      * total number of objects
      *
-     * @param $objectsPerPage
+     * @param int $objectsPerPage
      * number of objects visible on a page
      *
      * @return int
@@ -357,7 +357,7 @@ class Utils
     /**
      * Converts an array of parameters into a URL query string.
      *
-     * @param $parameters
+     * @param array $parameters
      * associative array of parameters
      *
      * @return string
@@ -414,7 +414,7 @@ class Utils
     /**
      * Tests, if a string value is blank.
      *
-     * @param $string
+     * @param string $string
      * the string value to test
      *
      * @return bool
@@ -432,7 +432,7 @@ class Utils
     /**
      * Tests, if an array is empty.
      *
-     * @param $array
+     * @param array|null $array
      * the array value to test
      *
      * @return bool
@@ -449,7 +449,7 @@ class Utils
     /**
      * Tests, if a string value is empty.
      *
-     * @param $string
+     * @param string $string
      * the string value to test
      *
      * @return bool
@@ -515,7 +515,7 @@ class Utils
     /**
      * Tests, if a string value is not blank.
      *
-     * @param $string
+     * @param string $string
      * the string value to test
      *
      * @return bool
@@ -530,7 +530,7 @@ class Utils
     /**
      * Tests, if an array is not empty.
      *
-     * @param $array
+     * @param array|null $array
      * the array value to test
      *
      * @return bool
@@ -545,7 +545,7 @@ class Utils
     /**
      * Tests, if a string value is not empty.
      *
-     * @param $string
+     * @param string $string
      * the string value to test
      *
      * @return bool
@@ -560,10 +560,10 @@ class Utils
     /**
      * Tests, if a captcha code does not match against a captcha hash.
      *
-     * @param $captchaCode
+     * @param string $captchaCode
      * captcha code
      *
-     * @param $captchaHash
+     * @param string $captchaHash
      * captcha hash
      *
      * @param int $maxAge
@@ -594,10 +594,10 @@ class Utils
     /**
      * Tests, if a captcha code matches against a captcha hash.
      *
-     * @param $captchaCode
+     * @param string $captchaCode
      * captcha code
      *
-     * @param $captchaHash
+     * @param string $captchaHash
      * captcha hash
      *
      * @param int $maxAge
@@ -777,7 +777,7 @@ class Utils
     /**
      * Replace URL's in a text with HTML links.
      *
-     * @param $text
+     * @param string $text
      * text
      *
      * @return string
@@ -839,19 +839,19 @@ class Utils
      * @param array $object
      * object data
      *
-     * @param $field
+     * @param string $field
      * name of the field to show
      *
-     * @param $i18n
+     * @param array $i18n
      * translations
      *
-     * @param $lang
+     * @param string $lang
      * language code
      *
      * @return null|string
      * HTML encoded output for the requested field
      */
-    public static function writeObjectField(&$object, $field, &$i18n, $lang)
+    public static function writeObjectField(array &$object, $field, array &$i18n, $lang)
     {
         if (!\is_array($object))
             return null;

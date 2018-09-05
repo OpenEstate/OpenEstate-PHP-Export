@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\View;
 
+use OpenEstate\PhpExport\Environment;
 use OpenEstate\PhpExport\Utils;
 
 /**
@@ -38,10 +39,10 @@ class ExposeHtml extends AbstractHtmlView
     /**
      * ExposeHtml constructor.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      */
-    function __construct(\OpenEstate\PhpExport\Environment $env)
+    function __construct(Environment $env)
     {
         parent::__construct($env);
     }

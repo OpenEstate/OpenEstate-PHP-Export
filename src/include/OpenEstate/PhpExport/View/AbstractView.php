@@ -18,6 +18,9 @@
 
 namespace OpenEstate\PhpExport\View;
 
+use OpenEstate\PhpExport\Environment;
+use OpenEstate\PhpExport\Theme\AbstractTheme;
+
 /**
  * An abstract basic view.
  *
@@ -30,7 +33,7 @@ abstract class AbstractView
     /**
      * Export environment.
      *
-     * @var \OpenEstate\PhpExport\Environment
+     * @var Environment
      */
     protected $env;
 
@@ -44,10 +47,10 @@ abstract class AbstractView
     /**
      * AbstractView constructor.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
+     * @param Environment $env
      * export environment
      */
-    function __construct(\OpenEstate\PhpExport\Environment $env)
+    function __construct(Environment $env)
     {
         $this->env = $env;
     }
@@ -81,7 +84,7 @@ abstract class AbstractView
     /**
      * Get the export environment.
      *
-     * @return \OpenEstate\PhpExport\Environment
+     * @return Environment
      * export environment
      */
     public function getEnvironment()
@@ -114,7 +117,7 @@ abstract class AbstractView
     /**
      * Get the theme.
      *
-     * @return \OpenEstate\PhpExport\Theme\AbstractTheme
+     * @return AbstractTheme
      * theme
      */
     public function getTheme()
@@ -142,7 +145,7 @@ abstract class AbstractView
      * @param string $path
      * relative path within the theme directory
      *
-     * @param $parameters
+     * @param array|null $parameters
      * associative array of URL parameters
      *
      * @return string|null

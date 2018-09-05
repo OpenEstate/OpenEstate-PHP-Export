@@ -18,6 +18,7 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use OpenEstate\PhpExport\Environment;
 use function OpenEstate\PhpExport\gettext as _;
 
 /**
@@ -32,10 +33,10 @@ class ObjectId extends AbstractOrder
     /**
      * ObjectId constructor.
      *
-     * @param $name
+     * @param string $name
      * internal name
      *
-     * @param int $maxLifeTime
+     * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
     function __construct($name = 'ObjectId', $maxLifeTime = null)
@@ -48,7 +49,7 @@ class ObjectId extends AbstractOrder
         return SORT_NUMERIC;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
+    protected function getSortValue(Environment $env, array &$object, $lang)
     {
         $id = (isset($object['id'])) ?
             $object['id'] : null;
