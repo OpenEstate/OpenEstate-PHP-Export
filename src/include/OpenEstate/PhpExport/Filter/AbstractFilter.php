@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use OpenEstate\PhpExport\Utils;
+
 /**
  * An abstract object filter.
  *
@@ -65,6 +67,13 @@ abstract class AbstractFilter
     }
 
     /**
+     * AbstractFilter destructor.
+     */
+    public function __destruct()
+    {
+    }
+
+    /**
      * Create an array of object ID's, that are matched by this filter.
      *
      * @param \OpenEstate\PhpExport\Environment env
@@ -73,7 +82,7 @@ abstract class AbstractFilter
      * @return bool
      * true, if the data was successfully loaded
      */
-    public function build(\OpenEstate\PhpExport\Environment &$env)
+    public function build(\OpenEstate\PhpExport\Environment $env)
     {
         $this->items = array();
         $ids = $env->getObjectIds();
@@ -113,7 +122,7 @@ abstract class AbstractFilter
      * @return string
      * absolute path to the cache file
      */
-    public function getFile(\OpenEstate\PhpExport\Environment &$env)
+    public function getFile(\OpenEstate\PhpExport\Environment $env)
     {
         return $env->getPath('cache/filter.' . $this->getName());
     }
@@ -130,7 +139,7 @@ abstract class AbstractFilter
      */
     public function getItems($value)
     {
-        return (\is_array($this->items[$value])) ?
+        return (isset($this->items[$value]) && \is_array($this->items[$value])) ?
             $this->items[$value] :
             array();
     }
@@ -149,36 +158,27 @@ abstract class AbstractFilter
     /**
      * Get the filter title for the current language.
      *
-     * @param array $translations
-     * array with translation values
-     *
      * @param string $lang
      * current language code
      *
      * @return string
      * title
      */
-    abstract public function getTitle(&$translations, $lang);
+    abstract public function getTitle($lang);
 
     /**
      * Create a HTML widget for a selection on this filter.
      *
+     * @param \OpenEstate\PhpExport\Environment $env
+     * export environment
+     *
      * @param string $selectedValue
      * selected filter value
      *
-     * @param $lang
-     * current language code
-     *
-     * @param $translations
-     * array with translation values
-     *
-     * @param $setup
-     * current configuration
-     *
-     * @return \OpenEstate\PhpExport\Html\AbstractBodyElement|null
+     * @return \OpenEstate\PhpExport\Html\AbstractInputElement|null
      * created HTML widget or null, if it can't be created
      */
-    abstract public function getWidget($selectedValue, $lang, &$translations, &$setup);
+    abstract public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null);
 
     /**
      * Load array with filter values from cache file.
@@ -189,20 +189,20 @@ abstract class AbstractFilter
      * @return bool
      * true, if the cache file was loaded, otherwise false
      */
-    public function read(\OpenEstate\PhpExport\Environment &$env)
+    public function read(\OpenEstate\PhpExport\Environment $env)
     {
         $file = $this->getFile($env);
         if (!\is_file($file))
             return false;
 
         // Remove outdated cache file.
-        if ($this->maxLifeTime > 0 && \OpenEstate\PhpExport\Utils::isFileOlderThen($file, $this->maxLifeTime)) {
+        if ($this->maxLifeTime > 0 && Utils::isFileOlderThen($file, $this->maxLifeTime)) {
             \unlink($file);
             return false;
         }
 
         // Read data from cache file.
-        $data = \OpenEstate\PhpExport\Utils::readFile($file);
+        $data = Utils::readFile($file);
         if (!is_string($data))
             return false;
 
@@ -222,7 +222,7 @@ abstract class AbstractFilter
      * @return bool
      * true, if the filter values were loaded, otherwise false
      */
-    public function readOrRebuild(\OpenEstate\PhpExport\Environment &$env)
+    public function readOrRebuild(\OpenEstate\PhpExport\Environment $env)
     {
         // Try reading filter values from cache.
         if ($this->read($env))
@@ -235,8 +235,8 @@ abstract class AbstractFilter
         // Write filter values into the cache file for future usage.
         try {
             $this->write($env);
-        } catch (\OpenEstate\PhpExport\Exception\FileNotWritableException $e) {
-            \OpenEstate\PhpExport\Utils::logWarning($e);
+        } catch (\Exception $e) {
+            Utils::logWarning($e);
         }
 
         return true;
@@ -248,17 +248,17 @@ abstract class AbstractFilter
      * @param \OpenEstate\PhpExport\Environment $env
      * export environment
      *
-     * @throws \OpenEstate\PhpExport\Exception\FileNotWritableException
+     * @throws \Exception
      * if the cache file is not writable
      */
-    public function write(\OpenEstate\PhpExport\Environment &$env)
+    public function write(\OpenEstate\PhpExport\Environment $env)
     {
         $data = \serialize($this->items);
         $file = $this->getFile($env);
         $fh = \fopen($file, 'w');
         if ($fh === false) {
-            $msg = 'Can\'t write cache file for filter "' . $this->getName() . '".';
-            throw new \OpenEstate\PhpExport\Exception\FileNotWritableException($msg, $file);
+            $msg = 'Can\'t write cache file for filter "' . $this->getName() . '" into "' . $file . '".';
+            throw new \Exception($msg, $file);
         }
         \fwrite($fh, $data);
         \fclose($fh);

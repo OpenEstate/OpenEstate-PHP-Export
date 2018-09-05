@@ -30,18 +30,23 @@ abstract class AbstractLinkProvider extends AbstractProvider
     /**
      * AbstractLinkProvider constructor.
      *
-     * @param string $name
-     * internal provider name
-     *
      * @param int $width
      * width of the embedded element
      *
      * @param int $height
      * height of the embedded element
      */
-    function __construct($name, $width = 0, $height = 0)
+    function __construct($width = 0, $height = 0)
     {
-        parent::__construct($name, $width, $height);
+        parent::__construct($width, $height);
+    }
+
+    /**
+     * AbstractLinkProvider destructor.
+     */
+    public function __destruct()
+    {
+        parent::__destruct();
     }
 
     /**

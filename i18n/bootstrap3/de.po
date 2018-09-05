@@ -1,0 +1,30 @@
+# OpenEstate-PHP-Export Bootstrap3 Theme.
+# Copyright (C) 2009-2018 OpenEstate.org
+# This file is distributed under the same license as the OpenEstate-PHP-Export package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenEstate-PHP-Export Bootstrap3 Theme\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-08-10 05:53+0200\n"
+"PO-Revision-Date: 2018-08-14 00:11+0200\n"
+"Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
+"Language-Team: i18n@openestate.org\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: themes/default/expose.php:26
+msgid "Real estate offer"
+msgstr "Immobilienangebot"
+
+#: themes/default/expose.php:37 themes/default/listing.php:37
+msgid "This is an example..."
+msgstr "Dies ist ein Beispiel..."
+
+#: themes/default/listing.php:26
+msgid "Current real estate offers."
+msgstr "Aktuelle Immobilienangebote."

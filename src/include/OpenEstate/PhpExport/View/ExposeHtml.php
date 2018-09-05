@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\View;
 
+use OpenEstate\PhpExport\Utils;
+
 /**
  * A detailed view for a real estate object.
  *
@@ -28,29 +30,82 @@ namespace OpenEstate\PhpExport\View;
 class ExposeHtml extends AbstractHtmlView
 {
     /**
+     * @var string
+     * parameter name for the object ID
+     */
+    public $objectIdParameter = 'id';
+
+    /**
      * ExposeHtml constructor.
      *
-     * @param string $name
-     * internal name of the view
-     *
-     * @param string $charset
-     * charset of the document
-     *
-     * @param string $theme
-     * name of the theme
+     * @param \OpenEstate\PhpExport\Environment $env
+     * export environment
      */
-    function __construct($name = 'ExposeHtml', $charset = null, $theme = null)
+    function __construct(\OpenEstate\PhpExport\Environment $env)
     {
-        parent::__construct($name, $charset, $theme);
+        parent::__construct($env);
     }
 
-    public function generate(\OpenEstate\PhpExport\Environment &$env)
+    protected function generate()
     {
         try {
-            return $this->loadThemeFile($env, 'expose.php');
-        } catch (\OpenEstate\PhpExport\Exception\ThemeException $e) {
-            \OpenEstate\PhpExport\Utils::logError($e);
+            return $this->loadThemeFile('expose.php');
+        } catch (\Exception $e) {
+            Utils::logError($e);
             return null;
         }
+    }
+
+    /**
+     * Get data for the requested real estate object.
+     *
+     * @return array|null
+     * object data or null, if no valid object was requested
+     */
+    public function &getObjectData()
+    {
+        return $this->env->getObject($this->getObjectId());
+    }
+
+    /**
+     * Get ID of the requested real estate object.
+     *
+     * @return string|null
+     * object ID or null, if no object was requested
+     */
+    public function getObjectId()
+    {
+        return (isset($_REQUEST[$this->objectIdParameter]) && \is_string($_REQUEST[$this->objectIdParameter])) ?
+            $_REQUEST[$this->objectIdParameter] : null;
+    }
+
+    /**
+     * Get texts for the requested real estate object.
+     *
+     * @return array|null
+     * object texts or null, if no valid object was requested
+     */
+    public function getObjectTexts()
+    {
+        return $this->env->getObjectText($this->getObjectId());
+    }
+
+    /**
+     * Get parameter values for this view.
+     *
+     * @param string|null $objectId
+     * ID of the object to show
+     *
+     * @return array
+     * associative array with parameter values
+     */
+    public function getParameters($objectId = null)
+    {
+        $params = parent::getParameters();
+
+        if ($objectId !== null)
+            $params[$this->objectIdParameter] = $objectId;
+
+        return $params;
     }
 }

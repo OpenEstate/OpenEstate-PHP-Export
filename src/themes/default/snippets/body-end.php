@@ -18,3 +18,12 @@
 
 // Don't execute the file, if it is not properly loaded.
 if (!isset($this) || !\is_object($this)) return;
+
+use function \OpenEstate\PhpExport\gettext as _;
+
+?>
+
+<div class="openestate-copyright">
+    <span>powered by</span>
+    <a href="https://openestate.org" target="_blank">OpenEstate.org</a>
+</div>

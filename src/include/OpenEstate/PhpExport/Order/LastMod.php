@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Order by time of last modification.
  *
@@ -46,7 +48,7 @@ class LastMod extends AbstractOrder
         return SORT_NUMERIC;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment &$env, &$object, $lang)
+    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
     {
         $id = (isset($object['id'])) ?
             $object['id'] : null;
@@ -54,12 +56,9 @@ class LastMod extends AbstractOrder
             $env->getObjectStamp($id) : null;
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['lastModification'])) ?
-            $translations['labels']['lastModification'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('last modification');
     }
 
 }

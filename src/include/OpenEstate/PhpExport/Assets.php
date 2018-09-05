@@ -40,7 +40,7 @@ class Assets
      *
      * @var string
      */
-    const JQUERY_JS = 'jquery-js';
+    const JQUERY_JS = 'openestate-jquery-js';
 
     /**
      * Currently provided version of Colorbox.
@@ -54,21 +54,35 @@ class Assets
      *
      * @var string
      */
-    const COLORBOX_CSS = 'colorbox-css';
+    const COLORBOX_CSS = 'openestate-colorbox-css';
 
     /**
      * Internal name of the Colorbox JavaScript.
      *
      * @var string
      */
-    const COLORBOX_JS = 'colorbox-js';
+    const COLORBOX_JS = 'openestate-colorbox-js';
 
     /**
      * Internal name of the Colorbox JavaScript for localisation.
      *
      * @var string
      */
-    const COLORBOX_I18N_JS = 'colorbox-i18n-js';
+    const COLORBOX_I18N_JS = 'openestate-colorbox-i18n-js';
+
+    /**
+     * Internal name for the OpenEstate Icons Stylesheet.
+     *
+     * @var string
+     */
+    const OPENESTATE_ICONS_CSS = 'openestate-icons-css';
+
+    /**
+     * Internal name for the animated OpenEstate Icons Stylesheet.
+     *
+     * @var string
+     */
+    const OPENESTATE_ICONS_ANIMATION_CSS = 'openestate-icons-animation-css';
 
     /**
      * Export environment.
@@ -83,9 +97,9 @@ class Assets
      * @param Environment $env
      * export environment
      */
-    function __construct(Environment &$env)
+    function __construct(Environment $env)
     {
-        $this->env =& $env;
+        $this->env = $env;
     }
 
     /**
@@ -97,16 +111,19 @@ class Assets
      * @param bool $minimized
      * use minimized files
      *
+     * @param bool $defer
+     * defer execution of the external JavaScript
+     *
      * @return array
      * array of HTML header elements
      */
-    public function colorbox($lang = null, $minimized = true)
+    public function colorbox($lang = null, $minimized = true, $defer = true)
     {
         $elements = array();
         $elements[] = $this->colorbox_css($minimized);
-        $elements[] = $this->colorbox_js($minimized);
+        $elements[] = $this->colorbox_js($minimized, $defer);
 
-        $i18n = $this->colorbox_i18n_js($lang, $minimized);
+        $i18n = $this->colorbox_i18n_js($lang, $minimized, $defer);
         if ($i18n !== null)
             $elements[] = $i18n;
 
@@ -140,12 +157,15 @@ class Assets
      * @param bool $minimized
      * use minimized files
      *
+     * @param bool $defer
+     * defer execution of the external JavaScript
+     *
      * @return Html\Javascript |Html\Javascript|null
      * HTML header element or null, if the language is not available
      *
      * @noinspection PhpUnusedParameterInspection
      */
-    public function colorbox_i18n_js($lang, $minimized = true)
+    public function colorbox_i18n_js($lang, $minimized = true, $defer = true)
     {
         $asset = 'assets/colorbox/i18n/jquery.colorbox-' . $lang . '.js';
         if (!\is_string($lang))
@@ -157,7 +177,10 @@ class Assets
 
         return Html\Javascript::newLink(
             self::COLORBOX_I18N_JS,
-            $this->env->getUrl($asset) . '?v=' . self::COLORBOX_VERSION
+            $this->env->getUrl($asset) . '?v=' . self::COLORBOX_VERSION,
+            null,
+            null,
+            $defer
         );
     }
 
@@ -167,10 +190,13 @@ class Assets
      * @param bool $minimized
      * use minimized files
      *
+     * @param bool $defer
+     * defer execution of the external JavaScript
+     *
      * @return Html\Javascript
      * HTML header element
      */
-    public function colorbox_js($minimized = true)
+    public function colorbox_js($minimized = true, $defer = true)
     {
         $asset = ($minimized === true) ?
             'assets/colorbox/jquery.colorbox-min.js' :
@@ -178,7 +204,10 @@ class Assets
 
         return Html\Javascript::newLink(
             self::COLORBOX_JS,
-            $this->env->getUrl($asset) . '?v=' . self::COLORBOX_VERSION
+            $this->env->getUrl($asset) . '?v=' . self::COLORBOX_VERSION,
+            null,
+            null,
+            $defer
         );
     }
 
@@ -188,13 +217,16 @@ class Assets
      * @param bool $minimized
      * use minimized files
      *
+     * @param bool $defer
+     * defer execution of the external JavaScript
+     *
      * @return array
      * array of HTML header elements
      */
-    public function jquery($minimized = true)
+    public function jquery($minimized = true, $defer = true)
     {
         $elements = array();
-        $elements[] = $this->jquery_js($minimized);
+        $elements[] = $this->jquery_js($minimized, $defer);
         return $elements;
     }
 
@@ -204,10 +236,13 @@ class Assets
      * @param bool $minimized
      * use minimized files
      *
+     * @param bool $defer
+     * defer execution of the external JavaScript
+     *
      * @return Html\Javascript
      * HTML header element
      */
-    public function jquery_js($minimized = true)
+    public function jquery_js($minimized = true, $defer = true)
     {
         $asset = ($minimized === true) ?
             'assets/jquery/jquery.min.js' :
@@ -215,7 +250,63 @@ class Assets
 
         return Html\Javascript::newLink(
             self::JQUERY_JS,
-            $this->env->getUrl($asset) . '?v=' . self::JQUERY_VERSION
+            $this->env->getUrl($asset) . '?v=' . self::JQUERY_VERSION,
+            null,
+            null,
+            $defer
+        );
+    }
+
+    /**
+     * Create all header elements for OpenEstate Icons.
+     *
+     * @param bool $minimized
+     * use minimized files
+     *
+     * @return array
+     * array of HTML header elements
+     */
+    public function openestate_icons($minimized = true)
+    {
+        $elements = array();
+        $elements[] = $this->openestate_icons_css($minimized);
+        $elements[] = $this->openestate_icons_animation_css($minimized);
+        return $elements;
+    }
+
+    /**
+     * Create Stylesheet header for animated OpenEstate Icons.
+     *
+     * @param bool $minimized
+     * use minimized files
+     *
+     * @return Html\Stylesheet
+     * HTML header element
+     */
+    public function openestate_icons_animation_css($minimized = true)
+    {
+        $asset = 'assets/openestate-icons/css/openestate-animation.css';
+        return Html\Stylesheet::newLink(
+            self::OPENESTATE_ICONS_ANIMATION_CSS,
+            $this->env->getUrl($asset) . '?v=' . VERSION
+        );
+    }
+
+    /**
+     * Create Stylesheet header for OpenEstate Icons.
+     *
+     * @param bool $minimized
+     * use minimized files
+     *
+     * @return Html\Stylesheet
+     * HTML header element
+     */
+    public function openestate_icons_css($minimized = true)
+    {
+        $asset = 'assets/openestate-icons/css/openestate-icons.css';
+        return Html\Stylesheet::newLink(
+            self::OPENESTATE_ICONS_CSS,
+            $this->env->getUrl($asset) . '?v=' . VERSION
         );
     }
 }

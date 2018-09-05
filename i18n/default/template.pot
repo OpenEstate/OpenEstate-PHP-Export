@@ -1,0 +1,228 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the OpenEstate-PHP-Export (default theme) package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenEstate-PHP-Export (default theme) 2.0-dev\n"
+"Report-Msgid-Bugs-To: i18n@openestate.org\n"
+"POT-Creation-Date: 2018-09-04 22:07+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: themes/default/expose.php:68 themes/default/expose.php:234
+#: themes/default/fav.php:291 themes/default/listing.php:357
+#, php-format
+msgid "Real estate %1$s"
+msgstr ""
+
+#: themes/default/expose.php:221
+msgid "The offer was not found. Maybe it is not published anymore."
+msgstr ""
+
+#: themes/default/expose.php:225
+msgid "Visit our current offers"
+msgstr ""
+
+#: themes/default/expose.php:238 themes/default/fav.php:198
+msgid "Show current offers."
+msgstr ""
+
+#: themes/default/expose.php:244 themes/default/listing.php:215
+msgid "Show list of favorite objects."
+msgstr ""
+
+#: themes/default/expose.php:250 themes/default/fav.php:203
+#: themes/default/listing.php:221
+msgid "Select your preferred language."
+msgstr ""
+
+#: themes/default/expose.php:348
+msgid "Your contact person"
+msgstr ""
+
+#: themes/default/expose.php:355 themes/default/expose.php:360
+msgid "Phone"
+msgstr ""
+
+#: themes/default/expose.php:366 themes/default/expose.php:371
+msgid "Mobile"
+msgstr ""
+
+#: themes/default/expose.php:377 themes/default/expose.php:382
+msgid "Email"
+msgstr ""
+
+#: themes/default/expose.php:391
+msgid "Get in contact with us"
+msgstr ""
+
+#: themes/default/expose.php:394 themes/default/fav.php:469
+#: themes/default/listing.php:559
+msgid "Processing your request. Please wait for a moment."
+msgstr ""
+
+#: themes/default/expose.php:398
+msgid ""
+"Your message was successfully sent. We will report back as soon as possible."
+msgstr ""
+
+#: themes/default/expose.php:402
+msgid "Sorry, but we can't process your message due to an error."
+msgstr ""
+
+#: themes/default/expose.php:413
+msgid "Your name"
+msgstr ""
+
+#: themes/default/expose.php:426
+msgid "Your email address"
+msgstr ""
+
+#: themes/default/expose.php:438
+msgid "Your phone number"
+msgstr ""
+
+#: themes/default/expose.php:449
+msgid "Your message"
+msgstr ""
+
+#: themes/default/expose.php:452
+#, php-format
+msgid "I am interested in your offer \"%1$s\". Please get in contact with me."
+msgstr ""
+
+#: themes/default/expose.php:461 themes/default/expose.php:465
+msgid "Verification code"
+msgstr ""
+
+#: themes/default/expose.php:466
+msgid "refresh"
+msgstr ""
+
+#: themes/default/expose.php:487
+msgid "Yes, I accept the terms of use and the data privacy statement."
+msgstr ""
+
+#: themes/default/expose.php:499
+msgid "Send message"
+msgstr ""
+
+#: themes/default/fav.php:103 themes/default/fav.php:178
+msgid "My favored objects"
+msgstr ""
+
+#: themes/default/fav.php:180 themes/default/listing.php:194
+msgid "Show sort options."
+msgstr ""
+
+#: themes/default/fav.php:186 themes/default/listing.php:200
+msgid "Show objects in detailed view."
+msgstr ""
+
+#: themes/default/fav.php:192 themes/default/listing.php:206
+msgid "Show objects in gallery view."
+msgstr ""
+
+#: themes/default/fav.php:215 themes/default/listing.php:273
+msgid "Sort offers"
+msgstr ""
+
+#: themes/default/fav.php:241 themes/default/listing.php:299
+msgid "ascending"
+msgstr ""
+
+#: themes/default/fav.php:246 themes/default/listing.php:304
+msgid "descending"
+msgstr ""
+
+#: themes/default/fav.php:272
+msgid "Your list of favorite objects is empty."
+msgstr ""
+
+#: themes/default/fav.php:310 themes/default/fav.php:320
+#: themes/default/fav.php:348 themes/default/fav.php:371
+#: themes/default/fav.php:381 themes/default/fav.php:408
+#: themes/default/listing.php:380 themes/default/listing.php:390
+#: themes/default/listing.php:418 themes/default/listing.php:451
+#: themes/default/listing.php:461 themes/default/listing.php:488
+msgid "Show details about this object."
+msgstr ""
+
+#: themes/default/fav.php:349 themes/default/fav.php:409
+#: themes/default/listing.php:419 themes/default/listing.php:489
+msgid "Details"
+msgstr ""
+
+#: themes/default/fav.php:352 themes/default/fav.php:412
+#: themes/default/listing.php:422 themes/default/listing.php:492
+msgid "Download information about this object as PDF file."
+msgstr ""
+
+#: themes/default/fav.php:353 themes/default/fav.php:413
+#: themes/default/listing.php:423 themes/default/listing.php:493
+msgid "Download"
+msgstr ""
+
+#: themes/default/fav.php:358 themes/default/fav.php:418
+#: themes/default/listing.php:436 themes/default/listing.php:506
+msgid "Remove this object from your list of favorites."
+msgstr ""
+
+#: themes/default/fav.php:359 themes/default/fav.php:419
+#: themes/default/listing.php:438 themes/default/listing.php:508
+msgid "Remove from favorites"
+msgstr ""
+
+#: themes/default/fav.php:436 themes/default/fav.php:440
+#: themes/default/listing.php:526 themes/default/listing.php:530
+msgid "Show previous page."
+msgstr ""
+
+#: themes/default/fav.php:450 themes/default/fav.php:455
+#: themes/default/listing.php:540 themes/default/listing.php:545
+msgid "Show next page."
+msgstr ""
+
+#: themes/default/listing.php:114 themes/default/listing.php:189
+msgid "Current offers"
+msgstr ""
+
+#: themes/default/listing.php:191
+msgid "Show search options."
+msgstr ""
+
+#: themes/default/listing.php:233
+msgid "Search offers"
+msgstr ""
+
+#: themes/default/listing.php:257
+msgid "search"
+msgstr ""
+
+#: themes/default/listing.php:262
+msgid "clear"
+msgstr ""
+
+#: themes/default/listing.php:334
+msgid "There are currently no objects published."
+msgstr ""
+
+#: themes/default/listing.php:336
+msgid "No objects were found according to your filter settings."
+msgstr ""
+
+#: themes/default/listing.php:429 themes/default/listing.php:499
+msgid "Add this object to your list of favorites."
+msgstr ""
+
+#: themes/default/listing.php:431 themes/default/listing.php:501
+msgid "Add to favorites"
+msgstr ""

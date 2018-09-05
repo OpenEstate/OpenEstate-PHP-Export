@@ -18,6 +18,9 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use OpenEstate\PhpExport\Utils;
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Filter by region.
  *
@@ -45,12 +48,10 @@ class Region extends AbstractFilter
     {
         $value = (isset($object['address']['region'])) ?
             $object['address']['region'] : null;
-        if (!\is_string($value))
+        if (Utils::isBlankString($value))
             return;
 
         $value = \trim($value);
-        if (\strlen($value) == 0)
-            return;
 
         if (!isset($items[$value]) || !\is_array($items[$value]))
             $items[$value] = array();
@@ -58,31 +59,31 @@ class Region extends AbstractFilter
         $items[$value][] = $object['id'];
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['estate.region'])) ?
-            $translations['labels']['estate.region'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('region');
     }
 
-    public function getWidget($selectedValue, $lang, &$translations, &$setup)
+    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
     {
-        if (!$this->readOrRebuild($setup->CacheLifeTime) || !\is_array($this->items))
+        if (!$this->readOrRebuild($env) || !\is_array($this->items))
             return null;
+
+        $lang = $env->getLanguage();
+        //$translations = $env->getTranslations();
 
         $options = \array_keys($this->items);
         \asort($options);
         $values = array();
-        $values[''] = '[ ' . $this->getTitle($translations, $lang) . ' ]';
+        $values[''] = '[ ' . $this->getTitle($lang) . ' ]';
         foreach ($options as $o) {
             $values[$o] = $o;
         }
 
         return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
+            'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',
-            'filter[' . $this->getName() . ']',
             $selectedValue,
             $values
         );

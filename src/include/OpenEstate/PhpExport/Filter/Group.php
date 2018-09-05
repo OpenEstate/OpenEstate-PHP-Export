@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Filter by group nr.
  *
@@ -56,31 +58,31 @@ class Group extends AbstractFilter
     }
 
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['estate.group'])) ?
-            $translations['labels']['estate.group'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('group');
     }
 
-    public function getWidget($selectedValue, $lang, &$translations, &$setup)
+    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
     {
-        if (!$this->readOrRebuild($setup->CacheLifeTime) || !\is_array($this->items))
+        if (!$this->readOrRebuild($env) || !\is_array($this->items))
             return null;
+
+        $lang = $env->getLanguage();
+        //$translations = $env->getTranslations();
 
         $options = \array_keys($this->items);
         \sort($options);
         $values = array();
-        $values[''] = '[ ' . $this->getTitle($translations, $lang) . ' ]';
+        $values[''] = '[ ' . $this->getTitle($lang) . ' ]';
         foreach ($options as $o) {
-            $values[$o] = $o;
+            $values[(string)$o] = _('group %1$s', $o);
         }
 
         return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
+            'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',
-            'filter[' . $this->getName() . ']',
             (string)$selectedValue,
             $values
         );

@@ -57,6 +57,13 @@ abstract class AbstractHtmlElement
     }
 
     /**
+     * AbstractHtmlElement destructor.
+     */
+    public function __destruct()
+    {
+    }
+
+    /**
      * Generate the HTML element.
      *
      * @return string

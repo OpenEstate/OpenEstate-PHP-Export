@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Filter by age (new building or old building).
  *
@@ -55,23 +57,22 @@ class Age extends AbstractFilter
         $items[$value][] = $object['id'];
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['openestate.age'])) ?
-            $translations['labels']['openestate.age'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('age');
     }
 
-    public function getWidget($selectedValue, $lang, &$translations, &$setup)
+    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
     {
-        if (!$this->readOrRebuild($setup->CacheLifeTime) || !\is_array($this->items))
+        if (!$this->readOrRebuild($env) || !\is_array($this->items))
             return null;
 
+        $lang = $env->getLanguage();
+        $translations = $env->getTranslations();
 
         $options = array('old_building', 'new_building');
         $values = array();
-        $values[''] = '[ ' . $this->getTitle($translations, $lang) . ' ]';
+        $values[''] = '[ ' . $this->getTitle($lang) . ' ]';
         foreach ($options as $o) {
             $txt = (isset($translations['labels']['openestate.age.' . $o])) ?
                 $translations['labels']['openestate.age.' . $o] : null;
@@ -80,9 +81,9 @@ class Age extends AbstractFilter
         }
 
         return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
+            'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',
-            'filter[' . $this->getName() . ']',
             $selectedValue,
             $values
         );

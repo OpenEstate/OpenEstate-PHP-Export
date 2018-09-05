@@ -1,0 +1,239 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the OpenEstate-PHP-Export package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
+"Report-Msgid-Bugs-To: i18n@openestate.org\n"
+"POT-Creation-Date: 2018-09-04 22:07+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: include/OpenEstate/PhpExport/Filter/SpecialOffer.php:65
+msgid "special offer"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Country.php:89
+msgid "country"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Action.php:61
+msgid "marketing type"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Age.php:62
+msgid "age"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Equipment.php:62
+msgid "equipment"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:93
+#: include/OpenEstate/PhpExport/Order/Rooms.php:59
+msgid "number of rooms"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:108
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:110
+#, php-format
+msgid "%1$s room"
+msgid_plural "%1$s rooms"
+msgstr[0] ""
+msgstr[1] ""
+
+#: include/OpenEstate/PhpExport/Filter/Group.php:63
+msgid "group"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Group.php:79
+#, php-format
+msgid "group %1$s"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Region.php:64
+msgid "region"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/City.php:64
+#: include/OpenEstate/PhpExport/Order/City.php:59
+msgid "place"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Furnished.php:65
+msgid "furnished"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Type.php:65
+msgid "object type"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/Title.php:61
+msgid "title"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/ObjectNr.php:65
+msgid "object Nr"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/Postal.php:59
+msgid "postal code"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/Area.php:78
+msgid "area"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/Price.php:83
+msgid "price"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/LastMod.php:61
+msgid "last modification"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/ObjectId.php:64
+msgid "object ID"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Utils.php:166
+msgid "from now on"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Utils.php:889
+msgid "month"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Utils.php:896
+#, php-format
+msgid "%1$s per %2$s"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:114
+msgid "No object was provided for the contact request."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:116
+msgid "No contact data was provided for the contact request."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:121
+msgid "The requested object was not found."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:130
+msgid "Can't find a recipient address."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:144
+msgid "Please enter your name."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:146
+#, php-format
+msgid "Your name should contain at least %1$s and maximal %2$s characters."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:148
+#: include/OpenEstate/PhpExport/Action/Contact.php:156
+#: include/OpenEstate/PhpExport/Action/Contact.php:170
+msgid "HTML code is not allowed."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:152
+msgid "Please enter your phone number."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:154
+#, php-format
+msgid ""
+"Your phone number should contain at least %1$s and maximal %2$s characters."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:160
+msgid "Please enter your email address."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:162
+msgid "Your email address is invalid."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:166
+msgid "Please enter your message."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:168
+#, php-format
+msgid "Your message should contain at least %1$s characters."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:174
+msgid "Please accept the terms of use."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:179
+msgid "Please enter the verification code."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:181
+msgid "Your verification code is invalid."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:186
+msgid "Please check your input in the highlighted fields."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:208
+#, php-format
+msgid "Contact request for object %1$s"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:209
+#, php-format
+msgid "A contact request was sent for object %1$s."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:213
+msgid "Name"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:214
+msgid "Phone"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:215
+msgid "Email"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:216
+msgid "Language"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:217
+msgid "Time"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:218
+msgid "IP address"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:219
+msgid "Web Browser"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:226
+msgid "Email was not sent."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:230
+msgid "The email transfer failed."
+msgstr ""

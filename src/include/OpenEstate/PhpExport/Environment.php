@@ -35,25 +35,18 @@ class Environment
     private $config;
 
     /**
-     * Absolute path, that points to the root of the export environment.
-     *
-     * @var string
-     */
-    private $basePath;
-
-    /**
-     * URL, that points to the root of the export environment.
-     *
-     * @var string
-     */
-    private $baseUrl;
-
-    /**
      * Asset factory.
      *
      * @var Assets
      */
     private $assets;
+
+    /**
+     * Configured theme.
+     *
+     * @var \OpenEstate\PhpExport\Theme\AbstractTheme
+     */
+    private $theme = null;
 
     /**
      * Session of the requesting user.
@@ -77,6 +70,27 @@ class Environment
     public $objectsCacheSize = 10;
 
     /**
+     * Internal cache with object texts.
+     *
+     * @var array
+     */
+    private $objectTexts = null;
+
+    /**
+     * Maximal number of object texts to keep in the local cache.
+     *
+     * @var int
+     */
+    public $objectTextsCacheSize = 10;
+
+    /**
+     * Current language.
+     *
+     * @var string
+     */
+    private $language;
+
+    /**
      * Available languages.
      *
      * @var array
@@ -86,44 +100,100 @@ class Environment
     /**
      * Translator.
      *
-     * var \Gettext\BaseTranslator
+     * var Translator
      */
-    private $i18n = null;
+    private $translator = null;
+
+    /**
+     * Translations loaded from data directory.
+     *
+     * var array
+     */
+    private $translations = null;
+
+    /**
+     * Name of the action parameter.
+     *
+     * @var string
+     */
+    public $actionParameter = 'action';
 
     /**
      * Environment constructor.
      *
-     * @param string $basePath
-     * absolute path of the export environment.
+     * @param Config $config
+     * configuration
      *
-     * @param string $baseUrl
-     * URL of the export environment.
+     * @param bool $initSession
+     * load session during initialization
      *
-     * @throws Exception\InvalidEnvironmentException
+     * @throws \Exception
      * if the environment is not valid
      */
-    function __construct($basePath, $baseUrl = null)
+    function __construct(Config $config, $initSession = true)
     {
-        if ($basePath === null || !\is_string($basePath) || !\is_dir($basePath))
-            throw new Exception\InvalidEnvironmentException('No valid base path was specified!');
-
-        $this->basePath = $basePath;
-        $this->baseUrl = (\is_string($baseUrl)) ?
-            $baseUrl : './';
-
-        // init configuration
-        $myConfig = $this->getPath('config.php');
-        $this->config = null;
-        if (\is_file($myConfig) && \is_readable($myConfig)) {
-            $this->config = require $myConfig;
-        }
-        if (!($this->config instanceof Config)) {
-            $this->config = new Config();
-        }
+        $this->config = $config;
         $this->config->setupEnvironment($this);
+
+        // create theme
+        $this->theme = $this->config->newTheme($this);
+        if (!($this->theme instanceof Theme\AbstractTheme))
+            throw new \Exception('The theme does not implement AbstractTheme!');
+        $this->config->setupTheme($this->theme);
 
         // create asset factory
         $this->assets = new Assets($this);
+
+        if ($this->getConfig()->compatibility == 0) {
+            if (!defined('IN_WEBSITE'))
+                define('IN_WEBSITE', 1);
+        }
+
+        // init languages
+        $languageFile = $this->getPath('data/language.php');
+
+        $this->languages = array();
+        if (\is_file($languageFile)) {
+            if ($this->getConfig()->compatibility == 0) {
+                /** @noinspection PhpIncludeInspection */
+                require $languageFile;
+
+                if (isset($GLOBALS['immotool_languages'])) {
+                    $this->languages = $GLOBALS['immotool_languages'];
+                    unset($GLOBALS['immotool_languages']);
+                }
+            } else {
+                /** @noinspection PhpIncludeInspection */
+                $this->languages = require $languageFile;
+            }
+        }
+
+        // init session
+        if ($initSession === true) {
+            $this->session = $this->config->newSession($this);
+            $this->session->init();
+        } else {
+            $this->session = null;
+        }
+
+        // detect user language
+        $lang = ($this->session !== null) ?
+            $this->session->getLanguage() : null;
+        if (!\is_string($lang)) {
+            foreach (Utils::getUserLanguages() as $userLang) {
+                $userLang = \strtolower($userLang);
+                foreach ($this->getLanguageCodes() as $availableLang) {
+                    $availableLang = \strtolower($availableLang);
+                    if ($userLang == $availableLang) {
+                        $lang = $availableLang;
+                        break;
+                    }
+                }
+                if ($lang !== null) break;
+            }
+        }
+        $this->setLanguage(($lang !== null) ?
+            $lang : $this->config->defaultLanguage);
     }
 
     /**
@@ -134,8 +204,12 @@ class Environment
         $this->shutdown();
         $this->assets = null;
         $this->config = null;
+        $this->languages = null;
         $this->objects = null;
+        $this->objectTexts = null;
         $this->session = null;
+        $this->theme = null;
+        $this->translations = null;
     }
 
     /**
@@ -157,6 +231,17 @@ class Environment
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Get current language.
+     *
+     * @return string
+     * ISO language code
+     */
+    public function getLanguage()
+    {
+        return $this->language;
     }
 
     /**
@@ -197,14 +282,18 @@ class Environment
      * @return array|null
      * an array with real estate data or null, if not found
      */
-    public function getObject($id = null)
+    public function &getObject($id = null)
     {
-        if ($id === null || !\is_string($id) || \preg_match('/^\w*/i', $id) !== 1)
-            return null;
+        $null = null;
 
-        $file = $this->getPath('data/' . $id . '/object.php');
+        if (!\is_int($id) && !\is_string($id))
+            return $null;
+        //if (\is_string($id) && \preg_match('/^\w*/i', $id) !== 1)
+        //    return $null;
+
+        $file = $this->getPath('data/' . basename($id) . '/object.php');
         if (!\is_file($file))
-            return null;
+            return $null;
 
         if (!\is_array($this->objects))
             $this->objects = array();
@@ -216,10 +305,22 @@ class Environment
                 $keys = \array_keys($this->objects);
                 unset($this->objects[$keys[0]]);
             }
-            /** @noinspection PhpIncludeInspection */
-            $data = include($file);
+
+            $data = null;
+            if ($this->getConfig()->compatibility == 0) {
+                /** @noinspection PhpIncludeInspection */
+                include($file);
+
+                if (isset($GLOBALS['immotool_objects'][$id])) {
+                    $data = $GLOBALS['immotool_objects'][$id];
+                    unset($GLOBALS['immotool_objects'][$id]);
+                }
+            } else {
+                /** @noinspection PhpIncludeInspection */
+                $data = include($file);
+            }
             if (!\is_array($data))
-                return null;
+                return $null;
 
             $this->objects[$id] =& $data;
         }
@@ -260,10 +361,65 @@ class Environment
      */
     public function getObjectStamp($id = null)
     {
-        if ($id == null || preg_match('/^\w*/i', $id) !== 1)
+        if (!\is_string($id) || preg_match('/^\w*/i', $id) !== 1)
             return null;
 
         return Utils::getFileStamp($this->getPath('data/' . $id . '/object.php'));
+    }
+
+    /**
+     * Get the text data of a real estate object.
+     *
+     * @param string $id
+     * object ID
+     *
+     * @return array|null
+     * an array with real estate text data or null, if not found
+     */
+    public function &getObjectText($id = null)
+    {
+        $null = null;
+
+        if (!\is_int($id) && !\is_string($id))
+            return $null;
+        //if (\is_string($id) && \preg_match('/^\w*/i', $id) !== 1)
+        //    return $null;
+
+        $file = $this->getPath('data/' . basename($id) . '/texts.php');
+        if (!\is_file($file))
+            return $null;
+
+        if (!\is_array($this->objectTexts))
+            $this->objectTexts = array();
+
+        if (!isset($this->objectTexts[$id])) {
+            //echo 'LOAD OBJECT ' . $id . '<br>';
+            $max = (int)$this->objectTextsCacheSize;
+            while (\count($this->objectTexts) >= $max) {
+                $keys = \array_keys($this->objectTexts);
+                unset($this->objectTexts[$keys[0]]);
+            }
+
+            if ($this->getConfig()->compatibility == 0) {
+                /** @noinspection PhpIncludeInspection */
+                include($file);
+
+                if (isset($GLOBALS['immotool_texts'][$id])) {
+                    $data = $GLOBALS['immotool_texts'][$id];
+                    unset($GLOBALS['immotool_texts'][$id]);
+                }
+            } else {
+
+                /** @noinspection PhpIncludeInspection */
+                $data = include($file);
+                if (!\is_array($data))
+                    return $null;
+            }
+
+            $this->objectTexts[$id] =& $data;
+        }
+
+        return $this->objectTexts[$id];
     }
 
     /**
@@ -277,28 +433,35 @@ class Environment
      */
     public function getPath($path = null)
     {
-        if ($path === null || !\is_string($path))
-            return $this->basePath;
+        if (!\is_string($path))
+            return $this->config->basePath;
 
         if (\substr($path, 0, 1) !== '/')
             $path = '/' . $path;
 
-        return $this->basePath . $path;
+        return $this->config->basePath . $path;
     }
 
     /**
-     * Get a value from the session store.
+     * Get instance of the current session.
      *
-     * @param $key
-     * value name in the session store
-     *
-     * @return mixed|null
-     * value from session store
+     * @return Session\AbstractSession
+     * session instance
      */
-    public function getSessionValue($key)
+    public function getSession()
     {
-        return ($this->session !== null) ?
-            $this->session->get($key) : null;
+        return $this->session;
+    }
+
+    /**
+     * Get instance of the current theme.
+     *
+     * @return Theme\AbstractTheme
+     * theme instance
+     */
+    public function getTheme()
+    {
+        return $this->theme;
     }
 
     /**
@@ -322,7 +485,7 @@ class Environment
         if (!\is_dir($themePath))
             return null;
 
-        if ($path === null || !\is_string($path))
+        if (!\is_string($path))
             return $themePath;
 
         if (\substr($path, 0, 1) !== '/')
@@ -340,42 +503,38 @@ class Environment
      * @param string $path
      * file name within the theme
      *
+     * @param $parameters
+     * associative array of URL parameters
+     *
      * @return string
      * URL of the file in the theme
      */
-    public function getThemeUrl($theme, $path = null)
+    public function getThemeUrl($theme, $path = null, $parameters = null)
     {
         if ($theme === null)
             return null;
 
-        $themeUrl = $this->getUrl('themes/' . $theme);
-        if ($path === null || !\is_string($path))
-            return $themeUrl;
+        $themePath = 'themes/' . $theme;
+        if (\is_string($path))
+            $themePath .= (\substr($path, 0, 1) !== '/') ?
+                '/' . $path : $path;
 
-        if (\substr($path, 0, 1) !== '/')
-            $path = '/' . $path;
-
-        return $themeUrl . $path;
+        return $this->getUrl($themePath, $parameters);
     }
 
     /**
-     * Get the URL of a file in the export environment.
+     * Get translations provided in data directory.
      *
-     * @param string $path
-     * relative path of a file in the export environment
-     *
-     * @return string
-     * URL of the file in the export environment
+     * @return array
+     * array with translations
      */
-    public function getUrl($path = null)
+    public function &getTranslations()
     {
-        if ($path === null || !\is_string($path))
-            return $this->baseUrl;
+        if (\is_array($this->translations))
+            return $this->translations;
 
-        if (\substr($path, 0, 1) !== '/')
-            $path = '/' . $path;
-
-        return $this->baseUrl . $path;
+        $i18n = array();
+        return $i18n;
     }
 
     /**
@@ -384,51 +543,208 @@ class Environment
      * @return \Gettext\BaseTranslator
      * translator
      */
-    public function i18n()
+    public function getTranslator()
     {
-        return $this->i18n;
+        return $this->translator;
     }
 
     /**
-     * Initialize the export environment.
+     * Get the URL of a file in the export environment.
+     *
+     * @param string $path
+     * relative path of a file in the export environment
+     *
+     * @param $parameters
+     * associative array of URL parameters
+     *
+     * @return string
+     * URL of the file in the export environment
      */
-    public function init()
+    public function getUrl($path = null, $parameters = null)
     {
-        // init languages
-        $languageFile = $this->getPath('data/language.php');
-        /** @noinspection PhpIncludeInspection */
-        $this->languages = (\is_file($languageFile)) ?
-            require $languageFile : array();
+        $url = $this->config->baseUrl;
 
-        // init gettext translator
-        //$this->i18n = new \Gettext\GettextTranslator();
-        //$this->i18n->setLanguage('de');
-        //$this->i18n->loadDomain('openestate-php-export', $this->getPath('locale'));
-        //$this->i18n->register();
+        if (\is_string($path))
+            $url .= (\substr($path, 0, 1) !== '/') ?
+                '/' . $path : $path;
 
-        // init custom translator
-        $this->i18n = new \Gettext\Translator();
-        $this->i18n->loadTranslations(\Gettext\Translations::fromMoFile($this->getPath('locale/de.mo')));
-
-        // init session
-        $this->session = new Session\CookieSession();
-        $this->session->init($this);
+        return $url . Utils::getUrlParameters($parameters);
     }
 
     /**
-     * Set a value in session store.
+     * Test, if debug mode is enabled.
      *
-     * @param string $key
-     * value name in the session store
-     *
-     * @param mixed $value
-     * the value to store, or null to remove the value from session
+     * @return bool
+     * true, if debug mode is enabled
      */
-    public function setSessionValue($key, $value)
+    public function isDebugMode()
     {
+        return $this->config->debug === true;
+    }
+
+    /**
+     * Test, if production mode is enabled.
+     *
+     * @return bool
+     * true, if production mode is enabled
+     */
+    public function isProductionMode()
+    {
+        return !$this->isDebugMode();
+    }
+
+    /**
+     * Create an action instance.
+     *
+     * @param $name
+     * name of requested action
+     *
+     * @return Action\AbstractAction
+     * created action or null, if it is unknown
+     */
+    public function newAction($name)
+    {
+        return $this->config->newAction($name);
+    }
+
+    /**
+     * Create the HTML view with object details.
+     *
+     * @return View\ExposeHtml
+     * created view
+     */
+    public function newExposeHtml()
+    {
+        $view = ($this->theme !== null) ?
+            $this->theme->newExposeHtml() : null;
+
+        if (!($view instanceof View\ExposeHtml)) {
+            Utils::logError(new \Exception('The expose view does not implement ExposeHtml!'));
+            return null;
+        }
+
+        $view->setCharset($this->config->charset);
+        $this->theme->setupExposeHtml($view);
+        $this->config->setupExposeHtml($view);
+        return $view;
+    }
+
+    /**
+     * Create the HTML view with favorite listing.
+     *
+     * @return View\FavoriteHtml
+     * created view
+     */
+    public function newFavoriteHtml()
+    {
+        $view = ($this->theme !== null) ?
+            $this->theme->newFavoriteHtml() : null;
+
+        if (!($view instanceof View\FavoriteHtml)) {
+            Utils::logError(new \Exception('The listing view does not implement FavoriteHtml!'));
+            return null;
+        }
+
+        $view->setCharset($this->config->charset);
+        $this->theme->setupFavoriteHtml($view);
+        $this->config->setupFavoriteHtml($view);
+        return $view;
+    }
+
+    /**
+     * Create the HTML view with object listing.
+     *
+     * @return View\ListingHtml
+     * created view
+     */
+    public function newListingHtml()
+    {
+        $view = ($this->theme !== null) ?
+            $this->theme->newListingHtml() : null;
+
+        if (!($view instanceof View\ListingHtml)) {
+            Utils::logError(new \Exception('The listing view does not implement ListingHtml!'));
+            return null;
+        }
+
+        $view->setCharset($this->config->charset);
+        $this->theme->setupListingHtml($view);
+        $this->config->setupListingHtml($view);
+        return $view;
+    }
+
+    /**
+     * Create a mailer instance.
+     *
+     * @return \PHPMailer\PHPMailer\PHPMailer|null
+     * created mailer or null, if the configuration failed
+     *
+     * @throws \PHPMailer\PHPMailer\Exception
+     * if the mailer configuration failed
+     */
+    public function newMailer()
+    {
+        $mailer = $this->config->newMailer($this);
+        $this->config->setupMailer($mailer, $this);
+        return $mailer;
+    }
+
+    /**
+     * Process the requested action.
+     *
+     * @return mixed|null
+     * action result or null, if no action was executed
+     *
+     * @throws \Exception
+     * if the execution of the action failed
+     */
+    public function processAction()
+    {
+        if (!isset($_REQUEST[$this->actionParameter]) || !\is_string($_REQUEST[$this->actionParameter]))
+            return null;
+
+        $action = $this->config->newAction($_REQUEST[$this->actionParameter]);
+        if ($action === null)
+            throw new \Exception('The requested action was not found!');
+        if (!($action instanceof Action\AbstractAction))
+            throw new \Exception('The requested action does not implement AbstractAction!');
+
+        return $action->execute($this);
+    }
+
+    /**
+     * Set current language.
+     *
+     * @param string $languageCode
+     * ISO language code
+     */
+    public function setLanguage($languageCode)
+    {
+        $this->language = \str_replace('/', '', $languageCode);
         if ($this->session !== null)
-            $this->session->set($key, $value);
+            $this->session->setLanguage($this->language);
 
+        // create translator
+        $this->translator = Utils::createTranslator($this);
+        $this->translator->register();
+
+        // load further translations from data directory
+        $dataTranslationsFile = $this->getPath('data/i18n_' . $this->language . '.php');
+        $this->translations = array();
+        if (\is_file($dataTranslationsFile)) {
+            if ($this->getConfig()->compatibility == 0) {
+                /** @noinspection PhpIncludeInspection */
+                include $dataTranslationsFile;
+
+                if (isset($GLOBALS['immotool_translations'][$this->language])) {
+                    $this->translations = $GLOBALS['immotool_translations'][$this->language];
+                    unset($GLOBALS['immotool_translations'][$this->language]);
+                }
+            } else {
+                /** @noinspection PhpIncludeInspection */
+                $this->translations = include $dataTranslationsFile;
+            }
+        }
     }
 
     /**
@@ -437,7 +753,7 @@ class Environment
     public function shutdown()
     {
         if ($this->session !== null) {
-            $this->session->write($this);
+            $this->session->write();
             $this->session = null;
         }
     }

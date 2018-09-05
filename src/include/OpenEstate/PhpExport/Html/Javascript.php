@@ -68,6 +68,14 @@ class Javascript extends AbstractHeadElement
     public $charset = null;
 
     /**
+     * Javascript, that is executed after the external JavaScript file was loaded.
+     *
+     * @var string
+     * @see https://www.w3schools.com/tags/ev_onload.asp Details about the "onload" event.
+     */
+    public $onload = null;
+
+    /**
      * Javascript constructor.
      *
      * @param string $id
@@ -88,7 +96,8 @@ class Javascript extends AbstractHeadElement
         if (\is_string($this->id))
             $element .= ' id="' . \htmlspecialchars($this->id) . '"';
 
-        $element .= ' type="text/javascript"';
+        // The attribute type="text/javascript" is not required for HTML5.
+        // $element .= ' type="text/javascript"';
 
         if (\is_string($this->src)) {
             if (\is_string($this->src))
@@ -96,6 +105,9 @@ class Javascript extends AbstractHeadElement
 
             if (\is_string($this->charset))
                 $element .= ' charset="' . \htmlspecialchars($this->charset) . '"';
+
+            if (\is_string($this->onload))
+                $element .= ' onload="' . \htmlspecialchars($this->onload) . '"';
 
             if ($this->async === true)
                 $element .= ' async';
@@ -145,25 +157,29 @@ class Javascript extends AbstractHeadElement
      * @param string $src
      * URL of the external JavaScript
      *
+     * @param string $onload
+     * Javascript, that is executed after the external JavaScript file was loaded.
+     *
      * @param string $charset
      * charset of the external JavaScript
-     *
-     * @param bool $async
-     * load external JavaScript asynchronously.
      *
      * @param bool $defer
      * defer execution of the external JavaScript
      *
+     * @param bool $async
+     * load external JavaScript asynchronously.
+     *
      * @return Javascript
      * created JavaScript element
      */
-    public static function newLink($id, $src, $charset = null, $async = false, $defer = false)
+    public static function newLink($id, $src, $onload = null, $charset = null, $defer = false, $async = false)
     {
         $script = new Javascript($id);
         $script->src = $src;
+        $script->onload = $onload;
         $script->charset = $charset;
-        $script->async = $async;
         $script->defer = $defer;
+        $script->async = $async;
         return $script;
     }
 }

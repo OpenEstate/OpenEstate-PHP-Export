@@ -18,6 +18,9 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use OpenEstate\PhpExport\Utils;
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Filter by country.
  *
@@ -48,7 +51,7 @@ class Country extends AbstractFilter
         parent::__construct($name, $maxLifeTime);
     }
 
-    public function build(\OpenEstate\PhpExport\Environment &$env)
+    public function build(\OpenEstate\PhpExport\Environment $env)
     {
         $this->countryNames = array();
         return parent::build($env);
@@ -58,12 +61,10 @@ class Country extends AbstractFilter
     {
         $value = (isset($object['address']['country'])) ?
             $object['address']['country'] : null;
-        if (!\is_string($value))
+        if (Utils::isBlankString($value))
             return;
 
         $value = \trim($value);
-        if (\strlen($value) == 0)
-            return;
 
         if (!isset($items[$value]) || !\is_array($items[$value]))
             $items[$value] = array();
@@ -83,21 +84,21 @@ class Country extends AbstractFilter
         }
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['estate.country'])) ?
-            $translations['labels']['estate.country'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('country');
     }
 
-    public function getWidget($selectedValue, $lang, &$translations, &$setup)
+    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
     {
-        if (!$this->readOrRebuild($setup->CacheLifeTime) || !\is_array($this->items))
+        if (!$this->readOrRebuild($env) || !\is_array($this->items))
             return null;
 
+        $lang = $env->getLanguage();
+        //$translations = $env->getTranslations();
+
         $values = array();
-        $values[''] = '[ ' . $this->getTitle($translations, $lang) . ' ]';
+        $values[''] = '[ ' . $this->getTitle($lang) . ' ]';
         $options = \array_keys($this->items);
         \asort($options);
         foreach ($options as $o) {
@@ -106,28 +107,28 @@ class Country extends AbstractFilter
         }
 
         return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
+            'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',
-            'filter[' . $this->getName() . ']',
             $selectedValue,
             $values
         );
     }
 
-    public function read(\OpenEstate\PhpExport\Environment &$env)
+    public function read(\OpenEstate\PhpExport\Environment $env)
     {
         $file = $this->getFile($env);
         if (!\is_file($file))
             return false;
 
         // Remove outdated cache file.
-        if ($this->maxLifeTime > 0 && \OpenEstate\PhpExport\Utils::isFileOlderThen($file, $this->maxLifeTime)) {
+        if ($this->maxLifeTime > 0 && Utils::isFileOlderThen($file, $this->maxLifeTime)) {
             \unlink($file);
             return false;
         }
 
         // Read data from cache file.
-        $data = \OpenEstate\PhpExport\Utils::readFile($file);
+        $data = Utils::readFile($file);
         if (!is_string($data))
             return false;
 
@@ -140,7 +141,7 @@ class Country extends AbstractFilter
         return true;
     }
 
-    public function write(\OpenEstate\PhpExport\Environment &$env)
+    public function write(\OpenEstate\PhpExport\Environment $env)
     {
         $values = array(
             'items' => $this->items,
@@ -150,8 +151,8 @@ class Country extends AbstractFilter
         $file = $this->getFile($env);
         $fh = \fopen($file, 'w');
         if ($fh === false) {
-            $msg = 'Can\'t write cache file for filter "' . $this->getName() . '".';
-            throw new \OpenEstate\PhpExport\Exception\FileNotWritableException($msg, $file);
+            $msg = 'Can\'t write cache file for filter "' . $this->getName() . '" into "' . $file . '".';
+            throw new \Exception($msg, $file);
         }
         \fwrite($fh, $data);
         \fclose($fh);

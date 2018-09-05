@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Order by city.
  *
@@ -46,18 +48,15 @@ class City extends AbstractOrder
         return SORT_STRING;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment &$env, &$object, $lang)
+    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
     {
         return (isset($object['address']['city'])) ?
             $object['address']['city'] : null;
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['estate.city'])) ?
-            $translations['labels']['estate.city'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('place');
     }
 
 }

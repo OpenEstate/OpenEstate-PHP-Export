@@ -18,6 +18,11 @@
 
 namespace OpenEstate\PhpExport\View;
 
+use OpenEstate\PhpExport\Environment;
+use OpenEstate\PhpExport\Html\Meta;
+use OpenEstate\PhpExport\Html\Stylesheet;
+use OpenEstate\PhpExport\Utils;
+
 /**
  * An abstract HTML document.
  *
@@ -32,7 +37,7 @@ abstract class AbstractHtmlView extends AbstractView
      *
      * @var string
      */
-    private $charset;
+    private $charset = 'UTF-8';
 
     /**
      * Title of the HTML document.
@@ -58,21 +63,29 @@ abstract class AbstractHtmlView extends AbstractView
     /**
      * AbstractHtmlView constructor.
      *
-     * @param string $name
-     * internal name of the view
-     *
-     * @param string $charset
-     * charset of the document
-     *
-     * @param string $theme
-     * name of the theme
+     * @param Environment $env
+     * export environment
      */
-    function __construct($name, $charset = null, $theme = null)
+    function __construct(Environment $env)
     {
-        parent::__construct($name, $theme);
-        $this->charset = (\is_string($charset)) ?
-            $charset : 'UTF-8';
-        $view->addHeader(Html\Meta::newGenerator('OpenEstate-PHP-Export'), -1);
+        parent::__construct($env);
+        $this->addHeader(Meta::newGenerator('OpenEstate-PHP-Export'), -1);
+
+        // include custom.css, if it is available and contains some content
+        $customCss = $env->getPath('custom.css');
+        if (\is_file($customCss) && \filesize($customCss) > 0)
+            $this->addHeader(Stylesheet::newLink(
+                'openestate-custom-css',
+                $env->getUrl('custom.css', array('v' => \filemtime($customCss)))
+            ), 99999);
+    }
+
+    /**
+     * AbstractHtmlView destructor.
+     */
+    public function __destruct()
+    {
+        parent::__destruct();
     }
 
     /**
@@ -107,10 +120,8 @@ abstract class AbstractHtmlView extends AbstractView
             return;
         }
 
-        $i = 0;
         foreach ($elements as $element) {
-            $this->addHeader($element, ($priority + $i));
-            $i++;
+            $this->addHeader($element, $priority++);
         }
     }
 
@@ -178,6 +189,15 @@ abstract class AbstractHtmlView extends AbstractView
     public function isBodyOnly()
     {
         return false;
+    }
+
+    public function process($sendHeaders = true)
+    {
+        $html = parent::process($sendHeaders);
+
+        return ($this->env->getConfig()->minimizeHtml === true) ?
+            Utils::getMinimizedHtml($html) :
+            $html;
     }
 
     /**

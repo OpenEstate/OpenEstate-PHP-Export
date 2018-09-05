@@ -30,18 +30,15 @@ class VimeoVideo extends AbstractLinkProvider
     /**
      * VimeoVideo constructor.
      *
-     * @param string $name
-     * internal provider name
-     *
      * @param int $width
      * width of the embedded element
      *
      * @param int $height
      * height of the embedded element
      */
-    function __construct($name = 'video@vimeo.com', $width = 0, $height = 0)
+    function __construct($width = 0, $height = 0)
     {
-        parent::__construct($name, $width, $height);
+        parent::__construct($width, $height);
     }
 
     public function getBody($linkId, $linkTitle, $linkUrl)

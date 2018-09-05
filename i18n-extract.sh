@@ -4,14 +4,42 @@
 #
 
 XGETTEXT="xgettext"
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+XGETTEXT_PARAMS="--package-version=2.0-dev --msgid-bugs-address=i18n@openestate.org --join-existing --from-code=UTF-8 --language=PHP"
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR/src"
-rm -f "./locale/template.pot"
-touch "./locale/template.pot"
-find . -name "*.php" \
-  -not -path "./data/*" \
-  -not -path "./include/TrueBV/*" \
-  -not -path "./include/Gettext/*" \
-  -not -path "./include/PHPMailer/*" \
-  -exec "$XGETTEXT" --join-existing --from-code="UTF-8" -o "./locale/template.pot" {} \;
+
+
+#
+# Extract global translations.
+#
+
+rm -f "../i18n/template.pot"
+touch "../i18n/template.pot"
+find . \
+    -name "*.php" \
+    -not -path "./data/*" \
+    -not -path "./include/TrueBV/*" \
+    -not -path "./include/Gettext/*" \
+    -not -path "./include/PHPMailer/*" \
+    -not -path "./themes/*" \
+    -exec "$XGETTEXT" --package-name="OpenEstate-PHP-Export" ${XGETTEXT_PARAMS} -o "../i18n/template.pot" {} \;
+
+
+#
+# Extract separate translations for each theme.
+#
+
+for i in $(ls -d themes/*/); do
+    themePath=${i%%/}
+    themeName=$(basename ${themePath})
+    #echo $themePath
+    #echo $themeName
+
+    mkdir -p "../i18n/$themeName"
+    rm -f "../i18n/$themeName/template.pot"
+    touch "../i18n/$themeName/template.pot"
+    find "./$themePath/" \
+        -name "*.php" \
+        -exec "$XGETTEXT" --package-name="OpenEstate-PHP-Export ($themeName theme)" ${XGETTEXT_PARAMS} -o "../i18n/$themeName/template.pot" {} \;
+done

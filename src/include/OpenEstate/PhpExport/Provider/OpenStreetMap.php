@@ -46,9 +46,6 @@ class OpenStreetMap extends AbstractMapProvider
     /**
      * OpenStreetMap constructor.
      *
-     * @param string $name
-     * internal provider name
-     *
      * @param bool $showPositionMarker
      * enable position marker on the map
      *
@@ -61,9 +58,9 @@ class OpenStreetMap extends AbstractMapProvider
      * @param int $height
      * height of the embedded element
      */
-    function __construct($name = 'map@openstreetmap.org', $showPositionMarker = true, $showDirectLink = true, $width = 0, $height = 0)
+    function __construct($showPositionMarker = true, $showDirectLink = true, $width = 0, $height = 0)
     {
-        parent::__construct($name, $width, $height);
+        parent::__construct($width, $height);
         $this->showPositionMarker = $showPositionMarker;
         $this->showDirectLink = $showDirectLink;
     }

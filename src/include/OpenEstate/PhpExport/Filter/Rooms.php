@@ -18,6 +18,9 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use function OpenEstate\PhpExport\gettext as _;
+use function OpenEstate\PhpExport\ngettext;
+
 /**
  * Filter by number of rooms.
  *
@@ -85,31 +88,31 @@ class Rooms extends AbstractFilter
             $this->roomCount : 5;
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['openestate.count_rooms'])) ?
-            $translations['labels']['openestate.count_rooms'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('number of rooms');
     }
 
-    public function getWidget($selectedValue, $lang, &$translations, &$setup)
+    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
     {
-        if (!$this->readOrRebuild($setup->CacheLifeTime) || !\is_array($this->items))
+        if (!$this->readOrRebuild($env) || !\is_array($this->items))
             return null;
 
+        $lang = $env->getLanguage();
+        //$translations = $env->getTranslations();
+
         $values = array();
-        $values[''] = '[ ' . $this->getTitle($translations, $lang) . ' ]';
+        $values[''] = '[ ' . $this->getTitle($lang) . ' ]';
         $max = $this->getMax();
         for ($i = 1; $i < $max; $i++) {
-            $values[(string)$i] = (string)$i;
+            $values[(string)$i] = ngettext('%1$s room', '%1$s rooms', $i, $i);
         }
-        $values[(string)$max] = $max . '+';
+        $values[(string)$max] = ngettext('%1$s room', '%1$s rooms', $max, $max . '+');
 
         return \OpenEstate\PhpExport\Html\Select::newSingleSelect(
+            'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',
-            'filter[' . $this->getName() . ']',
             (string)$selectedValue,
             $values
         );

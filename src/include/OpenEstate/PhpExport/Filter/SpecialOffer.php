@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Filter;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Filter by special offers.
  *
@@ -58,29 +60,29 @@ class SpecialOffer extends AbstractFilter
         }
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['openestate.special_offer'])) ?
-            $translations['labels']['openestate.special_offer'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('special offer');
     }
 
-    public function getWidget($selectedValue, $lang, &$translations, &$setup)
+    public function getWidget(\OpenEstate\PhpExport\Environment $env, $selectedValue = null)
     {
-        if (!$this->readOrRebuild($setup->CacheLifeTime) || !\is_array($this->items)) {
+        if (!$this->readOrRebuild($env) || !\is_array($this->items)) {
             return null;
         }
+
+        $lang = $env->getLanguage();
+        //$translations = $env->getTranslations();
 
         $selectedValue = (string)$selectedValue;
         $checked = $selectedValue == '1';
         return \OpenEstate\PhpExport\Html\Checkbox::newBox(
+            'filter[' . $this->getName() . ']',
             'openestate-filter-field-' . $this->getName(),
             'openestate-filter-field',
-            'filter[' . $this->getName() . ']',
             '1',
             $checked,
-            $this->getTitle($translations, $lang)
+            $this->getTitle($lang)
         );
     }
 

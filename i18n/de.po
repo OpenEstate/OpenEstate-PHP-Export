@@ -1,0 +1,242 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the OpenEstate-PHP-Export package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
+"Report-Msgid-Bugs-To: i18n@openestate.org\n"
+"POT-Creation-Date: 2018-09-04 22:07+0200\n"
+"PO-Revision-Date: 2018-09-04 22:07+0200\n"
+"Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
+"Language-Team: i18n@openestate.org\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: include/OpenEstate/PhpExport/Filter/SpecialOffer.php:65
+msgid "special offer"
+msgstr "Sonderangebot"
+
+#: include/OpenEstate/PhpExport/Filter/Country.php:89
+msgid "country"
+msgstr "Land"
+
+#: include/OpenEstate/PhpExport/Filter/Action.php:61
+msgid "marketing type"
+msgstr "Vermarktungsart"
+
+#: include/OpenEstate/PhpExport/Filter/Age.php:62
+msgid "age"
+msgstr "Alter"
+
+#: include/OpenEstate/PhpExport/Filter/Equipment.php:62
+msgid "equipment"
+msgstr "Ausstattung"
+
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:93
+#: include/OpenEstate/PhpExport/Order/Rooms.php:59
+msgid "number of rooms"
+msgstr "Zimmerzahl"
+
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:108
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:110
+#, php-format
+msgid "%1$s room"
+msgid_plural "%1$s rooms"
+msgstr[0] "%1$s Zimmer"
+msgstr[1] "%1$s Zimmer"
+
+#: include/OpenEstate/PhpExport/Filter/Group.php:63
+msgid "group"
+msgstr "Gruppe"
+
+#: include/OpenEstate/PhpExport/Filter/Group.php:79
+#, php-format
+msgid "group %1$s"
+msgstr "Gruppe %1$s"
+
+#: include/OpenEstate/PhpExport/Filter/Region.php:64
+msgid "region"
+msgstr "Region"
+
+#: include/OpenEstate/PhpExport/Filter/City.php:64
+#: include/OpenEstate/PhpExport/Order/City.php:59
+msgid "place"
+msgstr "Ort"
+
+#: include/OpenEstate/PhpExport/Filter/Furnished.php:65
+msgid "furnished"
+msgstr "möbliert"
+
+#: include/OpenEstate/PhpExport/Filter/Type.php:65
+msgid "object type"
+msgstr "Objektart"
+
+#: include/OpenEstate/PhpExport/Order/Title.php:61
+msgid "title"
+msgstr "Titel"
+
+#: include/OpenEstate/PhpExport/Order/ObjectNr.php:65
+msgid "object Nr"
+msgstr "Objekt-Nr"
+
+#: include/OpenEstate/PhpExport/Order/Postal.php:59
+msgid "postal code"
+msgstr "Postleitzahl"
+
+#: include/OpenEstate/PhpExport/Order/Area.php:78
+msgid "area"
+msgstr "Fläche"
+
+#: include/OpenEstate/PhpExport/Order/Price.php:83
+msgid "price"
+msgstr "Preis"
+
+#: include/OpenEstate/PhpExport/Order/LastMod.php:61
+msgid "last modification"
+msgstr "letzte Änderung"
+
+#: include/OpenEstate/PhpExport/Order/ObjectId.php:64
+msgid "object ID"
+msgstr "Objekt-ID"
+
+#: include/OpenEstate/PhpExport/Utils.php:166
+msgid "from now on"
+msgstr "ab sofort"
+
+#: include/OpenEstate/PhpExport/Utils.php:889
+msgid "month"
+msgstr "Monat"
+
+#: include/OpenEstate/PhpExport/Utils.php:896
+#, php-format
+msgid "%1$s per %2$s"
+msgstr "%1$s pro %2$s"
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:114
+msgid "No object was provided for the contact request."
+msgstr "Es wurde keine Immobilie zur Kontaktanfrage übermittelt."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:116
+msgid "No contact data was provided for the contact request."
+msgstr "Es wurden keine Kontaktdaten zur Kontaktanfrage übermittelt."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:121
+msgid "The requested object was not found."
+msgstr "Das angeforderte Objekt wurde nicht gefunden."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:130
+msgid "Can't find a recipient address."
+msgstr "Die Adresse des Empfängers wurde nicht gefunden."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:144
+msgid "Please enter your name."
+msgstr "Bitte tragen Sie Ihren Namen ein."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:146
+#, php-format
+msgid "Your name should contain at least %1$s and maximal %2$s characters."
+msgstr "Ihr Name sollte aus mindestens %1$s und maximal %2$s Zeichen bestehen."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:148
+#: include/OpenEstate/PhpExport/Action/Contact.php:156
+#: include/OpenEstate/PhpExport/Action/Contact.php:170
+msgid "HTML code is not allowed."
+msgstr "HTML-Code ist nicht erlaubt."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:152
+msgid "Please enter your phone number."
+msgstr "Bitte tragen Sie Ihre Telefonnummer ein."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:154
+#, php-format
+msgid ""
+"Your phone number should contain at least %1$s and maximal %2$s characters."
+msgstr ""
+"Ihre Telefonnummer sollte aus mindestens %1$s und maximal %2$s Zeichen "
+"bestehen."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:160
+msgid "Please enter your email address."
+msgstr "Bitte tragen Sie Ihre E-Mailadresse ein."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:162
+msgid "Your email address is invalid."
+msgstr "Ihre E-Mailadresse ist ungültig."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:166
+msgid "Please enter your message."
+msgstr "Bitte tragen Sie Ihre Mitteilung ein."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:168
+#, php-format
+msgid "Your message should contain at least %1$s characters."
+msgstr "Ihre Mitteilung sollte aus mindestens %1$s Zeichen bestehen."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:174
+msgid "Please accept the terms of use."
+msgstr "Bitte bestätigen Sie die Nutzungsbedingungen."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:179
+msgid "Please enter the verification code."
+msgstr "Bitte tragen Sie den Bestätigungscode ein."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:181
+msgid "Your verification code is invalid."
+msgstr "Ihr Bestätigungscode ist ungültig."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:186
+msgid "Please check your input in the highlighted fields."
+msgstr "Bitte prüfen Sie Ihre Eingaben in den markierten Feldern."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:208
+#, php-format
+msgid "Contact request for object %1$s"
+msgstr "Kontaktanfrage zum Objekt %1$s"
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:209
+#, php-format
+msgid "A contact request was sent for object %1$s."
+msgstr "Eine Kontaktanfrage zum Objekt %1$s wurde übermittelt."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:213
+msgid "Name"
+msgstr "Name"
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:214
+msgid "Phone"
+msgstr "Telefon"
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:215
+msgid "Email"
+msgstr "E-Mail"
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:216
+msgid "Language"
+msgstr "Sprache"
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:217
+msgid "Time"
+msgstr "Zeit"
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:218
+msgid "IP address"
+msgstr "IP-Adresse"
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:219
+msgid "Web Browser"
+msgstr "Web-Browser"
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:226
+msgid "Email was not sent."
+msgstr "E-Mail wurde nicht gesendet."
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:230
+msgid "The email transfer failed."
+msgstr "Der E-Mailversand ist fehlgeschlagen."

@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Session;
 
+use OpenEstate\PhpExport\Utils;
+
 /**
  * A session store, that uses PHP sessions.
  *
@@ -39,25 +41,25 @@ class PhpSession extends AbstractSession
     /**
      * PhpSession constructor.
      *
-     * @param string $name
-     * internal name of the session store
+     * @param $env
+     * export environment
      *
      * @param string $root
      * name of the root variable within $_SESSION
      */
-    function __construct($name = 'PhpSession', $root = null)
+    function __construct(\OpenEstate\PhpExport\Environment $env, $root = null)
     {
-        parent::__construct($name);
-        $this->root = (\is_string($root) && strlen($root) > 0) ?
+        parent::__construct($env);
+        $this->root = (Utils::isNotBlankString($root)) ?
             $root : 'OpenEstatePhpExport';
 
         if (\session_status() === PHP_SESSION_NONE) {
-            \OpenEstate\PhpExport\Utils::logWarning('Session handling is disabled in PHP settings!');
+            Utils::logWarning('Session handling is disabled in PHP settings!');
             return;
         }
     }
 
-    public function clear(\OpenEstate\PhpExport\Environment &$env)
+    public function clear()
     {
         if (!isset($_SESSION))
             return;
@@ -81,7 +83,7 @@ class PhpSession extends AbstractSession
         return $_SESSION[$this->root][$key];
     }
 
-    public function init(\OpenEstate\PhpExport\Environment &$env)
+    public function init()
     {
         if (\session_status() !== PHP_SESSION_NONE)
             return;
@@ -114,7 +116,7 @@ class PhpSession extends AbstractSession
         unset($_SESSION[$this->root][$key]);
     }
 
-    public function write(\OpenEstate\PhpExport\Environment &$env)
+    public function write()
     {
         //\session_write_close();
     }

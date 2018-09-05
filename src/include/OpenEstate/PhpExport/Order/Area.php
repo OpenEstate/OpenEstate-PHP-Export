@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Order by area.
  *
@@ -59,7 +61,7 @@ class Area extends AbstractOrder
         return SORT_NUMERIC;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment &$env, &$object, $lang)
+    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
     {
         foreach ($this->lookupFields as $field) {
             $value = (isset($object['attributes']['measures'][$field]['value'])) ?
@@ -71,12 +73,9 @@ class Area extends AbstractOrder
         return null;
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['estate.area'])) ?
-            $translations['labels']['estate.area'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('area');
     }
 
 }

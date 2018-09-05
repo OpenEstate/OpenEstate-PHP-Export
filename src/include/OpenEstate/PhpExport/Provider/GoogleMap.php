@@ -46,9 +46,6 @@ class GoogleMap extends AbstractMapProvider
     /**
      * GoogleMap constructor.
      *
-     * @param string $name
-     * internal provider name
-     *
      * @param int $zoom
      * initial zoom level for the map
      *
@@ -61,9 +58,9 @@ class GoogleMap extends AbstractMapProvider
      * @param int $height
      * height of the embedded element
      */
-    function __construct($name = 'map@google.com', $zoom = 13, $showDirectLink = true, $width = 0, $height = 0)
+    function __construct($zoom = 13, $showDirectLink = true, $width = 0, $height = 0)
     {
-        parent::__construct($name, $width, $height);
+        parent::__construct($width, $height);
         $this->zoom = $zoom;
         $this->showDirectLink = $showDirectLink;
     }

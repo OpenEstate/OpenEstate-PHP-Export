@@ -1,17 +1,30 @@
 <component name="ProjectDictionaryState">
-  <dictionary name="andy">
+  <dictionary name="global">
     <words>
       <w>autofocus</w>
       <w>bbox</w>
       <w>colorbox</w>
       <w>dailymotion</w>
+      <w>dgettext</w>
+      <w>dngettext</w>
       <w>emphyteusis</w>
+      <w>gettext</w>
+      <w>htmlspecialchars</w>
       <w>iframe</w>
       <w>immo</w>
+      <w>immotool</w>
+      <w>mimetype</w>
+      <w>mustermann</w>
+      <w>ngettext</w>
+      <w>nofollow</w>
       <w>noindex</w>
+      <w>onload</w>
       <w>openestate</w>
       <w>pano</w>
       <w>panocreator</w>
+      <w>qmail</w>
+      <w>revalidate</w>
+      <w>smtp</w>
       <w>veoh</w>
       <w>vimeo</w>
     </words>

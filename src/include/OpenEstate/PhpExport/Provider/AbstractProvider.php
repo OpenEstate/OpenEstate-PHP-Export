@@ -28,13 +28,6 @@ namespace OpenEstate\PhpExport\Provider;
 abstract class AbstractProvider
 {
     /**
-     * Internal provider name.
-     *
-     * @var string
-     */
-    private $name;
-
-    /**
      * Width of the embedded element.
      *
      * @var int
@@ -51,22 +44,25 @@ abstract class AbstractProvider
     /**
      * AbstractProvider constructor.
      *
-     * @param string $name
-     * internal provider name
-     *
      * @param int $width
      * width of the embedded element
      *
      * @param int $height
      * height of the embedded element
      */
-    function __construct($name, $width = null, $height = null)
+    function __construct($width = null, $height = null)
     {
-        $this->name = $name;
         $this->width = (\is_int($width) && $width > 0) ?
             $width : 0;
         $this->height = (\is_int($height) && $height > 0) ?
             $height : 0;
+    }
+
+    /**
+     * AbstractProvider destructor.
+     */
+    public function __destruct()
+    {
     }
 
     /**
@@ -78,16 +74,5 @@ abstract class AbstractProvider
     public function getHeaderElements()
     {
         return array();
-    }
-
-    /**
-     * Get the internal name of the embedded view.
-     *
-     * @return string
-     * internal name
-     */
-    final public function getName()
-    {
-        return $this->name;
     }
 }

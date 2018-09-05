@@ -28,45 +28,44 @@ namespace OpenEstate\PhpExport\View;
 abstract class AbstractView
 {
     /**
-     * Internal name of the view.
+     * Export environment.
      *
-     * @var string
+     * @var \OpenEstate\PhpExport\Environment
      */
-    private $name;
+    protected $env;
 
     /**
-     * Name of the theme used by this view.
+     * HTTP response code for this view.
      *
-     * @var string
+     * @var int|null
      */
-    public $theme;
+    private $httpResponseCode = null;
 
     /**
-     * BasicView constructor.
+     * AbstractView constructor.
      *
-     * @param string $name
-     * internal name of the view
-     *
-     * @param string $theme
-     * name of the theme
+     * @param \OpenEstate\PhpExport\Environment $env
+     * export environment
      */
-    function __construct($name, $theme = null)
+    function __construct(\OpenEstate\PhpExport\Environment $env)
     {
-        $this->name = $name;
-        $this->theme = (\is_string($theme)) ?
-            $theme : 'default';
+        $this->env = $env;
+    }
+
+    /**
+     * AbstractView destructor.
+     */
+    public function __destruct()
+    {
     }
 
     /**
      * Generate the view.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
-     * export environment
-     *
      * @return string
-     * generated HTML code
+     * generated output for the view
      */
-    abstract public function generate(\OpenEstate\PhpExport\Environment &$env);
+    abstract protected function generate();
 
     /**
      * Get the content type of the current view.
@@ -80,43 +79,51 @@ abstract class AbstractView
     }
 
     /**
-     * Get the language of the current view.
+     * Get the export environment.
      *
-     * @return string
-     * language code
+     * @return \OpenEstate\PhpExport\Environment
+     * export environment
      */
-    public function getLanguage()
+    public function getEnvironment()
     {
-        return 'de';
+        return $this->env;
     }
 
     /**
-     * Get internal name of the view.
+     * Get the HTTP response code for this view.
      *
-     * @return string
-     * internal name
+     * @return int|null
+     * HTTP response code or null, if it was not set
      */
-    final public function getName()
+    final public function getHttpResponseCode()
     {
-        return $this->name;
+        return $this->httpResponseCode;
     }
 
     /**
-     * Get the name of the theme.
+     * Get parameter values for this view.
      *
-     * @return string
-     * theme name
+     * @return array
+     * associative array with parameter values
+     */
+    public function getParameters()
+    {
+        return array();
+    }
+
+    /**
+     * Get the theme.
+     *
+     * @return \OpenEstate\PhpExport\Theme\AbstractTheme
+     * theme
      */
     public function getTheme()
     {
-        return $this->theme;
+        return $this->env->getTheme();
     }
 
     /**
      * Get absolute path to a theme file.
-     *
-     * @param \OpenEstate\PhpExport\Environment $env
-     * export environment
      *
      * @param string $path
      * relative path within the theme directory
@@ -124,37 +131,30 @@ abstract class AbstractView
      * @return string|null
      * absolute path to the theme file or null, if it is not available
      */
-    public function getThemeFile(\OpenEstate\PhpExport\Environment &$env, $path = null)
+    public function getThemeFile($path = null)
     {
-        $fullPath = $env->getThemePath($this->theme, $path);
-        return ($fullPath !== null && \is_file($fullPath)) ?
-            $fullPath : null;
+        return $this->env->getTheme()->getPath($path);
     }
 
     /**
      * Get URL to a theme file.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
-     * export environment
-     *
      * @param string $path
      * relative path within the theme directory
+     *
+     * @param $parameters
+     * associative array of URL parameters
      *
      * @return string|null
      * URL to the theme file or null, if it is not available
      */
-    public function getThemeUrl(\OpenEstate\PhpExport\Environment &$env, $path = null)
+    public function getThemeUrl($path = null, $parameters = null)
     {
-        $url = $env->getThemeUrl($this->theme, $path);
-        return ($url !== null && \is_file($url)) ?
-            $url : null;
+        return $this->env->getTheme()->getUrl($path, $parameters);
     }
 
     /**
      * Execute a theme file and return its result.
-     *
-     * @param \OpenEstate\PhpExport\Environment $env
-     * export environment
      *
      * @param string $file
      * file from the theme directory to include
@@ -162,36 +162,32 @@ abstract class AbstractView
      * @return mixed
      * response from the theme file
      *
-     * @throws \OpenEstate\PhpExport\Exception\ThemeException
+     * @throws \Exception
      * if the theme file can't be processed
      */
-    public function loadThemeFile(\OpenEstate\PhpExport\Environment &$env, $file)
+    public function loadThemeFile($file)
     {
-        $script = $this->getThemeFile($env, $file);
-        if ($script === null || !\is_file($script) || !\is_readable($script))
-            throw new \OpenEstate\PhpExport\Exception\ThemeException(
-                'Can\'t find "' . $file . '" for theme "' . $this->theme . '"!',
-                $script
-            );
+        $theme = $this->env->getTheme();
+        $script = $this->getThemeFile($file);
+        if (!\is_file($script) || !\is_readable($script))
+            throw new \Exception('Can\'t find "' . $file . '" for theme "' . $theme->getName() . '" at "' . $script . '"!');
 
-        try {
-            if (!\ob_start())
-                throw new \Exception('Can\'t start output buffering!');
+        if (!\ob_start())
+            throw new \Exception('Can\'t start output buffering!');
 
-            /** @noinspection PhpIncludeInspection */
-            include $script;
+        /**
+         * Make the current view instance available for theme files as $view variable.
+         *
+         * @noinspection PhpUnusedLocalVariableInspection
+         */
+        $view = $this;
 
-            return ($this->isTextType()) ?
-                \trim(\ob_get_clean()) :
-                \ob_get_clean();
-        } catch (\Exception $e) {
-            throw new \OpenEstate\PhpExport\Exception\ThemeException(
-                'Can\'t process "' . $file . '" for theme "' . $this->theme . '"!',
-                $script,
-                0,
-                $e
-            );
-        }
+        /** @noinspection PhpIncludeInspection */
+        include $script;
+
+        return ($this->isTextType()) ?
+            \trim(\ob_get_clean()) :
+            \ob_get_clean();
     }
 
     /**
@@ -223,32 +219,37 @@ abstract class AbstractView
     /**
      * Generate current view and return the response body.
      *
-     * @param \OpenEstate\PhpExport\Environment $env
-     * export environment
+     * @param bool $sendHeaders
+     * send header before returning the generated output
      *
      * @return mixed
-     * generated response body
+     * generated output for the view
      */
-    public function process(\OpenEstate\PhpExport\Environment &$env)
+    public function process($sendHeaders = true)
     {
-        if (!\headers_sent()) {
+        $output = $this->generate();
+
+        if ($sendHeaders && !\headers_sent()) {
             $contentType = $this->getContentType();
             if ($contentType != null)
                 \header('Content-Type: ' . $contentType);
 
+            if (\is_int($this->httpResponseCode))
+                \http_response_code($this->httpResponseCode);
         }
 
-        return $this->generate($env);
+        return $output;
     }
 
     /**
-     * Set the name of the theme.
+     * Set the HTTP response code for this view.
      *
-     * @param string $theme
-     * theme name
+     * @param int|null $httpResponseCode
+     * HTTP response code or null to send the default code
      */
-    public function setTheme($theme)
+    public function setHttpResponseCode($httpResponseCode)
     {
-        $this->theme = $theme;
+        $this->httpResponseCode = ($httpResponseCode !== null) ?
+            (int)$httpResponseCode : null;
     }
 }

@@ -25,7 +25,7 @@ namespace OpenEstate\PhpExport\Html;
  * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-class Checkbox extends AbstractBodyElement
+class Checkbox extends AbstractInputElement
 {
     /**
      * Label, that is shown together with the checkbox.
@@ -33,13 +33,6 @@ class Checkbox extends AbstractBodyElement
      * @var string
      */
     public $label = null;
-
-    /**
-     * Name of the form field.
-     *
-     * @var string
-     */
-    public $name = null;
 
     /**
      * Value of the form field.
@@ -86,10 +79,10 @@ class Checkbox extends AbstractBodyElement
      * class attribute
      *
      * @param string $name
-     * name of the form field
+     * name of the input field
      *
      * @param string $value
-     * value of the form field
+     * value of the input field
      *
      * @param bool $checked
      * set checkbox checked
@@ -97,10 +90,9 @@ class Checkbox extends AbstractBodyElement
      * @param string $label
      * label, that is shown together with the checkbox
      */
-    function __construct($id, $class, $name, $value = '1', $checked = false, $label = null)
+    function __construct($name, $id = null, $class = null, $value = '1', $checked = false, $label = null)
     {
-        parent::__construct($id, $class);
-        $this->name = $name;
+        parent::__construct($name, $id, $class);
         $this->value = $value;
         $this->checked = $checked;
         $this->label = $label;
@@ -154,14 +146,14 @@ class Checkbox extends AbstractBodyElement
     /**
      * Create a checkbox.
      *
+     * @param string $name
+     * name of the input field
+     *
      * @param string $id
      * id attribute
      *
      * @param string $class
      * class attribute
-     *
-     * @param string $name
-     * name of the form field
      *
      * @param string $value
      * value of the form field
@@ -175,9 +167,9 @@ class Checkbox extends AbstractBodyElement
      * @return Checkbox
      * created checkbox element
      */
-    public static function newBox($id, $class, $name, $value, $checked = false, $label = null)
+    public static function newBox($name, $id, $class, $value, $checked = false, $label = null)
     {
-        return new Checkbox($id, $class, $name, $value, $checked, $label);
+        return new Checkbox($name, $id, $class, $value, $checked, $label);
     }
 
 }

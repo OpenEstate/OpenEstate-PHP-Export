@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpIncludeInspection */
+<?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
  * Copyright (C) 2009-2018 OpenEstate.org
@@ -19,28 +19,33 @@
 /**
  * Initialize export environment.
  *
+ * @see https://www.php-fig.org/psr/psr-4/
+ * PSR-4: Autoloader
+ *
+ * @see https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
+ * Example Implementations of PSR-4
+ *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
+// Don't execute the file, if it was already loaded.
 if (defined('OpenEstate\PhpExport\VERSION')) return;
-define('OpenEstate\PhpExport\VERSION', '1.7-dev');
+
+/**
+ * Current version of the PHP export environment.
+ *
+ * @var string
+ */
+define('OpenEstate\PhpExport\VERSION', '2.0-dev');
 
 // Require old functions for backwards compatibility.
 //require_once(__DIR__ . '/functions.php');
 
-/**
- * Load classes automatically.
- *
- * according to https://www.php-fig.org/psr/psr-4/ and
- * https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
- *
- * @param string $class The fully-qualified class name.
- * @return void
- */
+// Load classes automatically.
 spl_autoload_register(function ($class) {
-    //echo 'init ' . $class . '<br>';
+    //echo 'lookup ' . $class . '<br>';
 
     // base directory for the namespace prefix
     $base_dir = __DIR__;
@@ -70,6 +75,7 @@ spl_autoload_register(function ($class) {
     // if the file exists, require it
     if (file_exists($file)) {
         //echo 'require<br>';
+        /** @noinspection PhpIncludeInspection */
         require $file;
     }
 });

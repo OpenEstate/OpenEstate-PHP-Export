@@ -32,7 +32,7 @@ class Config
      *
      * @var string
      */
-    public $theme = 'default';
+    public $themeName = 'default';
 
     /**
      * Default language code.
@@ -40,6 +40,13 @@ class Config
      * @var string
      */
     public $defaultLanguage = 'de';
+
+    /**
+     * Allow users to change the language.
+     *
+     * @var bool
+     */
+    public $allowLanguageSelection = true;
 
     /**
      * Charset for generated text content.
@@ -75,58 +82,277 @@ class Config
     public $dynamicImageScaling = true;
 
     /**
+     * Enable management of favored real estates.
+     *
+     * @var bool
+     */
+    public $favorites = true;
+
+    /**
+     * Enable debug output.
+     *
+     * @var bool
+     */
+    public $debug = false;
+
+    /**
+     * Enable minimization of generated HTML code.
+     *
+     * @var bool
+     */
+    public $minimizeHtml = false;
+
+    /**
+     * Level of compatibility for data of older PHP exports.
+     *
+     * Currently the values 0 and 1 may be used.
+     * Value 0 supports the processing of data, that was exported for PHP export 1.6.x or 1.7.x.
+     * Value 1 supports the processing of data, that was exported for the current version of PHP export.
+     *
+     * @var int
+     */
+    public $compatibility = 1;
+
+    /**
+     * Absolute path, that points to the root of the export environment.
+     *
+     * @var string
+     */
+    public $basePath;
+
+    /**
+     * URL, that points to the root of the export environment.
+     *
+     * @var string
+     */
+    public $baseUrl;
+
+    /**
      * Config constructor.
+     *
+     * @param string $basePath
+     * absolute path of the export environment.
+     *
+     * @param string $baseUrl
+     * URL of the export environment.
      */
-    public function __construct()
+    public function __construct($basePath, $baseUrl = '.')
     {
-        $this->dynamicImageScaling = extension_loaded('gd') === true;
+        $this->basePath = $basePath;
+        if (\substr($this->basePath, -1) === '/')
+            $this->basePath = \substr($this->basePath, 0, -1);
+
+        $this->baseUrl = $baseUrl;
+        if (\substr($this->baseUrl, -1) === '/')
+            $this->baseUrl = \substr($this->baseUrl, 0, -1);
+
+        // Disable automatic thumbnail generation,
+        // if the GD module is not present.
+        $this->dynamicImageScaling = Utils::isGdExtensionAvailable();
     }
 
     /**
-     * Create the HTML page for a single object.
+     * Get URL for the action handler.
      *
-     * @return View\ExposeHtml
-     * created view
+     * @param array|null $parameters
+     * parameters for the action handler
+     *
+     * @return string
+     * URL
      */
-    public function newExposeHtmlView()
+    public function getActionUrl($parameters=null)
     {
-        $view = new View\ExposeHtml('ExposeHtml', $this->charset, $this->theme);
-        $this->setupExposeHtmlView($view);
-        return $view;
+        return $this->baseUrl
+            . '/action.php'
+            . Utils::getUrlParameters($parameters);
     }
 
     /**
-     * Create the HTML page for object listings.
+     * Get URL for the expose view.
      *
-     * @return View\ListingHtml
-     * created view
+     * @param array|null $parameters
+     * parameters for the expose view
+     *
+     * @return string
+     * URL
      */
-    public function newListingHtmlView()
+    public function getExposeUrl($parameters=null)
     {
-        $view = new View\ListingHtml('ListingHtml', $this->charset, $this->theme);
-        $this->setupListingHtmlView($view);
-        return $view;
+        return $this->baseUrl
+            . '/expose.php'
+            . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get URL for the favorite view.
+     *
+     * @param array|null $parameters
+     * parameters for the favorite view
+     *
+     * @return string
+     * URL
+     */
+    public function getFavoriteUrl($parameters=null)
+    {
+        return $this->baseUrl
+            . '/fav.php'
+            . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get URL for the listing view.
+     *
+     * @param array|null $parameters
+     * parameters for the listing view
+     *
+     * @return string
+     * URL
+     */
+    public function getListingUrl($parameters=null)
+    {
+        return $this->baseUrl
+            . '/index.php'
+            . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get a translation using the original string.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @param string $original
+     * original string to translate
+     *
+     * @return string
+     * translation
+     *
+     * @see \Gettext\TranslatorInterface::gettext()
+     */
+    public function i18nGettext($lang, $original)
+    {
+        return null;
+    }
+
+    /**
+     * Get a translation checking the plural form.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @param string $original
+     * original string to translate
+     *
+     * @param $plural
+     * plural form of the original string
+     *
+     * @param $value
+     * value to determine plural forms
+     *
+     * @return string
+     * translation
+     *
+     * @see \Gettext\TranslatorInterface::ngettext()
+     */
+    public function i18nGettextPlural($lang, $original, $plural, $value)
+    {
+        return null;
+    }
+
+    /**
+     * Create an action instance.
+     *
+     * @param $name
+     * name of requested action
+     *
+     * @return Action\AbstractAction
+     * created action or null, if it is unknown
+     */
+    public function newAction($name)
+    {
+        switch ($name) {
+            case 'AddFavorite':
+                return new Action\AddFavorite();
+
+            case 'Contact':
+                return new Action\Contact();
+
+            case 'RemoveFavorite':
+                return new Action\RemoveFavorite();
+
+            case 'SetLanguage':
+                return new Action\SetLanguage();
+
+            case 'SetFavoriteOrder':
+                return new Action\SetFavoriteOrder();
+
+            case 'SetFavoritePage':
+                return new Action\SetFavoritePage();
+
+            case 'SetFavoriteView':
+                return new Action\SetFavoriteView();
+
+            case 'SetListingFilter':
+                return new Action\SetListingFilter();
+
+            case 'SetListingOrder':
+                return new Action\SetListingOrder();
+
+            case 'SetListingPage':
+                return new Action\SetListingPage();
+
+            case 'SetListingView':
+                return new Action\SetListingView();
+
+            default:
+                return null;
+        }
     }
 
     /**
      * Create a mailer instance.
      *
+     * @param Environment $env
+     * export environment
+     *
      * @return \PHPMailer\PHPMailer\PHPMailer|null
-     * created mailer or null, if the mailer configuration failed
+     * created mailer or null, if the configuration failed
      */
-    public function newMailer()
+    public function newMailer(Environment $env)
     {
-        try
-        {
-            $mailer = new \PHPMailer\PHPMailer\PHPMailer(true);
-            $this->setupMailer($mailer);
-            return $mailer;
-        }
-        catch (\PHPMailer\PHPMailer\Exception $e)
-        {
-            Utils::logError($e);
-            return null;
-        }
+        return new \PHPMailer\PHPMailer\PHPMailer(true);
+    }
+
+    /**
+     * Create a session instance.
+     *
+     * @param $env
+     * export environment
+     *
+     * @return Session\AbstractSession
+     * created session
+     */
+    public function newSession(Environment $env)
+    {
+        return new Session\CookieSession($env);
+    }
+
+    /**
+     * Create a theme instance.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @return Theme\AbstractTheme|null
+     * created theme or null, if the configuration failed
+     */
+    public function newTheme(Environment $env)
+    {
+        $themeFile = $env->getThemePath($this->themeName, 'theme.php');
+
+        /** @noinspection PhpIncludeInspection */
+        return (\is_file($themeFile) && \is_readable($themeFile)) ?
+            require $themeFile : new Theme\BasicTheme($this->themeName, $env);
     }
 
     /**
@@ -135,27 +361,48 @@ class Config
      * @param Environment $env
      * export environment
      */
-    public function setupEnvironment(Environment &$env)
+    public function setupEnvironment(Environment $env)
     {
     }
 
     /**
-     * Configure the HTML page for a single object.
+     * Set configuration for the HTML view with object details.
      *
      * @param View\ExposeHtml $view
      * view to configure
      */
-    public function setupExposeHtmlView(View\ExposeHtml &$view)
+    public function setupExposeHtml(View\ExposeHtml $view)
     {
     }
 
     /**
-     * Configure the HTML page for object listings.
+     * Set configuration for the HTML view with favorite listing.
+     *
+     * @param View\FavoriteHtml $view
+     * view to configure
+     */
+    public function setupFavoriteHtml(View\FavoriteHtml $view)
+    {
+        $view->orders = array(
+            new Order\ObjectId(),
+            new Order\City(),
+            new Order\Area(),
+            new Order\Price(),
+            new Order\Title()
+        );
+
+        $view->defaultOrder = $view->orders[0]->getName();
+        $view->defaultOrderDirection = 'desc';
+        $view->objectsPerPage = 10;
+    }
+
+    /**
+     * Set configuration for the HTML view with object listing.
      *
      * @param View\ListingHtml $view
      * view to configure
      */
-    public function setupListingHtmlView(View\ListingHtml &$view)
+    public function setupListingHtml(View\ListingHtml $view)
     {
         $view->filters = array(
             new Filter\Action(),
@@ -172,8 +419,8 @@ class Config
             new Order\Title()
         );
 
-        $view->order =& $view->orders[0];
-        $view->direction = 'desc';
+        $view->defaultOrder = $view->orders[0]->getName();
+        $view->defaultOrderDirection = 'desc';
         $view->objectsPerPage = 10;
     }
 
@@ -183,10 +430,13 @@ class Config
      * @param \PHPMailer\PHPMailer\PHPMailer $mailer
      * mailer instance
      *
+     * @param Environment $env
+     * export environment
+     *
      * @throws \PHPMailer\PHPMailer\Exception
      * if the configuration failed
      */
-    public function setupMailer(\PHPMailer\PHPMailer\PHPMailer &$mailer)
+    public function setupMailer(\PHPMailer\PHPMailer\PHPMailer $mailer, Environment $env)
     {
         // Set sender address for outgoing emails.
         //$mailer->setFrom('max@mustermann.de', 'Max Mustermann');
@@ -231,6 +481,16 @@ class Config
         //$mailer->Password = 'MyPassword';
         //$mailer->SMTPSecure = '';
         //$mailer->SMTPAutoTLS = true;
-        //$mailer->SMTPDebug = 1;
+        //$mailer->SMTPDebug = 0;
+    }
+
+    /**
+     * Configure the theme.
+     *
+     * @param Theme\AbstractTheme $theme
+     * theme instance
+     */
+    public function setupTheme(Theme\AbstractTheme $theme)
+    {
     }
 }

@@ -260,6 +260,20 @@ class Meta extends AbstractHeadElement
      */
     public static function newRobots($robots)
     {
-        return Meta::newHttpEquiv('meta-robots', 'robots', $robots);
+        return Meta::newName('meta-robots', 'robots', $robots);
+    }
+
+    /**
+     * Create meta element for viewport.
+     *
+     * @param string $viewport
+     * viewport declaration (e.g. "width=device-width, initial-scale=1")
+     *
+     * @return Meta
+     * created meta element
+     */
+    public static function newViewport($viewport)
+    {
+        return Meta::newName('meta-viewport', 'viewport', $viewport);
     }
 }

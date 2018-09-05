@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Order by number of rooms.
  *
@@ -46,18 +48,15 @@ class Rooms extends AbstractOrder
         return SORT_NUMERIC;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment &$env, &$object, $lang)
+    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
     {
         return (isset($object['attributes']['measures']['count_rooms']['value'])) ?
             $object['attributes']['measures']['count_rooms']['value'] : null;
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['estate.rooms'])) ?
-            $translations['labels']['estate.rooms'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('number of rooms');
     }
 
 }

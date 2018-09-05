@@ -26,15 +26,8 @@ namespace OpenEstate\PhpExport\Html;
  * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-class Select extends AbstractBodyElement
+class Select extends AbstractInputElement
 {
-    /**
-     * Name of the form field.
-     *
-     * @var string
-     */
-    public $name = null;
-
     /**
      * Value of the form field.
      *
@@ -80,25 +73,24 @@ class Select extends AbstractBodyElement
     /**
      * Select constructor.
      *
+     * @param string $name
+     * name of the input field
+     *
      * @param string $id
      * id attribute
      *
      * @param string $class
      * class attribute
      *
-     * @param string $name
-     * name of the form field
-     *
      * @param string $value
-     * value of the form field
+     * value of the input field
      *
      * @param $options
      * selection options
      */
-    function __construct($id, $class, $name, $value, $options)
+    function __construct($name, $id = null, $class = null, $value = null, $options = null)
     {
-        parent::__construct($id, $class);
-        $this->name = $name;
+        parent::__construct($name, $id, $class);
         $this->value = $value;
         $this->options = $options;
     }
@@ -132,10 +124,11 @@ class Select extends AbstractBodyElement
 
         if (\is_array($this->options)) {
             foreach ($this->options as $key => $value) {
+                $key = (string) $key;
                 if ($this->multiple === true)
                     $selected = (\in_array($key, $this->value)) ? ' selected' : '';
                 else
-                    $selected = ($this->value == $key) ? ' selected' : '';
+                    $selected = ($this->value === $key) ? ' selected' : '';
 
                 $element .= '<option value="' . \htmlspecialchars($key) . '"' . $selected . '>' . \htmlspecialchars($value) . '</option>';
             }
@@ -168,9 +161,9 @@ class Select extends AbstractBodyElement
      * @return Select
      * created select element
      */
-    public static function newMultiSelect($id, $class, $name, $value, $options, $size = 4)
+    public static function newMultiSelect($name, $id = null, $class = null, $value = null, $options = null, $size = 4)
     {
-        $select = new Select($id, $class, $name, $value, $options);
+        $select = new Select($name, $id, $class, $value, $options);
         $select->size = $size;
         $select->multiple = true;
         return $select;
@@ -197,8 +190,8 @@ class Select extends AbstractBodyElement
      * @return Select
      * created select element
      */
-    public static function newSingleSelect($id, $class, $name, $value, $options)
+    public static function newSingleSelect($name, $id = null, $class = null, $value = null, $options = null)
     {
-        return new Select($id, $class, $name, $value, $options);
+        return new Select($name, $id, $class, $value, $options);
     }
 }

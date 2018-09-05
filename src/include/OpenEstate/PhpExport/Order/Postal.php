@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Order by postal code.
  *
@@ -46,18 +48,15 @@ class Postal extends AbstractOrder
         return SORT_STRING;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment &$env, &$object, $lang)
+    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
     {
         return (isset($object['address']['postal'])) ?
             $object['address']['postal'] : null;
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['estate.postal'])) ?
-            $translations['labels']['estate.postal'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('postal code');
     }
 
 }

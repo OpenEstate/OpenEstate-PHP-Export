@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Order by object title.
  *
@@ -46,7 +48,7 @@ class Title extends AbstractOrder
         return SORT_STRING;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment &$env, &$object, $lang)
+    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
     {
         $val = (isset($object['title'][$lang])) ?
             $object['title'][$lang] : null;
@@ -54,12 +56,9 @@ class Title extends AbstractOrder
             $val : '';
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['estate.title'])) ?
-            $translations['labels']['estate.title'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('title');
     }
 
     protected function isLanguageSpecific()

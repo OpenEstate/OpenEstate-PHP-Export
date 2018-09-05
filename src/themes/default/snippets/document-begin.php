@@ -16,17 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * HTML document header for the default theme.
+ *
+ * @author Andreas Rudolph & Walter Wagner
+ * @copyright 2009-2018, OpenEstate.org
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @var \OpenEstate\PhpExport\View\ListingHtml $view
+ * the currently used view
+ */
+
 // Don't execute the file, if it is not properly loaded.
-if (!isset($this) || !\is_object($this)) return;
+if (!isset($view) || !\is_object($view)) return;
+
+// get export environment
+$env = $view->getEnvironment();
+$languageCode = $env->getLanguage();
 
 ?>
 
 <!DOCTYPE html>
-<html lang="<?php echo \htmlentities($this->getLanguage()); ?>">
+<html lang="<?php echo \htmlentities($languageCode); ?>">
 <head>
-<meta charset="<?php echo \htmlentities($this->getCharset()); ?>">
-<title><?php echo \htmlentities($this->getTitle()); ?></title>
-<?php echo $this->generateHeader(); ?>
-
+    <meta charset="<?php echo \htmlentities($view->getCharset()); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?php echo \htmlentities($view->getTitle()); ?></title>
+    <?php echo $view->generateHeader(); ?>
 </head>
 <body>

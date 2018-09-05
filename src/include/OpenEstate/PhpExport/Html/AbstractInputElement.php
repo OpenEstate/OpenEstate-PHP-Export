@@ -16,33 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace OpenEstate\PhpExport\Exception;
-
-use Throwable;
+namespace OpenEstate\PhpExport\Html;
 
 /**
- * An exception, that is thrown, if the export environment is not correctly configured.
- *
- * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2018, OpenEstate.org
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * An abstract HTML input element.
  */
-class InvalidEnvironmentException extends \RuntimeException
+abstract class AbstractInputElement extends AbstractBodyElement
 {
     /**
-     * InvalidEnvironmentException constructor.
+     * Name of the input field.
      *
-     * @param string $message
-     * exception message to throw
-     *
-     * @param int $code
-     * exception code.
-     *
-     * @param Throwable|null $previous
-     * previous exception used for exception chaining
+     * @var string
      */
-    function __construct($message = '', $code = 0, Throwable $previous = null)
+    public $name = null;
+
+    /**
+     * AbstractInputElement constructor.
+     *
+     * @param string $name
+     * name of the input field
+     *
+     * @param string $id
+     * id attribute
+     *
+     * @param string $class
+     * class attribute
+     */
+    function __construct($name, $id = null, $class = null)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($id, $class);
+        $this->name = $name;
+    }
+
+    /**
+     * AbstractBodyElement destructor.
+     */
+    public function __destruct()
+    {
+        parent::__destruct();
     }
 }

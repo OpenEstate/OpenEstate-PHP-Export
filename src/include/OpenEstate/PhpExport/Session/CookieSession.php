@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Session;
 
+use OpenEstate\PhpExport\Utils;
+
 /**
  * A session store, that uses cookies.
  *
@@ -51,8 +53,8 @@ class CookieSession extends AbstractSession
     /**
      * CookieSession constructor.
      *
-     * @param string $name
-     * internal name of the session store
+     * @param $env
+     * export environment
      *
      * @param string $cookieName
      * name of the session cookie
@@ -60,16 +62,16 @@ class CookieSession extends AbstractSession
      * @param int $cookieLifeTime
      * lifetime of the session cookie in seconds
      */
-    function __construct($name = 'CookieSession', $cookieName = null, $cookieLifeTime = null)
+    function __construct(\OpenEstate\PhpExport\Environment $env, $cookieName = null, $cookieLifeTime = null)
     {
-        parent::__construct($name);
-        $this->cookieName = (\is_string($cookieName)) ?
+        parent::__construct($env);
+        $this->cookieName = (Utils::isNotBlankString($cookieName)) ?
             $cookieName : 'OpenEstatePhpExport';
         $this->cookieLifeTime = (\is_int($cookieLifeTime) && $cookieLifeTime >= 0) ?
             $cookieLifeTime : 60 * 60 * 24 * 30;
     }
 
-    public function clear(\OpenEstate\PhpExport\Environment &$env)
+    public function clear()
     {
         $this->values = array();
     }
@@ -86,7 +88,7 @@ class CookieSession extends AbstractSession
         return $this->values[$key];
     }
 
-    public function init(\OpenEstate\PhpExport\Environment &$env)
+    public function init()
     {
         $this->values = array();
         if (!\is_array($_COOKIE))
@@ -114,7 +116,7 @@ class CookieSession extends AbstractSession
             unset($this->values[$key]);
     }
 
-    public function write(\OpenEstate\PhpExport\Environment &$env)
+    public function write()
     {
         // Remove cookie, if no session values are present.
         if (!\is_array($this->values) || \count($this->values) < 1)

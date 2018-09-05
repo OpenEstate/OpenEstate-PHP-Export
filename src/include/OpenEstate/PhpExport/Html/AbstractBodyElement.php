@@ -37,6 +37,14 @@ abstract class AbstractBodyElement extends AbstractHtmlElement
         parent::__construct($id, $class);
     }
 
+    /**
+     * AbstractBodyElement destructor.
+     */
+    public function __destruct()
+    {
+        parent::__destruct();
+    }
+
     final public function isBody()
     {
         return true;

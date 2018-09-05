@@ -16,167 +16,202 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace OpenEstate\PhpExport;
+
 /**
- * Website-Export, Skalierung & Beschneidung der Objekt-Bilder auf eine vorgegebene Größe.
+ * Return an possibly scale an object image.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung
-if (!extension_loaded('gd')) {
-  if (!headers_sent()) {
-    // 500-Fehlercode zurückliefern,
-    // wenn das GD-PHP-Modul nicht verfügbar ist
-    header('HTTP/1.0 500 Internal Server Error');
-  }
-  echo 'It seems like GD is not installed!';
-  return;
-}
-ob_start();
-require_once(__DIR__ . '/config.php');
-require_once(__DIR__ . '/include/functions.php');
-ob_end_clean();
+// initialization
+require(__DIR__ . '/include/init.php');
+require(__DIR__ . '/config.php');
 
-// Initialisierung des Immobilien-Bildes
-$setup = new immotool_setup();
-if (is_callable(array('immotool_myconfig', 'load_config_default')))
-  immotool_myconfig::load_config_default($setup);
+// start output buffering
+if (!\ob_start())
+    Utils::logError('Can\'t start output buffering!');
 
-// angeforderte Objekt-ID ermitteln
-$objectId = (isset($_REQUEST['id']) && is_string($_REQUEST['id'])) ?
-    trim(basename($_REQUEST['id'])) : null;
-if (is_null($objectId) || strlen($objectId) < 1) {
-  if (!headers_sent()) {
-    // 400-Fehlercode zurückliefern,
-    // wenn keine gültige Objekt-ID übermittelt wurde
-    header('HTTP/1.0 400 Bad Request');
-  }
-  echo 'No id defined!';
-  exit;
-}
-
-// angefordertes Bild ermitteln
-$imgName = (isset($_REQUEST['img']) && is_string($_REQUEST['img'])) ?
-    trim(basename($_REQUEST['img'])) : null;
-if (is_null($imgName) || strlen($imgName) < 1) {
-  if (!headers_sent()) {
-    // 400-Fehlercode zurückliefern,
-    // wenn keine gültiger Bild-Name übermittelt wurde
-    header('HTTP/1.0 400 Bad Request');
-  }
-  echo 'No img defined!';
-  exit;
-}
-
-// Pfad des Bildes auf dem Server ermitteln
-$imgPath = immotool_functions::get_path('data/' . $objectId . '/' . $imgName);
-if (!is_file($imgPath)) {
-  if (!headers_sent()) {
-    // 404-Fehlercode zurückliefern,
-    // wenn das angeforderte Bild nicht auf dem Server existiert
-    header('HTTP/1.0 404 Not Found');
-  }
-  echo 'Image file not found!';
-  exit;
-}
-
-// Maße ermitteln
-$x = 100;
-$y = 75;
-if (isset($_REQUEST['x']) && is_numeric($_REQUEST['x']))
-  $x = (int) $_REQUEST['x'];
-if (isset($_REQUEST['y']) && is_numeric($_REQUEST['y']))
-  $y = (int) $_REQUEST['y'];
-
-// Hintergrund ermitteln
-$bg = (isset($_REQUEST['bg']) && is_string($_REQUEST['bg'])) ? $_REQUEST['bg'] : 'ffffff';
-
-// Prüfen, ob das skalierte Bild bereits im Cache-Verzeichnis vorhanden ist
-$cacheFile = immotool_functions::get_path('cache/img.' . md5($imgPath . '-' . $x . '-' . $y . '-' . $bg) . '.jpg');
-if (is_file($cacheFile)) {
-
-  // Cache-Datei nach Ablauf der Vorhaltezeit ggf. löschen
-  if (!immotool_functions::check_file_age($cacheFile, $setup->CacheLifeTime)) {
-    @unlink($cacheFile);
-  }
-
-  // Cache-Datei ausliefern
-  else {
-    $cacheImg = file_get_contents($cacheFile);
-    if ($cacheImg === false) {
-      if (!headers_sent()) {
-        // 500-Fehlercode zurückliefern,
-        // wenn die Cache-Datei nicht geladen werden konnte
-        header('HTTP/1.0 500 Internal Server Error');
-      }
-      echo 'Can\'t load image from cache!';
-      exit;
-    }
-    header('Content-type: image/jpeg');
-    echo $cacheImg;
-    return;
-  }
-}
-
-// Skalierung / Verschiebung
-$info = getimagesize($imgPath);
-$src_x = $info[0];
-$src_y = $info[1];
-$type = $info[2]; //3 (Typ = PNG) / 2 (Typ = JPG) / 1 (Typ = GIF)
-$dest_x = $x;
-$dest_y = $y;
-
-$src_ratio = $src_x / $src_y;
-$dest_ratio = $dest_x / $dest_y;
-
-// zu hoch
-if ($src_ratio <= $dest_ratio) {
-  $dest_y = $src_y * $dest_x / $src_x;
-  $move_x = 0;
-  $move_y = ($y - $dest_y) / 2;
-}
-// zu breit
-else {
-  $dest_x = $src_x * $dest_y / $src_y;
-  $move_x = ($x - $dest_x) / 2;
-  $move_y = 0;
-}
-
-//die( "SRC [x=$src_x, y=$src_y], DEST [x=$dest_x, y=$dest_y]" );
-
+// generate output
+$env = null;
 $srcImg = null;
-if ($type == 1) {
-  $srcImg = imagecreatefromgif($imgPath);
-}
-else if ($type == 2) {
-  $srcImg = imagecreatefromjpeg($imgPath);
-}
-else if ($type == 3) {
-  $srcImg = imagecreatefrompng($imgPath);
-}
-else {
-  if (!headers_sent()) {
-    // 400-Fehlercode zurückliefern,
-    // wenn keine gültiges Bild angefordert wurde
-    header('HTTP/1.0 400 Bad Request');
-  }
-  echo 'Invalid image type!';
-  exit;
-}
+$scaledImg = null;
+try {
 
-$scaledImg = imagecreatetruecolor($x, $y);
-$bgRgb = immotool_functions::get_rgb_from_hex($bg);
-$bgColor = imagecolorallocate($scaledImg, $bgRgb['r'], $bgRgb['g'], $bgRgb['b']);
-imagefilledrectangle($scaledImg, 0, 0, $x, $y, $bgColor);
-imagecopyresampled($scaledImg, $srcImg, $move_x, $move_y, 0, 0, $dest_x, $dest_y, $src_x, $src_y);
+    // get requested object id
+    $objectId = (isset($_REQUEST['id']) && \is_string($_REQUEST['id'])) ?
+        \trim(\basename($_REQUEST['id'])) : null;
+    if (Utils::isBlankString($objectId))
+        throw new \Exception('No object id was provided!');
 
-// Verkleinertes Bild im Cache-Verzeichnis speichern
-imagejpeg($scaledImg, $cacheFile, 90);
+    // get requested image name
+    $imgName = (isset($_REQUEST['img']) && \is_string($_REQUEST['img'])) ?
+        \trim(\basename($_REQUEST['img'])) : null;
+    if (Utils::isBlankString($imgName))
+        throw new \Exception('No image name was provided!');
 
-// Verkleinertes Bild ausgeben
-header('Content-type: image/jpeg');
-imagejpeg($scaledImg, null, 90);
-imagedestroy($scaledImg);
-exit;
+    // get requested image size
+    $x = (isset($_REQUEST['x']) && \is_numeric($_REQUEST['x'])) ?
+        (int)$_REQUEST['x'] : 0;
+    $y = (isset($_REQUEST['y']) && \is_numeric($_REQUEST['y'])) ?
+        (int)$_REQUEST['y'] : 0;
+
+    // get requested background color
+    $bg = (isset($_REQUEST['bg']) && \is_string($_REQUEST['bg']) && \strlen($_REQUEST['bg']) >= 6) ?
+        $_REQUEST['bg'] : 'ffffff';
+
+    // load environment
+    $env = new Environment(new MyConfig(__DIR__), false);
+
+    // get path to the image in object data
+    $imgObjectPath = $env->getPath('data/' . $objectId . '/' . $imgName);
+    if (!\is_file($imgObjectPath))
+        throw new \Exception('Your requested image was not found!');
+
+    // get path to the image in cache folder
+    $imgCachePath = $env->getPath('cache/img.' . \md5($objectId . '-' . $imgName . '-' . $x . '-' . $y . '-' . $bg) . '.jpg');
+    if (\is_file($imgCachePath) && Utils::isFileOlderThen($imgCachePath, $env->getConfig()->cacheLifeTime))
+        @unlink($imgCachePath);
+
+    // get further image information from object data
+    $imgData = null;
+    $objectData = $env->getObject($objectId);
+    if (isset($objectData['images']) && \is_array($objectData['images'])) {
+        foreach ($objectData['images'] as $img) {
+            if (isset($img['name']) && $img['name'] == $imgName) {
+                $imgData = $img;
+                break;
+            }
+        }
+    }
+    if (!\is_array($imgData))
+        throw new \Exception('Your requested image is not assigned to the object!');
+
+    // send previously cached file
+    if (is_file($imgCachePath)) {
+        $image = Utils::readFile($imgCachePath);
+
+        if ($image === null)
+            throw new \Exception('Can\'t read cached image file!');
+
+        if (!\headers_sent()) {
+            \header('Cache-Control: max-age=3600, public');
+            \header('Content-type: image/jpeg');
+        }
+
+        echo $image;
+        return;
+    }
+
+    // created scaled image
+    if ($env->getConfig()->dynamicImageScaling && Utils::isGdExtensionAvailable() && ($x > 0 || $y > 0)) {
+        $imgInfo = \getimagesize($imgObjectPath);
+        $src_x = $imgInfo[0];
+        $src_y = $imgInfo[1];
+        $type = $imgInfo[2];
+
+        //if ($x < 1) $x = $src_x;
+        //if ($y < 1) $y = $src_y;
+        if ($x < 1) $x = \ceil(($src_x / $src_y) * $y);
+        if ($y < 1) $y = \ceil(($src_y / $src_x) * $x);
+
+        $dest_x = $x;
+        $dest_y = $y;
+        $src_ratio = $src_x / $src_y;
+        $dest_ratio = $dest_x / $dest_y;
+
+        // too tall
+        if ($src_ratio <= $dest_ratio) {
+            $dest_y = $src_y * $dest_x / $src_x;
+            $move_x = 0;
+            $move_y = ($y - $dest_y) / 2;
+        } // too wide
+        else {
+            $dest_x = $src_x * $dest_y / $src_y;
+            $move_x = ($x - $dest_x) / 2;
+            $move_y = 0;
+        }
+
+        $srcImg = null;
+        if ($type == 1) // GIF
+            $srcImg = \imagecreatefromgif($imgObjectPath);
+
+        else if ($type == 2) // JPG
+            $srcImg = \imagecreatefromjpeg($imgObjectPath);
+
+        else if ($type == 3) // PNG
+            $srcImg = \imagecreatefrompng($imgObjectPath);
+
+        else
+            throw new \Exception('The image type is not supported!');
+
+        $scaledImg = \imagecreatetruecolor($x, $y);
+        $bgRgb = Utils::getRgbFromHex($bg);
+        $bgColor = (\is_array($bgRgb)) ?
+            \imagecolorallocate($scaledImg, $bgRgb['r'], $bgRgb['g'], $bgRgb['b']) :
+            \imagecolorallocate($scaledImg, 255, 255, 255);
+
+        \imagefilledrectangle($scaledImg, 0, 0, $x, $y, $bgColor);
+        \imagecopyresampled($scaledImg, $srcImg, $move_x, $move_y, 0, 0, $dest_x, $dest_y, $src_x, $src_y);
+
+        // save scaled image into cache directory
+        \imagejpeg($scaledImg, $imgCachePath, 85);
+
+        // return scaled image
+        if (!\headers_sent()) {
+            \header('Cache-Control: max-age=3600, public');
+            \header('Content-type: image/jpeg');
+        }
+
+        \imagejpeg($scaledImg, null, 85);
+        return;
+    }
+
+    // pass the requested image directly, if neither scaling nor caching were processed
+    $mimeType = (isset($imgData['mimetype']) && \is_string($imgData['mimetype'])) ?
+        $imgData['mimetype'] : 'application/octet-stream';
+    $image = Utils::readFile($imgObjectPath);
+
+    if ($image === null)
+        throw new \Exception('Can\'t read object image file!');
+
+    if (!\headers_sent()) {
+        \header('Cache-Control: max-age=3600, public');
+        \header('Content-type: ' . $mimeType);
+    }
+
+    echo $image;
+
+} catch (\Exception $e) {
+
+    // ignore previously buffered output
+    \ob_end_clean();
+    \ob_start();
+
+    if (!\headers_sent())
+        \http_response_code(500);
+
+    //Utils::logError($e);
+    Utils::logWarning($e);
+    echo '<h1>An internal error occurred!</h1>';
+    echo '<p>' . $e->getMessage() . '</p>';
+    echo '<pre>' . $e . '</pre>';
+
+} finally {
+
+    // shutdown environment
+    if ($env !== null)
+        $env->shutdown();
+
+    if ($srcImg !== null)
+        \imagedestroy($srcImg);
+
+    if ($scaledImg !== null)
+        \imagedestroy($scaledImg);
+
+    // send buffered output
+    \ob_end_flush();
+
+}

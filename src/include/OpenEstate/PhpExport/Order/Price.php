@@ -18,6 +18,8 @@
 
 namespace OpenEstate\PhpExport\Order;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Order by price.
  *
@@ -46,7 +48,7 @@ class Price extends AbstractOrder
         return SORT_NUMERIC;
     }
 
-    protected function getSortValue(\OpenEstate\PhpExport\Environment &$env, &$object, $lang)
+    protected function getSortValue(\OpenEstate\PhpExport\Environment $env, &$object, $lang)
     {
         // Don't sort the object by its price,
         // if prices are hidden for the object.
@@ -76,12 +78,9 @@ class Price extends AbstractOrder
         return null;
     }
 
-    public function getTitle(&$translations, $lang)
+    public function getTitle($lang)
     {
-        $title = (isset($translations['labels']['estate.price'])) ?
-            $translations['labels']['estate.price'] : null;
-        return \is_string($title) ?
-            $title : $this->getName();
+        return _('price');
     }
 
 }
