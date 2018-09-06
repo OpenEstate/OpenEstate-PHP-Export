@@ -98,4 +98,24 @@ class SetFavoriteOrder extends AbstractAction
             $params[$this->directionParameter] = $direction;
         return $params;
     }
+
+    /**
+     * Get url for this action.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @param string|null $order
+     * name of the ordering method
+     *
+     * @param string|null $direction
+     * direction of ordering ("asc" or "desc")
+     *
+     * @return string
+     * url
+     */
+    public function getUrl(Environment $env, $order = null, $direction = null)
+    {
+        return $env->getActionUrl($this->getParameters($env, $order, $direction));
+    }
 }

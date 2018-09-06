@@ -79,4 +79,21 @@ class SetListingView extends AbstractAction
             $params[$this->viewParameter] = $view;
         return $params;
     }
+
+    /**
+     * Get url for this action.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @param string|null $view
+     * name of the requested view
+     *
+     * @return string
+     * url
+     */
+    public function getUrl(Environment $env, $view = null)
+    {
+        return $env->getActionUrl($this->getParameters($env, $view));
+    }
 }

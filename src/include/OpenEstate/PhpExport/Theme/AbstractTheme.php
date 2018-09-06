@@ -91,37 +91,6 @@ abstract class AbstractTheme
     }
 
     /**
-     * Get absolute path to a file of this theme.
-     *
-     * @param string $path
-     * relative path within the theme directory
-     *
-     * @return string|null
-     * absolute path to the theme file or null, if it is not available
-     */
-    public function getPath($path = null)
-    {
-        return $this->env->getThemePath($this->name, $path);
-    }
-
-    /**
-     * Get the URL to a file of this theme.
-     *
-     * @param string $path
-     * file name within the theme
-     *
-     * @param array|null $parameters
-     * associative array of URL parameters
-     *
-     * @return string
-     * URL of the file in the theme
-     */
-    public function getUrl($path = null, $parameters = null)
-    {
-        return $this->env->getThemeUrl($this->name, $path, $parameters);
-    }
-
-    /**
      * Get a translation using the original string.
      *
      * @param string $lang

@@ -40,9 +40,6 @@ if (defined('OpenEstate\PhpExport\VERSION')) return;
  */
 define('OpenEstate\PhpExport\VERSION', '2.0-dev');
 
-// Require old functions for backwards compatibility.
-//require_once(__DIR__ . '/functions.php');
-
 // Load classes automatically.
 spl_autoload_register(function ($class) {
     //echo 'lookup ' . $class . '<br>';
@@ -70,11 +67,9 @@ spl_autoload_register(function ($class) {
     // separators with directory separators in the relative class name, append
     // with .php
     $file = $base_dir . '/' . str_replace('\\', '/', $class) . '.php';
-    //echo 'from ' . $file . '<br>';
 
     // if the file exists, require it
     if (file_exists($file)) {
-        //echo 'require<br>';
         /** @noinspection PhpIncludeInspection */
         require $file;
     }

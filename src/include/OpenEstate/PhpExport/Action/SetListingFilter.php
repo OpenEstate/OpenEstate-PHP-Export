@@ -103,4 +103,24 @@ class SetListingFilter extends AbstractAction
             $params[$this->clearParameter] = 1;
         return $params;
     }
+
+    /**
+     * Get url for this action.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @param array|null $filter
+     * filter values
+     *
+     * @param bool|null $clear
+     * clear filter values
+     *
+     * @return string
+     * url
+     */
+    public function getUrl(Environment $env, $filter = null, $clear = null)
+    {
+        return $env->getActionUrl($this->getParameters($env, $filter, $clear));
+    }
 }

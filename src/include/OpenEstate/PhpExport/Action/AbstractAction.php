@@ -91,4 +91,18 @@ abstract class AbstractAction
             $env->actionParameter => $this->name
         );
     }
+
+    /**
+     * Get url for this action.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @return string
+     * url
+     */
+    public function getUrl(Environment $env)
+    {
+        return $env->getActionUrl($this->getParameters($env));
+    }
 }

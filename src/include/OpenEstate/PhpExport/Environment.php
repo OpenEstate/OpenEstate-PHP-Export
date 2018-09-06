@@ -150,7 +150,7 @@ class Environment
         }
 
         // init languages
-        $languageFile = $this->getPath('data/language.php');
+        $languageFile = $this->getDataPath('language.php');
 
         $this->languages = array();
         if (\is_file($languageFile)) {
@@ -213,6 +213,20 @@ class Environment
     }
 
     /**
+     * Get URL for the action handler script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getActionUrl($parameters = null)
+    {
+        return $this->config->getActionUrl($parameters);
+    }
+
+    /**
      * Get assets factory for this environment.
      *
      * @return Assets
@@ -220,6 +234,66 @@ class Environment
     public function getAssets()
     {
         return $this->assets;
+    }
+
+    /**
+     * Get path to a file within the assets folder.
+     *
+     * @param array|null $path
+     * path elements within the assets folder
+     *
+     * @return string
+     * path
+     */
+    public function getAssetsPath(...$path)
+    {
+        return Utils::joinPath($this->config->getAssetsFolderPath(), ...$path);
+    }
+
+    /**
+     * Get URL for a file within the assets folder.
+     *
+     * @param $path
+     * path within the assets folder
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getAssetsUrl($path, $parameters = null)
+    {
+        return Utils::joinPath($this->config->getAssetsFolderUrl(), $path)
+            . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get path to a file within the cache folder.
+     *
+     * @param array|null $path
+     * path elements within the cache folder
+     *
+     * @return string
+     * path
+     */
+    public function getCachePath(...$path)
+    {
+        return Utils::joinPath($this->config->getCacheFolderPath(), ...$path);
+    }
+
+    /**
+     * Get URL for the captcha script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getCaptchaUrl($parameters = null)
+    {
+        return $this->config->getCaptchaUrl($parameters);
     }
 
     /**
@@ -231,6 +305,106 @@ class Environment
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Get path to the custom css file.
+     *
+     * @return string
+     * path
+     */
+    public function getCustomCssPath()
+    {
+        return $this->config->getCustomCssPath();
+    }
+
+    /**
+     * Get URL for the custom css file.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getCustomCssUrl($parameters = null)
+    {
+        return $this->config->getCustomCssUrl()
+            . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get path to a file within the data folder.
+     *
+     * @param array|null $path
+     * path elements within the data folder
+     *
+     * @return string
+     * path
+     */
+    public function getDataPath(...$path)
+    {
+        return Utils::joinPath($this->config->getDataFolderPath(), ...$path);
+    }
+
+    /**
+     * Get URL for the data folder.
+     *
+     * @param $path
+     * path within the data folder
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getDataUrl($path, $parameters = null)
+    {
+        return Utils::joinPath($this->config->getDataFolderUrl(), $path)
+            . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get URL for the expose view.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getExposeUrl($parameters = null)
+    {
+        return $this->config->getExposeUrl($parameters);
+    }
+
+    /**
+     * Get URL for the favorite view.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getFavoriteUrl($parameters = null)
+    {
+        return $this->config->getFavoriteUrl($parameters);
+    }
+
+    /**
+     * Get URL for the image script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getImageUrl($parameters = null)
+    {
+        return $this->config->getImageUrl($parameters);
     }
 
     /**
@@ -274,6 +448,34 @@ class Environment
     }
 
     /**
+     * Get URL for the listing view.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getListingUrl($parameters = null)
+    {
+        return $this->config->getListingUrl($parameters);
+    }
+
+    /**
+     * Get path to the locale folder.
+     *
+     * @param array|null $path
+     * path elements within the locale folder
+     *
+     * @return string
+     * path
+     */
+    public function getLocalePath(...$path)
+    {
+        return Utils::joinPath($this->config->getLocaleFolderPath(), ...$path);
+    }
+
+    /**
      * Get the data of a real estate object.
      *
      * @param string $id
@@ -291,7 +493,7 @@ class Environment
         //if (\is_string($id) && \preg_match('/^\w*/i', $id) !== 1)
         //    return $null;
 
-        $file = $this->getPath('data/' . basename($id) . '/object.php');
+        $file = $this->getDataPath(\basename($id), 'object.php');
         if (!\is_file($file))
             return $null;
 
@@ -336,13 +538,13 @@ class Environment
      */
     public function getObjectIds()
     {
-        $dir = $this->getPath('data');
+        $dir = $this->getDataPath();
         $ids = array();
         if (\is_dir($dir)) {
             $files = Utils::listDirectory($dir);
             if (\is_array($files)) {
                 foreach ($files as $file) {
-                    if (\is_dir($dir . '/' . $file))
+                    if (\is_dir(Utils::joinPath($dir, $file)))
                         $ids[] = $file;
                 }
             }
@@ -361,10 +563,12 @@ class Environment
      */
     public function getObjectStamp($id = null)
     {
-        if (!\is_string($id) || preg_match('/^\w*/i', $id) !== 1)
+        if (!\is_int($id) && !\is_string($id))
             return null;
+        //if (!\is_string($id) || preg_match('/^\w*/i', $id) !== 1)
+        //    return null;
 
-        return Utils::getFileStamp($this->getPath('data/' . $id . '/object.php'));
+        return Utils::getFileStamp($this->getDataPath(\basename($id), 'object.php'));
     }
 
     /**
@@ -385,7 +589,7 @@ class Environment
         //if (\is_string($id) && \preg_match('/^\w*/i', $id) !== 1)
         //    return $null;
 
-        $file = $this->getPath('data/' . basename($id) . '/texts.php');
+        $file = $this->getDataPath(\basename($id), 'texts.php');
         if (!\is_file($file))
             return $null;
 
@@ -423,26 +627,6 @@ class Environment
     }
 
     /**
-     * Get the absolute path of a file in the export environment.
-     *
-     * @param string $path
-     * relative path of a file in the export environment
-     *
-     * @return string
-     * absolute path of the file in the export environment
-     */
-    public function getPath($path = null)
-    {
-        if (!\is_string($path))
-            return $this->config->basePath;
-
-        if (\substr($path, 0, 1) !== '/')
-            $path = '/' . $path;
-
-        return $this->config->basePath . $path;
-    }
-
-    /**
      * Get instance of the current session.
      *
      * @return Session\AbstractSession
@@ -465,61 +649,50 @@ class Environment
     }
 
     /**
-     * Get the absolute path of a theme file.
-     *
-     * @param string $theme
-     * theme name
-     *
-     * @param string $path
-     * file name within the theme
+     * Get name of the current theme.
      *
      * @return string
-     * absolute path of the file in the theme
+     * theme name
      */
-    public function getThemePath($theme, $path = null)
+    public function getThemeName()
     {
-        if ($theme === null)
-            return null;
-
-        $themePath = $this->getPath('themes/' . $theme);
-        if (!\is_dir($themePath))
-            return null;
-
-        if (!\is_string($path))
-            return $themePath;
-
-        if (\substr($path, 0, 1) !== '/')
-            $path = '/' . $path;
-
-        return $themePath . $path;
+        return ($this->theme !== null) ?
+            $this->theme->getName() : null;
     }
 
     /**
-     * Get the URL of a theme file.
+     * Get path to the folder of the current theme.
      *
-     * @param string $theme
-     * theme name
-     *
-     * @param string|null $path
-     * file name within the theme
-     *
-     * @param array|null $parameters
-     * associative array of URL parameters
+     * @param array|null $path
+     * path elements within the theme folder
      *
      * @return string
-     * URL of the file in the theme
+     * path
      */
-    public function getThemeUrl($theme, $path = null, $parameters = null)
+    public function getThemePath(...$path)
     {
-        if ($theme === null)
-            return null;
+        return ($this->theme !== null) ?
+            Utils::joinPath($this->config->getThemeFolderPath($this->theme->getName()), ...$path) :
+            null;
+    }
 
-        $themePath = 'themes/' . $theme;
-        if (\is_string($path))
-            $themePath .= (\substr($path, 0, 1) !== '/') ?
-                '/' . $path : $path;
-
-        return $this->getUrl($themePath, $parameters);
+    /**
+     * Get URL for a file of the current theme.
+     *
+     * @param $path
+     * path within the current theme folder
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getThemeUrl($path = null, $parameters = null)
+    {
+        return ($this->theme !== null) ?
+            Utils::joinPath($this->config->getThemeFolderUrl($this->theme->getName()), $path) . Utils::getUrlParameters($parameters) :
+            null;
     }
 
     /**
@@ -546,29 +719,6 @@ class Environment
     public function getTranslator()
     {
         return $this->translator;
-    }
-
-    /**
-     * Get the URL of a file in the export environment.
-     *
-     * @param string|null $path
-     * relative path of a file in the export environment
-     *
-     * @param array|null $parameters
-     * associative array of URL parameters
-     *
-     * @return string
-     * URL of the file in the export environment
-     */
-    public function getUrl($path = null, $parameters = null)
-    {
-        $url = $this->config->baseUrl;
-
-        if (\is_string($path))
-            $url .= (\substr($path, 0, 1) !== '/') ?
-                '/' . $path : $path;
-
-        return $url . Utils::getUrlParameters($parameters);
     }
 
     /**
@@ -729,7 +879,7 @@ class Environment
         $this->translator->register();
 
         // load further translations from data directory
-        $dataTranslationsFile = $this->getPath('data/i18n_' . $this->language . '.php');
+        $dataTranslationsFile = $this->getDataPath('i18n_' . $this->language . '.php');
         $this->translations = array();
         if (\is_file($dataTranslationsFile)) {
             if ($this->getConfig()->compatibility == 0) {

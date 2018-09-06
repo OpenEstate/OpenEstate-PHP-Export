@@ -77,7 +77,7 @@ class ExposeHtml extends AbstractHtmlView
     public function getObjectId()
     {
         return (isset($_REQUEST[$this->objectIdParameter]) && \is_string($_REQUEST[$this->objectIdParameter])) ?
-            $_REQUEST[$this->objectIdParameter] : null;
+            \basename($_REQUEST[$this->objectIdParameter]) : null;
     }
 
     /**
@@ -108,5 +108,22 @@ class ExposeHtml extends AbstractHtmlView
             $params[$this->objectIdParameter] = $objectId;
 
         return $params;
+    }
+
+    /**
+     * Get url for this view.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @param string|null $objectId
+     * ID of the object to show
+     *
+     * @return string
+     * url
+     */
+    public function getUrl(Environment $env, $objectId = null)
+    {
+        return $env->getExposeUrl($this->getParameters($objectId));
     }
 }

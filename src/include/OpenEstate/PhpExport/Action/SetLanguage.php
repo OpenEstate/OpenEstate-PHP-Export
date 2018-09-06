@@ -81,4 +81,21 @@ class SetLanguage extends AbstractAction
             $params[$this->languageParameter] = $language;
         return $params;
     }
+
+    /**
+     * Get url for this action.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @param string|null $language
+     * language code
+     *
+     * @return string
+     * url
+     */
+    public function getUrl(Environment $env, $language = null)
+    {
+        return $env->getActionUrl($this->getParameters($env, $language));
+    }
 }

@@ -83,4 +83,21 @@ class SetListingPage extends AbstractAction
             $params[$this->pageParameter] = $page;
         return $params;
     }
+
+    /**
+     * Get url for this action.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @param int|null $page
+     * page number
+     *
+     * @return string
+     * url
+     */
+    public function getUrl(Environment $env, $page = null)
+    {
+        return $env->getActionUrl($this->getParameters($env, $page));
+    }
 }

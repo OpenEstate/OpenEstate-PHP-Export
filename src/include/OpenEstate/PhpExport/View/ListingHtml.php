@@ -365,6 +365,20 @@ class ListingHtml extends AbstractHtmlView
     }
 
     /**
+     * Get url for this view.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @return string
+     * url
+     */
+    public function getUrl(Environment $env)
+    {
+        return $env->getListingUrl($this->getParameters());
+    }
+
+    /**
      * Get currently selected listing view.
      *
      * @return string

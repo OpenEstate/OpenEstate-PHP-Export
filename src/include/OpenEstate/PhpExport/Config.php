@@ -146,40 +146,130 @@ class Config
         if (\substr($this->baseUrl, -1) === '/')
             $this->baseUrl = \substr($this->baseUrl, 0, -1);
 
-        // Disable automatic thumbnail generation,
-        // if the GD module is not present.
+        // Enable automatic thumbnail generation by default,
+        // if the GD module is present.
         $this->dynamicImageScaling = Utils::isGdExtensionAvailable();
     }
 
     /**
-     * Get URL for the action handler.
+     * Get URL for the action handler script.
      *
      * @param array|null $parameters
-     * parameters for the action handler
+     * associative array with URL parameters
      *
      * @return string
      * URL
      */
     public function getActionUrl($parameters = null)
     {
-        return $this->baseUrl
-            . '/action.php'
+        return Utils::joinPath($this->baseUrl, 'action.php')
             . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get path to the assets folder.
+     *
+     * @return string
+     * path
+     */
+    public function getAssetsFolderPath()
+    {
+        return Utils::joinPath($this->basePath, 'assets');
+    }
+
+    /**
+     * Get URL for the assets folder.
+     *
+     * @return string
+     * URL
+     */
+    public function getAssetsFolderUrl()
+    {
+        return Utils::joinPath($this->baseUrl, 'assets');
+    }
+
+    /**
+     * Get path to the cache folder.
+     *
+     * @return string
+     * path
+     */
+    public function getCacheFolderPath()
+    {
+        return Utils::joinPath($this->basePath, 'cache');
+    }
+
+    /**
+     * Get URL for the captcha script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getCaptchaUrl($parameters = null)
+    {
+        return Utils::joinPath($this->baseUrl, 'captcha.php')
+            . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get path to the custom css file.
+     *
+     * @return string
+     * path
+     */
+    public function getCustomCssPath()
+    {
+        return Utils::joinPath($this->basePath, 'custom.css');
+    }
+
+    /**
+     * Get URL for the custom css file.
+     *
+     * @return string
+     * URL
+     */
+    public function getCustomCssUrl()
+    {
+        return Utils::joinPath($this->baseUrl, 'custom.css');
+    }
+
+    /**
+     * Get path to the data folder.
+     *
+     * @return string
+     * path
+     */
+    public function getDataFolderPath()
+    {
+        return Utils::joinPath($this->basePath, 'data');
+    }
+
+    /**
+     * Get URL for the data folder.
+     *
+     * @return string
+     * URL
+     */
+    public function getDataFolderUrl()
+    {
+        return Utils::joinPath($this->baseUrl, 'data');
     }
 
     /**
      * Get URL for the expose view.
      *
      * @param array|null $parameters
-     * parameters for the expose view
+     * associative array with URL parameters
      *
      * @return string
      * URL
      */
     public function getExposeUrl($parameters = null)
     {
-        return $this->baseUrl
-            . '/expose.php'
+        return Utils::joinPath($this->baseUrl, 'expose.php')
             . Utils::getUrlParameters($parameters);
     }
 
@@ -187,15 +277,29 @@ class Config
      * Get URL for the favorite view.
      *
      * @param array|null $parameters
-     * parameters for the favorite view
+     * associative array with URL parameters
      *
      * @return string
      * URL
      */
     public function getFavoriteUrl($parameters = null)
     {
-        return $this->baseUrl
-            . '/fav.php'
+        return Utils::joinPath($this->baseUrl, 'fav.php')
+            . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get URL for the image script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getImageUrl($parameters = null)
+    {
+        return Utils::joinPath($this->baseUrl, 'img.php')
             . Utils::getUrlParameters($parameters);
     }
 
@@ -203,16 +307,57 @@ class Config
      * Get URL for the listing view.
      *
      * @param array|null $parameters
-     * parameters for the listing view
+     * associative array with URL parameters
      *
      * @return string
      * URL
      */
     public function getListingUrl($parameters = null)
     {
-        return $this->baseUrl
-            . '/index.php'
+        return Utils::joinPath($this->baseUrl, 'index.php')
             . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get path to the locale folder.
+     *
+     * @return string
+     * path
+     */
+    public function getLocaleFolderPath()
+    {
+        return Utils::joinPath($this->basePath, 'locale');
+    }
+
+    /**
+     * Get path to the theme folder.
+     *
+     * @param string|null $theme
+     * theme name
+     *
+     * @return string
+     * path to the requested theme folder or to the parent theme folder,
+     * if no theme name was provided
+     */
+    public function getThemeFolderPath($theme = null)
+    {
+        return (\is_string($theme))?
+            Utils::joinPath($this->basePath, 'themes', $theme):
+            Utils::joinPath($this->basePath, 'themes');
+    }
+
+    /**
+     * Get URL for a theme folder.
+     *
+     * @param string|null $theme
+     * theme name
+     *
+     * @return string
+     * URL
+     */
+    public function getThemeFolderUrl($theme = null)
+    {
+        return Utils::joinPath($this->baseUrl, 'themes', $theme);
     }
 
     /**

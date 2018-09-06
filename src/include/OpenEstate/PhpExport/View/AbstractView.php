@@ -136,7 +136,7 @@ abstract class AbstractView
      */
     public function getThemeFile($path = null)
     {
-        return $this->env->getTheme()->getPath($path);
+        return $this->env->getThemePath($path);
     }
 
     /**
@@ -153,8 +153,19 @@ abstract class AbstractView
      */
     public function getThemeUrl($path = null, $parameters = null)
     {
-        return $this->env->getTheme()->getUrl($path, $parameters);
+        return $this->env->getThemeUrl($path, $parameters);
     }
+
+    /**
+     * Get url for this view.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @return string
+     * url
+     */
+    public abstract function getUrl(Environment $env);
 
     /**
      * Execute a theme file and return its result.

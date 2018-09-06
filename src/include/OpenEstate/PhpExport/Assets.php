@@ -141,10 +141,10 @@ class Assets
      */
     public function colorbox_css($minimized = true)
     {
-        $asset = 'assets/colorbox/colorbox.css';
+        $asset = 'colorbox/colorbox.css';
         return Html\Stylesheet::newLink(
             self::COLORBOX_CSS,
-            $this->env->getUrl($asset) . '?v=' . self::COLORBOX_VERSION
+            $this->env->getAssetsUrl($asset, array('v' => self::COLORBOX_VERSION))
         );
     }
 
@@ -167,17 +167,17 @@ class Assets
      */
     public function colorbox_i18n_js($lang, $minimized = true, $defer = true)
     {
-        $asset = 'assets/colorbox/i18n/jquery.colorbox-' . $lang . '.js';
         if (!\is_string($lang))
             return null;
 
-        $i18nFile = $this->env->getPath($asset);
+        $asset = 'colorbox/i18n/jquery.colorbox-' . $lang . '.js';
+        $i18nFile = $this->env->getAssetsPath($asset);
         if (!\is_file($i18nFile))
             return null;
 
         return Html\Javascript::newLink(
             self::COLORBOX_I18N_JS,
-            $this->env->getUrl($asset) . '?v=' . self::COLORBOX_VERSION,
+            $this->env->getAssetsUrl($asset, array('v' => self::COLORBOX_VERSION)),
             null,
             null,
             $defer
@@ -199,12 +199,12 @@ class Assets
     public function colorbox_js($minimized = true, $defer = true)
     {
         $asset = ($minimized === true) ?
-            'assets/colorbox/jquery.colorbox-min.js' :
-            'assets/colorbox/jquery.colorbox.js';
+            'colorbox/jquery.colorbox-min.js' :
+            'colorbox/jquery.colorbox.js';
 
         return Html\Javascript::newLink(
             self::COLORBOX_JS,
-            $this->env->getUrl($asset) . '?v=' . self::COLORBOX_VERSION,
+            $this->env->getAssetsUrl($asset, array('v' => self::COLORBOX_VERSION)),
             null,
             null,
             $defer
@@ -245,12 +245,12 @@ class Assets
     public function jquery_js($minimized = true, $defer = true)
     {
         $asset = ($minimized === true) ?
-            'assets/jquery/jquery.min.js' :
-            'assets/jquery/jquery.js';
+            'jquery/jquery.min.js' :
+            'jquery/jquery.js';
 
         return Html\Javascript::newLink(
             self::JQUERY_JS,
-            $this->env->getUrl($asset) . '?v=' . self::JQUERY_VERSION,
+            $this->env->getAssetsUrl($asset, array('v' => self::JQUERY_VERSION)),
             null,
             null,
             $defer
@@ -285,10 +285,10 @@ class Assets
      */
     public function openestate_icons_animation_css($minimized = true)
     {
-        $asset = 'assets/openestate-icons/css/openestate-animation.css';
+        $asset = 'openestate-icons/css/openestate-animation.css';
         return Html\Stylesheet::newLink(
             self::OPENESTATE_ICONS_ANIMATION_CSS,
-            $this->env->getUrl($asset) . '?v=' . VERSION
+            $this->env->getAssetsUrl($asset, array('v' => VERSION))
         );
     }
 
@@ -303,10 +303,10 @@ class Assets
      */
     public function openestate_icons_css($minimized = true)
     {
-        $asset = 'assets/openestate-icons/css/openestate-icons.css';
+        $asset = 'openestate-icons/css/openestate-icons.css';
         return Html\Stylesheet::newLink(
             self::OPENESTATE_ICONS_CSS,
-            $this->env->getUrl($asset) . '?v=' . VERSION
+            $this->env->getAssetsUrl($asset, array('v' => VERSION))
         );
     }
 }

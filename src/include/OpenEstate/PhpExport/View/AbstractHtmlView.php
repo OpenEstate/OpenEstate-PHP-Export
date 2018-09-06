@@ -23,6 +23,7 @@ use OpenEstate\PhpExport\Html\Meta;
 use OpenEstate\PhpExport\Html\Stylesheet;
 use OpenEstate\PhpExport\Utils;
 use OpenEstate\PhpExport\Html\AbstractHeadElement;
+use const OpenEstate\PhpExport\VERSION;
 
 /**
  * An abstract HTML document.
@@ -70,15 +71,16 @@ abstract class AbstractHtmlView extends AbstractView
     function __construct(Environment $env)
     {
         parent::__construct($env);
-        $this->addHeader(Meta::newGenerator('OpenEstate-PHP-Export'), -1);
+        $this->addHeader(Meta::newGenerator('OpenEstate-PHP-Export ' . VERSION), -1);
 
         // include custom.css, if it is available and contains some content
-        $customCss = $env->getPath('custom.css');
+        $customCss = $env->getCustomCssPath();
         if (\is_file($customCss) && \filesize($customCss) > 0)
             $this->addHeader(Stylesheet::newLink(
                 'openestate-custom-css',
-                $env->getUrl('custom.css', array('v' => \filemtime($customCss)))
+                $env->getCustomCssUrl(array('v' => \filemtime($customCss)))
             ), 99999);
+
     }
 
     /**

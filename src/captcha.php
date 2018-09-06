@@ -57,7 +57,7 @@ try {
 
     // get a random true type font
     $fonts = array();
-    $fontPath = $env->getPath('assets/fonts');
+    $fontPath = $env->getAssetsPath('fonts');
     $files = Utils::listDirectory($fontPath);
     if (\is_array($files)) {
         foreach ($files as $file) {

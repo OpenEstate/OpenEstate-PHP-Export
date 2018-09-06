@@ -126,7 +126,7 @@ abstract class AbstractFilter
      */
     public function getFile(Environment $env)
     {
-        return $env->getPath('cache/filter.' . $this->getName());
+        return $env->getCachePath('filter.' . $this->getName());
     }
 
     /**

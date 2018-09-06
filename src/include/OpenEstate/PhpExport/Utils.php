@@ -42,23 +42,23 @@ class Utils
      * @return Translator
      * translator instance
      */
-    public static function createTranslator(Environment $env, $languageCode=null)
+    public static function createTranslator(Environment $env, $languageCode = null)
     {
-        $lang = (\is_string($languageCode))?
-            $languageCode: $env->getLanguage();
+        $lang = (\is_string($languageCode)) ?
+            $languageCode : $env->getLanguage();
 
         // init internal translations
         $translations = new \Gettext\Translations();
 
         // load global translations
-        $localeFile = $env->getPath('locale/' . $lang . '.mo');
+        $localeFile = $env->getLocalePath($lang . '.mo');
         if (\is_file($localeFile) && \is_readable($localeFile)) {
             $translations->mergeWith(
                 \Gettext\Translations::fromMoFile($localeFile),
                 \Gettext\Merge::ADD | \Gettext\Merge::TRANSLATION_OVERRIDE
             );
         } else {
-            $localeFile = $env->getPath('locale/' . $lang . '.po');
+            $localeFile = $env->getLocalePath($lang . '.po');
             if (\is_file($localeFile) && \is_readable($localeFile)) {
                 $translations->mergeWith(
                     \Gettext\Translations::fromPoFile($localeFile),
@@ -68,14 +68,14 @@ class Utils
         }
 
         // load theme translations
-        $localeFile = $env->getTheme()->getPath('locale/' . $lang . '.mo');
+        $localeFile = $env->getThemePath('locale/' . $lang . '.mo');
         if (\is_file($localeFile) && \is_readable($localeFile)) {
             $translations->mergeWith(
                 \Gettext\Translations::fromMoFile($localeFile),
                 \Gettext\Merge::ADD | \Gettext\Merge::TRANSLATION_OVERRIDE
             );
         } else {
-            $localeFile = $env->getTheme()->getPath('locale/' . $lang . '.po');
+            $localeFile = $env->getThemePath('locale/' . $lang . '.po');
             if (\is_file($localeFile) && \is_readable($localeFile)) {
                 $translations->mergeWith(
                     \Gettext\Translations::fromPoFile($localeFile),
@@ -666,6 +666,49 @@ class Utils
         }
 
         return \filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    /**
+     * Join a path with a file or subfolder name.
+     *
+     * @param string $path
+     * parent path
+     *
+     * @param array|null $children
+     * child elements within the path
+     *
+     * @return string
+     * joined path
+     */
+    public static function joinPath($path, ...$children)
+    {
+        if (self::isBlankString($path))
+            return null;
+
+        // remove trailing slash in parent path
+        $path = \trim($path);
+        if (\substr($path, -1) === '/')
+            $path = \substr($path, 0, -1);
+
+        if (self::isEmptyArray($children))
+            return $path;
+
+        $fragments = array();
+        foreach ($children as $child) {
+
+            if ($child === null)
+                break;
+
+            // remove leading slashes
+            $child = \trim($child);
+            if (\substr($child, 0, 1) === '/')
+                $child = \substr($child, 1);
+
+            $fragments[] = $child;
+        }
+
+        // create path
+        return $path . '/' . \implode('/', $fragments);
     }
 
     /**

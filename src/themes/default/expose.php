@@ -201,7 +201,7 @@ $view->addHeader(Stylesheet::newLink(
 $view->addHeader(Javascript::newLink(
     'openestate-theme-js',
     $view->getThemeUrl('js/theme.js', array('v' => VERSION)),
-    'openestate_install_expose("' . $uid . '", "' . \htmlspecialchars($env->getConfig()->getActionUrl()) . '");',
+    'openestate_install_expose("' . $uid . '", "' . \htmlspecialchars($env->getActionUrl()) . '");',
     null,
     true
 ), 1001);
@@ -221,7 +221,7 @@ include('snippets/body-begin.php');
                 <p><?= \htmlspecialchars(_('The offer was not found. Maybe it is not published anymore.')) ?></p>
                 <p>
                     <a class="pure-button pure-button-primary openestate-button"
-                       href="<?= \htmlspecialchars($env->getConfig()->getListingUrl()) ?>">
+                       href="<?= \htmlspecialchars($env->getListingUrl()) ?>">
                         <?= \htmlspecialchars(_('Visit our current offers')) ?>
                     </a>
                 </p>
@@ -234,13 +234,13 @@ include('snippets/body-begin.php');
                 <h3 class="openestate-header-title"><?= _('Real estate {1}', $objectKey) ?></h3>
                 <div class="openestate-header-actions">
                     <a class="openestate-action-listing"
-                       href="<?= \htmlspecialchars($env->getConfig()->getListingUrl()) ?>"
+                       href="<?= \htmlspecialchars($env->getListingUrl()) ?>"
                        title="<?= _('Show current offers.') ?>">
                         <i class="openestate-icon-home"></i>
                     </a>
                     <?php if ($favoritesEnabled) { ?>
                         <a class="openestate-action-fav" rel="nofollow"
-                           href="<?= \htmlspecialchars($env->getConfig()->getFavoriteUrl()) ?>"
+                           href="<?= \htmlspecialchars($env->getFavoriteUrl()) ?>"
                            title="<?= _('Show list of favorite objects.') ?>">
                             <i class="openestate-icon-star"></i>
                         </a>
@@ -261,7 +261,7 @@ include('snippets/body-begin.php');
                     $languageName = $env->getLanguageName($lang);
                     $languageClass = ($languageCode == $lang) ? 'active' : '';
                     $languageParams = $setLanguageAction->getParameters($env, $lang);
-                    echo '<a href="' . \htmlspecialchars($env->getConfig()->getListingUrl($languageParams)) . '" '
+                    echo '<a href="' . \htmlspecialchars($env->getListingUrl($languageParams)) . '" '
                         . 'data-openestate-action="' . \htmlspecialchars(Utils::getJson($languageParams)) . '" '
                         . 'class="' . $languageClass . '">'
                         . \htmlspecialchars($languageName) . '</a>';
@@ -275,10 +275,10 @@ include('snippets/body-begin.php');
         if (Utils::isNotEmptyArray($objectData['images'])) {
             echo '<div class="openestate-expose-gallery">';
             foreach ($objectData['images'] as $image) {
-                $imageUrl = $env->getUrl('data/' . $objectId . '/' . $image['name']);
+                $imageUrl = $env->getDataUrl($objectId . '/' . $image['name']);
                 $imageThumbUrl = ($env->getConfig()->dynamicImageScaling) ?
-                    $env->getUrl('img.php', array('id' => $objectId, 'img' => $image['name'], 'y' => 325)) :
-                    $env->getUrl('data/' . $objectId . '/' . $image['thumb']);
+                    $env->getImageUrl(array('id' => $objectId, 'img' => $image['name'], 'y' => 325)) :
+                    $env->getDataUrl($objectId . '/' . $image['thumb']);
                 $imageTitle = (isset($image['title'][$languageCode])) ?
                     $image['title'][$languageCode] : '';
 
@@ -461,7 +461,7 @@ include('snippets/body-begin.php');
                                 <label for="contactCaptcha-<?= $uid ?>"><?= _('Verification code') ?>:</label>
                                 <div class="openestate-expose-contact-captcha">
                                     <div class="openestate-expose-contact-captcha-image">
-                                        <img src="<?= $env->getUrl('captcha.php') ?>"
+                                        <img src="<?= $env->getCaptchaUrl() ?>"
                                              alt="<?= _('Verification code') ?>"><br>
                                         <a href="#"><?= _('refresh') ?></a>
                                     </div>
@@ -506,20 +506,20 @@ include('snippets/body-begin.php');
             <?php
             if (Utils::isNotEmptyArray($objectData['images'])) {
                 echo '<div class="openestate-expose-gallery-print">';
-                echo '<h3>'. _('Images') .'</h3>';
+                echo '<h3>' . _('Images') . '</h3>';
                 echo '<div>';
                 foreach ($objectData['images'] as $image) {
-                    $imageUrl = $env->getUrl('data/' . $objectId . '/' . $image['name']);
+                    $imageUrl = $env->getDataUrl($objectId . '/' . $image['name']);
                     $imageThumbUrl = ($env->getConfig()->dynamicImageScaling) ?
-                        $env->getUrl('img.php', array('id' => $objectId, 'img' => $image['name'], 'y' => 325)) :
-                        $env->getUrl('data/' . $objectId . '/' . $image['thumb']);
+                        $env->getImageUrl(array('id' => $objectId, 'img' => $image['name'], 'y' => 325)) :
+                        $env->getDataUrl($objectId . '/' . $image['thumb']);
                     $imageTitle = (isset($image['title'][$languageCode])) ?
                         $image['title'][$languageCode] : '';
 
                     echo '<div>'
-                        .'<img src="' . \htmlspecialchars($imageThumbUrl) . '" alt="' . \htmlspecialchars($imageTitle) . '">'
-                        .'<br>' . \htmlspecialchars($imageTitle)
-                        .'</div>';
+                        . '<img src="' . \htmlspecialchars($imageThumbUrl) . '" alt="' . \htmlspecialchars($imageTitle) . '">'
+                        . '<br>' . \htmlspecialchars($imageTitle)
+                        . '</div>';
                 }
                 echo '</div>';
                 echo '</div>';

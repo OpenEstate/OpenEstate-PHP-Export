@@ -77,4 +77,21 @@ class AddFavorite extends AbstractAction
             $params[$this->objectIdParameter] = (string) $objectId;
         return $params;
     }
+
+    /**
+     * Get url for this action.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @param int|string|null $objectId
+     * object ID, that is added to the list of favorites
+     *
+     * @return string
+     * url
+     */
+    public function getUrl(Environment $env, $objectId = null)
+    {
+        return $env->getActionUrl($this->getParameters($env, $objectId));
+    }
 }

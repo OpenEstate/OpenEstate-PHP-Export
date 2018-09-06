@@ -160,7 +160,7 @@ abstract class AbstractOrder
      */
     public function getFile(Environment $env)
     {
-        return $env->getPath('cache/order.' . $this->getName());
+        return $env->getCachePath('order.' . $this->getName());
     }
 
     /**

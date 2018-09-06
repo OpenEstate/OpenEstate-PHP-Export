@@ -66,12 +66,12 @@ try {
     $env = new Environment(new MyConfig(__DIR__), false);
 
     // get path to the image in object data
-    $imgObjectPath = $env->getPath('data/' . $objectId . '/' . $imgName);
+    $imgObjectPath = $env->getDataPath($objectId, $imgName);
     if (!\is_file($imgObjectPath))
         throw new \Exception('Your requested image was not found!');
 
     // get path to the image in cache folder
-    $imgCachePath = $env->getPath('cache/img.' . \md5($objectId . '-' . $imgName . '-' . $x . '-' . $y . '-' . $bg) . '.jpg');
+    $imgCachePath = $env->getCachePath('img.' . \md5($objectId . '-' . $imgName . '-' . $x . '-' . $y . '-' . $bg) . '.jpg');
     if (\is_file($imgCachePath) && Utils::isFileOlderThen($imgCachePath, $env->getConfig()->cacheLifeTime))
         @unlink($imgCachePath);
 
