@@ -19,7 +19,7 @@
 namespace OpenEstate\PhpExport;
 
 /**
- * Return an possibly scale an object image.
+ * Return a scaled object image.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2018, OpenEstate.org
