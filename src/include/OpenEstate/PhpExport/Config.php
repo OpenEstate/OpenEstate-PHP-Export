@@ -259,6 +259,21 @@ class Config
     }
 
     /**
+     * Get URL for the download script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getDownloadUrl($parameters = null)
+    {
+        return Utils::joinPath($this->baseUrl, 'download.php')
+            . Utils::getUrlParameters($parameters);
+    }
+
+    /**
      * Get URL for the expose view.
      *
      * @param array|null $parameters

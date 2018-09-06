@@ -366,6 +366,20 @@ class Environment
     }
 
     /**
+     * Get URL for the download script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getDownloadUrl($parameters = null)
+    {
+        return $this->config->getDownloadUrl($parameters);
+    }
+
+    /**
      * Get URL for the expose view.
      *
      * @param array|null $parameters

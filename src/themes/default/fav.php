@@ -348,7 +348,7 @@ include('snippets/body-begin.php');
                                    title="<?= \htmlspecialchars(_('Show details about this object.')) ?>">
                                     <?= \htmlspecialchars(_('Details')) ?>
                                 </a>
-                                <a class="openestate-action-download" href="#"
+                                <a class="openestate-action-download" href="#" rel="nofollow"
                                    title="<?= \htmlspecialchars(_('Download information about this object as PDF file.')) ?>">
                                     <?= \htmlspecialchars(_('Download')) ?>
                                 </a>

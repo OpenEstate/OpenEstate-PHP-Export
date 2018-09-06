@@ -16,101 +16,100 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace OpenEstate\PhpExport;
+
 /**
- * Website-Export, Auslieferung eines PDF-Exposés als Download.
+ * Return a pdf file with details about an object.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-// Initialisierung
-ob_start();
-require_once(__DIR__ . '/config.php');
-require_once(__DIR__ . '/include/functions.php');
-ob_end_clean();
+// initialization
+require(__DIR__ . '/include/init.php');
+require(__DIR__ . '/config.php');
 
-// Initialisierung des Exposé-Downloads
-$setup = new immotool_setup_index();
-if (is_callable(array('immotool_myconfig', 'load_config_default')))
-  immotool_myconfig::load_config_default($setup);
+// start output buffering
+if (!\ob_start())
+    Utils::logError('Can\'t start output buffering!');
 
-// angeforderte Sprache ermitteln
-$lang = (isset($_REQUEST['lang']) && is_string($_REQUEST['lang'])) ?
-    basename(trim($_REQUEST['lang'])) : $setup->DefaultLanguage;
-if (is_null($lang) || $lang == '') {
-  if (!headers_sent()) {
-    // 400-Fehlercode zurückliefern,
-    // wenn die übermittelte Sprache ungültig ist
-    header('HTTP/1.0 400 Bad Request');
-  }
-  echo 'No language provided!';
-  exit;
-}
+// generate output
+$env = null;
+$fd = null;
+try {
 
-// angeforderte Objekt-ID ermitteln
-$objectId = (isset($_REQUEST['id']) && is_string($_REQUEST['id'])) ?
-    basename(trim($_REQUEST['id'])) : null;
-if (is_null($objectId) || $objectId == '') {
-  if (!headers_sent()) {
-    // 400-Fehlercode zurückliefern,
-    // wenn die übermittelte Objekt-ID ungültig ist
-    header('HTTP/1.0 400 Bad Request');
-  }
-  echo 'No expose ID provided!';
-  exit;
-}
+    // get requested language
+    $lang = (isset($_REQUEST['lang']) && \is_string($_REQUEST['lang'])) ?
+        \basename(\trim($_REQUEST['lang'])) : $setup->DefaultLanguage;
+    if (Utils::isBlankString($lang))
+        throw new \Exception('No language was provided!');
 
-// angefordertes Objekt ermitteln
-$object = immotool_functions::get_object($objectId);
-if (!is_array($object)) {
-  if (!headers_sent()) {
-    // 404-Fehlercode zurückliefern,
-    // wenn keine Immobilie zur übermittelten Objekt-ID gefunden wurde
-    header('HTTP/1.0 404 Not Found');
-  }
-  echo 'Can\'t find the requested object!';
-  exit;
-}
+    // get requested object id
+    $objectId = (isset($_REQUEST['id']) && \is_string($_REQUEST['id'])) ?
+        \basename(\trim($_REQUEST['id'])) : null;
+    if (Utils::isBlankString($objectId))
+        throw new \Exception('No object id was provided!');
 
-// Pfad zur auszuliefernden PDF-Datei ermitteln
-$path = 'data/' . $objectId . '/' . $objectId . '_' . $lang . '.pdf';
-$fullPath = immotool_functions::get_path($path);
-if (!is_file($fullPath)) {
-  if (!headers_sent()) {
-    // 404-Fehlercode zurückliefern,
-    // wenn keine PDF-Exposé zur Immobilie gefunden wurde
-    header('HTTP/1.0 404 Not Found');
-  }
-  echo 'Can\'t find pdf for the requested object!';
-  exit;
-}
+    // load environment
+    $env = new Environment(new MyConfig(__DIR__), false);
 
-// Dateiname der zu sendenden PDF-Datei ermitteln
-$downloadFileName = (isset($object['nr']) && is_string($object['nr'])) ?
-    trim($object['nr']) : null;
-if (is_null($downloadFileName) || strlen($downloadFileName) < 1)
-  $downloadFileName = $objectId;
-$downloadFileName = preg_replace('/[^a-zA-Z0-9_\\-\\.]/', '', $downloadFileName) . '-' . $lang . '.pdf';
-//$downloadFileName = str_replace( array('"', '\''), array('', ''), $downloadFileName ) . '-' . $lang . '.pdf';
-// Datei ausliefern
-$fd = fopen($fullPath, 'r');
-if ($fd == null || $fd == false) {
-  if (!headers_sent()) {
-    // 500-Fehlercode zurückliefern,
-    // wenn der Lese-Zugriff auf die Datei nicht möglich ist
-    header('HTTP/1.0 500 Internal Server Error');
-  }
-  echo 'Can\'t open the requested file!';
-  exit;
+    // get requested object data
+    $object = $env->getObject($objectId);
+    if (!\is_array($object))
+        throw new \Exception('The requested object was not found!');
+
+    // get path to the requested pdf file
+    $pdfPath = $env->getDataPath($objectId, $objectId . '_' . $lang . '.pdf');
+    if (!\is_file($pdfPath))
+        throw new \Exception('The requested document was not found!');
+
+    // get file name, that is used in the response
+    $pdfName = (isset($object['nr']) && \is_string($object['nr'])) ?
+        \trim($object['nr']) : null;
+    if (Utils::isBlankString($pdfName))
+        $pdfName = $objectId;
+    $pdfName = \preg_replace('/[^a-zA-Z0-9_\\-\\.]/', '', $pdfName) . '-' . $lang . '.pdf';
+
+    // send the file
+    $fd = \fopen($pdfPath, 'r');
+    if ($fd === null || $fd === false)
+        throw new \Exception('Can\t open the requested document!');
+
+    \header('Content-type: application/pdf');
+    \header('Content-Disposition: attachment; filename="' . $pdfName . '"');
+    \header('Content-length: ' . \filesize($pdfPath));
+    \header('Cache-Control: no-cache, must-revalidate');
+    \header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+
+    while (!\feof($fd))
+        echo \fread($fd, 2048);
+
+} catch (\Exception $e) {
+
+    // ignore previously buffered output
+    \ob_end_clean();
+    \ob_start();
+
+    if (!\headers_sent())
+        \http_response_code(500);
+
+    //Utils::logError($e);
+    Utils::logWarning($e);
+    echo '<h1>An internal error occurred!</h1>';
+    echo '<p>' . $e->getMessage() . '</p>';
+    echo '<pre>' . $e . '</pre>';
+
+} finally {
+
+    // shutdown environment
+    if ($env !== null)
+        $env->shutdown();
+
+    if ($fd !== null)
+        \fclose($fd);
+
+    // send buffered output
+    \ob_end_flush();
+
 }
-header('Content-type: application/pdf');
-header('Content-Disposition: attachment; filename="' . $downloadFileName . '"');
-header('Content-length: ' . filesize($fullPath));
-header('Cache-control: private');
-while (!feof($fd)) {
-  $buffer = fread($fd, 2048);
-  echo $buffer;
-}
-fclose($fd);
-exit;
