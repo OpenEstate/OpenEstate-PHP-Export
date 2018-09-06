@@ -117,7 +117,7 @@ class MyConfig extends Config
         //    new Filter\Country(),
         //    new Filter\Age(),
         //    new Filter\Equipment(),
-        //    new Filter\Group(),
+        //    new Filter\GroupNr(),
         //    new Filter\Rooms(),
         //    new Filter\Furnished(),
         //    new Filter\SpecialOffer(),

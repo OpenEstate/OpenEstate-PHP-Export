@@ -29,10 +29,10 @@ use function OpenEstate\PhpExport\gettext as _;
  * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-class Group extends AbstractFilter
+class GroupNr extends AbstractFilter
 {
     /**
-     * Group constructor.
+     * GroupNr constructor.
      *
      * @param string $name
      * internal name
@@ -40,7 +40,7 @@ class Group extends AbstractFilter
      * @param int|null $maxLifeTime
      * maximum lifetime of cache files in seconds
      */
-    function __construct($name = 'Group', $maxLifeTime = null)
+    function __construct($name = 'GroupNr', $maxLifeTime = null)
     {
         parent::__construct($name, $maxLifeTime);
     }
