@@ -118,6 +118,9 @@ class Utils
                 array(' ', ' ', ' '),
                 $value
             ));
+            while (\strpos($value, '  ')!==false) {
+                $value = \str_replace('  ', ' ', $value);
+            }
         }
 
         return (\strlen($value) > ($length - 3)) ?
@@ -891,10 +894,13 @@ class Utils
      * @param string $lang
      * language code
      *
+     * @param bool $valueOnly
+     * only write the attribute value
+     *
      * @return null|string
      * HTML encoded output for the requested field
      */
-    public static function writeObjectField(array &$object, $field, array &$i18n, $lang)
+    public static function writeObjectField(array &$object, $field, array &$i18n, $lang, $valueOnly=false)
     {
         if (!\is_array($object))
             return null;
@@ -944,27 +950,27 @@ class Utils
             $types = $object['type_path'];
 
             if (\array_search('housing_complex', $types) !== false)
-                return self::writeObjectField($object, 'measures.residential_area', $i18n, $lang);
+                return self::writeObjectField($object, 'measures.residential_area', $i18n, $lang, $valueOnly);
 
             if (\array_search('retail', $types) !== false)
-                return self::writeObjectField($object, 'measures.retail_area', $i18n, $lang);
+                return self::writeObjectField($object, 'measures.retail_area', $i18n, $lang, $valueOnly);
 
             if (\array_search('general_agriculture', $types) !== false)
-                return self::writeObjectField($object, 'measures.total_area', $i18n, $lang);
+                return self::writeObjectField($object, 'measures.total_area', $i18n, $lang, $valueOnly);
 
             if (\array_search('general_commercial', $types) !== false)
-                return self::writeObjectField($object, 'measures.commercial_area', $i18n, $lang);
+                return self::writeObjectField($object, 'measures.commercial_area', $i18n, $lang, $valueOnly);
 
             if (\array_search('general_piece_of_land', $types) !== false)
-                return self::writeObjectField($object, 'measures.plot_area', $i18n, $lang);
+                return self::writeObjectField($object, 'measures.plot_area', $i18n, $lang, $valueOnly);
 
             if (\array_search('general_parking', $types) !== false)
-                return self::writeObjectField($object, 'measures.car_parking_area', $i18n, $lang);
+                return self::writeObjectField($object, 'measures.car_parking_area', $i18n, $lang, $valueOnly);
 
             if (\array_search('general_residence', $types) !== false)
-                return self::writeObjectField($object, 'measures.residential_area', $i18n, $lang);
+                return self::writeObjectField($object, 'measures.residential_area', $i18n, $lang, $valueOnly);
 
-            return self::writeObjectField($object, 'measures.total_area', $i18n, $lang);
+            return self::writeObjectField($object, 'measures.total_area', $i18n, $lang, $valueOnly);
         }
 
         // write primary price
@@ -972,22 +978,22 @@ class Utils
             $action = $object['action'];
 
             if ($action == 'auction')
-                return self::writeObjectField($object, 'prices.market_value', $i18n, $lang);
+                return self::writeObjectField($object, 'prices.market_value', $i18n, $lang, $valueOnly);
 
             if ($action == 'emphyteusis')
-                return self::writeObjectField($object, 'prices.lease', $i18n, $lang);
+                return self::writeObjectField($object, 'prices.lease', $i18n, $lang, $valueOnly);
 
             if ($action == 'lease')
-                return self::writeObjectField($object, 'prices.lease', $i18n, $lang);
+                return self::writeObjectField($object, 'prices.lease', $i18n, $lang, $valueOnly);
 
             if ($action == 'purchase')
-                return self::writeObjectField($object, 'prices.purchase_price', $i18n, $lang);
+                return self::writeObjectField($object, 'prices.purchase_price', $i18n, $lang, $valueOnly);
 
             if ($action == 'rent')
-                return self::writeObjectField($object, 'prices.rent_excluding_service_charges', $i18n, $lang);
+                return self::writeObjectField($object, 'prices.rent_excluding_service_charges', $i18n, $lang, $valueOnly);
 
             if ($action == 'short_term_rent')
-                return self::writeObjectField($object, 'rent_flat_rate', $i18n, $lang);
+                return self::writeObjectField($object, 'rent_flat_rate', $i18n, $lang, $valueOnly);
 
             return null;
         }
@@ -1000,9 +1006,12 @@ class Utils
 
             if (!\is_array($value)) return null;
 
+            $text = self::getAttributeValue($attribute[0], $attribute[1], $value, $i18n, $lang);
+            if ($valueOnly===true)
+                return $text;
+
             $title = (isset($i18n['openestate']['attributes'][$attribute[0]][$attribute[1]])) ?
                 $i18n['openestate']['attributes'][$attribute[0]][$attribute[1]] : $attribute[1];
-            $text = self::getAttributeValue($attribute[0], $attribute[1], $value, $i18n, $lang);
 
             return '<span class="openestate-attribute-label">' . \htmlspecialchars($title) . ':</span>'
                 . '<span class="openestate-attribute-value">' . \htmlspecialchars($text) . '</span>';

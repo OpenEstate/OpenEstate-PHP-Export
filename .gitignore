@@ -1,6 +1,9 @@
 #.idea/dictionaries/*
+!.idea/dictionaries/global.xml
+
 .idea/tasks.xml
 .idea/usage.statistics.xml
 .idea/workspace.xml
+
 phpdoc/
 phpdoc-cache/
