@@ -747,6 +747,19 @@ class Environment
     }
 
     /**
+     * Test, if a language is available in the export environment.
+     *
+     * @param string $languageCode
+     *
+     * @return bool
+     * true, if the language is available
+     */
+    public function isSupportedLanguage($languageCode)
+    {
+        return \in_array($languageCode, $this->getLanguageCodes());
+    }
+
+    /**
      * Test, if production mode is enabled.
      *
      * @return bool
@@ -884,6 +897,9 @@ class Environment
      */
     public function setLanguage($languageCode)
     {
+        if (!$this->isSupportedLanguage($languageCode))
+            return;
+
         $this->language = \str_replace('/', '', $languageCode);
         if ($this->session !== null)
             $this->session->setLanguage($this->language);
