@@ -80,12 +80,12 @@ try {
         return;
     }
 
-    // add debugging information
-    if ($env !== null && $env->isDebugMode()) {
+    // add statistics
+    if ($env !== null && $env->isStatistics()) {
         $buildTime = \microtime() - $startupTime;
         $output = \str_replace(
             '</body>',
-            '<pre class="openestate-debug">' . Utils::writeDebugInfo($buildTime) . '</pre></body>',
+            '<pre class="openestate-statistics">' . Utils::writeStatistics($buildTime) . '</pre></body>',
             $output
         );
     }

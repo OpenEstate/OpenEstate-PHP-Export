@@ -858,28 +858,6 @@ class Utils
     }
 
     /**
-     * Write debug information.
-     *
-     * @param int $buildTime
-     * page generation time in milliseconds
-     *
-     * @return string
-     * HTML code with debug information
-     */
-    public static function writeDebugInfo($buildTime = 0)
-    {
-        $output = "version      : " . VERSION;
-        $output .= "\nphp version  : " . phpversion();
-
-        if ($buildTime > 0)
-            $output .= "\nbuild time   : " . \number_format($buildTime, '3') . ' s';
-
-        $output .= "\nmemory usage : " . self::writeBytes(\memory_get_usage());
-        $output .= "\nmemory peak  : " . self::writeBytes(\memory_get_peak_usage());
-        return $output;
-    }
-
-    /**
      * Write a certain object attribute.
      *
      * @param array $object
@@ -1018,5 +996,27 @@ class Utils
         }
 
         return null;
+    }
+
+    /**
+     * Write statistics.
+     *
+     * @param int $buildTime
+     * page generation time in milliseconds
+     *
+     * @return string
+     * HTML code with statistics
+     */
+    public static function writeStatistics($buildTime = 0)
+    {
+        $output = "version      : " . VERSION;
+        $output .= "\nphp version  : " . phpversion();
+
+        if ($buildTime > 0)
+            $output .= "\nbuild time   : " . \number_format($buildTime, '3') . ' s';
+
+        $output .= "\nmemory usage : " . self::writeBytes(\memory_get_usage());
+        $output .= "\nmemory peak  : " . self::writeBytes(\memory_get_peak_usage());
+        return $output;
     }
 }

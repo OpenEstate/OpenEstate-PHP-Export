@@ -78,7 +78,7 @@ abstract class AbstractFilter
     /**
      * Create an array of object ID's, that are matched by this filter.
      *
-     * @param Environment env
+     * @param Environment $env
      * export environment
      *
      * @return bool
@@ -227,7 +227,7 @@ abstract class AbstractFilter
     public function readOrRebuild(Environment $env)
     {
         // Try reading filter values from cache.
-        if ($this->read($env))
+        if ($env->isProductionMode() && $this->read($env))
             return true;
 
         // Otherwise load filter values from available objects.
@@ -235,10 +235,12 @@ abstract class AbstractFilter
             return false;
 
         // Write filter values into the cache file for future usage.
-        try {
-            $this->write($env);
-        } catch (\Exception $e) {
-            Utils::logWarning($e);
+        if ($env->isProductionMode()) {
+            try {
+                $this->write($env);
+            } catch (\Exception $e) {
+                Utils::logWarning($e);
+            }
         }
 
         return true;

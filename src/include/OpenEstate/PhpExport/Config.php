@@ -96,6 +96,13 @@ class Config
     public $debug = false;
 
     /**
+     * Enable statistics output.
+     *
+     * @var bool
+     */
+    public $statistics = false;
+
+    /**
      * Enable minimization of generated HTML code.
      *
      * @var bool

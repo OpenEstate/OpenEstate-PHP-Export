@@ -27,12 +27,11 @@ namespace OpenEstate\PhpExport;
  */
 
 // captcha settings
-define('CAPTCHA_LENGTH', 5);
-//define( 'CAPTCHA_SYMBOLS', 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789');
-define('CAPTCHA_SYMBOLS', 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789');
-define('CAPTCHA_SIZE_X', 125);
-define('CAPTCHA_SIZE_Y', 30);
-define('CAPTCHA_SIZE_FONT', 25);
+define('OPENESTATE_CAPTCHA_LENGTH', 5);
+define('OPENESTATE_CAPTCHA_SYMBOLS', 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789');
+define('OPENESTATE_CAPTCHA_SIZE_X', 125);
+define('OPENESTATE_CAPTCHA_SIZE_Y', 30);
+define('OPENESTATE_CAPTCHA_SIZE_FONT', 25);
 
 // initialization
 require(__DIR__ . '/include/init.php');
@@ -70,18 +69,17 @@ try {
     $font = $fontPath . '/' . $fonts[array_rand($fonts)];
 
     // render captcha image
-    $image = \imagecreate(CAPTCHA_SIZE_X, CAPTCHA_SIZE_Y);
-    //\imagecolorallocate($image, 255, 255, 255);
+    $image = \imagecreate(OPENESTATE_CAPTCHA_SIZE_X, OPENESTATE_CAPTCHA_SIZE_Y);
 
     \imagealphablending($image, false);
     $bg = \imagecolorallocatealpha($image, 255, 255, 255, 127);
-    imagefilledrectangle($image, 0, 0, CAPTCHA_SIZE_X, CAPTCHA_SIZE_Y, $bg);
+    imagefilledrectangle($image, 0, 0, OPENESTATE_CAPTCHA_SIZE_X, OPENESTATE_CAPTCHA_SIZE_Y, $bg);
     \imagealphablending($image, true);
 
     $left = 0;
-    $signs = CAPTCHA_SYMBOLS;
+    $signs = OPENESTATE_CAPTCHA_SYMBOLS;
     $string = '';
-    for ($i = 1; $i <= CAPTCHA_LENGTH; $i++) {
+    for ($i = 1; $i <= OPENESTATE_CAPTCHA_LENGTH; $i++) {
         $sign = $signs{\rand(0, \strlen($signs) - 1)};
         $string .= $sign;
         \imagettftext(
@@ -117,6 +115,7 @@ try {
         \header('Content-type: image/png');
     }
 
+    // send captcha image
     \imagepng($image);
 
 } catch (\Exception $e) {
@@ -140,7 +139,8 @@ try {
     if ($env !== null)
         $env->shutdown();
 
-    if ($image !== null)
+    // close image resource
+    if (\is_resource($image))
         \imagedestroy($image);
 
     // send buffered output

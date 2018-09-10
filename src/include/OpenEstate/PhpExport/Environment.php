@@ -771,6 +771,17 @@ class Environment
     }
 
     /**
+     * Test, if statistics are enabled.
+     *
+     * @return bool
+     * true, if statistics are enabled
+     */
+    public function isStatistics()
+    {
+        return $this->config->statistics === true;
+    }
+
+    /**
      * Create an action instance.
      *
      * @param string $name

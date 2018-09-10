@@ -36,8 +36,8 @@ if (!\ob_start())
 
 // generate output
 $env = null;
-$srcImg = null;
-$scaledImg = null;
+$srcImage = null;
+$scaledImage = null;
 try {
 
     // get requested object id
@@ -59,6 +59,7 @@ try {
         (int)$_REQUEST['y'] : 0;
 
     // get requested background color
+    /** @noinspection SpellCheckingInspection */
     $bg = (isset($_REQUEST['bg']) && \is_string($_REQUEST['bg']) && \strlen($_REQUEST['bg']) >= 6) ?
         $_REQUEST['bg'] : 'ffffff';
 
@@ -90,7 +91,7 @@ try {
         throw new \Exception('Your requested image is not assigned to the object!');
 
     // send previously cached file
-    if (is_file($imgCachePath)) {
+    if ($env->isProductionMode() && is_file($imgCachePath)) {
         $image = Utils::readFile($imgCachePath);
 
         if ($image === null)
@@ -117,47 +118,48 @@ try {
         if ($x < 1) $x = \ceil(($src_x / $src_y) * $y);
         if ($y < 1) $y = \ceil(($src_y / $src_x) * $x);
 
-        $dest_x = $x;
-        $dest_y = $y;
+        $target_x = $x;
+        $target_y = $y;
         $src_ratio = $src_x / $src_y;
-        $dest_ratio = $dest_x / $dest_y;
+        $target_ratio = $target_x / $target_y;
 
         // too tall
-        if ($src_ratio <= $dest_ratio) {
-            $dest_y = $src_y * $dest_x / $src_x;
+        if ($src_ratio <= $target_ratio) {
+            $target_y = $src_y * $target_x / $src_x;
             $move_x = 0;
-            $move_y = ($y - $dest_y) / 2;
+            $move_y = ($y - $target_y) / 2;
         } // too wide
         else {
-            $dest_x = $src_x * $dest_y / $src_y;
-            $move_x = ($x - $dest_x) / 2;
+            $target_x = $src_x * $target_y / $src_y;
+            $move_x = ($x - $target_x) / 2;
             $move_y = 0;
         }
 
-        $srcImg = null;
+        $srcImage = null;
         if ($type == 1) // GIF
-            $srcImg = \imagecreatefromgif($imgObjectPath);
+            $srcImage = \imagecreatefromgif($imgObjectPath);
 
         else if ($type == 2) // JPG
-            $srcImg = \imagecreatefromjpeg($imgObjectPath);
+            $srcImage = \imagecreatefromjpeg($imgObjectPath);
 
         else if ($type == 3) // PNG
-            $srcImg = \imagecreatefrompng($imgObjectPath);
+            $srcImage = \imagecreatefrompng($imgObjectPath);
 
         else
             throw new \Exception('The image type is not supported!');
 
-        $scaledImg = \imagecreatetruecolor($x, $y);
+        $scaledImage = \imagecreatetruecolor($x, $y);
         $bgRgb = Utils::getRgbFromHex($bg);
         $bgColor = (\is_array($bgRgb)) ?
-            \imagecolorallocate($scaledImg, $bgRgb['r'], $bgRgb['g'], $bgRgb['b']) :
-            \imagecolorallocate($scaledImg, 255, 255, 255);
+            \imagecolorallocate($scaledImage, $bgRgb['r'], $bgRgb['g'], $bgRgb['b']) :
+            \imagecolorallocate($scaledImage, 255, 255, 255);
 
-        \imagefilledrectangle($scaledImg, 0, 0, $x, $y, $bgColor);
-        \imagecopyresampled($scaledImg, $srcImg, $move_x, $move_y, 0, 0, $dest_x, $dest_y, $src_x, $src_y);
+        \imagefilledrectangle($scaledImage, 0, 0, $x, $y, $bgColor);
+        \imagecopyresampled($scaledImage, $srcImage, $move_x, $move_y, 0, 0, $target_x, $target_y, $src_x, $src_y);
 
         // save scaled image into cache directory
-        \imagejpeg($scaledImg, $imgCachePath, 85);
+        if ($env->isProductionMode())
+            \imagejpeg($scaledImage, $imgCachePath, 85);
 
         // return scaled image
         if (!\headers_sent()) {
@@ -165,7 +167,7 @@ try {
             \header('Content-type: image/jpeg');
         }
 
-        \imagejpeg($scaledImg, null, 85);
+        \imagejpeg($scaledImage, null, 85);
         return;
     }
 
@@ -205,11 +207,11 @@ try {
     if ($env !== null)
         $env->shutdown();
 
-    if ($srcImg !== null)
-        \imagedestroy($srcImg);
-
-    if ($scaledImg !== null)
-        \imagedestroy($scaledImg);
+    // close image resources
+    if (\is_resource($srcImage))
+        \imagedestroy($srcImage);
+    if (\is_resource($scaledImage))
+        \imagedestroy($scaledImage);
 
     // send buffered output
     \ob_end_flush();

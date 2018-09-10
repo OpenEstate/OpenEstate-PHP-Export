@@ -287,7 +287,7 @@ abstract class AbstractOrder
     public function readOrRebuild(Environment $env)
     {
         // Try reading ordering values from cache.
-        if ($this->read($env))
+        if ($env->isProductionMode() && $this->read($env))
             return true;
 
         // Otherwise load ordering values from available objects.
@@ -295,10 +295,12 @@ abstract class AbstractOrder
             return false;
 
         // Write ordering values into the cache file for future usage.
-        try {
-            $this->write($env);
-        } catch (\Exception $e) {
-            Utils::logWarning($e);
+        if ($env->isProductionMode()) {
+            try {
+                $this->write($env);
+            } catch (\Exception $e) {
+                Utils::logWarning($e);
+            }
         }
 
         return true;

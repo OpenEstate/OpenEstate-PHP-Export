@@ -36,23 +36,27 @@ if (!\ob_start())
 
 // generate output
 $env = null;
-$fd = null;
+$downloadResource = null;
 try {
-
-    // get requested language
-    $lang = (isset($_REQUEST['lang']) && \is_string($_REQUEST['lang'])) ?
-        \basename(\trim($_REQUEST['lang'])) : $setup->DefaultLanguage;
-    if (Utils::isBlankString($lang))
-        throw new \Exception('No language was provided!');
-
-    // get requested object id
-    $objectId = (isset($_REQUEST['id']) && \is_string($_REQUEST['id'])) ?
-        \basename(\trim($_REQUEST['id'])) : null;
-    if (Utils::isBlankString($objectId))
-        throw new \Exception('No object id was provided!');
 
     // load environment
     $env = new Environment(new MyConfig(__DIR__), false);
+
+    // get requested language
+    $lang = (isset($_REQUEST['lang']) && Utils::isNotBlankString($_REQUEST['lang'])) ?
+        \trim($_REQUEST['lang']) : null;
+    if ($lang !== $env->getLanguage()) {
+        if ($env->isSupportedLanguage($lang))
+            $env->setLanguage($lang);
+        else
+            $lang = $env->getLanguage();
+    }
+
+    // get requested object id
+    $objectId = (isset($_REQUEST['id']) && Utils::isNotBlankString($_REQUEST['id'])) ?
+        \basename(\trim($_REQUEST['id'])) : null;
+    if (Utils::isBlankString($objectId))
+        throw new \Exception('No object id was provided!');
 
     // get requested object data
     $object = $env->getObject($objectId);
@@ -72,8 +76,8 @@ try {
     $pdfName = \preg_replace('/[^a-zA-Z0-9_\\-\\.]/', '', $pdfName) . '-' . $lang . '.pdf';
 
     // send the file
-    $fd = \fopen($pdfPath, 'r');
-    if ($fd === null || $fd === false)
+    $downloadResource = \fopen($pdfPath, 'r');
+    if (!\is_resource($downloadResource))
         throw new \Exception('Can\t open the requested document!');
 
     \header('Content-type: application/pdf');
@@ -82,8 +86,8 @@ try {
     \header('Cache-Control: no-cache, must-revalidate');
     \header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 
-    while (!\feof($fd))
-        echo \fread($fd, 2048);
+    while (!\feof($downloadResource))
+        echo \fread($downloadResource, 2048);
 
 } catch (\Exception $e) {
 
@@ -106,8 +110,9 @@ try {
     if ($env !== null)
         $env->shutdown();
 
-    if ($fd !== null)
-        \fclose($fd);
+    // close file resource
+    if (\is_resource($downloadResource))
+        \fclose($downloadResource);
 
     // send buffered output
     \ob_end_flush();

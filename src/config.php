@@ -67,8 +67,11 @@ class MyConfig extends Config
         // Enable or disable management of favored real estates.
         //$this->favorites = true;
 
-        // Enable debugging.
-        $this->debug = true;
+        // Enable or disable debugging.
+        $this->debug = false;
+
+        // Enable or disable statistics.
+        $this->statistics = true;
 
         // Enable compatibility for data of PHP-export 1.6.x or 1.7.x.
         $this->compatibility = 0;
