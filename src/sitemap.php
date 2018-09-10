@@ -88,7 +88,10 @@ try {
             continue;
 
         $objectUrl = $exposeView->getUrl($env, $objectId);
-        if (substr($objectUrl, 0, 1) === '/') {
+        if (substr($objectUrl, 0, 2) === './') {
+            $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
+            $objectUrl = $protocol . $_SERVER['SERVER_NAME'] . \dirname($_SERVER['PHP_SELF']) . \substr($objectUrl, 2);
+        } else if (substr($objectUrl, 0, 1) === '/') {
             $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
             $objectUrl = $protocol . $_SERVER['SERVER_NAME'] . $objectUrl;
         }
