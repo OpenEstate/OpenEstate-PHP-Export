@@ -134,9 +134,9 @@ class MyConfig extends Config
         //    new Order\Title()
         //);
 
-        //$view->order =& $view->orders[0];
-        //$view->direction = 'desc';
-        //$view->objectsPerPage = 10;
+        //$view->defaultOrder = $view->orders[0];
+        //$view->defaultOrderDirection = 'asc';
+        $view->objectsPerPage = 8;
     }
 
     /**

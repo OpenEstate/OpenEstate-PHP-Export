@@ -28,34 +28,10 @@ namespace OpenEstate\PhpExport\Provider;
 abstract class AbstractProvider
 {
     /**
-     * Width of the embedded element.
-     *
-     * @var int
-     */
-    public $width;
-
-    /**
-     * Height of the embedded element.
-     *
-     * @var int
-     */
-    public $height;
-
-    /**
      * AbstractProvider constructor.
-     *
-     * @param int $width
-     * width of the embedded element
-     *
-     * @param int $height
-     * height of the embedded element
      */
-    function __construct($width = null, $height = null)
+    function __construct()
     {
-        $this->width = (\is_int($width) && $width > 0) ?
-            $width : 0;
-        $this->height = (\is_int($height) && $height > 0) ?
-            $height : 0;
     }
 
     /**

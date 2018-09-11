@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace OpenEstate\PhpExport\Theme;
+namespace OpenEstate\PhpExport;
 
 /**
  * The default example theme.
@@ -25,16 +25,16 @@ namespace OpenEstate\PhpExport\Theme;
  * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  *
- * @var \OpenEstate\PhpExport\Environment $env
- * the current export environment
+ * @var Environment $env
+ * current export environment
  */
 if (!\class_exists(DefaultTheme::class)) {
-    class DefaultTheme extends BasicTheme
+    class DefaultTheme extends Theme\BasicTheme
     {
         /**
          * DefaultTheme constructor.
          *
-         * @param \OpenEstate\PhpExport\Environment $env
+         * @param Environment $env
          * export environment
          */
         function __construct($env)
@@ -42,17 +42,17 @@ if (!\class_exists(DefaultTheme::class)) {
             parent::__construct(\basename(__DIR__), $env);
         }
 
-        public function setupExposeHtml(\OpenEstate\PhpExport\View\ExposeHtml $view)
+        public function setupExposeHtml(View\ExposeHtml $view)
         {
             parent::setupExposeHtml($view);
         }
 
-        public function setupFavoriteHtml(\OpenEstate\PhpExport\View\FavoriteHtml $view)
+        public function setupFavoriteHtml(View\FavoriteHtml $view)
         {
             parent::setupFavoriteHtml($view);
         }
 
-        public function setupListingHtml(\OpenEstate\PhpExport\View\ListingHtml $view)
+        public function setupListingHtml(View\ListingHtml $view)
         {
             parent::setupListingHtml($view);
         }

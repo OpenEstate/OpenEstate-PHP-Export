@@ -1,5 +1,4 @@
 <?php
-
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
  * Copyright (C) 2009-2018 OpenEstate.org
@@ -19,6 +18,9 @@
 
 namespace OpenEstate\PhpExport\Provider;
 
+use OpenEstate\PhpExport\Utils;
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * An embedded view for a video of dailymotion.com.
  *
@@ -29,45 +31,55 @@ namespace OpenEstate\PhpExport\Provider;
 class DailyMotionVideo extends AbstractLinkProvider
 {
     /**
+     * Initial width of the embedded video in pixels.
+     *
+     * @var int
+     */
+    private $width = 0;
+
+    /**
+     * Initial height of the embedded video in pixels.
+     *
+     * @var int
+     */
+    private $height = 0;
+
+    /**
      * DailyMotionVideo constructor.
      *
-     * @param int $width
-     * width of the embedded element
+     * @param int|null $width
+     * initial width of the embedded video in pixels
      *
-     * @param int $height
-     * height of the embedded element
+     * @param int|null $height
+     * initial height of the embedded video in pixels
      */
-    function __construct($width = 0, $height = 0)
+    function __construct($width = null, $height = null)
     {
-        parent::__construct($width, $height);
+        parent::__construct();
+        $this->width = $width;
+        $this->height = $height;
     }
 
-    public function getBody($linkId, $linkTitle, $linkUrl)
+    public function getBody($linkId, $linkUrl = null, $linkTitle = null)
     {
-        $width = (\is_int($this->width) && $this->width > 0) ?
-            $this->width : 480;
-        $height = (\is_int($this->height) && $this->height > 0) ?
-            $this->height : 270;
+        $frameUrl = 'https://www.dailymotion.com/embed/video/' . $linkId;
+        $width = (\is_int($this->width)) ? $this->width : 480;
+        $height = (\is_int($this->height)) ? $this->height : 270;
 
-        return '<div class="openestate-video openestate-video-dailymotion" style="width:' . $width . 'px;">'
-            . "\n"
+        $html = '<iframe class="openestate-video-object openestate-video-object-dailymotion" '
+            . 'src="' . \htmlspecialchars($frameUrl) . '" '
+            . 'width="' . $width . '" height="' . $height . '"></iframe>';
 
-            // IFrame
-            . '<div class="openestate-video-container">'
-            . '<iframe src="https://www.dailymotion.com/embed/video/' . \htmlspecialchars($linkId) . '"'
-            . ' class="openestate-video-frame"'
-            . ' width="' . $width . '"'
-            . ' height="' . $height . '">'
-            . '</iframe>'
-            . '</div>'
-            . "\n"
+        if (Utils::isNotBlankString($linkUrl)) {
+            if (Utils::isBlankString($linkTitle))
+                $linkTitle = _('Show in a separate window.');
 
-            // Provider-Link
-            . '<div class="openestate-video-subtitle">'
-            . '<a href="' . \htmlspecialchars($linkUrl) . '" target="_blank">' . \htmlspecialchars($linkTitle) . '</a>'
-            . ' @ <a href="https://www.dailymotion.com/" target="_blank">dailymotion.com</a>'
-            . '</div>'
-            . "\n"
-            . '</div>';
+            $html .= '<div class="openestate-video-subtitle">'
+                . '<a href="' . \htmlspecialchars($linkUrl) . '" target="_blank">' . \htmlspecialchars($linkTitle) . '</a>'
+                . ' @ <a href="https://www.dailymotion.com/" target="_blank">dailymotion.com</a>'
+                . '</div>';
+        }
+
+        return $html;
     }
 }

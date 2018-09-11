@@ -18,6 +18,9 @@
 
 namespace OpenEstate\PhpExport\Provider;
 
+use OpenEstate\PhpExport\Utils;
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * An embedded view for a video of veoh.com.
  *
@@ -28,36 +31,42 @@ namespace OpenEstate\PhpExport\Provider;
 class VeohVideo extends AbstractLinkProvider
 {
     /**
+     * Initial width of the embedded video in pixels.
+     *
+     * @var int
+     */
+    private $width = 0;
+
+    /**
+     * Initial height of the embedded video in pixels.
+     *
+     * @var int
+     */
+    private $height = 0;
+
+    /**
      * VeohVideo constructor.
      *
-     * @param int $width
-     * width of the embedded element
+     * @param int|null $width
+     * initial width of the embedded video in pixels
      *
-     * @param int $height
-     * height of the embedded element
+     * @param int|null $height
+     * initial height of the embedded video in pixels
      */
-    function __construct($width = 0, $height = 0)
+    function __construct($width = null, $height = null)
     {
-        parent::__construct($width, $height);
+        parent::__construct();
+        $this->width = $width;
+        $this->height = $height;
     }
 
-    public function getBody($linkId, $linkTitle, $linkUrl)
+    public function getBody($linkId, $linkUrl = null, $linkTitle = null)
     {
-        $width = (\is_int($this->width) && $this->width > 0) ?
-            $this->width : 410;
-        $height = (\is_int($this->height) && $this->height > 0) ?
-            $this->height : 341;
+        $width = (\is_int($this->width)) ? $this->width : 410;
+        $height = (\is_int($this->height)) ? $this->height : 341;
 
         /** @noinspection SpellCheckingInspection */
-        return '<div class="openestate-video openestate-video-veoh" style="width:' . $width . 'px;">'
-            . "\n"
-
-            // Flash
-            . '<div class="openestate-video-container">'
-            . '<object id="veohFlashPlayer"'
-            . ' class="openestate-video-object"'
-            . ' width="' . $width . '"'
-            . ' height="' . $height . '">'
+        $html = '<object id="veohFlashPlayer" class="openestate-video-object openestate-video-object-veoh" width="' . $width . '" height="' . $height . '">'
             . '<param name="allowFullscreen" value="true" />'
             . '<param name="allowScriptAccess" value="always" />'
             . '<param name="movie" value="http://www.veoh.com/swf/webplayer/WebPlayer.swf?version=AFrontend.5.7.0.1343&amp;permalinkId=' . \htmlspecialchars($linkId) . '&amp;player=videodetailsembedded&amp;videoAutoPlay=0&amp;id=anonymous" />'
@@ -69,16 +78,18 @@ class VeohVideo extends AbstractLinkProvider
             . ' height="' . $height . '"'
             . ' id="veohFlashPlayerEmbed"'
             . ' name="veohFlashPlayerEmbed"/>'
-            . '</object>'
-            . '</div>'
-            . "\n"
+            . '</object>';
 
-            // Provider-Link
-            . '<div class="openestate-video-subtitle">'
-            . '<a href="' . \htmlspecialchars($linkUrl) . '" target="_blank">' . \htmlspecialchars($linkTitle) . '</a>'
-            . ' @ <a href="http://www.veoh.com/" target="_blank">veoh.com</a>'
-            . '</div>'
-            . "\n"
-            . '</div>';
+        if (Utils::isNotBlankString($linkUrl)) {
+            if (Utils::isBlankString($linkTitle))
+                $linkTitle = _('Show in a separate window.');
+
+            $html .= '<div class="openestate-video-subtitle">'
+                . '<a href="' . \htmlspecialchars($linkUrl) . '" target="_blank">' . \htmlspecialchars($linkTitle) . '</a>'
+                . ' @ <a href="https://www.veoh.com/" target="_blank">veoh.com</a>'
+                . '</div>';
+        }
+
+        return $html;
     }
 }

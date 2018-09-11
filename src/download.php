@@ -64,7 +64,7 @@ try {
         throw new \Exception('The requested object was not found!');
 
     // get path to the requested pdf file
-    $pdfPath = $env->getDataPath($objectId, $objectId . '_' . $lang . '.pdf');
+    $pdfPath = $env->getObjectPdf($objectId, $lang);
     if (!\is_file($pdfPath))
         throw new \Exception('The requested document was not found!');
 
@@ -81,7 +81,7 @@ try {
         throw new \Exception('Can\t open the requested document!');
 
     \header('Content-type: application/pdf');
-    \header('Content-Disposition: attachment; filename="' . $pdfName . '"');
+    \header('Content-Disposition: inline; filename="' . $pdfName . '"');
     \header('Content-length: ' . \filesize($pdfPath));
     \header('Cache-Control: no-cache, must-revalidate');
     \header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');

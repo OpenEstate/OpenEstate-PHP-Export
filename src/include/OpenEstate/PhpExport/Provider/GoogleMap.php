@@ -20,6 +20,8 @@
 
 namespace OpenEstate\PhpExport\Provider;
 
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * A map provided by Google Maps.
  *
@@ -51,21 +53,15 @@ class GoogleMap extends AbstractMapProvider
      *
      * @param bool $showDirectLink
      * enable direct link below the map
-     *
-     * @param int $width
-     * width of the embedded element
-     *
-     * @param int $height
-     * height of the embedded element
      */
-    function __construct($zoom = 13, $showDirectLink = true, $width = 0, $height = 0)
+    function __construct($zoom = 13, $showDirectLink = true)
     {
-        parent::__construct($width, $height);
+        parent::__construct();
         $this->zoom = $zoom;
         $this->showDirectLink = $showDirectLink;
     }
 
-    public function getBody(&$object, &$translations, $lang)
+    public function getBody(array &$object)
     {
         $lat = $this->getLatitude($object);
         $lon = $this->getLongitude($object);
@@ -75,31 +71,28 @@ class GoogleMap extends AbstractMapProvider
         //$lat += (\rand(1,999) / \rand(1,999));
         //$lon -= (\rand(1,999) / \rand(1,999));
 
-        $width = (\is_int($this->width) && $this->width > 0) ?
-            $this->width : 560;
-        $height = (\is_int($this->height) && $this->height > 0) ?
-            $this->height : 315;
-
         // Create links.
-        $frameSrc = 'https://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom . '&amp;output=embed';
-        $directLink = 'https://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom;
+        $frameSrc = 'https://maps.google.com/?ie=UTF8&t=m&ll=' . $lat . ',' . $lon . '&z=' . $this->zoom . '&output=embed';
+        $directLink = 'https://maps.google.com/?ie=UTF8&t=m&ll=' . $lat . ',' . $lon . '&z=' . $this->zoom;
 
         // Write output.
         $output = '<iframe' .
-            ' class="openestate-map-frame"' .
-            ' width="' . $width . '"' .
-            ' height="' . $height . '"' .
-            ' src="' . $frameSrc . '">' .
+            ' class="openestate-map-object openestate-map-object-google"' .
+            ' src="' . \htmlspecialchars($frameSrc) . '">' .
             '</iframe>';
 
         if ($this->showDirectLink === true) {
             $output .= '<div class="openestate-map-subtitle">'
-                . '<a href="' . $directLink . '" target="_blank">'
-                . \htmlspecialchars($translations['labels']['estate.map.directLink'])
+                . '<a href="' . \htmlspecialchars($directLink) . '" target="_blank">'
+                . _('Show in a separate window.')
                 . '</a></div>';
         }
 
-        return '<div class="openestate-map openestate-map-google">' . $output . '</div>';
+        return $output;
     }
 
+    public function getName()
+    {
+        return 'google';
+    }
 }

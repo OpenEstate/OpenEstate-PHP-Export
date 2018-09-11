@@ -16,10 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Don't execute the file, if it is not properly loaded.
-if (!isset($this) || !\is_object($this)) return;
+namespace OpenEstate\PhpExport;
 
-use function \OpenEstate\PhpExport\gettext as _;
+/**
+ * HTML code in the body after the actual content.
+ *
+ * @author Andreas Rudolph & Walter Wagner
+ * @copyright 2009-2018, OpenEstate.org
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @var View\AbstractHtmlView $view
+ * the currently used view
+ */
+
+// Don't execute the file, if it is not properly loaded.
+if (!isset($view) || !\is_object($view)) return;
 
 ?>
 

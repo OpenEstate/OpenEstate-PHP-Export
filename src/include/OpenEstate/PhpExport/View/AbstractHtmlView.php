@@ -117,7 +117,7 @@ abstract class AbstractHtmlView extends AbstractView
      * @param int $priority
      * priority of the elements
      */
-    public function addHeaders(array $elements, $priority = 100)
+    public function addHeaders($elements, $priority = 100)
     {
         if (!\is_array($elements)) {
             return;

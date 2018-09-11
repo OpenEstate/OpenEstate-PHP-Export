@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace OpenEstate\PhpExport;
+
+use function htmlspecialchars as html;
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
  * Implementation of the listing view for the default theme.
  *
@@ -23,20 +28,12 @@
  * @copyright 2009-2018, OpenEstate.org
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  *
- * @var \OpenEstate\PhpExport\View\ListingHtml $view
+ * @var View\ListingHtml $view
  * the currently used view
  */
 
 // Don't execute the file, if it is not properly loaded.
 if (!isset($view) || !\is_object($view)) return;
-
-use OpenEstate\PhpExport\Utils;
-use OpenEstate\PhpExport\Html\Checkbox;
-use OpenEstate\PhpExport\Html\Stylesheet;
-use OpenEstate\PhpExport\Html\Javascript;
-use OpenEstate\PhpExport\Html\Meta;
-use const OpenEstate\PhpExport\VERSION;
-use function OpenEstate\PhpExport\gettext as _;
 
 // get export environment
 $env = $view->getEnvironment();
@@ -61,116 +58,77 @@ $currentPage = $view->getPage();
 $totalPages = $view->getPageCount(\count($objectIds));
 
 /**
- * @var OpenEstate\PhpExport\View\ExposeHtml $exposeView
  * expose view
+ *
+ * @var View\ExposeHtml $exposeView
  */
 $exposeView = $env->newExposeHtml();
 
 /**
- * @var OpenEstate\PhpExport\Action\SetLanguage $setLanguageAction
  * action to change the language
+ *
+ * @var Action\SetLanguage $setLanguageAction
  */
 $setLanguageAction = $env->newAction('SetLanguage');
 
 /**
- * @var OpenEstate\PhpExport\Action\SetListingFilter $setFilterAction
  * action to change filter values
+ *
+ * @var Action\SetListingFilter $setFilterAction
  */
 $setFilterAction = $env->newAction('SetListingFilter');
 
 /**
- * @var OpenEstate\PhpExport\Action\SetListingOrder $setOrderAction
+ * @var Action\SetListingOrder $setOrderAction
  * action to change ordering
  */
 $setOrderAction = $env->newAction('SetListingOrder');
 
 /**
- * @var OpenEstate\PhpExport\Action\SetListingView $setViewAction
  * action to switch between different listing views
+ *
+ * @var Action\SetListingView $setViewAction
  */
 $setViewAction = $env->newAction('SetListingView');
 
 /**
- * @var OpenEstate\PhpExport\Action\SetListingPage $setPageAction
  * action to change the current page of the listing view
+ *
+ * @var Action\SetListingPage $setPageAction
  */
 $setPageAction = $env->newAction('SetListingPage');
 
 /**
- * @var OpenEstate\PhpExport\Action\AddFavorite $addFavoriteAction
  * action to add an object to the list of favorites
+ *
+ * @var Action\AddFavorite $addFavoriteAction
  */
 $addFavoriteAction = ($favoritesEnabled) ?
     $env->newAction('AddFavorite') : null;
 
 /**
- * @var OpenEstate\PhpExport\Action\RemoveFavorite $removeFavoriteAction
  * action to remove an object from the list of favorites
+ *
+ * @var Action\RemoveFavorite $removeFavoriteAction
  */
 $removeFavoriteAction = ($favoritesEnabled) ?
     $env->newAction('RemoveFavorite') : null;
 
 // set page title
-$view->setTitle(_('Current offers'));
+$view->setTitle(\ucfirst(_('current offers')));
 
 // add meta elements
-$view->addHeader(Meta::newRobots('noindex,follow'), 100);
-
-// register JQuery
-$view->addHeaders($env->getAssets()->jquery(), 200);
-
-// register OpenEstate Icons
-$view->addHeaders($env->getAssets()->openestate_icons(), 210);
-
-// register Pure CSS framework
-if (!$view->isBodyOnly())
-    $view->addHeader(Stylesheet::newLink(
-        'openestate-pure-base-css',
-        $view->getThemeUrl('css/pure/base-min.css', array('v' => '1.0.0'))
-    ), 310);
-$view->addHeader(Stylesheet::newLink(
-    'openestate-pure-buttons-css',
-    $view->getThemeUrl('css/pure/buttons-min.css', array('v' => '1.0.0'))
-), 311);
-$view->addHeader(Stylesheet::newLink(
-    'openestate-pure-forms-css',
-    $view->getThemeUrl('css/pure/forms-min.css', array('v' => '1.0.0'))
-), 312);
-//$view->addHeader(Stylesheet::newLink(
-//        'openestate-pure-grids-css',
-//        $view->getThemeUrl('css/pure/grids-min.css', array('v' => '1.0.0'))
-//), 313);
-//$view->addHeader(Stylesheet::newLink(
-//        'openestate-pure-grids-responsive-css',
-//        $view->getThemeUrl('css/pure/grids-responsive-min.css', array('v' => '1.0.0'))
-//), 314);
-//$view->addHeader(Stylesheet::newLink(
-//        'openestate-pure-menus-css',
-//        $view->getThemeUrl('css/pure/menus-min.css', array('v' => '1.0.0'))
-//), 315);
-//$view->addHeader(Stylesheet::newLink(
-//        'openestate-pure-tables-css',
-//        $view->getThemeUrl('css/pure/tables-min.css', array('v' => '1.0.0'))
-//), 316);
-
-// register Popper.js
-$view->addHeader(Javascript::newLink(
-    'openestate-popper-js',
-    $view->getThemeUrl('js/popper/popper.min.js', array('v' => '1.14.4')),
-    null,
-    null,
-    true
-), 900);
+$view->addHeader(Html\Meta::newRobots('noindex,follow'), 99);
 
 // register custom theme includes
-$view->addHeader(Stylesheet::newLink(
+$view->addHeader(Html\Stylesheet::newLink(
     'openestate-theme-css',
     $view->getThemeUrl('css/theme.css', array('v' => VERSION))
 ), 1000);
-$view->addHeader(Javascript::newLink(
+$view->addHeader(Html\Javascript::newLink(
     'openestate-theme-js',
     $view->getThemeUrl('js/theme.js', array('v' => VERSION)),
-    'openestate_install_listing("' . $uid . '", "' . \htmlspecialchars($env->getActionUrl()) . '");',
+    'openestate_install_listing("' . $uid . '", "' . html($env->getActionUrl()) . '");',
     null,
     true
 ), 1001);
@@ -179,31 +137,30 @@ $view->addHeader(Javascript::newLink(
 if (!$view->isBodyOnly()) include('snippets/document-begin.php');
 include('snippets/body-begin.php');
 
-//echo '<pre>' . print_r($objectIds, true) . '</pre>';
 ?>
 
     <div id="openestate-body-<?= $uid ?>" class="openestate-body openestate-listing">
 
         <div class="openestate-header">
             <div class="openestate-header-bar">
-                <h3 class="openestate-header-title"><?= _('Current offers') ?></h3>
+                <h3 class="openestate-header-title"><?= html(\ucfirst(_('current offers'))) ?></h3>
                 <div class="openestate-header-actions">
-                    <a class="openestate-action-filter" href="#" title="<?= _('Show search options.') ?>">
+                    <a class="openestate-action-filter" href="#" title="<?= html(_('Show search options.')) ?>">
                         <i class="openestate-icon-search"></i>
                     </a>
-                    <a class="openestate-action-sort" href="#" title="<?= _('Show sort options.') ?>">
+                    <a class="openestate-action-sort" href="#" title="<?= html(_('Show sort options.')) ?>">
                         <i class="openestate-icon-sort"></i>
                     </a>
                     <a class="openestate-action-details"
-                       href="<?= \htmlspecialchars($env->getListingUrl($setViewAction->getParameters($env, 'detail'))) ?>"
-                       data-openestate-action="<?= \htmlspecialchars(Utils::getJson($setViewAction->getParameters($env, 'detail'))) ?>"
-                       title="<?= _('Show objects in detailed view.') ?>">
+                       href="<?= html($env->getListingUrl($setViewAction->getParameters($env, 'detail'))) ?>"
+                       data-openestate-action="<?= html(Utils::getJson($setViewAction->getParameters($env, 'detail'))) ?>"
+                       title="<?= html(_('Show objects in detailed view.')) ?>">
                         <i class="openestate-icon-list-detail"></i>
                     </a>
                     <a class="openestate-action-thumb"
-                       href="<?= \htmlspecialchars($env->getListingUrl($setViewAction->getParameters($env, 'thumb'))) ?>"
-                       data-openestate-action="<?= \htmlspecialchars(Utils::getJson($setViewAction->getParameters($env, 'thumb'))) ?>"
-                       title="<?= _('Show objects in gallery view.') ?>">
+                       href="<?= html($env->getListingUrl($setViewAction->getParameters($env, 'thumb'))) ?>"
+                       data-openestate-action="<?= html(Utils::getJson($setViewAction->getParameters($env, 'thumb'))) ?>"
+                       title="<?= html(_('Show objects in gallery view.')) ?>">
                         <i class="openestate-icon-list-thumb"></i>
                     </a>
                     <?php if ($favoritesEnabled || $languageSelection) { ?>
@@ -211,30 +168,30 @@ include('snippets/body-begin.php');
                     <?php } ?>
                     <?php if ($favoritesEnabled) { ?>
                         <a class="openestate-action-fav" rel="nofollow"
-                           href="<?= \htmlspecialchars($env->getFavoriteUrl()) ?>"
-                           title="<?= _('Show list of favorite objects.') ?>">
-                            <i class="openestate-icon-star"></i>
+                           href="<?= html($env->getFavoriteUrl()) ?>"
+                           title="<?= html(_('Show list of favorite objects.')) ?>">
+                            <i class="openestate-icon-fav"></i>
                         </a>
                     <?php } ?>
                     <?php if ($languageSelection) { ?>
                         <a class="openestate-action-language" href="#"
-                           title="<?= _('Select your preferred language.') ?>">
-                            <i class="openestate-icon-globe"></i>
+                           title="<?= html(_('Select your preferred language.')) ?>">
+                            <i class="openestate-icon-language"></i>
                         </a>
                     <?php } ?>
                 </div>
             </div>
 
-            <form action="<?= $env->getListingUrl() ?>" method="get"
+            <form action="<?= html($env->getListingUrl()) ?>" method="get"
                   class="openestate-filter-form pure-form">
-                <input type="hidden" name="<?= $env->actionParameter ?>"
-                       value="<?= $setFilterAction->getName() ?>">
+                <input type="hidden" name="<?= html($env->actionParameter) ?>"
+                       value="<?= html($setFilterAction->getName()) ?>">
                 <fieldset>
-                    <legend><?= _('Search offers') ?></legend>
+                    <legend><?= html(\ucfirst(_('search offers'))) ?></legend>
                     <?php
                     $values = $view->getFilterValues();
 
-                    /** @var OpenEstate\PhpExport\Filter\AbstractFilter $filter */
+                    /** @var Filter\AbstractFilter $filter */
                     foreach ($view->filters as $filter) {
                         $value = (isset($values[$filter->getName()])) ? $values[$filter->getName()] : null;
                         $widget = $filter->getWidget($env, $value);
@@ -242,9 +199,12 @@ include('snippets/body-begin.php');
                         $widget->name = $setFilterAction->filterParameter . '[' . $filter->getName() . ']';
 
                         echo '<div>';
-                        if ($widget instanceof Checkbox) {
+                        if ($widget instanceof Html\Checkbox) {
                             $widget->label = null;
-                            echo '<label for="' . $widget->id . '">' . $widget->generate() . ' ' . $filter->getTitle($env->getLanguage()) . '</label>';
+                            echo '<label for="' . html($widget->id) . '">'
+                                . $widget->generate() . ' '
+                                . html($filter->getTitle($languageCode))
+                                . '</label>';
                         } else {
                             echo $widget->generate();
                         }
@@ -254,23 +214,23 @@ include('snippets/body-begin.php');
                     <div class="pure-button-group" role="group">
                         <button type="submit"
                                 class="openestate-filter-form-submit pure-button pure-button-primary openestate-button">
-                            <i class="openestate-icon-search"></i><?= _('search') ?>
+                            <i class="openestate-icon-search"></i><?= html(_('search')) ?>
                         </button>
                         <button type="submit"
                                 class="openestate-filter-form-clear pure-button openestate-button openestate-button-secondary"
-                                name="<?= $setFilterAction->clearParameter ?>" value="1">
-                            <i class="openestate-icon-cancel"></i><?= _('clear') ?>
+                                name="<?= html($setFilterAction->clearParameter) ?>" value="1">
+                            <i class="openestate-icon-cancel"></i><?= html(_('clear')) ?>
                         </button>
                     </div>
                 </fieldset>
             </form>
 
-            <form action="<?= $env->getListingUrl() ?>" method="get"
+            <form action="<?= html($env->getListingUrl()) ?>" method="get"
                   class="openestate-sort-form pure-form">
-                <input type="hidden" name="<?= $env->actionParameter ?>"
-                       value="<?= $setOrderAction->getName() ?>">
+                <input type="hidden" name="<?= html($env->actionParameter) ?>"
+                       value="<?= html($setOrderAction->getName()) ?>">
                 <fieldset>
-                    <legend><?= _('Sort offers') ?></legend>
+                    <legend><?= html(\ucfirst(_('sort offers'))) ?></legend>
                     <?php
                     $orderValue = $view->getOrder();
                     $orderDir = $view->getOrderDirection();
@@ -282,26 +242,25 @@ include('snippets/body-begin.php');
                         $orderDescClass = 'pure-button-primary';
                     }
 
-                    /** @var OpenEstate\PhpExport\Order\AbstractOrder $order */
+                    /** @var Order\AbstractOrder $order */
                     foreach ($view->orders as $order) {
                         $selected = ($orderValue == $order->getName()) ? 'checked' : '';
                         echo '<div><label>' .
-                            '<input type="radio" name="' . $setOrderAction->orderParameter . '" value="' . $order->getName() . '" ' . $selected . '> '
-                            //. _('by') . ' '
-                            . $order->getTitle($env->getLanguage()) .
+                            '<input type="radio" name="' . html($setOrderAction->orderParameter) . '" value="' . html($order->getName()) . '" ' . $selected . '> '
+                            . html($order->getTitle($languageCode)) .
                             '</label></div>' . "\n";
                     }
                     ?>
                     <div class="pure-button-group" role="group">
                         <button type="submit"
                                 class="openestate-sort-form-asc pure-button openestate-button <?= $orderAscClass ?>"
-                                name="<?= $setOrderAction->directionParameter ?>" value="asc">
-                            <i class="openestate-icon-sort-asc"></i><?= _('ascending') ?>
+                                name="<?= html($setOrderAction->directionParameter) ?>" value="asc">
+                            <i class="openestate-icon-sort-asc"></i><?= html(_('ascending')) ?>
                         </button>
                         <button type="submit"
                                 class="openestate-sort-form-desc pure-button openestate-button <?= $orderDescClass ?>"
-                                name="<?= $setOrderAction->directionParameter ?>" value="desc">
-                            <i class="openestate-icon-sort-desc"></i><?= _('descending') ?>
+                                name="<?= html($setOrderAction->directionParameter) ?>" value="desc">
+                            <i class="openestate-icon-sort-desc"></i><?= html(_('descending')) ?>
                         </button>
                     </div>
                 </fieldset>
@@ -310,14 +269,14 @@ include('snippets/body-begin.php');
             <?php
             if ($languageSelection) {
                 echo '<div class="openestate-language-form">';
-                foreach ($env->getLanguageCodes() as $lang) {
+                foreach ($languageCodes as $lang) {
                     $languageName = $env->getLanguageName($lang);
                     $languageClass = ($languageCode == $lang) ? 'active' : '';
                     $languageParams = $setLanguageAction->getParameters($env, $lang);
-                    echo '<a href="' . \htmlspecialchars($env->getListingUrl($languageParams)) . '" '
-                        . 'data-openestate-action="' . \htmlspecialchars(Utils::getJson($languageParams)) . '" '
+                    echo '<a href="' . html($env->getListingUrl($languageParams)) . '" '
+                        . 'data-openestate-action="' . html(Utils::getJson($languageParams)) . '" '
                         . 'class="' . $languageClass . '">'
-                        . \htmlspecialchars($languageName) . '</a>';
+                        . html($languageName) . '</a>';
                 }
                 echo '</div>';
             }
@@ -330,14 +289,21 @@ include('snippets/body-begin.php');
             $filterValues = $view->getFilterValues();
 
             echo '<div class="openestate-listing-empty">';
-            if (Utils::isEmptyArray($filterValues))
-                echo \htmlspecialchars(_('There are currently no objects published.'));
-            else
-                echo \htmlspecialchars(_('No objects were found according to your filter settings.'));
+            if (Utils::isEmptyArray($filterValues)) {
+                echo '<p>' . html(_('There are currently no objects published.')) . '</p>';
+            } else {
+                $clearFilterParams = $setFilterAction->getParameters($env, null, true);
+                echo '<p>' . html(_('No objects were found according to your filter settings.')) . '</p>'
+                    . '<p><a class="pure-button pure-button-primary openestate-button" '
+                    . 'href="' . html($env->getListingUrl($clearFilterParams)) . '" '
+                    . 'data-openestate-action="' . html(Utils::getJson($clearFilterParams)) . '">'
+                    . html(_('Show all offers.'))
+                    . '</a></p>';
+            }
             echo '</div>';
 
         } else {
-            echo '<div class="openestate-listing-items openestate-listing-items-' . \htmlspecialchars($currentView) . '">';
+            echo '<div class="openestate-listing-items openestate-listing-items-' . html($currentView) . '">';
             foreach ($view->getObjectIdsOnThisPage($objectIds) as $objectId) {
                 $objectData = $env->getObject($objectId);
                 if ($objectData === null)
@@ -354,13 +320,19 @@ include('snippets/body-begin.php');
                 $objectUrl = $exposeView->getUrl($env, $objectId);
                 $objectTitle = (isset($objectData['title'][$languageCode])) ?
                     $objectData['title'][$languageCode] :
-                    _('Real estate {1}', $objectKey);
+                    _('real estate {1}', $objectKey);
+
                 $objectImage = (isset($objectData['images']) && \is_array($objectData['images']) && \count($objectData['images']) > 0) ?
                     $objectData['images'][0] : null;
                 $objectImageLink = (\is_array($objectImage)) ?
                     ($env->getConfig()->dynamicImageScaling) ?
                         $env->getImageUrl(array('id' => $objectId, 'img' => $objectImage['name'], 'x' => 500, 'y' => 325)) :
                         $env->getDataUrl($objectId . '/' . $objectImage['thumb']) :
+                    null;
+
+                $objectPdf = $env->getObjectPdf($objectId, $languageCode);
+                $objectPdfLink = (\is_file($objectPdf)) ?
+                    $env->getDownloadUrl(array('id' => $objectId, 'lang' => $languageCode)) :
                     null;
 
                 $objectFav = $favoritesEnabled && \array_search($objectId, $favorites) !== false;
@@ -372,13 +344,13 @@ include('snippets/body-begin.php');
                 if ($currentView == 'thumb') { ?>
 
                     <div class="openestate-listing-item openestate-listing-thumb"
-                         data-openestate-object="<?= \htmlspecialchars($objectId) ?>">
+                         data-openestate-object="<?= html($objectId) ?>">
                         <?php
                         // print object image
                         if (!\is_null($objectImageLink)) {
                             echo '<div class="openestate-listing-thumb-image">'
-                                . '<a href="' . \htmlspecialchars($objectUrl) . '" title="' . \htmlspecialchars(_('Show details about this object.')) . '">'
-                                . '<img src="' . \htmlspecialchars($objectImageLink) . '" alt="">'
+                                . '<a href="' . html($objectUrl) . '" title="' . html(_('Show details about this object.')) . '">'
+                                . '<img src="' . html($objectImageLink) . '" alt="">'
                                 . '</a>'
                                 . '</div>';
                         }
@@ -386,9 +358,9 @@ include('snippets/body-begin.php');
 
                         <div class="openestate-listing-thumb-popup">
                             <h3 class="openestate-listing-thumb-title">
-                                <a href="<?= \htmlspecialchars($objectUrl) ?>"
-                                   title="<?= \htmlspecialchars(_('Show details about this object.')) ?>">
-                                    <?= \htmlspecialchars($objectTitle) ?>
+                                <a href="<?= html($objectUrl) ?>"
+                                   title="<?= html(_('Show details about this object.')) ?>">
+                                    <?= html($objectTitle) ?>
                                 </a>
                             </h3>
                             <?php
@@ -414,28 +386,31 @@ include('snippets/body-begin.php');
                             ?>
 
                             <div class="openestate-listing-thumb-actions">
-                                <a class="openestate-action-expose" href="<?= \htmlspecialchars($objectUrl) ?>"
-                                   title="<?= \htmlspecialchars(_('Show details about this object.')) ?>">
-                                    <?= \htmlspecialchars(_('Details')) ?>
+                                <a class="openestate-action-expose" href="<?= html($objectUrl) ?>"
+                                   title="<?= html(_('Show details about this object.')) ?>">
+                                    <i class="openestate-icon-expose"></i><?= html(\ucfirst(_('details'))) ?>
                                 </a>
-                                <a class="openestate-action-download" href="#" rel="nofollow"
-                                   title="<?= \htmlspecialchars(_('Download information about this object as PDF file.')) ?>">
-                                    <?= \htmlspecialchars(_('Download')) ?>
-                                </a>
+                                <?php if ($objectPdfLink !== null) { ?>
+                                    <a class="openestate-action-download"
+                                       href="<?= html($objectPdfLink) ?>" target="_blank"
+                                       title="<?= html(_('Download information about this object as PDF file.')) ?>">
+                                        <i class="openestate-icon-download"></i><?= html(\ucfirst(_('download'))) ?>
+                                    </a>
+                                <?php } ?>
                                 <?php if ($favoritesEnabled) { ?>
                                     <a class="openestate-action-fav-add" rel="nofollow"
-                                       href="<?= \htmlspecialchars($env->getListingUrl($objectFavAddParams)) ?>"
-                                       data-openestate-fav="<?= \htmlspecialchars(Utils::getJson($objectFavAddParams)) ?>"
-                                       title="<?= \htmlspecialchars(_('Add this object to your list of favorites.')) ?>"
+                                       href="<?= html($env->getListingUrl($objectFavAddParams)) ?>"
+                                       data-openestate-fav="<?= html(Utils::getJson($objectFavAddParams)) ?>"
+                                       title="<?= html(_('Add this object to your list of favorites.')) ?>"
                                        style="<?= ($objectFav) ? 'display:none;' : '' ?>">
-                                        <?= \htmlspecialchars(_('Add to favorites')) ?>
+                                        <i class="openestate-icon-fav-add"></i><?= html(\ucfirst(_('add to favorites'))) ?>
                                     </a>
                                     <a class="openestate-action-fav-remove" rel="nofollow"
-                                       href="<?= \htmlspecialchars($env->getListingUrl($objectFavRemoveParams)) ?>"
-                                       data-openestate-fav="<?= \htmlspecialchars(Utils::getJson($objectFavRemoveParams)) ?>"
-                                       title="<?= \htmlspecialchars(_('Remove this object from your list of favorites.')) ?>"
+                                       href="<?= html($env->getListingUrl($objectFavRemoveParams)) ?>"
+                                       data-openestate-fav="<?= html(Utils::getJson($objectFavRemoveParams)) ?>"
+                                       title="<?= html(_('Remove this object from your list of favorites.')) ?>"
                                        style="<?= (!$objectFav) ? 'display:none;' : '' ?>">
-                                        <?= \htmlspecialchars(_('Remove from favorites')) ?>
+                                        <i class="openestate-icon-fav-remove"></i><?= html(\ucfirst(_('remove from favorites'))) ?>
                                     </a>
                                 <?php } ?>
                             </div>
@@ -445,11 +420,11 @@ include('snippets/body-begin.php');
                 <?php } else { ?>
 
                     <div class="openestate-listing-item openestate-listing-detail"
-                         data-openestate-object="<?= \htmlspecialchars($objectId) ?>">
+                         data-openestate-object="<?= html($objectId) ?>">
                         <h3 class="openestate-listing-detail-title">
-                            <a href="<?= \htmlspecialchars($objectUrl) ?>"
-                               title="<?= \htmlspecialchars(_('Show details about this object.')) ?>">
-                                <?= \htmlspecialchars($objectTitle) ?>
+                            <a href="<?= html($objectUrl) ?>"
+                               title="<?= html(_('Show details about this object.')) ?>">
+                                <?= html($objectTitle) ?>
                             </a>
                         </h3>
                         <div class="openestate-listing-detail-content">
@@ -458,8 +433,8 @@ include('snippets/body-begin.php');
                             // print object image
                             if (!\is_null($objectImageLink)) {
                                 echo '<div class="openestate-listing-detail-image">'
-                                    . '<a href="' . \htmlspecialchars($objectUrl) . '" title="' . \htmlspecialchars(_('Show details about this object.')) . '">'
-                                    . '<img src="' . \htmlspecialchars($objectImageLink) . '" alt="">'
+                                    . '<a href="' . html($objectUrl) . '" title="' . html(_('Show details about this object.')) . '">'
+                                    . '<img src="' . html($objectImageLink) . '" alt="">'
                                     . '</a>'
                                     . '</div>';
                             }
@@ -474,7 +449,7 @@ include('snippets/body-begin.php');
                                 }
 
                                 if (\count($entries) < 1) continue;
-                                echo '<ul class="openestate-listing-col openestate-listing-col-' . $colIndex . '">';
+                                echo '<ul class="openestate-listing-col openestate-listing-col-' . html($colIndex) . '">';
                                 foreach ($entries as $entry) {
                                     echo '<li>' . $entry . '</li>';
                                 }
@@ -484,28 +459,31 @@ include('snippets/body-begin.php');
                             ?>
                         </div>
                         <div class="openestate-listing-detail-actions">
-                            <a class="openestate-action-expose" href="<?= \htmlspecialchars($objectUrl) ?>"
-                               title="<?= \htmlspecialchars(_('Show details about this object.')) ?>">
-                                <?= \htmlspecialchars(_('Details')) ?>
+                            <a class="openestate-action-expose" href="<?= html($objectUrl) ?>"
+                               title="<?= html(_('Show details about this object.')) ?>">
+                                <i class="openestate-icon-expose"></i><?= html(\ucfirst(_('details'))) ?>
                             </a>
-                            <a class="openestate-action-download" href="#"
-                               title="<?= \htmlspecialchars(_('Download information about this object as PDF file.')) ?>">
-                                <?= \htmlspecialchars(_('Download')) ?>
-                            </a>
+                            <?php if ($objectPdfLink !== null) { ?>
+                                <a class="openestate-action-download"
+                                   href="<?= html($objectPdfLink) ?>" target="_blank"
+                                   title="<?= html(_('Download information about this object as PDF file.')) ?>">
+                                    <i class="openestate-icon-download"></i><?= html(\ucfirst(_('download'))) ?>
+                                </a>
+                            <?php } ?>
                             <?php if ($favoritesEnabled) { ?>
                                 <a class="openestate-action-fav-add" rel="nofollow"
-                                   href="<?= \htmlspecialchars($env->getListingUrl($objectFavAddParams)) ?>"
-                                   data-openestate-fav="<?= \htmlspecialchars(Utils::getJson($objectFavAddParams)) ?>"
-                                   title="<?= \htmlspecialchars(_('Add this object to your list of favorites.')) ?>"
+                                   href="<?= html($env->getListingUrl($objectFavAddParams)) ?>"
+                                   data-openestate-fav="<?= html(Utils::getJson($objectFavAddParams)) ?>"
+                                   title="<?= html(_('Add this object to your list of favorites.')) ?>"
                                    style="<?= ($objectFav) ? 'display:none;' : '' ?>">
-                                    <?= \htmlspecialchars(_('Add to favorites')) ?>
+                                    <i class="openestate-icon-fav-add"></i><?= html(\ucfirst(_('add to favorites'))) ?>
                                 </a>
                                 <a class="openestate-action-fav-remove" rel="nofollow"
-                                   href="<?= \htmlspecialchars($env->getListingUrl($objectFavRemoveParams)) ?>"
-                                   data-openestate-fav="<?= \htmlspecialchars(Utils::getJson($objectFavRemoveParams)) ?>"
-                                   title="<?= \htmlspecialchars(_('Remove this object from your list of favorites.')) ?>"
+                                   href="<?= html($env->getListingUrl($objectFavRemoveParams)) ?>"
+                                   data-openestate-fav="<?= html(Utils::getJson($objectFavRemoveParams)) ?>"
+                                   title="<?= html(_('Remove this object from your list of favorites.')) ?>"
                                    style="<?= (!$objectFav) ? 'display:none;' : '' ?>">
-                                    <?= \htmlspecialchars(_('Remove from favorites')) ?>
+                                    <i class="openestate-icon-fav-remove"></i><?= html(\ucfirst(_('remove from favorites'))) ?>
                                 </a>
                             <?php } ?>
                         </div>
@@ -516,18 +494,18 @@ include('snippets/body-begin.php');
             echo '</div>';
 
             if ($totalPages > 1) {
-                echo '<div class="openestate-listing-pagination openestate-listing-pagination-' . \htmlspecialchars($currentView) . '">';
+                echo '<div class="openestate-listing-pagination openestate-listing-pagination-' . html($currentView) . '">';
 
                 if ($currentPage > 1) {
                     $params = $setPageAction->getParameters($env, $currentPage - 1);
                     echo '<a class="openestate-listing-pagination-prev openestate-button pure-button" '
-                        . 'href="' . \htmlspecialchars($env->getFavoriteUrl($params)) . '" '
-                        . 'data-openestate-action="' . \htmlspecialchars(Utils::getJson($params)) . '" '
-                        . 'title="' . \htmlspecialchars(_('Show previous page.')) . '">'
+                        . 'href="' . html($env->getFavoriteUrl($params)) . '" '
+                        . 'data-openestate-action="' . html(Utils::getJson($params)) . '" '
+                        . 'title="' . html(_('Show previous page.')) . '">'
                         . '<i class="openestate-icon-left"></i></a>';
                 } else {
                     echo '<a class="openestate-listing-pagination-prev openestate-button pure-button pure-button-disabled" '
-                        . 'href="#" title="' . \htmlspecialchars(_('Show previous page.')) . '" '
+                        . 'href="#" title="' . html(_('Show previous page.')) . '" '
                         . 'disabled>'
                         . '<i class="openestate-icon-left"></i></a>';
                 }
@@ -535,14 +513,14 @@ include('snippets/body-begin.php');
                 if ($currentPage < $totalPages) {
                     $params = $setPageAction->getParameters($env, $currentPage + 1);
                     echo '<a class="openestate-listing-pagination-next openestate-button pure-button" '
-                        . 'href="' . \htmlspecialchars($env->getFavoriteUrl($params)) . '" '
-                        . 'data-openestate-action="' . \htmlspecialchars(Utils::getJson($params)) . '" '
-                        . 'title="' . \htmlspecialchars(_('Show next page.')) . '">'
+                        . 'href="' . html($env->getFavoriteUrl($params)) . '" '
+                        . 'data-openestate-action="' . html(Utils::getJson($params)) . '" '
+                        . 'title="' . html(_('Show next page.')) . '">'
                         . '<i class="openestate-icon-right"></i></a>';
                 } else {
                     echo '<a class="openestate-listing-pagination-next openestate-button pure-button pure-button-disabled" '
                         . 'href="#" '
-                        . 'title="' . \htmlspecialchars(_('Show next page.')) . '" '
+                        . 'title="' . html(_('Show next page.')) . '" '
                         . 'disabled>'
                         . '<i class="openestate-icon-right"></i></a>';
                 }
@@ -556,10 +534,10 @@ include('snippets/body-begin.php');
 
     <div id="openestate-loading-<?= $uid ?>" class="openestate-loading">
         <i class="openestate-spinner openestate-icon-spinner"></i>
-        <?= \htmlspecialchars(_('Processing your request. Please wait for a moment.')) ?>
+        <?= html(_('Processing your request. Please wait for a moment.')) ?>
     </div>
 
-<?php
+    <?php
 
 // write document footer
 include('snippets/body-end.php');

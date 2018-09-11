@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Default Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-09-05 16:04+0200\n"
-"PO-Revision-Date: 2018-09-05 16:06+0200\n"
+"POT-Creation-Date: 2018-09-12 21:01+0200\n"
+"PO-Revision-Date: 2018-09-12 21:01+0200\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
 "Language-Team: i18n@openestate.org\n"
 "Language: de\n"
@@ -17,221 +17,268 @@ msgstr ""
 "X-Generator: Poedit 2.1.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: themes/default/expose.php:68 themes/default/expose.php:234
-#: themes/default/fav.php:291 themes/default/listing.php:357
-msgid "Real estate {1}"
+#: themes/default/expose.php:66 themes/default/expose.php:239
+#: themes/default/fav.php:247 themes/default/listing.php:323
+msgid "real estate {1}"
 msgstr "Immobilie {1}"
 
-#: themes/default/expose.php:221
+#: themes/default/expose.php:225
 msgid "The offer was not found. Maybe it is not published anymore."
 msgstr ""
 "Das Angebot wurde nicht gefunden. Möglicherweise ist es nicht mehr verfügbar."
 
-#: themes/default/expose.php:225
-msgid "Visit our current offers"
-msgstr "Unsere aktuellen Angebote besuchen"
+#: themes/default/expose.php:230 themes/default/fav.php:226
+msgid "Visit our current offers."
+msgstr "Unsere aktuellen Angebote besuchen."
 
-#: themes/default/expose.php:238 themes/default/fav.php:198
+#: themes/default/expose.php:244 themes/default/fav.php:316
+#: themes/default/fav.php:379 themes/default/listing.php:396
+#: themes/default/listing.php:469
+msgid "Download information about this object as PDF file."
+msgstr "Informationen über dieses Objekt als PDF-Datei herunterladen."
+
+#: themes/default/expose.php:252 themes/default/listing.php:404
+#: themes/default/listing.php:477
+msgid "Add this object to your list of favorites."
+msgstr "Dieses Objekt als Favorit vormerken."
+
+#: themes/default/expose.php:259 themes/default/fav.php:323
+#: themes/default/fav.php:386 themes/default/listing.php:411
+#: themes/default/listing.php:484
+msgid "Remove this object from your list of favorites."
+msgstr "Dieses Objekt von der Favoritenliste entfernen."
+
+#: themes/default/expose.php:269 themes/default/fav.php:150
 msgid "Show current offers."
 msgstr "Aktuelle Angebote anzeigen."
 
-#: themes/default/expose.php:244 themes/default/listing.php:215
+#: themes/default/expose.php:275 themes/default/listing.php:172
 msgid "Show list of favorite objects."
 msgstr "Liste der favorisierten Angebote öffnen."
 
-#: themes/default/expose.php:250 themes/default/fav.php:203
-#: themes/default/listing.php:221
+#: themes/default/expose.php:281 themes/default/fav.php:155
+#: themes/default/listing.php:178
 msgid "Select your preferred language."
 msgstr "Wählen Sie Ihre bevorzugte Sprache."
 
-#: themes/default/expose.php:348
-msgid "Your contact person"
+#: themes/default/expose.php:329
+msgid "identifier"
+msgstr "Kennung"
+
+#: themes/default/expose.php:335
+msgid "offer"
+msgstr "Angebot"
+
+#: themes/default/expose.php:342
+msgid "address"
+msgstr "Adresse"
+
+#: themes/default/expose.php:375 themes/default/expose.php:376
+msgid "yes"
+msgstr "ja"
+
+#: themes/default/expose.php:377 themes/default/expose.php:378
+msgid "no"
+msgstr "nein"
+
+#: themes/default/expose.php:407
+msgid "area map"
+msgstr "Lagekarte"
+
+#: themes/default/expose.php:432
+msgid "videos"
+msgstr "Videos"
+
+#: themes/default/expose.php:440
+msgid "Your web browser does not support video playback."
+msgstr "Ihr Web-Browser unterstützt keine Wiedergabe von Videos."
+
+#: themes/default/expose.php:474
+msgid "further links"
+msgstr "weiterführende Links"
+
+#: themes/default/expose.php:484
+msgid "attachment"
+msgstr "Anhang"
+
+#: themes/default/expose.php:501
+msgid "your contact person"
 msgstr "Ihr Ansprechpartner"
 
-#: themes/default/expose.php:355 themes/default/expose.php:360
-msgid "Phone"
+#: themes/default/expose.php:508 themes/default/expose.php:513
+msgid "phone"
 msgstr "Telefon"
 
-#: themes/default/expose.php:366 themes/default/expose.php:371
-msgid "Mobile"
-msgstr "Mobil"
+#: themes/default/expose.php:519 themes/default/expose.php:524
+msgid "mobile"
+msgstr "Mobiltelefon"
 
-#: themes/default/expose.php:377 themes/default/expose.php:382
-msgid "Email"
+#: themes/default/expose.php:530 themes/default/expose.php:535
+msgid "email"
 msgstr "E-Mail"
 
-#: themes/default/expose.php:391
-msgid "Get in contact with us"
-msgstr "Mit uns in Kontakt treten"
+#: themes/default/expose.php:544
+msgid "get in contact"
+msgstr "in Kontakt treten"
 
-#: themes/default/expose.php:394 themes/default/fav.php:469
-#: themes/default/listing.php:559
+#: themes/default/expose.php:546 themes/default/expose.php:686
+#: themes/default/fav.php:437 themes/default/listing.php:537
 msgid "Processing your request. Please wait for a moment."
 msgstr "Ihre Anfrage wird verarbeitet. Bitte haben Sie einen Moment Geduld."
 
-#: themes/default/expose.php:398
+#: themes/default/expose.php:549
 msgid ""
 "Your message was successfully sent. We will report back as soon as possible."
 msgstr ""
 "Ihre Mitteilung wurde erfolgreich übermittelt. Wir werden uns umgehend mit "
 "Ihnen in Verbindung setzen."
 
-#: themes/default/expose.php:402
+#: themes/default/expose.php:552
 msgid "Sorry, but we can't process your message due to an error."
 msgstr ""
 "Ihre Mitteilung konnte aufgrund eines Fehlers leider nicht übermittelt "
 "werden."
 
-#: themes/default/expose.php:413
-msgid "Your name"
+#: themes/default/expose.php:563
+msgid "your name"
 msgstr "Ihr Name"
 
-#: themes/default/expose.php:426
-msgid "Your email address"
+#: themes/default/expose.php:576
+msgid "your email address"
 msgstr "Ihre E-Mailadresse"
 
-#: themes/default/expose.php:438
-msgid "Your phone number"
+#: themes/default/expose.php:588
+msgid "your phone number"
 msgstr "Ihre Telefonnummer"
 
-#: themes/default/expose.php:449
-msgid "Your message"
+#: themes/default/expose.php:599
+msgid "your message"
 msgstr "Ihre Mitteilung"
 
-#: themes/default/expose.php:452
+#: themes/default/expose.php:602
 msgid "I am interested in your offer \"{1}\". Please get in contact with me."
 msgstr ""
 "Ich interessiere mich für Ihr Angebot \"{1}\". Bitte nehmen Sie mit mir "
 "Kontakt auf."
 
-#: themes/default/expose.php:461 themes/default/expose.php:465
-msgid "Verification code"
+#: themes/default/expose.php:611 themes/default/expose.php:615
+msgid "verification code"
 msgstr "Bestätigungscode"
 
-#: themes/default/expose.php:466
+#: themes/default/expose.php:616
 msgid "refresh"
 msgstr "aktualisieren"
 
-#: themes/default/expose.php:487
+#: themes/default/expose.php:637
 msgid "Yes, I accept the terms of use and the data privacy statement."
 msgstr "Ja, ich bestätige die AGB und Datenschutzerklärung."
 
-#: themes/default/expose.php:499
-msgid "Send message"
+#: themes/default/expose.php:649
+msgid "send message"
 msgstr "Mitteilung abschicken"
 
-#: themes/default/expose.php:509
-msgid "Images"
+#: themes/default/expose.php:659
+msgid "images"
 msgstr "Fotos"
 
-#: themes/default/fav.php:103 themes/default/fav.php:178
-msgid "My favored objects"
-msgstr "Meine Vormerkliste"
+#: themes/default/fav.php:101 themes/default/fav.php:130
+msgid "my favored objects"
+msgstr "meine Vormerkliste"
 
-#: themes/default/fav.php:180 themes/default/listing.php:194
+#: themes/default/fav.php:132 themes/default/listing.php:151
 msgid "Show sort options."
 msgstr "Optionen zur Sortierung anzeigen."
 
-#: themes/default/fav.php:186 themes/default/listing.php:200
+#: themes/default/fav.php:138 themes/default/listing.php:157
 msgid "Show objects in detailed view."
 msgstr "Objekte in der Detail-Ansicht anzeigen."
 
-#: themes/default/fav.php:192 themes/default/listing.php:206
+#: themes/default/fav.php:144 themes/default/listing.php:163
 msgid "Show objects in gallery view."
 msgstr "Objekte in der Galerie-Ansicht anzeigen."
 
-#: themes/default/fav.php:215 themes/default/listing.php:273
-msgid "Sort offers"
+#: themes/default/fav.php:167 themes/default/listing.php:233
+msgid "sort offers"
 msgstr "Angebote sortieren"
 
-#: themes/default/fav.php:241 themes/default/listing.php:299
+#: themes/default/fav.php:192 themes/default/listing.php:258
 msgid "ascending"
 msgstr "aufsteigend"
 
-#: themes/default/fav.php:246 themes/default/listing.php:304
+#: themes/default/fav.php:197 themes/default/listing.php:263
 msgid "descending"
 msgstr "absteigend"
 
-#: themes/default/fav.php:272
+#: themes/default/fav.php:224
 msgid "Your list of favorite objects is empty."
 msgstr "Ihre Vormerkliste ist leer."
 
-#: themes/default/fav.php:310 themes/default/fav.php:320
-#: themes/default/fav.php:348 themes/default/fav.php:371
-#: themes/default/fav.php:381 themes/default/fav.php:408
-#: themes/default/listing.php:380 themes/default/listing.php:390
-#: themes/default/listing.php:418 themes/default/listing.php:451
-#: themes/default/listing.php:461 themes/default/listing.php:488
+#: themes/default/fav.php:272 themes/default/fav.php:282
+#: themes/default/fav.php:310 themes/default/fav.php:336
+#: themes/default/fav.php:346 themes/default/fav.php:373
+#: themes/default/listing.php:352 themes/default/listing.php:362
+#: themes/default/listing.php:390 themes/default/listing.php:426
+#: themes/default/listing.php:436 themes/default/listing.php:463
 msgid "Show details about this object."
 msgstr "Details zu diesem Objekt anzeigen."
 
-#: themes/default/fav.php:349 themes/default/fav.php:409
-#: themes/default/listing.php:419 themes/default/listing.php:489
-msgid "Details"
+#: themes/default/fav.php:311 themes/default/fav.php:374
+#: themes/default/listing.php:391 themes/default/listing.php:464
+msgid "details"
 msgstr "Details"
 
-#: themes/default/fav.php:352 themes/default/fav.php:412
-#: themes/default/listing.php:422 themes/default/listing.php:492
-msgid "Download information about this object as PDF file."
-msgstr "Informationen über dieses Objekt als PDF-Datei herunterladen."
+#: themes/default/fav.php:317 themes/default/fav.php:380
+#: themes/default/listing.php:397 themes/default/listing.php:470
+msgid "download"
+msgstr "herunterladen"
 
-#: themes/default/fav.php:353 themes/default/fav.php:413
-#: themes/default/listing.php:423 themes/default/listing.php:493
-msgid "Download"
-msgstr "Herunterladen"
-
-#: themes/default/fav.php:358 themes/default/fav.php:418
-#: themes/default/listing.php:436 themes/default/listing.php:506
-msgid "Remove this object from your list of favorites."
-msgstr "Dieses Objekt von der Favoritenliste entfernen."
-
-#: themes/default/fav.php:359 themes/default/fav.php:419
-#: themes/default/listing.php:438 themes/default/listing.php:508
-msgid "Remove from favorites"
+#: themes/default/fav.php:324 themes/default/fav.php:387
+#: themes/default/listing.php:413 themes/default/listing.php:486
+msgid "remove from favorites"
 msgstr "Vormerkung entfernen"
 
-#: themes/default/fav.php:436 themes/default/fav.php:440
-#: themes/default/listing.php:526 themes/default/listing.php:530
+#: themes/default/fav.php:404 themes/default/fav.php:408
+#: themes/default/listing.php:504 themes/default/listing.php:508
 msgid "Show previous page."
 msgstr "Vorherige Seite anzeigen."
 
-#: themes/default/fav.php:450 themes/default/fav.php:455
-#: themes/default/listing.php:540 themes/default/listing.php:545
+#: themes/default/fav.php:418 themes/default/fav.php:423
+#: themes/default/listing.php:518 themes/default/listing.php:523
 msgid "Show next page."
 msgstr "Nächste Seite anzeigen."
 
-#: themes/default/listing.php:114 themes/default/listing.php:189
-msgid "Current offers"
-msgstr "Aktuelle Angebote"
+#: themes/default/listing.php:118 themes/default/listing.php:146
+msgid "current offers"
+msgstr "aktuelle Angebote"
 
-#: themes/default/listing.php:191
+#: themes/default/listing.php:148
 msgid "Show search options."
 msgstr "Optionen zur Suche anzeigen."
 
-#: themes/default/listing.php:233
-msgid "Search offers"
+#: themes/default/listing.php:190
+msgid "search offers"
 msgstr "Angebote durchsuchen"
 
-#: themes/default/listing.php:257
+#: themes/default/listing.php:217
 msgid "search"
 msgstr "suchen"
 
-#: themes/default/listing.php:262
+#: themes/default/listing.php:222
 msgid "clear"
 msgstr "leeren"
 
-#: themes/default/listing.php:334
+#: themes/default/listing.php:293
 msgid "There are currently no objects published."
 msgstr "Momentan sind keine Angebote veröffentlicht."
 
-#: themes/default/listing.php:336
+#: themes/default/listing.php:296
 msgid "No objects were found according to your filter settings."
 msgstr "Es wurden keine Angebote gemäß der Suchkriterien gefunden."
 
-#: themes/default/listing.php:429 themes/default/listing.php:499
-msgid "Add this object to your list of favorites."
-msgstr "Dieses Objekt als Favorit vormerken."
+#: themes/default/listing.php:300
+msgid "Show all offers."
+msgstr "Alle Angebote anzeigen."
 
-#: themes/default/listing.php:431 themes/default/listing.php:501
-msgid "Add to favorites"
-msgstr "Vormerken"
+#: themes/default/listing.php:406 themes/default/listing.php:479
+msgid "add to favorites"
+msgstr "vormerken"

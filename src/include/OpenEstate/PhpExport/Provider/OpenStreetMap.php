@@ -1,6 +1,4 @@
-<?php /** @noinspection HtmlUnknownTarget */
-/** @noinspection HtmlUnknownTarget */
-
+<?php
 /*
  * PHP-Export scripts of OpenEstate-ImmoTool
  * Copyright (C) 2009-2018 OpenEstate.org
@@ -19,6 +17,8 @@
  */
 
 namespace OpenEstate\PhpExport\Provider;
+
+use function OpenEstate\PhpExport\gettext as _;
 
 /**
  * A map provided by OpenStreetMaps.org.
@@ -51,21 +51,15 @@ class OpenStreetMap extends AbstractMapProvider
      *
      * @param bool $showDirectLink
      * enable direct link below the map
-     *
-     * @param int $width
-     * width of the embedded element
-     *
-     * @param int $height
-     * height of the embedded element
      */
-    function __construct($showPositionMarker = true, $showDirectLink = true, $width = 0, $height = 0)
+    function __construct($showPositionMarker = true, $showDirectLink = true)
     {
-        parent::__construct($width, $height);
+        parent::__construct();
         $this->showPositionMarker = $showPositionMarker;
         $this->showDirectLink = $showDirectLink;
     }
 
-    public function getBody(&$object, &$translations, $lang)
+    public function getBody(array &$object)
     {
         $lat = $this->getLatitude($object);
         $lon = $this->getLongitude($object);
@@ -81,37 +75,34 @@ class OpenStreetMap extends AbstractMapProvider
         $lon2 = \round($lon, 2);
         $bbox = ($lon2 - $diff) . ',' . ($lat2 - $diff) . ',' . ($lon2 + $diff) . ',' . ($lat2 + $diff);
 
-        $width = (\is_int($this->width) && $this->width > 0) ?
-            $this->width : 560;
-        $height = (\is_int($this->height) && $this->height > 0) ?
-            $this->height : 315;
-
         // Create links.
         /** @noinspection SpellCheckingInspection */
-        $frameSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=' . $bbox . '&amp;layer=mapnik';
-        $directLink = 'https://www.openstreetmap.org/?lat=' . $lat . '&amp;lon=' . $lon . '&amp;zoom=12&amp;layers=M';
+        $frameSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=' . $bbox . '&layer=mapnik';
+        $directLink = 'https://www.openstreetmap.org/?lat=' . $lat . '&lon=' . $lon . '&zoom=12&layers=M';
         if ($this->showPositionMarker === true) {
-            $frameSrc .= '&amp;marker=' . $lat . ',' . $lon;
+            $frameSrc .= '&marker=' . $lat . ',' . $lon;
             /** @noinspection SpellCheckingInspection */
-            $directLink .= '&amp;mlat=' . $lat . '&amp;mlon=' . $lon;
+            $directLink .= '&mlat=' . $lat . '&mlon=' . $lon;
         }
 
         // Write output.
         $output = '<iframe' .
-            ' class="openestate-map-frame"' .
-            ' width="' . $width . '"' .
-            ' height="' . $height . '"' .
-            ' src="' . $frameSrc . '">' .
+            ' class="openestate-map-object openestate-map-object-osm"' .
+            ' src="' . \htmlspecialchars($frameSrc) . '">' .
             '</iframe>';
 
         if ($this->showDirectLink === true) {
             $output .= '<div class="openestate-map-subtitle">'
-                . '<a href="' . $directLink . '" target="_blank">'
-                . \htmlspecialchars($translations['labels']['estate.map.directLink'])
+                . '<a href="' . \htmlspecialchars($directLink) . '" target="_blank">'
+                . _('Show in a separate window.')
                 . '</a></div>';
         }
 
-        return '<div class="openestate-map openestate-map-osm">' . $output . '</div>';
+        return $output;
     }
 
+    public function getName()
+    {
+        return 'osm';
+    }
 }

@@ -567,6 +567,25 @@ class Environment
     }
 
     /**
+     * Get PDF expose for a real estate object.
+     *
+     * @param string $objectId
+     * object ID
+     *
+     * @param string $lang
+     * language code
+     *
+     * @return string
+     * path to PDF expose or null, if no expose exists
+     */
+    public function getObjectPdf($objectId, $lang)
+    {
+        $pdf = $this->getDataPath($objectId, $objectId . '_' . $lang . '.pdf');
+        return ($pdf !== null && \is_file($pdf)) ?
+            $pdf : null;
+    }
+
+    /**
      * Get the timestamp, when a real estate object was last modified.
      *
      * @param string $id
@@ -840,6 +859,20 @@ class Environment
     }
 
     /**
+     * Create a link provider instance.
+     *
+     * @param string $name
+     * name of requested provider
+     *
+     * @return Provider\AbstractLinkProvider
+     * created link provider or null, if it is unknown
+     */
+    public function newLinkProvider($name)
+    {
+        return $this->config->newLinkProvider($name);
+    }
+
+    /**
      * Create the HTML view with object listing.
      *
      * @return View\ListingHtml
@@ -864,17 +897,30 @@ class Environment
     /**
      * Create a mailer instance.
      *
-     * @return \PHPMailer\PHPMailer\PHPMailer|null
-     * created mailer or null, if the configuration failed
+     * @return \PHPMailer\PHPMailer\PHPMailer
+     * created mailer instance
      *
      * @throws \PHPMailer\PHPMailer\Exception
      * if the mailer configuration failed
      */
     public function newMailer()
     {
-        $mailer = $this->config->newMailer($this);
+        $mailer = $this->config->newMailer();
         $this->config->setupMailer($mailer, $this);
         return $mailer;
+    }
+
+    /**
+     * Create a map provider instance.
+     *
+     * @return Provider\AbstractMapProvider
+     * created map provider instance
+     */
+    public function newMapProvider()
+    {
+        $provider = $this->config->newMapProvider();
+        $this->config->setupMapProvider($provider);
+        return $provider;
     }
 
     /**

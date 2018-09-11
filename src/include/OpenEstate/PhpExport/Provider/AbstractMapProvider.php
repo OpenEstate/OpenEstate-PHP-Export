@@ -29,16 +29,10 @@ abstract class AbstractMapProvider extends AbstractProvider
 {
     /**
      * AbstractMapProvider constructor.
-     *
-     * @param int $width
-     * width of the embedded element
-     *
-     * @param int $height
-     * height of the embedded element
      */
-    function __construct($width = 0, $height = 0)
+    function __construct()
     {
-        parent::__construct($width, $height);
+        parent::__construct();
     }
 
     /**
@@ -50,15 +44,15 @@ abstract class AbstractMapProvider extends AbstractProvider
     }
 
     /**
-     * Test, if an object provides geo coordinates in order to create a map.
+     * Initialize the map provider for an object.
      *
      * @param array $object
      * object data
      *
      * @return boolean
-     * true, if the object provides geo coordinates
+     * true, if a map is shown for the object
      */
-    public function canShowForObject(array &$object)
+    public function init(array &$object)
     {
         return isset($object['address']['latitude'])
             && isset($object['address']['longitude'])
@@ -72,16 +66,10 @@ abstract class AbstractMapProvider extends AbstractProvider
      * @param array $object
      * object data
      *
-     * @param array $translations
-     * translation data
-     *
-     * @param string $lang
-     * current language
-     *
      * @return string
      * generated HTML code
      */
-    abstract public function getBody(array &$object, array &$translations, $lang);
+    abstract public function getBody(array &$object);
 
     /**
      * Get latitude value from a real estate object.
@@ -114,4 +102,11 @@ abstract class AbstractMapProvider extends AbstractProvider
             null;
     }
 
+    /**
+     * Get internal name for the map.
+     *
+     * @return string
+     * internal name
+     */
+    abstract public function getName();
 }

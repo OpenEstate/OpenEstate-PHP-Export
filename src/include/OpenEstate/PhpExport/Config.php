@@ -447,9 +447,6 @@ class Config
             case 'RemoveFavorite':
                 return new Action\RemoveFavorite();
 
-            case 'SetLanguage':
-                return new Action\SetLanguage();
-
             case 'SetFavoriteOrder':
                 return new Action\SetFavoriteOrder();
 
@@ -458,6 +455,9 @@ class Config
 
             case 'SetFavoriteView':
                 return new Action\SetFavoriteView();
+
+            case 'SetLanguage':
+                return new Action\SetLanguage();
 
             case 'SetListingFilter':
                 return new Action\SetListingFilter();
@@ -477,17 +477,57 @@ class Config
     }
 
     /**
-     * Create a mailer instance.
+     * Create a link provider instance.
      *
-     * @param Environment $env
-     * export environment
+     * @param string $name
+     * name of requested provider
+     *
+     * @return Provider\AbstractLinkProvider
+     * created link provider or null, if it is unknown
+     */
+    public function newLinkProvider($name)
+    {
+        switch ($name) {
+            case 'gallery@panocreator.com':
+                return new Provider\PanoCreatorGallery();
+
+            case 'video@dailymotion.com':
+                return new Provider\DailyMotionVideo();
+
+            case 'video@veoh.com':
+                return new Provider\VeohVideo();
+
+            case 'video@vimeo.com':
+                return new Provider\VimeoVideo();
+
+            case 'video@youtube.com':
+                return new Provider\YouTubeVideo();
+
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Create a mailer instance.
      *
      * @return \PHPMailer\PHPMailer\PHPMailer|null
      * created mailer or null, if the configuration failed
      */
-    public function newMailer(Environment $env)
+    public function newMailer()
     {
         return new \PHPMailer\PHPMailer\PHPMailer(true);
+    }
+
+    /**
+     * Create a map provider.
+     *
+     * @return Provider\AbstractMapProvider
+     * map provider
+     */
+    public function newMapProvider()
+    {
+        return new Provider\OpenStreetMap;
     }
 
     /**
@@ -587,7 +627,7 @@ class Config
         );
 
         $view->defaultOrder = $view->orders[0]->getName();
-        $view->defaultOrderDirection = 'desc';
+        $view->defaultOrderDirection = 'asc';
         $view->objectsPerPage = 10;
     }
 
@@ -649,6 +689,16 @@ class Config
         //$mailer->SMTPSecure = '';
         //$mailer->SMTPAutoTLS = true;
         //$mailer->SMTPDebug = 0;
+    }
+
+    /**
+     * Configure the map provider.
+     *
+     * @param Provider\AbstractMapProvider $mapProvider
+     * map provider instance
+     */
+    public function setupMapProvider(Provider\AbstractMapProvider $mapProvider)
+    {
     }
 
     /**

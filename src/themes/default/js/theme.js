@@ -358,6 +358,52 @@ function openestate_install_expose(uid, actionUrl) {
         }
     });
 
+    // Enable language action button.
+    $('#' + bodyId + ' .openestate-action-language').click(function (event) {
+        event.preventDefault();
+
+        $('#' + bodyId + ' .openestate-action-language').toggleClass('active');
+        $('#' + bodyId + ' .openestate-language-form').slideToggle();
+        $('#' + bodyId + ' .openestate-action-language').blur();
+    });
+
+    // Enable AJAX favorite links.
+    $('#' + bodyId + ' a[data-openestate-fav]').click(function (event) {
+        event.preventDefault();
+
+        var link = $(this);
+        if (link.is(':disabled'))
+            return;
+
+        var actionData = link.data('openestate-fav');
+        if (actionData === undefined)
+            return;
+
+        $.ajax({
+            url: actionUrl,
+            data: actionData,
+            dataType: 'json',
+            cache: false
+        })
+            .done(function (data) {
+                //console.log('success');
+                //console.log(data);
+                if (link.hasClass('openestate-action-fav-add')) {
+                    link.hide();
+                    $('#' + bodyId + ' .openestate-action-fav-remove').show();
+                }
+                else if (link.hasClass('openestate-action-fav-remove')) {
+                    link.hide();
+                    $('#' + bodyId + ' .openestate-action-fav-add').show();
+                }
+            })
+            .fail(function (data) {
+                //console.log('error');
+                //console.log(data);
+                alert('An error occurred!');
+            });
+    });
+
     // Refresh contact captcha image.
     $('#' + bodyId + ' .openestate-expose-contact-captcha-image a').click(function (event) {
         event.preventDefault();

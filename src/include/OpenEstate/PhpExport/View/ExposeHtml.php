@@ -126,4 +126,15 @@ class ExposeHtml extends AbstractHtmlView
     {
         return $env->getExposeUrl($this->getParameters($objectId));
     }
+
+    /**
+     * Get an array of object ID's, that were marked as favorites by the user.
+     *
+     * @return array
+     * array of favored object ID's
+     */
+    public function getFavorites()
+    {
+        return $this->env->getSession()->getFavorites();
+    }
 }

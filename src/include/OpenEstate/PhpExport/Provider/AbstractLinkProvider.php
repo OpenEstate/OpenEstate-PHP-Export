@@ -29,16 +29,10 @@ abstract class AbstractLinkProvider extends AbstractProvider
 {
     /**
      * AbstractLinkProvider constructor.
-     *
-     * @param int $width
-     * width of the embedded element
-     *
-     * @param int $height
-     * height of the embedded element
      */
-    function __construct($width = 0, $height = 0)
+    function __construct()
     {
-        parent::__construct($width, $height);
+        parent::__construct();
     }
 
     /**
@@ -55,15 +49,15 @@ abstract class AbstractLinkProvider extends AbstractProvider
      * @param string $linkId
      * ID, that is used by the provider to identify the target
      *
-     * @param string $linkTitle
-     * link title
-     *
-     * @param string $linkUrl
+     * @param string|null $linkUrl
      * link URL
+     *
+     * @param string|null $linkTitle
+     * link title
      *
      * @return string
      * HTML code
      */
-    abstract public function getBody($linkId, $linkTitle, $linkUrl);
+    abstract public function getBody($linkId, $linkUrl = null, $linkTitle = null);
 
 }
