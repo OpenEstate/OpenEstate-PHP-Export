@@ -221,10 +221,7 @@ function openestate_install_favorite(uid, actionUrl) {
     $('#' + bodyId + ' .openestate-action-sort').click(function (event) {
         event.preventDefault();
 
-        $('#' + bodyId + ' .openestate-filter-form').hide();
         $('#' + bodyId + ' .openestate-language-form').hide();
-
-        $('#' + bodyId + ' .openestate-action-filter').removeClass('active');
         $('#' + bodyId + ' .openestate-action-language').removeClass('active');
 
         $('#' + bodyId + ' .openestate-action-sort').toggleClass('active');
@@ -263,10 +260,7 @@ function openestate_install_favorite(uid, actionUrl) {
     $('#' + bodyId + ' .openestate-action-language').click(function (event) {
         event.preventDefault();
 
-        $('#' + bodyId + ' .openestate-filter-form').hide();
         $('#' + bodyId + ' .openestate-sort-form').hide();
-
-        $('#' + bodyId + ' .openestate-action-filter').removeClass('active');
         $('#' + bodyId + ' .openestate-action-sort').removeClass('active');
 
         $('#' + bodyId + ' .openestate-action-language').toggleClass('active');
@@ -435,14 +429,8 @@ function openestate_install_expose(uid, actionUrl) {
                 //console.log(data);
 
                 $('#' + bodyId + ' .openestate-expose-contact-loading').hide();
-
-                $('#' + bodyId + ' .openestate-expose-contact-validation').each(function( index ) {
-                    $( this ).hide();
-                });
-
-                $('#' + bodyId + ' .openestate-expose-contact-field').each(function( index ) {
-                    $( this ).removeClass('openestate-expose-contact-field-invalid');
-                });
+                $('#' + bodyId + ' .openestate-expose-contact-validation').hide();
+                $('#' + bodyId + ' .openestate-expose-contact-field').removeClass('openestate-expose-contact-field-invalid');
 
                 // an error occurred
                 if (data !== undefined && 'error' in data) {

@@ -57,6 +57,34 @@ class Assets
     const OPENESTATE_ICONS_ANIMATION_CSS = 'openestate-icons-animation-css';
 
     /**
+     * Currently provided version of slick.
+     *
+     * @var string
+     */
+    const SLICK_VERSION = '1.8.0';
+
+    /**
+     * Internal name of the slick JavaScript.
+     *
+     * @var string
+     */
+    const SLICK_JS = 'openestate-slick-js';
+
+    /**
+     * Internal name of the slick Stylesheet.
+     *
+     * @var string
+     */
+    const SLICK_CSS = 'openestate-slick-css';
+
+    /**
+     * Internal name of the slick default theme Stylesheet.
+     *
+     * @var string
+     */
+    const SLICK_THEME_CSS = 'openestate-slick-theme-css';
+
+    /**
      * Export environment.
      *
      * @var Environment
@@ -170,6 +198,91 @@ class Assets
         return Html\Stylesheet::newLink(
             self::OPENESTATE_ICONS_CSS,
             $this->env->getAssetsUrl($asset, array('v' => VERSION))
+        );
+    }
+
+    /**
+     * Create all header elements for slick.
+     *
+     * @param bool $minimized
+     * use minimized files
+     *
+     * @param bool $includeDefaultTheme
+     * also import the default theme for slick
+     *
+     * @return array
+     * array of HTML header elements
+     */
+    public function slick($minimized = true, $includeDefaultTheme = false)
+    {
+        $elements = array();
+        $elements[] = $this->slick_js($minimized);
+        $elements[] = $this->slick_css($minimized);
+        if ($includeDefaultTheme === true)
+            $elements[] = $this->slick_theme_css($minimized);
+        return $elements;
+    }
+
+    /**
+     * Create JavaScript header for slick.
+     *
+     * @param bool $minimized
+     * use minimized files
+     *
+     * @param bool $defer
+     * defer execution of the external JavaScript
+     *
+     * @return Html\Javascript
+     * HTML header element
+     */
+    public function slick_js($minimized = true, $defer = true)
+    {
+        $asset = ($minimized === true) ?
+            'slick/slick.min.js' :
+            'slick/slick.js';
+
+        return Html\Javascript::newLink(
+            self::SLICK_JS,
+            $this->env->getAssetsUrl($asset, array('v' => self::SLICK_VERSION)),
+            null,
+            null,
+            $defer
+        );
+    }
+
+    /**
+     * Create Stylesheet header for slick.
+     *
+     * @param bool $minimized
+     * use minimized files
+     *
+     * @return Html\Stylesheet
+     * HTML header element
+     */
+    public function slick_css($minimized = true)
+    {
+        $asset = 'slick/slick.css';
+        return Html\Stylesheet::newLink(
+            self::SLICK_CSS,
+            $this->env->getAssetsUrl($asset, array('v' => self::SLICK_VERSION))
+        );
+    }
+
+    /**
+     * Create Stylesheet header for slick default theme.
+     *
+     * @param bool $minimized
+     * use minimized files
+     *
+     * @return Html\Stylesheet
+     * HTML header element
+     */
+    public function slick_theme_css($minimized = true)
+    {
+        $asset = 'slick/slick-theme.css';
+        return Html\Stylesheet::newLink(
+            self::SLICK_THEME_CSS,
+            $this->env->getAssetsUrl($asset, array('v' => self::SLICK_VERSION))
         );
     }
 }

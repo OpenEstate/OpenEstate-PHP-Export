@@ -51,13 +51,10 @@ $view->addHeaders($env->getAssets()->openestate_icons(), 110);
 
 // register Pure CSS framework
 // see https://purecss.io/
-if (!$view->isBodyOnly()) {
-    $view->addHeader(Html\Stylesheet::newLink(
-        'openestate-pure-base-css',
-        $view->getThemeUrl('css/pure/base-min.css', array('v' => '1.0.0'))
-    ), 120);
-}
-
+$view->addHeader(Html\Stylesheet::newLink(
+    'openestate-pure-base-css',
+    $view->getThemeUrl('css/pure/base-min.css', array('v' => '1.0.0'))
+), 120);
 $view->addHeader(Html\Stylesheet::newLink(
     'openestate-pure-buttons-css',
     $view->getThemeUrl('css/pure/buttons-min.css', array('v' => '1.0.0'))
@@ -104,21 +101,7 @@ if ($view instanceof View\ListingHtml || $view instanceof View\FavoriteHtml) {
 // register slick for expose view
 // see https://kenwheeler.github.io/slick/
 if ($view instanceof View\ExposeHtml) {
-    $view->addHeader(Html\Stylesheet::newLink(
-        'openestate-slick-css',
-        $view->getThemeUrl('js/slick/slick.css', array('v' => '1.8.0'))
-    ), 140);
-    //$view->addHeader(Html\Stylesheet::newLink(
-    //    'openestate-slick-theme-css',
-    //    $view->getThemeUrl('js/slick/slick-theme.css', array('v' => '1.8.0'))
-    //), 141);
-    $view->addHeader(Html\Javascript::newLink(
-        'openestate-slick-js',
-        $view->getThemeUrl('js/slick/slick.min.js', array('v' => '1.8.0')),
-        null,
-        null,
-        true
-    ), 142);
+    $view->addHeaders($env->getAssets()->slick(true), 140);
 }
 
 // register colorbox for expose view

@@ -120,7 +120,6 @@ $view->addHeader(Html\Javascript::newLink(
 if (!$view->isBodyOnly()) include('snippets/document-begin.php');
 include('snippets/body-begin.php');
 
-//echo '<pre>' . print_r($objectIds, true) . '</pre>';
 ?>
 
     <div id="openestate-body-<?= $uid ?>" class="openestate-body openestate-fav">
@@ -129,29 +128,29 @@ include('snippets/body-begin.php');
             <div class="openestate-header-bar">
                 <h3 class="openestate-header-title"><?= html(\ucfirst(_('my favored objects'))) ?></h3>
                 <div class="openestate-header-actions">
-                    <a class="openestate-action-sort" href="#" title="<?= html(_('Show sort options.')) ?>">
+                    <a class="openestate-action openestate-action-sort" href="#" title="<?= html(_('Show sort options.')) ?>">
                         <i class="openestate-icon-sort"></i>
                     </a>
-                    <a class="openestate-action-details"
+                    <a class="openestate-action openestate-action-details"
                        href="<?= html($env->getFavoriteUrl($setViewAction->getParameters($env, 'detail'))) ?>"
                        data-openestate-action="<?= html(Utils::getJson($setViewAction->getParameters($env, 'detail'))) ?>"
                        title="<?= html(_('Show objects in detailed view.')) ?>">
                         <i class="openestate-icon-list-detail"></i>
                     </a>
-                    <a class="openestate-action-thumb"
+                    <a class="openestate-action openestate-action-thumb"
                        href="<?= html($env->getFavoriteUrl($setViewAction->getParameters($env, 'thumb'))) ?>"
                        data-openestate-action="<?= html(Utils::getJson($setViewAction->getParameters($env, 'thumb'))) ?>"
                        title="<?= html(_('Show objects in gallery view.')) ?>">
                         <i class="openestate-icon-list-thumb"></i>
                     </a>
                     <span class="openestate-action-separator"></span>
-                    <a class="openestate-action-listing"
+                    <a class="openestate-action openestate-action-listing"
                        href="<?= html($env->getListingUrl()) ?>"
                        title="<?= html(_('Show current offers.')) ?>">
                         <i class="openestate-icon-listing"></i>
                     </a>
                     <?php if ($languageSelection) { ?>
-                        <a class="openestate-action-language" href="#"
+                        <a class="openestate-action openestate-action-language" href="#"
                            title="<?= html(_('Select your preferred language.')) ?>">
                             <i class="openestate-icon-language"></i>
                         </a>
@@ -222,6 +221,7 @@ include('snippets/body-begin.php');
         if (Utils::isEmptyArray($objectIds)) {
             echo '<div class="openestate-fav-empty">'
                 . '<p>' . html(_('Your list of favorite objects is empty.')) . '</p>'
+                . '<hr>'
                 . '<p><a class="pure-button pure-button-primary openestate-button" href="' . html($env->getListingUrl()) . '">'
                 . html(_('Visit our current offers.'))
                 . '</a></p>'
@@ -306,18 +306,18 @@ include('snippets/body-begin.php');
                             ?>
 
                             <div class="openestate-fav-thumb-actions">
-                                <a class="openestate-action-expose" href="<?= html($objectUrl) ?>"
+                                <a class="openestate-action openestate-action-expose" href="<?= html($objectUrl) ?>"
                                    title="<?= html(_('Show details about this object.')) ?>">
                                     <i class="openestate-icon-expose"></i><?= html(\ucfirst(_('details'))) ?>
                                 </a>
                                 <?php if ($objectPdfLink !== null) { ?>
-                                    <a class="openestate-action-download"
+                                    <a class="openestate-action openestate-action-download"
                                        href="<?= html($objectPdfLink) ?>" target="_blank"
                                        title="<?= html(_('Download information about this object as PDF file.')) ?>">
                                         <i class="openestate-icon-download"></i><?= html(\ucfirst(_('download'))) ?>
                                     </a>
                                 <?php } ?>
-                                <a class="openestate-action-fav-remove" rel="nofollow"
+                                <a class="openestate-action openestate-action-fav-remove" rel="nofollow"
                                    href="<?= html($env->getFavoriteUrl($objectFavRemoveParams)) ?>"
                                    data-openestate-action="<?= html(Utils::getJson($objectFavRemoveParams)) ?>"
                                    title="<?= html(_('Remove this object from your list of favorites.')) ?>">
@@ -369,18 +369,18 @@ include('snippets/body-begin.php');
                             ?>
                         </div>
                         <div class="openestate-fav-detail-actions">
-                            <a class="openestate-action-expose" href="<?= html($objectUrl) ?>"
+                            <a class="openestate-action openestate-action-expose" href="<?= html($objectUrl) ?>"
                                title="<?= html(_('Show details about this object.')) ?>">
                                 <i class="openestate-icon-expose"></i><?= html(\ucfirst(_('details'))) ?>
                             </a>
                             <?php if ($objectPdfLink !== null) { ?>
-                                <a class="openestate-action-download"
+                                <a class="openestate-action openestate-action-download"
                                    href="<?= html($objectPdfLink) ?>" target="_blank"
                                    title="<?= html(_('Download information about this object as PDF file.')) ?>">
                                     <i class="openestate-icon-download"></i><?= html(\ucfirst(_('download'))) ?>
                                 </a>
                             <?php } ?>
-                            <a class="openestate-action-fav-remove" rel="nofollow"
+                            <a class="openestate-action openestate-action-fav-remove" rel="nofollow"
                                href="<?= html($env->getFavoriteUrl($objectFavRemoveParams)) ?>"
                                data-openestate-action="<?= html(Utils::getJson($objectFavRemoveParams)) ?>"
                                title="<?= html(_('Remove this object from your list of favorites.')) ?>">
