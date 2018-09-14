@@ -25,6 +25,6 @@
  */
 
 return array(
-  'en' => 'English',
   'de' => 'Deutsch',
+  'en' => 'English',
 );
