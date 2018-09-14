@@ -2,6 +2,12 @@ Changelog for OpenEstate-PHP-Export
 ===================================
 
 
+2.0.0 (not released yet)
+------------------------
+
+-   completely reworked the script environment
+
+
 1.7.0 (not released yet)
 ------------------------
 
