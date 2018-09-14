@@ -126,7 +126,9 @@ include('snippets/body-begin.php');
 
         <div class="openestate-header">
             <div class="openestate-header-bar">
-                <h3 class="openestate-header-title"><?= html(\ucfirst(_('my favored objects'))) ?></h3>
+                <h3 class="openestate-header-title">
+                    <i class="openestate-icon-fav"></i><?= html(\ucfirst(_('my favored objects'))) ?>
+                </h3>
                 <div class="openestate-header-actions">
                     <a class="openestate-action openestate-action-sort" href="#"
                        title="<?= html(_('Show sort options.')) ?>">

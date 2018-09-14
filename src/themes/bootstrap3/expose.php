@@ -234,7 +234,9 @@ include('snippets/body-begin.php');
 
         <div class="openestate-header">
             <div class="openestate-header-bar">
-                <h3 class="openestate-header-title"><?= html(\ucfirst(_('real estate {1}', $objectKey))) ?></h3>
+                <h3 class="openestate-header-title">
+                    <i class="openestate-icon-expose"></i><?= html(\ucfirst(_('real estate {1}', $objectKey))) ?>
+                </h3>
                 <div class="openestate-header-actions">
                     <?php if ($objectPdfLink !== null) { ?>
                         <a class="openestate-action openestate-action-download"

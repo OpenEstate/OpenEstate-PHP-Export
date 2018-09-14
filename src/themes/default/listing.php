@@ -143,7 +143,9 @@ include('snippets/body-begin.php');
 
         <div class="openestate-header">
             <div class="openestate-header-bar">
-                <h3 class="openestate-header-title"><?= html(\ucfirst(_('current offers'))) ?></h3>
+                <h3 class="openestate-header-title">
+                    <i class="openestate-icon-listing"></i><?= html(\ucfirst(_('current offers'))) ?>
+                </h3>
                 <div class="openestate-header-actions">
                     <a class="openestate-action openestate-action-filter" href="#" title="<?= html(_('Show search options.')) ?>">
                         <i class="openestate-icon-search"></i>
