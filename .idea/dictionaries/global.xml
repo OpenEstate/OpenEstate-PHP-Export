@@ -3,16 +3,21 @@
     <words>
       <w>autofocus</w>
       <w>bbox</w>
+      <w>changefreq</w>
       <w>colorbox</w>
       <w>dailymotion</w>
+      <w>detailled</w>
       <w>dgettext</w>
       <w>dngettext</w>
+      <w>dropdown</w>
       <w>emphyteusis</w>
+      <w>fullname</w>
       <w>gettext</w>
       <w>htmlspecialchars</w>
       <w>iframe</w>
       <w>immo</w>
       <w>immotool</w>
+      <w>lastmod</w>
       <w>mimetype</w>
       <w>mustermann</w>
       <w>ngettext</w>
@@ -24,9 +29,12 @@
       <w>panocreator</w>
       <w>qmail</w>
       <w>revalidate</w>
+      <w>sitemap</w>
       <w>smtp</w>
+      <w>urlset</w>
       <w>veoh</w>
       <w>vimeo</w>
+      <w>xmlns</w>
     </words>
   </dictionary>
 </component>
