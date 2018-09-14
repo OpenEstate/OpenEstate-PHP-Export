@@ -68,13 +68,13 @@ class MyConfig extends Config
         //$this->favorites = true;
 
         // Enable or disable debugging.
-        $this->debug = false;
+        //$this->debug = false;
 
         // Enable or disable statistics.
-        $this->statistics = true;
+        //$this->statistics = false;
 
         // Enable compatibility for data of PHP-export 1.6.x or 1.7.x.
-        $this->compatibility = 0;
+        //$this->compatibility = 0;
     }
 
     /**
