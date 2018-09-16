@@ -323,7 +323,7 @@ include('snippets/body-begin.php');
                 $objectUrl = $exposeView->getUrl($env, $objectId);
                 $objectTitle = (isset($objectData['title'][$languageCode])) ?
                     $objectData['title'][$languageCode] :
-                    _('real estate {1}', $objectKey);
+                    _('real estate {0}', $objectKey);
 
                 $objectImage = (isset($objectData['images']) && \is_array($objectData['images']) && \count($objectData['images']) > 0) ?
                     $objectData['images'][0] : null;

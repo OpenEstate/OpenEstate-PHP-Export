@@ -107,9 +107,9 @@ class Rooms extends AbstractFilter
         $values[''] = '[ ' . $this->getTitle($lang) . ' ]';
         $max = $this->getMax();
         for ($i = 1; $i < $max; $i++) {
-            $values[(string)$i] = ngettext('{1} room', '{1} rooms', $i, $i);
+            $values[(string)$i] = ngettext('{0} room', '{0} rooms', $i, $i);
         }
-        $values[(string)$max] = ngettext('{1} room', '{1} rooms', $max, $max . '+');
+        $values[(string)$max] = ngettext('{0} room', '{0} rooms', $max, $max . '+');
 
         return Select::newSingleSelect(
             'filter[' . $this->getName() . ']',

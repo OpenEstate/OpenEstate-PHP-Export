@@ -63,7 +63,7 @@ $objectKey = (isset($objectData['nr']) && \is_string($objectData['nr'])) ?
 // get object title
 $objectTitle = (isset($objectData['title'][$languageCode])) ?
     $objectData['title'][$languageCode] :
-    \ucfirst(_('real estate {1}', $objectKey));
+    \ucfirst(_('real estate {0}', $objectKey));
 
 // get object type
 $objectType = (isset($objectData['type'])) ? $objectData['type'] : null;
@@ -235,7 +235,7 @@ include('snippets/body-begin.php');
         <div class="openestate-header">
             <div class="openestate-header-bar">
                 <h3 class="openestate-header-title">
-                    <i class="openestate-icon-expose"></i><?= html(\ucfirst(_('real estate {1}', $objectKey))) ?>
+                    <i class="openestate-icon-expose"></i><?= html(\ucfirst(_('real estate {0}', $objectKey))) ?>
                 </h3>
                 <div class="openestate-header-actions">
                     <?php if ($objectPdfLink !== null) { ?>
@@ -622,7 +622,7 @@ include('snippets/body-begin.php');
                             <label for="contactMessage-<?= $uid ?>"><?= html(_('your message')) ?>:</label>
                             <textarea id="contactMessage-<?= $uid ?>"
                                       name="<?= html($contactAction->getVar('message')) ?>"
-                                      class="form-control openestate-expose-contact-field"><?= html(_('I am interested in your offer "{1}". Please get in contact with me.', $objectKey)) ?></textarea>
+                                      class="form-control openestate-expose-contact-field"><?= html(_('I am interested in your offer "{0}". Please get in contact with me.', $objectKey)) ?></textarea>
                             <p class="openestate-expose-contact-validation help-block">
                                 <i class="openestate-icon-attention"></i>
                                 <span class="openestate-expose-contact-validation-message"></span>

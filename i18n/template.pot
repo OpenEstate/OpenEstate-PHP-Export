@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-09-14 05:58+0200\n"
+"POT-Creation-Date: 2018-09-16 18:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,8 +45,8 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Filter/Rooms.php:110
 #: include/OpenEstate/PhpExport/Filter/Rooms.php:112
-msgid "{1} room"
-msgid_plural "{1} rooms"
+msgid "{0} room"
+msgid_plural "{0} rooms"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -73,7 +73,7 @@ msgid "group"
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Filter/GroupNr.php:81
-msgid "group {1}"
+msgid "group {0}"
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Order/Title.php:62
@@ -113,7 +113,7 @@ msgid "month"
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Utils.php:923
-msgid "{1} per {2}"
+msgid "{0} per {1}"
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Provider/VimeoVideo.php:75
@@ -147,7 +147,7 @@ msgid "Please enter your name."
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:147
-msgid "Your name should contain at least {1} and maximal {2} characters."
+msgid "Your name should contain at least {0} and maximal {1} characters."
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:149
@@ -162,7 +162,7 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:155
 msgid ""
-"Your phone number should contain at least {1} and maximal {2} characters."
+"Your phone number should contain at least {0} and maximal {1} characters."
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:161
@@ -178,7 +178,7 @@ msgid "Please enter your message."
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:169
-msgid "Your message should contain at least {1} characters."
+msgid "Your message should contain at least {0} characters."
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:175
@@ -226,11 +226,11 @@ msgid "Web Browser"
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:223
-msgid "Contact request for object {1}"
+msgid "Contact request for object {0}"
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:224
-msgid "A contact request was sent for object {1}."
+msgid "A contact request was sent for object {0}."
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:241

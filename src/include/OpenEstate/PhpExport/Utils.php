@@ -920,7 +920,7 @@ class Utils
             $text = self::getAttributeValue('prices', 'rent_flat_rate', $value, $i18n, $lang);
 
             return '<span class="openestate-attribute-label">' . \htmlspecialchars($title) . ':</span>'
-                . '<span class="openestate-attribute-value">' . \htmlspecialchars(_('{1} per {2}', $text, $interval)) . '</span>';
+                . '<span class="openestate-attribute-value">' . \htmlspecialchars(_('{0} per {1}', $text, $interval)) . '</span>';
         }
 
         // write primary area

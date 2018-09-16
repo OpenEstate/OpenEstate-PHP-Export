@@ -78,7 +78,7 @@ class GroupNr extends AbstractFilter
         $values = array();
         $values[''] = '[ ' . $this->getTitle($lang) . ' ]';
         foreach ($options as $o) {
-            $values[(string)$o] = _('group {1}', $o);
+            $values[(string)$o] = _('group {0}', $o);
         }
 
         return Select::newSingleSelect(

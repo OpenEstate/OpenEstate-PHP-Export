@@ -86,7 +86,7 @@ class Translator extends \Gettext\Translator
             $translation :
             parent::gettext($original);
 
-        return (Utils::isEmptyArray($parameters))?
+        return (Utils::isEmptyArray($parameters)) ?
             $text : $this->replaceParameters($text, $parameters);
     }
 
@@ -106,7 +106,7 @@ class Translator extends \Gettext\Translator
             $translation :
             parent::ngettext($original, $plural, $value);
 
-        return (Utils::isEmptyArray($parameters))?
+        return (Utils::isEmptyArray($parameters)) ?
             $text : $this->replaceParameters($text, $parameters);
     }
 
@@ -141,7 +141,7 @@ class Translator extends \Gettext\Translator
 
         $replacement = array();
         for ($i = 0; $i < \count($parameters); $i++) {
-            $replacement['{' . ($i + 1) . '}'] = $parameters[$i];
+            $replacement['{' . $i . '}'] = $parameters[$i];
         }
 
         return \str_replace(
