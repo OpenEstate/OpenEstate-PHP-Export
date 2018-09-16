@@ -7,3 +7,5 @@
 
 phpdoc/
 phpdoc-cache/
+
+i18n/**/*.po~

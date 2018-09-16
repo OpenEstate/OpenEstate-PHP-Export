@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-09-14 05:58+0200\n"
+"POT-Creation-Date: 2018-09-16 18:18+0200\n"
 "PO-Revision-Date: 2018-09-14 05:58+0200\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
 "Language-Team: i18n@openestate.org\n"
@@ -46,8 +46,9 @@ msgstr "Zimmerzahl"
 
 #: include/OpenEstate/PhpExport/Filter/Rooms.php:110
 #: include/OpenEstate/PhpExport/Filter/Rooms.php:112
-msgid "{1} room"
-msgid_plural "{1} rooms"
+#, fuzzy
+msgid "{0} room"
+msgid_plural "{0} rooms"
 msgstr[0] "{1} Zimmer"
 msgstr[1] "{1} Zimmer"
 
@@ -74,7 +75,8 @@ msgid "group"
 msgstr "Gruppe"
 
 #: include/OpenEstate/PhpExport/Filter/GroupNr.php:81
-msgid "group {1}"
+#, fuzzy
+msgid "group {0}"
 msgstr "Gruppe {1}"
 
 #: include/OpenEstate/PhpExport/Order/Title.php:62
@@ -114,7 +116,8 @@ msgid "month"
 msgstr "Monat"
 
 #: include/OpenEstate/PhpExport/Utils.php:923
-msgid "{1} per {2}"
+#, fuzzy
+msgid "{0} per {1}"
 msgstr "{1} pro {2}"
 
 #: include/OpenEstate/PhpExport/Provider/VimeoVideo.php:75
@@ -148,7 +151,8 @@ msgid "Please enter your name."
 msgstr "Bitte tragen Sie Ihren Namen ein."
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:147
-msgid "Your name should contain at least {1} and maximal {2} characters."
+#, fuzzy
+msgid "Your name should contain at least {0} and maximal {1} characters."
 msgstr "Ihr Name sollte aus mindestens {1} und maximal {2} Zeichen bestehen."
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:149
@@ -162,8 +166,9 @@ msgid "Please enter your phone number."
 msgstr "Bitte tragen Sie Ihre Telefonnummer ein."
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:155
+#, fuzzy
 msgid ""
-"Your phone number should contain at least {1} and maximal {2} characters."
+"Your phone number should contain at least {0} and maximal {1} characters."
 msgstr ""
 "Ihre Telefonnummer sollte aus mindestens {1} und maximal {2} Zeichen "
 "bestehen."
@@ -181,7 +186,8 @@ msgid "Please enter your message."
 msgstr "Bitte tragen Sie Ihre Mitteilung ein."
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:169
-msgid "Your message should contain at least {1} characters."
+#, fuzzy
+msgid "Your message should contain at least {0} characters."
 msgstr "Ihre Mitteilung sollte aus mindestens {1} Zeichen bestehen."
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:175
@@ -229,11 +235,13 @@ msgid "Web Browser"
 msgstr "Web-Browser"
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:223
-msgid "Contact request for object {1}"
+#, fuzzy
+msgid "Contact request for object {0}"
 msgstr "Kontaktanfrage zum Objekt {1}"
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:224
-msgid "A contact request was sent for object {1}."
+#, fuzzy
+msgid "A contact request was sent for object {0}."
 msgstr "Eine Kontaktanfrage wurde zum Objekt {1} übermittelt."
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:241

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Bootstrap4 Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-09-14 05:58+0200\n"
+"POT-Creation-Date: 2018-09-16 18:18+0200\n"
 "PO-Revision-Date: 2018-09-14 05:59+0200\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
 "Language-Team: i18n@openestate.org\n"
@@ -17,9 +17,10 @@ msgstr ""
 "X-Generator: Poedit 2.1.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: themes/bootstrap4/expose.php:66 themes/bootstrap4/expose.php:237
-#: themes/bootstrap4/fav.php:248 themes/bootstrap4/listing.php:330
-msgid "real estate {1}"
+#: themes/bootstrap4/expose.php:66 themes/bootstrap4/expose.php:238
+#: themes/bootstrap4/fav.php:250 themes/bootstrap4/listing.php:332
+#, fuzzy
+msgid "real estate {0}"
 msgstr "Immobilie {1}"
 
 #: themes/bootstrap4/expose.php:222
@@ -27,258 +28,259 @@ msgid "The offer was not found. Maybe it is not published anymore."
 msgstr ""
 "Das Angebot wurde nicht gefunden. Möglicherweise ist es nicht mehr verfügbar."
 
-#: themes/bootstrap4/expose.php:228 themes/bootstrap4/fav.php:227
+#: themes/bootstrap4/expose.php:228 themes/bootstrap4/fav.php:229
 msgid "Visit our current offers."
 msgstr "Unsere aktuellen Angebote besuchen."
 
-#: themes/bootstrap4/expose.php:242 themes/bootstrap4/fav.php:317
-#: themes/bootstrap4/fav.php:381 themes/bootstrap4/listing.php:403
-#: themes/bootstrap4/listing.php:477
+#: themes/bootstrap4/expose.php:244 themes/bootstrap4/fav.php:319
+#: themes/bootstrap4/fav.php:383 themes/bootstrap4/listing.php:405
+#: themes/bootstrap4/listing.php:479
 msgid "Download information about this object as PDF file."
 msgstr "Informationen über dieses Objekt als PDF-Datei herunterladen."
 
-#: themes/bootstrap4/expose.php:250 themes/bootstrap4/listing.php:411
-#: themes/bootstrap4/listing.php:485
+#: themes/bootstrap4/expose.php:252 themes/bootstrap4/listing.php:413
+#: themes/bootstrap4/listing.php:487
 msgid "Add this object to your list of favorites."
 msgstr "Dieses Objekt als Favorit vormerken."
 
-#: themes/bootstrap4/expose.php:257 themes/bootstrap4/fav.php:324
-#: themes/bootstrap4/fav.php:388 themes/bootstrap4/listing.php:418
-#: themes/bootstrap4/listing.php:492
+#: themes/bootstrap4/expose.php:259 themes/bootstrap4/fav.php:326
+#: themes/bootstrap4/fav.php:390 themes/bootstrap4/listing.php:420
+#: themes/bootstrap4/listing.php:494
 msgid "Remove this object from your list of favorites."
 msgstr "Dieses Objekt von der Favoritenliste entfernen."
 
-#: themes/bootstrap4/expose.php:267 themes/bootstrap4/fav.php:150
+#: themes/bootstrap4/expose.php:269 themes/bootstrap4/fav.php:152
 msgid "Show current offers."
 msgstr "Aktuelle Angebote anzeigen."
 
-#: themes/bootstrap4/expose.php:273 themes/bootstrap4/listing.php:174
+#: themes/bootstrap4/expose.php:275 themes/bootstrap4/listing.php:176
 msgid "Show list of favorite objects."
 msgstr "Liste der favorisierten Angebote öffnen."
 
-#: themes/bootstrap4/expose.php:280 themes/bootstrap4/fav.php:156
-#: themes/bootstrap4/listing.php:181
+#: themes/bootstrap4/expose.php:282 themes/bootstrap4/fav.php:158
+#: themes/bootstrap4/listing.php:183
 msgid "Select your preferred language."
 msgstr "Wählen Sie Ihre bevorzugte Sprache."
 
-#: themes/bootstrap4/expose.php:327
+#: themes/bootstrap4/expose.php:329
 msgid "identifier"
 msgstr "Kennung"
 
-#: themes/bootstrap4/expose.php:333
+#: themes/bootstrap4/expose.php:335
 msgid "offer"
 msgstr "Angebot"
 
-#: themes/bootstrap4/expose.php:340
+#: themes/bootstrap4/expose.php:342
 msgid "address"
 msgstr "Adresse"
 
-#: themes/bootstrap4/expose.php:375 themes/bootstrap4/expose.php:376
+#: themes/bootstrap4/expose.php:377 themes/bootstrap4/expose.php:378
 msgid "yes"
 msgstr "ja"
 
-#: themes/bootstrap4/expose.php:377 themes/bootstrap4/expose.php:378
+#: themes/bootstrap4/expose.php:379 themes/bootstrap4/expose.php:380
 msgid "no"
 msgstr "nein"
 
-#: themes/bootstrap4/expose.php:410
+#: themes/bootstrap4/expose.php:412
 msgid "area map"
 msgstr "Lagekarte"
 
-#: themes/bootstrap4/expose.php:437
+#: themes/bootstrap4/expose.php:439
 msgid "videos"
 msgstr "Videos"
 
-#: themes/bootstrap4/expose.php:445
+#: themes/bootstrap4/expose.php:447
 msgid "Your web browser does not support video playback."
 msgstr "Ihr Web-Browser unterstützt keine Wiedergabe von Videos."
 
-#: themes/bootstrap4/expose.php:479
+#: themes/bootstrap4/expose.php:481
 msgid "further links"
 msgstr "weiterführende Links"
 
-#: themes/bootstrap4/expose.php:490
+#: themes/bootstrap4/expose.php:492
 msgid "attachment"
 msgstr "Anhang"
 
-#: themes/bootstrap4/expose.php:508
+#: themes/bootstrap4/expose.php:510
 msgid "your contact person"
 msgstr "Ihr Ansprechpartner"
 
-#: themes/bootstrap4/expose.php:516 themes/bootstrap4/expose.php:521
+#: themes/bootstrap4/expose.php:518 themes/bootstrap4/expose.php:523
 msgid "phone"
 msgstr "Telefon"
 
-#: themes/bootstrap4/expose.php:527 themes/bootstrap4/expose.php:532
+#: themes/bootstrap4/expose.php:529 themes/bootstrap4/expose.php:534
 msgid "mobile"
 msgstr "Mobiltelefon"
 
-#: themes/bootstrap4/expose.php:538 themes/bootstrap4/expose.php:543
+#: themes/bootstrap4/expose.php:540 themes/bootstrap4/expose.php:545
 msgid "email"
 msgstr "E-Mail"
 
-#: themes/bootstrap4/expose.php:553
+#: themes/bootstrap4/expose.php:555
 msgid "get in contact"
 msgstr "in Kontakt treten"
 
-#: themes/bootstrap4/expose.php:556 themes/bootstrap4/expose.php:712
-#: themes/bootstrap4/fav.php:440 themes/bootstrap4/listing.php:546
+#: themes/bootstrap4/expose.php:558 themes/bootstrap4/expose.php:714
+#: themes/bootstrap4/fav.php:442 themes/bootstrap4/listing.php:548
 msgid "Processing your request. Please wait for a moment."
 msgstr "Ihre Anfrage wird verarbeitet. Bitte haben Sie einen Moment Geduld."
 
-#: themes/bootstrap4/expose.php:559
+#: themes/bootstrap4/expose.php:561
 msgid ""
 "Your message was successfully sent. We will report back as soon as possible."
 msgstr ""
 "Ihre Mitteilung wurde erfolgreich übermittelt. Wir werden uns umgehend mit "
 "Ihnen in Verbindung setzen."
 
-#: themes/bootstrap4/expose.php:562
+#: themes/bootstrap4/expose.php:564
 msgid "Sorry, but we can't process your message due to an error."
 msgstr ""
 "Ihre Mitteilung konnte aufgrund eines Fehlers leider nicht übermittelt "
 "werden."
 
-#: themes/bootstrap4/expose.php:572
+#: themes/bootstrap4/expose.php:574
 msgid "your name"
 msgstr "Ihr Name"
 
-#: themes/bootstrap4/expose.php:582
+#: themes/bootstrap4/expose.php:584
 msgid "your email address"
 msgstr "Ihre E-Mailadresse"
 
-#: themes/bootstrap4/expose.php:592
+#: themes/bootstrap4/expose.php:594
 msgid "your phone number"
 msgstr "Ihre Telefonnummer"
 
-#: themes/bootstrap4/expose.php:604
+#: themes/bootstrap4/expose.php:606
 msgid "your message"
 msgstr "Ihre Mitteilung"
 
-#: themes/bootstrap4/expose.php:607
-msgid "I am interested in your offer \"{1}\". Please get in contact with me."
+#: themes/bootstrap4/expose.php:609
+#, fuzzy
+msgid "I am interested in your offer \"{0}\". Please get in contact with me."
 msgstr ""
 "Ich interessiere mich für Ihr Angebot \"{1}\". Bitte nehmen Sie mit mir "
 "Kontakt auf."
 
-#: themes/bootstrap4/expose.php:616 themes/bootstrap4/expose.php:621
+#: themes/bootstrap4/expose.php:618 themes/bootstrap4/expose.php:623
 msgid "verification code"
 msgstr "Bestätigungscode"
 
-#: themes/bootstrap4/expose.php:622
+#: themes/bootstrap4/expose.php:624
 msgid "refresh"
 msgstr "aktualisieren"
 
-#: themes/bootstrap4/expose.php:644
+#: themes/bootstrap4/expose.php:646
 msgid "Yes, I accept the terms of use and the data privacy statement."
 msgstr "Ja, ich bestätige die AGB und Datenschutzerklärung."
 
-#: themes/bootstrap4/expose.php:656
+#: themes/bootstrap4/expose.php:658
 msgid "send message"
 msgstr "Mitteilung abschicken"
 
-#: themes/bootstrap4/expose.php:667
+#: themes/bootstrap4/expose.php:669
 msgid "images"
 msgstr "Fotos"
 
-#: themes/bootstrap4/fav.php:101 themes/bootstrap4/fav.php:129
+#: themes/bootstrap4/fav.php:101 themes/bootstrap4/fav.php:130
 msgid "my favored objects"
 msgstr "meine Vormerkliste"
 
-#: themes/bootstrap4/fav.php:132 themes/bootstrap4/listing.php:153
+#: themes/bootstrap4/fav.php:134 themes/bootstrap4/listing.php:155
 msgid "Show sort options."
 msgstr "Optionen zur Sortierung anzeigen."
 
-#: themes/bootstrap4/fav.php:138 themes/bootstrap4/listing.php:159
+#: themes/bootstrap4/fav.php:140 themes/bootstrap4/listing.php:161
 msgid "Show objects in detailed view."
 msgstr "Objekte in der Detail-Ansicht anzeigen."
 
-#: themes/bootstrap4/fav.php:144 themes/bootstrap4/listing.php:165
+#: themes/bootstrap4/fav.php:146 themes/bootstrap4/listing.php:167
 msgid "Show objects in gallery view."
 msgstr "Objekte in der Galerie-Ansicht anzeigen."
 
-#: themes/bootstrap4/fav.php:182 themes/bootstrap4/listing.php:254
+#: themes/bootstrap4/fav.php:184 themes/bootstrap4/listing.php:256
 msgid "sort offers"
 msgstr "Angebote sortieren"
 
-#: themes/bootstrap4/fav.php:208 themes/bootstrap4/listing.php:280
+#: themes/bootstrap4/fav.php:210 themes/bootstrap4/listing.php:282
 msgid "ascending"
 msgstr "aufsteigend"
 
-#: themes/bootstrap4/fav.php:213 themes/bootstrap4/listing.php:285
+#: themes/bootstrap4/fav.php:215 themes/bootstrap4/listing.php:287
 msgid "descending"
 msgstr "absteigend"
 
-#: themes/bootstrap4/fav.php:224
+#: themes/bootstrap4/fav.php:226
 msgid "Your list of favorite objects is empty."
 msgstr "Ihre Vormerkliste ist leer."
 
-#: themes/bootstrap4/fav.php:273 themes/bootstrap4/fav.php:283
-#: themes/bootstrap4/fav.php:311 themes/bootstrap4/fav.php:338
-#: themes/bootstrap4/fav.php:349 themes/bootstrap4/fav.php:375
-#: themes/bootstrap4/listing.php:359 themes/bootstrap4/listing.php:369
-#: themes/bootstrap4/listing.php:397 themes/bootstrap4/listing.php:434
-#: themes/bootstrap4/listing.php:445 themes/bootstrap4/listing.php:471
+#: themes/bootstrap4/fav.php:275 themes/bootstrap4/fav.php:285
+#: themes/bootstrap4/fav.php:313 themes/bootstrap4/fav.php:340
+#: themes/bootstrap4/fav.php:351 themes/bootstrap4/fav.php:377
+#: themes/bootstrap4/listing.php:361 themes/bootstrap4/listing.php:371
+#: themes/bootstrap4/listing.php:399 themes/bootstrap4/listing.php:436
+#: themes/bootstrap4/listing.php:447 themes/bootstrap4/listing.php:473
 msgid "Show details about this object."
 msgstr "Details zu diesem Objekt anzeigen."
 
-#: themes/bootstrap4/fav.php:312 themes/bootstrap4/fav.php:376
-#: themes/bootstrap4/listing.php:398 themes/bootstrap4/listing.php:472
+#: themes/bootstrap4/fav.php:314 themes/bootstrap4/fav.php:378
+#: themes/bootstrap4/listing.php:400 themes/bootstrap4/listing.php:474
 msgid "details"
 msgstr "Details"
 
-#: themes/bootstrap4/fav.php:318 themes/bootstrap4/fav.php:382
-#: themes/bootstrap4/listing.php:404 themes/bootstrap4/listing.php:478
+#: themes/bootstrap4/fav.php:320 themes/bootstrap4/fav.php:384
+#: themes/bootstrap4/listing.php:406 themes/bootstrap4/listing.php:480
 msgid "download"
 msgstr "herunterladen"
 
-#: themes/bootstrap4/fav.php:325 themes/bootstrap4/fav.php:389
-#: themes/bootstrap4/listing.php:420 themes/bootstrap4/listing.php:494
+#: themes/bootstrap4/fav.php:327 themes/bootstrap4/fav.php:391
+#: themes/bootstrap4/listing.php:422 themes/bootstrap4/listing.php:496
 msgid "remove from favorites"
 msgstr "Vormerkung entfernen"
 
-#: themes/bootstrap4/fav.php:406 themes/bootstrap4/fav.php:410
-#: themes/bootstrap4/listing.php:512 themes/bootstrap4/listing.php:516
+#: themes/bootstrap4/fav.php:408 themes/bootstrap4/fav.php:412
+#: themes/bootstrap4/listing.php:514 themes/bootstrap4/listing.php:518
 msgid "Show previous page."
 msgstr "Vorherige Seite anzeigen."
 
-#: themes/bootstrap4/fav.php:420 themes/bootstrap4/fav.php:425
-#: themes/bootstrap4/listing.php:526 themes/bootstrap4/listing.php:531
+#: themes/bootstrap4/fav.php:422 themes/bootstrap4/fav.php:427
+#: themes/bootstrap4/listing.php:528 themes/bootstrap4/listing.php:533
 msgid "Show next page."
 msgstr "Nächste Seite anzeigen."
 
-#: themes/bootstrap4/listing.php:118 themes/bootstrap4/listing.php:146
+#: themes/bootstrap4/listing.php:118 themes/bootstrap4/listing.php:147
 msgid "current offers"
 msgstr "aktuelle Angebote"
 
-#: themes/bootstrap4/listing.php:149
+#: themes/bootstrap4/listing.php:151
 msgid "Show search options."
 msgstr "Optionen zur Suche anzeigen."
 
-#: themes/bootstrap4/listing.php:207
+#: themes/bootstrap4/listing.php:209
 msgid "search offers"
 msgstr "Angebote durchsuchen"
 
-#: themes/bootstrap4/listing.php:238
+#: themes/bootstrap4/listing.php:240
 msgid "search"
 msgstr "suchen"
 
-#: themes/bootstrap4/listing.php:243
+#: themes/bootstrap4/listing.php:245
 msgid "clear"
 msgstr "leeren"
 
-#: themes/bootstrap4/listing.php:299
+#: themes/bootstrap4/listing.php:301
 msgid "There are currently no objects published."
 msgstr "Momentan sind keine Angebote veröffentlicht."
 
-#: themes/bootstrap4/listing.php:302
+#: themes/bootstrap4/listing.php:304
 msgid "No objects were found according to your filter settings."
 msgstr "Es wurden keine Angebote gemäß der Suchkriterien gefunden."
 
-#: themes/bootstrap4/listing.php:307
+#: themes/bootstrap4/listing.php:309
 msgid "Show all offers."
 msgstr "Alle Angebote anzeigen."
 
-#: themes/bootstrap4/listing.php:413 themes/bootstrap4/listing.php:487
+#: themes/bootstrap4/listing.php:415 themes/bootstrap4/listing.php:489
 msgid "add to favorites"
 msgstr "vormerken"
