@@ -82,7 +82,7 @@ class FavoriteHtml extends AbstractHtmlView
     );
 
     /**
-     * Maximum number of entries per attribute column.
+     * Maximal number of entries per attribute column.
      *
      * @var int
      */

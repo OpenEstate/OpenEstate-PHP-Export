@@ -31,8 +31,9 @@ use OpenEstate\PhpExport\Utils;
 class ExposeHtml extends AbstractHtmlView
 {
     /**
+     * Name of the object ID parameter.
+     *
      * @var string
-     * parameter name for the object ID
      */
     public $objectIdParameter = 'id';
 
