@@ -7,21 +7,21 @@ msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Bootstrap4 Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
 "POT-Creation-Date: 2018-09-16 18:18+0200\n"
-"PO-Revision-Date: 2018-09-14 05:59+0200\n"
+"PO-Revision-Date: 2018-09-16 16:29+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
-"Language-Team: i18n@openestate.org\n"
+"Language-Team: German <https://i18n.openestate.org/projects/"
+"openestate-php-export/theme-bootstrap4/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.0.1\n"
 
 #: themes/bootstrap4/expose.php:66 themes/bootstrap4/expose.php:238
 #: themes/bootstrap4/fav.php:250 themes/bootstrap4/listing.php:332
-#, fuzzy
 msgid "real estate {0}"
-msgstr "Immobilie {1}"
+msgstr "Immobilie {0}"
 
 #: themes/bootstrap4/expose.php:222
 msgid "The offer was not found. Maybe it is not published anymore."
@@ -157,10 +157,9 @@ msgid "your message"
 msgstr "Ihre Mitteilung"
 
 #: themes/bootstrap4/expose.php:609
-#, fuzzy
 msgid "I am interested in your offer \"{0}\". Please get in contact with me."
 msgstr ""
-"Ich interessiere mich für Ihr Angebot \"{1}\". Bitte nehmen Sie mit mir "
+"Ich interessiere mich für Ihr Angebot \"{0}\". Bitte nehmen Sie mit mir "
 "Kontakt auf."
 
 #: themes/bootstrap4/expose.php:618 themes/bootstrap4/expose.php:623
