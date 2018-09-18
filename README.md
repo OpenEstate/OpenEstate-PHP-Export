@@ -10,28 +10,29 @@ the webspace including real estate data in the [`data`](src/data) folder.
 Features
 --------
 
--   listing view of multiple real estates 
+-   listing view of multiple real estates
     (see [`index.php`](src/index.php))
 -   detailled view of a single real estate 
     (see [`expose.php`](src/expose.php))
 -   visitors may manage their favored real estates 
     (see [`fav.php`](src/fav.php))
--   object listings may be filtered by different criteria
+-   real estate listings may be filtered by different criteria
     (see [`\OpenEstate\PhpExport\Filter`](src/include/OpenEstate/PhpExport/Filter))
--   object listings may be ordered by different criteria 
+-   real estate listings may be ordered by different criteria 
     (see [`\OpenEstate\PhpExport\Order`](src/include/OpenEstate/PhpExport/Order))
 -   a basic contact form is available
     (see [`\OpenEstate\PhpExport\Action\Contact`](src/include/OpenEstate/PhpExport/Action/Contact.php))
--   generated output is completely customizable with themes
-    (see [`themes`](src/themes)) 
+-   generated output is fully customizable with [themes](src/themes) 
 -   a lot of configuration options are available
     (see [`\OpenEstate\PhpExport\Config`](src/include/OpenEstate/PhpExport/Config.php) 
     and [`config.php`](src/config.php))
+-   available in multiple languages (English by default, see 
+    [current translation progress](https://i18n.openestate.org/projects/openestate-php-export/#languages))
 -   open source modules are available for
-    [WordPress](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-WordPress),
-    [CMS made simple](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-CMSms),
-    [WebsiteBaker / BlackCat CMS / LEPTON CMS](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-WebsiteBaker) &
-    [Joomla](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-Joomla)
+    [*WordPress*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-WordPress),
+    [*CMS made simple*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-CMSms),
+    [*WebsiteBaker* / *BlackCat CMS* / *LEPTON CMS*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-WebsiteBaker) &
+    [*Joomla*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-Joomla)
 
 
 Requirements
