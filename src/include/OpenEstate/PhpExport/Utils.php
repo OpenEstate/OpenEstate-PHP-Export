@@ -118,7 +118,7 @@ class Utils
                 array(' ', ' ', ' '),
                 $value
             ));
-            while (\strpos($value, '  ')!==false) {
+            while (\strpos($value, '  ') !== false) {
                 $value = \str_replace('  ', ' ', $value);
             }
         }
@@ -878,7 +878,7 @@ class Utils
      * @return null|string
      * HTML encoded output for the requested field
      */
-    public static function writeObjectField(array &$object, $field, array &$i18n, $lang, $valueOnly=false)
+    public static function writeObjectField(array &$object, $field, array &$i18n, $lang, $valueOnly = false)
     {
         if (!\is_array($object))
             return null;
@@ -985,7 +985,7 @@ class Utils
             if (!\is_array($value)) return null;
 
             $text = self::getAttributeValue($attribute[0], $attribute[1], $value, $i18n, $lang);
-            if ($valueOnly===true)
+            if ($valueOnly === true)
                 return $text;
 
             $title = (isset($i18n['openestate']['attributes'][$attribute[0]][$attribute[1]])) ?

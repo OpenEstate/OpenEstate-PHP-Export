@@ -153,7 +153,7 @@ abstract class AbstractHtmlView extends AbstractView
     public function generateHeader()
     {
         // Sort header elements according to the priority.
-        usort($this->headerElements, function ($item1, $item2) {
+        \usort($this->headerElements, function ($item1, $item2) {
             $id1 = $item1->id;
             $id2 = $item2->id;
 
@@ -163,7 +163,7 @@ abstract class AbstractHtmlView extends AbstractView
             if ($id1 == $id2) return 0;
             if ($priority1 < $priority2) return -1;
             if ($priority1 > $priority2) return 1;
-            return strcmp($id1, $id2);
+            return \strcmp($id1, $id2);
         });
 
         // Generate HTML code for header elements.
@@ -172,7 +172,7 @@ abstract class AbstractHtmlView extends AbstractView
             $html .= $element->generate() . "\n";
         }
 
-        return trim($html);
+        return \trim($html);
     }
 
     /**
