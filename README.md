@@ -21,11 +21,11 @@ Features
 -   object listings may be ordered by different criteria 
     (see [`\OpenEstate\PhpExport\Order`](src/include/OpenEstate/PhpExport/Order))
 -   a basic contact form is available
-    (see [`\OpenEstate\PhpExport\Action\Contact.php`](src/include/OpenEstate/PhpExport/Action/Contact.php))
+    (see [`\OpenEstate\PhpExport\Action\Contact`](src/include/OpenEstate/PhpExport/Action/Contact.php))
 -   generated output is completely customizable with themes
     (see [`themes`](src/themes)) 
 -   a lot of configuration options are available
-    (see [`\OpenEstate\PhpExport\Config.php`](src/include/OpenEstate/PhpExport/Config.php) 
+    (see [`\OpenEstate\PhpExport\Config`](src/include/OpenEstate/PhpExport/Config.php) 
     and [`config.php`](src/config.php))
 -   open source modules are available for
     [WordPress](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-WordPress),
@@ -38,14 +38,14 @@ Requirements
 ------------
 
 -   client side (real estate agency / website owner)
-    -   [OpenEstate-ImmoTool](https://openestate.org/) 1.0-beta
+    -   [*OpenEstate-ImmoTool*](https://openestate.org/) 1.0-beta
 -   webspace side
     -   PHP 5.6 or newer
-    -   [PHP GD extension](https://secure.php.net/manual/en/book.image.php) 
+    -   [PHP *GD* extension](https://secure.php.net/manual/en/book.image.php) 
         (optional, but recommended)
-    -   [PHP mbstring extension](https://secure.php.net/manual/en/book.mbstring.php) 
+    -   [PHP *mbstring* extension](https://secure.php.net/manual/en/book.mbstring.php) 
         (optional)
-    -   [PHP iconv extension](https://secure.php.net/manual/en/book.iconv.php) 
+    -   [PHP *iconv* extension](https://secure.php.net/manual/en/book.iconv.php) 
         (optional)
 
 
@@ -66,25 +66,25 @@ The following third party components are provided by *OpenEstate-PHP-Export*:
     (license: [MIT](https://jquery.org/license/))
 -   [slick](https://kenwheeler.github.io/slick/) v1.8.0
     (license: [MIT](https://github.com/kenwheeler/slick/blob/master/LICENSE))
--   aggregated icons (generated with [*fontello.com*](http://fontello.com/)) 
-    -   [Fontelico](https://github.com/fontello/fontelico.font)
-        (license: [SIL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL))
-    -   [Font Awesome](https://fontawesome.com/)
-        (license: [SIL](https://fontawesome.com/license/free))
--   third party components used by the [*default* theme](src/themes/default)
+-   components used by the [*default* theme](src/themes/default)
     -   [Pure.CSS](https://purecss.io/) v1.0.0
         (license: [BSD](https://github.com/pure-css/pure/blob/master/LICENSE))
     -   [Colorbox](http://www.jacklmoore.com/colorbox/) v1.6.4
         (license: [MIT](https://github.com/jackmoore/colorbox/blob/master/LICENSE.md))
     -   [Popper.js](https://popper.js.org/) v1.14.4
         (license: [MIT](https://github.com/FezVrasta/popper.js/blob/master/LICENSE.md))
--   third party components used by the [*bootstrap3* theme](src/themes/bootstrap3)
+-   components used by the [*bootstrap3* theme](src/themes/bootstrap3)
     -   [Bootstrap](https://getbootstrap.com/) v3.3.7
         (license: [MIT](https://github.com/twbs/bootstrap/blob/master/LICENSE))
--   third party components used by the [*bootstrap4* theme](src/themes/bootstrap4)
+-   components used by the [*bootstrap4* theme](src/themes/bootstrap4)
     -   [Bootstrap](https://getbootstrap.com/) v4.1.3
         (license: [MIT](https://github.com/twbs/bootstrap/blob/master/LICENSE))
         bundled with [Popper.js](https://popper.js.org/)
+-   aggregated icons (generated with [*fontello.com*](http://fontello.com/))
+    -   [Font Awesome](https://fontawesome.com/)
+        (license: [SIL](https://fontawesome.com/license/free)) 
+    -   [Fontelico](https://github.com/fontello/fontelico.font)
+        (license: [SIL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL))
 
 
 Limitations
