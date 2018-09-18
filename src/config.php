@@ -43,19 +43,14 @@ class MyConfig extends Config
         // Set name of the theme used to render pages.
         //$this->themeName = 'default';
 
-        // Set charset for generated text content.
-        //$this->charset = 'UTF-8';
-
         // Set default language code.
         //$this->defaultLanguage = 'de';
 
         // Allow or disallow users to change the language.
         //$this->allowLanguageSelection = true;
 
-        // Set time zone.
-        // If no time zone was specified, the default time zone of the server is used.
-        // see also: http://www.php.net/manual/de/timezones.php
-        //$this->timezone = '';
+        // Set charset for generated text content.
+        //$this->charset = 'UTF-8';
 
         // Default time, a file is kept in cache (in seconds).
         //$this->cacheLifeTime = 86400; // 24 hours
@@ -78,6 +73,343 @@ class MyConfig extends Config
     }
 
     /**
+     * Get URL for the action handler script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getActionUrl($parameters = null)
+    {
+        return parent::getActionUrl($parameters);
+    }
+
+    /**
+     * Get path to the assets folder.
+     *
+     * @return string
+     * path
+     */
+    public function getAssetsFolderPath()
+    {
+        return parent::getAssetsFolderPath();
+    }
+
+    /**
+     * Get URL for the assets folder.
+     *
+     * @return string
+     * URL
+     */
+    public function getAssetsFolderUrl()
+    {
+        return parent::getAssetsFolderUrl();
+    }
+
+    /**
+     * Get path to the cache folder.
+     *
+     * @return string
+     * path
+     */
+    public function getCacheFolderPath()
+    {
+        return parent::getCacheFolderPath();
+    }
+
+    /**
+     * Get URL for the captcha script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getCaptchaUrl($parameters = null)
+    {
+        return parent::getCaptchaUrl($parameters);
+    }
+
+    /**
+     * Get path to the custom css file.
+     *
+     * @return string
+     * path
+     */
+    public function getCustomCssPath()
+    {
+        return parent::getCustomCssPath();
+    }
+
+    /**
+     * Get URL for the custom css file.
+     *
+     * @return string
+     * URL
+     */
+    public function getCustomCssUrl()
+    {
+        return parent::getCustomCssUrl();
+    }
+
+    /**
+     * Get path to the data folder.
+     *
+     * @return string
+     * path
+     */
+    public function getDataFolderPath()
+    {
+        return parent::getDataFolderPath();
+    }
+
+    /**
+     * Get URL for the data folder.
+     *
+     * @return string
+     * URL
+     */
+    public function getDataFolderUrl()
+    {
+        return parent::getDataFolderUrl();
+    }
+
+    /**
+     * Get URL for the download script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getDownloadUrl($parameters = null)
+    {
+        return parent::getDownloadUrl($parameters);
+    }
+
+    /**
+     * Get URL for the expose view.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getExposeUrl($parameters = null)
+    {
+        return parent::getExposeUrl($parameters);
+    }
+
+    /**
+     * Get URL for the favorite view.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getFavoriteUrl($parameters = null)
+    {
+        return parent::getFavoriteUrl($parameters);
+    }
+
+    /**
+     * Get URL for the image script.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getImageUrl($parameters = null)
+    {
+        return parent::getImageUrl($parameters);
+    }
+
+    /**
+     * Get URL for the listing view.
+     *
+     * @param array|null $parameters
+     * associative array with URL parameters
+     *
+     * @return string
+     * URL
+     */
+    public function getListingUrl($parameters = null)
+    {
+        return parent::getListingUrl($parameters);
+    }
+
+    /**
+     * Get path to the locale folder.
+     *
+     * @return string
+     * path
+     */
+    public function getLocaleFolderPath()
+    {
+        return parent::getLocaleFolderPath();
+    }
+
+    /**
+     * Get path to the theme folder.
+     *
+     * @param string|null $theme
+     * theme name
+     *
+     * @return string
+     * path to the requested theme folder or to the parent theme folder,
+     * if no theme name was provided
+     */
+    public function getThemeFolderPath($theme = null)
+    {
+        return parent::getThemeFolderPath($theme);
+    }
+
+    /**
+     * Get URL for a theme folder.
+     *
+     * @param string|null $theme
+     * theme name
+     *
+     * @return string
+     * URL
+     */
+    public function getThemeFolderUrl($theme = null)
+    {
+        return parent::getThemeFolderUrl($theme);
+    }
+
+    /**
+     * Get a translation using the original string.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @param string $original
+     * original string to translate
+     *
+     * @return string
+     * translation
+     *
+     * @see \Gettext\TranslatorInterface::gettext()
+     */
+    public function i18nGettext($lang, $original)
+    {
+        return parent::i18nGettext($lang, $original);
+    }
+
+    /**
+     * Get a translation checking the plural form.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @param string $original
+     * original string to translate
+     *
+     * @param string $plural
+     * plural form of the original string
+     *
+     * @param string $value
+     * value to determine plural forms
+     *
+     * @return string
+     * translation
+     *
+     * @see \Gettext\TranslatorInterface::ngettext()
+     */
+    public function i18nGettextPlural($lang, $original, $plural, $value)
+    {
+        return parent::i18nGettextPlural($lang, $original, $plural, $value);
+    }
+
+    /**
+     * Create an action instance.
+     *
+     * @param string $name
+     * name of requested action
+     *
+     * @return Action\AbstractAction
+     * created action or null, if it is unknown
+     */
+    public function newAction($name)
+    {
+        return parent::newAction($name);
+    }
+
+    /**
+     * Create a link provider instance.
+     *
+     * @param string $name
+     * name of requested provider
+     *
+     * @return Provider\AbstractLinkProvider
+     * created link provider or null, if it is unknown
+     */
+    public function newLinkProvider($name)
+    {
+        return parent::newLinkProvider($name);
+    }
+
+    /**
+     * Create a mailer instance.
+     *
+     * @return \PHPMailer\PHPMailer\PHPMailer|null
+     * created mailer or null, if the configuration failed
+     */
+    public function newMailer()
+    {
+        return parent::newMailer();
+    }
+
+    /**
+     * Create a map provider.
+     *
+     * @return Provider\AbstractMapProvider
+     * map provider
+     */
+    public function newMapProvider()
+    {
+        return parent::newMapProvider();
+    }
+
+    /**
+     * Create a session instance.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @return Session\AbstractSession
+     * created session
+     */
+    public function newSession(Environment $env)
+    {
+        return parent::newSession($env);
+    }
+
+    /**
+     * Create a theme instance.
+     *
+     * @param Environment $env
+     * export environment
+     *
+     * @return Theme\AbstractTheme|null
+     * created theme or null, if the configuration failed
+     */
+    public function newTheme(Environment $env)
+    {
+        return parent::newTheme($env);
+    }
+
+    /**
      * Configure export environment.
      *
      * @param Environment $env
@@ -87,8 +419,14 @@ class MyConfig extends Config
     {
         parent::setupEnvironment($env);
 
-        // Maximal number of objects to keep in the local cache.
+        // Set maximal number of objects to keep in the local cache.
         //$env->objectsCacheSize = 10;
+
+        // Set maximal number of object texts to keep in the local cache.
+        //$env->objectTextsCacheSize = 10;
+
+        // Set name of the action parameter.
+        //$env->actionParameter = 'action';
     }
 
     /**
@@ -100,6 +438,59 @@ class MyConfig extends Config
     public function setupExposeHtml(View\ExposeHtml $view)
     {
         parent::setupExposeHtml($view);
+
+        // Set name of the object ID parameter.
+        //$view->objectIdParameter = 'id';
+    }
+
+    /**
+     * Set configuration for the HTML view with favorite listing.
+     *
+     * @param View\FavoriteHtml $view
+     * view to configure
+     */
+    public function setupFavoriteHtml(View\FavoriteHtml $view)
+    {
+        parent::setupFavoriteHtml($view);
+
+        // Set maximal number of objects shown on a page.
+        //$view->objectsPerPage = 10;
+
+        // Set available orderings in the listing.
+        //$view->orders = array(
+        //    new Order\Area(),
+        //    new Order\City(),
+        //    new Order\GroupNr(),
+        //    new Order\LastMod(),
+        //    new Order\ObjectId(),
+        //    new Order\ObjectNr(),
+        //    new Order\Postal(),
+        //    new Order\Price(),
+        //    new Order\Rooms(),
+        //    new Order\Title()
+        //);
+
+        // Set default ordering of the listing.
+        //$view->defaultOrder = $view->orders[0]->getName();
+
+        // Set default ordering direction of the listing.
+        //$view->defaultOrderDirection = 'desc';
+
+        // Set default view of the listing.
+        //$view->defaultView = 'detail';
+
+        // Set columns with object attributes.
+        //$view->objectColumns = array(
+        //
+        //    // first column
+        //    array('type', 'action', 'address', 'country'),
+        //
+        //    // second column
+        //    array('price', 'area', 'measures.count_rooms', 'measures.count_residential_units', 'administration.auction_date'),
+        //);
+
+        // Set maximal number of entries per attribute column.
+        //$view->objectColumnsLimit = 4;
     }
 
     /**
@@ -112,31 +503,65 @@ class MyConfig extends Config
     {
         parent::setupListingHtml($view);
 
+        // Set maximal number of objects shown on a page.
+        //$view->objectsPerPage = 10;
+
+        // Set available filters in the listing.
         //$view->filters = array(
         //    new Filter\Action(),
-        //    new Filter\Type(),
-        //    new Filter\City(),
-        //    new Filter\Region(),
-        //    new Filter\Country(),
         //    new Filter\Age(),
+        //    new Filter\City(),
+        //    new Filter\Country(),
         //    new Filter\Equipment(),
-        //    new Filter\GroupNr(),
-        //    new Filter\Rooms(),
         //    new Filter\Furnished(),
+        //    new Filter\GroupNr(),
+        //    new Filter\Region(),
+        //    new Filter\Rooms(),
         //    new Filter\SpecialOffer(),
+        //    new Filter\Type(),
         //);
 
+        // Set default filter values of the listing.
+        //$view->defaultFilterValues = array(
+        //    'Action' => 'purchase',
+        //    'Type' => 'house',
+        //);
+
+        // Set available orderings in the listing.
         //$view->orders = array(
-        //    new Order\ObjectId(),
-        //    new Order\City(),
         //    new Order\Area(),
+        //    new Order\City(),
+        //    new Order\GroupNr(),
+        //    new Order\LastMod(),
+        //    new Order\ObjectId(),
+        //    new Order\ObjectNr(),
+        //    new Order\Postal(),
         //    new Order\Price(),
+        //    new Order\Rooms(),
         //    new Order\Title()
         //);
 
-        //$view->defaultOrder = $view->orders[0];
-        //$view->defaultOrderDirection = 'asc';
-        $view->objectsPerPage = 8;
+        // Set default ordering of the listing.
+        //$view->defaultOrder = $view->orders[0]->getName();
+
+        // Set default ordering direction of the listing.
+        //$view->defaultOrderDirection = 'desc';
+
+        // Set default view of the listing.
+        //$view->defaultView = 'detail';
+
+        // Set columns with object attributes.
+        //$view->objectColumns = array(
+        //
+        //    // first column
+        //    array('type', 'action', 'address', 'country'),
+        //
+        //    // second column
+        //    array('price', 'area', 'measures.count_rooms', 'measures.count_residential_units', 'administration.auction_date'),
+        //);
+
+        // Set maximal number of entries per attribute column.
+        //$view->objectColumnsLimit = 4;
     }
 
     /**
@@ -156,7 +581,6 @@ class MyConfig extends Config
         parent::setupMailer($mailer, $env);
 
         // Set sender address for outgoing emails.
-        $mailer->setFrom('andy@suicide-squad.de');
         //$mailer->setFrom('max@mustermann.de', 'Max Mustermann');
 
         // Send a copy of outgoing emails to these addresses (as CC).
@@ -200,6 +624,17 @@ class MyConfig extends Config
         //$mailer->SMTPSecure = '';
         //$mailer->SMTPAutoTLS = true;
         //$mailer->SMTPDebug = 0;
+    }
+
+    /**
+     * Configure the map provider.
+     *
+     * @param Provider\AbstractMapProvider $mapProvider
+     * map provider instance
+     */
+    public function setupMapProvider(Provider\AbstractMapProvider $mapProvider)
+    {
+        parent::setupMapProvider($mapProvider);
     }
 
     /**

@@ -56,16 +56,6 @@ class Config
     public $charset = 'UTF-8';
 
     /**
-     * Time zone.
-     *
-     * If no time zone was specified, the default time zone of the server is used.
-     *
-     * @var string
-     * @see http://www.php.net/manual/de/timezones.php List of available time zones.
-     */
-    public $timezone = '';
-
-    /**
      * Default time, a file is kept in cache (in seconds).
      *
      * @var string
