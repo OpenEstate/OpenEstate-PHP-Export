@@ -102,12 +102,7 @@ class FavoriteHtml extends AbstractHtmlView
 
     protected function generate()
     {
-        try {
-            return $this->loadThemeFile('fav.php');
-        } catch (\Exception $e) {
-            Utils::logError($e);
-            return null;
-        }
+        return Utils::encode($this->loadThemeFile('fav.php'), $this->getCharset());
     }
 
     /**

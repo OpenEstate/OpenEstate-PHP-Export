@@ -91,6 +91,34 @@ class Utils
     }
 
     /**
+     * Convert a string into another charset.
+     *
+     * @param string $input
+     * input string
+     *
+     * @param string $targetCharset
+     * target encoding
+     *
+     * @return string
+     * encoded output string
+     */
+    public static function encode($input, $targetCharset)
+    {
+        if (!\function_exists('\mb_detect_encoding') || !\function_exists('\iconv'))
+            return $input;
+
+        // Detect the encoding of the input string
+        $sourceCharset = \mb_detect_encoding($input);
+        if ($sourceCharset === false || self::isBlankString($sourceCharset))
+            return $input;
+
+        // Convert string to the target encoding, if necessary
+        return (\strtoupper(\trim($sourceCharset)) !== \strtoupper(\trim($targetCharset))) ?
+            \iconv(\strtoupper(\trim($sourceCharset)), \strtoupper(\trim($targetCharset)) . '//TRANSLIT', $input) :
+            $input;
+    }
+
+    /**
      * Get an abbreviated string.
      *
      * @param string $value

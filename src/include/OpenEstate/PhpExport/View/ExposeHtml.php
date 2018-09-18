@@ -50,12 +50,7 @@ class ExposeHtml extends AbstractHtmlView
 
     protected function generate()
     {
-        try {
-            return $this->loadThemeFile('expose.php');
-        } catch (\Exception $e) {
-            Utils::logError($e);
-            return null;
-        }
+        return Utils::encode($this->loadThemeFile('expose.php'), $this->getCharset());
     }
 
     /**

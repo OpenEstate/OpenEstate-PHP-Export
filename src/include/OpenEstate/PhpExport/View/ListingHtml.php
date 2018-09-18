@@ -118,12 +118,7 @@ class ListingHtml extends AbstractHtmlView
 
     protected function generate()
     {
-        try {
-            return $this->loadThemeFile('listing.php');
-        } catch (\Exception $e) {
-            Utils::logError($e);
-            return null;
-        }
+        return Utils::encode($this->loadThemeFile('listing.php'), $this->getCharset());
     }
 
     /**
