@@ -98,4 +98,6 @@ on the exported real estates may not be possible with acceptable performance.
 License
 -------
 
-[GNU General Public License 3](http://www.gnu.org/licenses/gpl-3.0-standalone.html)
+This library is licensed under the terms of
+[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
+Take a look at the provided [`LICENSE.txt`](LICENSE.txt) for the license text.
