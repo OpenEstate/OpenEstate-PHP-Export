@@ -95,7 +95,7 @@ class CookieSession extends AbstractSession
             return;
         if (!isset($_COOKIE[$this->cookieName]))
             return;
-        $this->values = \unserialize($_COOKIE[$this->cookieName]);
+        $this->values = \unserialize(\base64_decode($_COOKIE[$this->cookieName]));
     }
 
     public function set($key, $value)
@@ -118,13 +118,36 @@ class CookieSession extends AbstractSession
 
     public function write()
     {
+        $secure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '';
+        $domain = (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != 'localhost') ?
+            $_SERVER['HTTP_HOST'] : false;
+
         // Remove cookie, if no session values are present.
-        if (!\is_array($this->values) || \count($this->values) < 1)
-            \setcookie($this->cookieName, '', (\time() - 3600));
+        if (!\is_array($this->values) || \count($this->values) < 1) {
+            \setcookie(
+                $this->cookieName,
+                '',
+                (\time() - 3600),
+                '/',
+                $domain,
+                $secure,
+                true
+            );
+        }
+
 
         // Update cookie with session values.
-        else
-            \setcookie($this->cookieName, \serialize($this->values), (\time() + $this->cookieLifeTime));
+        else {
+            \setcookie(
+                $this->cookieName,
+                \base64_encode(\serialize($this->values)),
+                (\time() + $this->cookieLifeTime),
+                '/',
+                $domain,
+                $secure,
+                true
+            );
+        }
     }
 
 }
