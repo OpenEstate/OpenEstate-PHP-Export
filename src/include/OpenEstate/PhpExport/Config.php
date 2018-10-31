@@ -374,8 +374,8 @@ class Config
      */
     public function getThemeFolderPath($theme = null)
     {
-        return (\is_string($theme))?
-            Utils::joinPath($this->basePath, 'themes', $theme):
+        return (\is_string($theme)) ?
+            Utils::joinPath($this->basePath, 'themes', $theme) :
             Utils::joinPath($this->basePath, 'themes');
     }
 

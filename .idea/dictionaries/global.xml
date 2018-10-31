@@ -23,6 +23,8 @@
       <w>ngettext</w>
       <w>nofollow</w>
       <w>noindex</w>
+      <w>onblur</w>
+      <w>onfocus</w>
       <w>onload</w>
       <w>openestate</w>
       <w>pano</w>
@@ -34,6 +36,7 @@
       <w>urlset</w>
       <w>veoh</w>
       <w>vimeo</w>
+      <w>webspace</w>
       <w>xmlns</w>
     </words>
   </dictionary>
