@@ -300,6 +300,17 @@ class Config
     }
 
     /**
+     * Get available filters.
+     *
+     * @return array
+     * list of filter objects
+     */
+    public function getFilterObjects()
+    {
+        return Utils::getDefaultFilterObjects($this->basePath);
+    }
+
+    /**
      * Get URL for the image script.
      *
      * @param array|null $parameters
@@ -338,6 +349,17 @@ class Config
     public function getLocaleFolderPath()
     {
         return Utils::joinPath($this->basePath, 'locale');
+    }
+
+    /**
+     * Get available orders.
+     *
+     * @return array
+     * list of order objects
+     */
+    public function getOrderObjects()
+    {
+        return Utils::getDefaultOrderObjects($this->basePath);
     }
 
     /**

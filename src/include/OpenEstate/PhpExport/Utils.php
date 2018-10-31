@@ -237,6 +237,74 @@ class Utils
     }
 
     /**
+     * Get list of default filter objects.
+     *
+     * @param string $basePath
+     * absolute path, that points to the root of the export environment
+     *
+     * @return array
+     * list of filter objects
+     */
+    public static function getDefaultFilterObjects($basePath)
+    {
+        $objects = array();
+
+        $dir = self::joinPath($basePath, 'include', 'OpenEstate', 'PhpExport', 'Filter');
+        if (!\is_dir($dir))
+            return $objects;
+
+        foreach (self::listDirectory($dir) as $file) {
+            if ($file == 'AbstractFilter.php')
+                continue;
+            if (!\is_file(self::joinPath($dir, $file)))
+                continue;
+
+            $name = \explode('.', $file);
+            if (\count($name) != 2 || \strtolower($name[1]) != 'php')
+                continue;
+
+            $class = '\\OpenEstate\\PhpExport\\Filter\\' . $name[0];
+            $objects[] = new $class();
+        }
+
+        return $objects;
+    }
+
+    /**
+     * Get list of default order objects.
+     *
+     * @param string $basePath
+     * absolute path, that points to the root of the export environment
+     *
+     * @return array
+     * list of order objects
+     */
+    public static function getDefaultOrderObjects($basePath)
+    {
+        $objects = array();
+
+        $dir = self::joinPath($basePath, 'include', 'OpenEstate', 'PhpExport', 'Order');
+        if (!\is_dir($dir))
+            return $objects;
+
+        foreach (self::listDirectory($dir) as $file) {
+            if ($file == 'AbstractOrder.php')
+                continue;
+            if (!\is_file(self::joinPath($dir, $file)))
+                continue;
+
+            $name = \explode('.', $file);
+            if (\count($name) != 2 || \strtolower($name[1]) != 'php')
+                continue;
+
+            $class = '\\OpenEstate\\PhpExport\\Order\\' . $name[0];
+            $objects[] = new $class();
+        }
+
+        return $objects;
+    }
+
+    /**
      * Returns the timestamp, when a certain file was last modified.
      *
      * @param string $file

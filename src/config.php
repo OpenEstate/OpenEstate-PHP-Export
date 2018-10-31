@@ -219,6 +219,17 @@ class MyConfig extends Config
     }
 
     /**
+     * Get available filters.
+     *
+     * @return array
+     * list of filter objects
+     */
+    public function getFilterObjects()
+    {
+        return parent::getFilterObjects();
+    }
+
+    /**
      * Get URL for the image script.
      *
      * @param array|null $parameters
@@ -255,6 +266,17 @@ class MyConfig extends Config
     public function getLocaleFolderPath()
     {
         return parent::getLocaleFolderPath();
+    }
+
+    /**
+     * Get available orders.
+     *
+     * @return array
+     * list of order objects
+     */
+    public function getOrderObjects()
+    {
+        return parent::getOrderObjects();
     }
 
     /**
