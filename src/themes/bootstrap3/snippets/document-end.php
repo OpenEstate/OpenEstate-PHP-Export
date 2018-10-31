@@ -31,6 +31,8 @@ namespace OpenEstate\PhpExport;
 // Don't execute the file, if it is not properly loaded.
 if (!isset($view) || !\is_object($view)) return;
 
+// Don't send any output, if only the body part is generated.
+if ($view->isBodyOnly()) return;
 ?>
 
 </body>

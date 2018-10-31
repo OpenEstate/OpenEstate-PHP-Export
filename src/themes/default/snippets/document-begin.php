@@ -119,6 +119,8 @@ if ($view instanceof View\ExposeHtml) {
     ), 151);
 }
 
+// Don't send any output, if only the body part is generated.
+if ($view->isBodyOnly()) return;
 ?>
 
 <!DOCTYPE html>

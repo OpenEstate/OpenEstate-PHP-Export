@@ -116,7 +116,7 @@ $view->addHeader(Html\Javascript::newLink(
 ), 1001);
 
 // write document header
-if (!$view->isBodyOnly()) include('snippets/document-begin.php');
+include('snippets/document-begin.php');
 include('snippets/body-begin.php');
 
 ?>
@@ -444,4 +444,4 @@ include('snippets/body-begin.php');
 
 // write document footer
 include('snippets/body-end.php');
-if (!$view->isBodyOnly()) include('snippets/document-end.php');
+include('snippets/document-end.php');

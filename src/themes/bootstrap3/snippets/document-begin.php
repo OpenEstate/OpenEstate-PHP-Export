@@ -80,6 +80,8 @@ if ($view instanceof View\ExposeHtml) {
     $view->addHeaders($env->getAssets()->slick(true), 130);
 }
 
+// Don't send any output, if only the body part is generated.
+if ($view->isBodyOnly()) return;
 ?>
 
 <!DOCTYPE html>
