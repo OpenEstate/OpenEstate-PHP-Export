@@ -127,6 +127,15 @@ class Checkbox extends AbstractInputElement
         if ($this->defaultChecked === true)
             $element .= ' defaultChecked';
 
+        if (\is_string($this->onChange))
+            $element .= ' onchange="' . \htmlspecialchars($this->onChange) . '"';
+
+        if (\is_string($this->onFocus))
+            $element .= ' onfocus="' . \htmlspecialchars($this->onFocus) . '"';
+
+        if (\is_string($this->onBlur))
+            $element .= ' onblur="' . \htmlspecialchars($this->onBlur) . '"';
+
         $element .= '>';
 
         if (\is_string($this->label)) {

@@ -34,6 +34,27 @@ abstract class AbstractInputElement extends AbstractBodyElement
     public $name = null;
 
     /**
+     * Executed Javascript, if the value was changed.
+     *
+     * @var string
+     */
+    public $onChange = null;
+
+    /**
+     * Executed Javascript, if the input element gains the focus.
+     *
+     * @var string
+     */
+    public $onFocus = null;
+
+    /**
+     * Executed Javascript, if the input element loses the focus.
+     *
+     * @var string
+     */
+    public $onBlur = null;
+
+    /**
      * AbstractInputElement constructor.
      *
      * @param string|null $name
