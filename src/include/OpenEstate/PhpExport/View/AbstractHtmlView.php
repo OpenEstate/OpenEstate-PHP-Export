@@ -62,6 +62,13 @@ abstract class AbstractHtmlView extends AbstractView
     private $headerElementsPriority = array();
 
     /**
+     * Only the HTML body should be printed.
+     *
+     * @var bool
+     */
+    private $bodyOnly = false;
+
+    /**
      * AbstractHtmlView constructor.
      *
      * @param Environment $env
@@ -127,6 +134,21 @@ abstract class AbstractHtmlView extends AbstractView
         }
     }
 
+    /**
+     * Generate HTML code for registered header elements.
+     *
+     * @return string
+     * generated HTML code
+     */
+    public function generateHeader()
+    {
+        $html = '';
+        foreach ($this->getHeaders() as $element) {
+            $html .= $element->generate() . "\n";
+        }
+        return \trim($html);
+    }
+
     public function getContentType()
     {
         return 'text/html; charset=' . $this->getCharset();
@@ -144,15 +166,16 @@ abstract class AbstractHtmlView extends AbstractView
     }
 
     /**
-     * Generate HTML code for registered header elements.
+     * Get ordered list of registered header elements.
      *
-     * @return string
-     * generated HTML code
+     * @return array
+     * registered header elements
      */
-    public function generateHeader()
-    {
-        // Sort header elements according to the priority.
-        \usort($this->headerElements, function ($item1, $item2) {
+    public function getHeaders() {
+        $headers = \array_merge(array(), $this->headerElements);
+
+        // Sort header elements according to their priority.
+        \usort($headers, function ($item1, $item2) {
             $id1 = $item1->id;
             $id2 = $item2->id;
 
@@ -165,13 +188,7 @@ abstract class AbstractHtmlView extends AbstractView
             return \strcmp($id1, $id2);
         });
 
-        // Generate HTML code for header elements.
-        $html = '';
-        foreach ($this->headerElements as $element) {
-            $html .= $element->generate() . "\n";
-        }
-
-        return \trim($html);
+        return $headers;
     }
 
     /**
@@ -187,10 +204,13 @@ abstract class AbstractHtmlView extends AbstractView
 
     /**
      * Determine, if only the HTML body should be printed.
+     *
+     * @return bool
+     * true, if only the HTML body should be printed
      */
     public function isBodyOnly()
     {
-        return false;
+        return $this->bodyOnly;
     }
 
     public function process($sendHeaders = true)
@@ -215,6 +235,17 @@ abstract class AbstractHtmlView extends AbstractView
 
         if (isset($this->headerElementsPriority[$elementId]))
             unset($this->headerElementsPriority[$elementId]);
+    }
+
+    /**
+     * Enable or disable output of HTML head elements.
+     *
+     * @param bool $bodyOnly
+     * true, if only the HTML body should be printed
+     */
+    public function setBodyOnly($bodyOnly)
+    {
+        $this->bodyOnly = $bodyOnly;
     }
 
     /**
