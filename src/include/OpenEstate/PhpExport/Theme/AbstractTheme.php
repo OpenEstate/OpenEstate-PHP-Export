@@ -18,6 +18,7 @@
 namespace OpenEstate\PhpExport\Theme;
 
 use OpenEstate\PhpExport\Environment;
+use OpenEstate\PhpExport\Utils;
 use OpenEstate\PhpExport\View\ExposeHtml;
 use OpenEstate\PhpExport\View\FavoriteHtml;
 use OpenEstate\PhpExport\View\ListingHtml;
@@ -46,6 +47,13 @@ abstract class AbstractTheme
     protected $env;
 
     /**
+     * Header components, that should not be integrated by the theme.
+     *
+     * @var array
+     */
+    private $disabledComponents = array();
+
+    /**
      * AbstractTheme constructor.
      *
      * @param string $name
@@ -65,6 +73,17 @@ abstract class AbstractTheme
      */
     public function __destruct()
     {
+    }
+
+    /**
+     * Get a list of components, that are provided by this theme.
+     *
+     * @return array
+     * list of components ID's
+     */
+    public function getComponentIds()
+    {
+        return array();
     }
 
     /**
@@ -134,6 +153,21 @@ abstract class AbstractTheme
     }
 
     /**
+     * Test, if a certain component is enabled for this theme.
+     *
+     * @param string $componentId
+     * ID of the component
+     *
+     * @return bool
+     * true, if the component is enabled
+     */
+    public function isComponentEnabled($componentId)
+    {
+        return Utils::isNotBlankString($componentId) &&
+            !\in_array($componentId, $this->disabledComponents);
+    }
+
+    /**
      * Create the HTML view with object details.
      *
      * @return ExposeHtml
@@ -156,6 +190,30 @@ abstract class AbstractTheme
      * created view
      */
     abstract public function newListingHtml();
+
+    /**
+     * Enable or disable a certain component in the theme.
+     *
+     * @param string $componentId
+     * ID of the component
+     *
+     * @param bool $enabled
+     * true, if the component is enabled
+     */
+    public function setComponentEnabled($componentId, $enabled)
+    {
+        if (Utils::isBlankString($componentId)) return;
+
+        $index = \array_search($componentId, $this->disabledComponents);
+
+        if ($enabled === false) {
+            if ($index === false)
+                $this->disabledComponents[] = $componentId;
+        } else {
+            if ($index !== false)
+                unset($this->disabledComponents[$index]);
+        }
+    }
 
     /**
      * Set default configuration for the HTML view with object details.

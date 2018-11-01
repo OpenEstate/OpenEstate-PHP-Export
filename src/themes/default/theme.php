@@ -31,6 +31,46 @@ if (!\class_exists(DefaultTheme::class)) {
     class DefaultTheme extends Theme\BasicTheme
     {
         /**
+         * ID of the Pure CSS framework.
+         *
+         * @var string
+         * @see https://purecss.io/
+         */
+        const PURE = 'pure';
+
+        /**
+         * ID of the JQuery.js component.
+         *
+         * @var string
+         * @see https://jquery.com/
+         */
+        const JQUERY = 'jquery';
+
+        /**
+         * ID of the Popper.js component.
+         *
+         * @var string
+         * @see https://popper.js.org/
+         */
+        const POPPER = 'popper';
+
+        /**
+         * ID of the Slick.js component.
+         *
+         * @var string
+         * @see http://kenwheeler.github.io/slick/
+         */
+        const SLICK = 'slick';
+
+        /**
+         * ID of the Colorbox component.
+         *
+         * @var string
+         * @see http://www.jacklmoore.com/colorbox/
+         */
+        const COLORBOX = 'colorbox';
+
+        /**
          * DefaultTheme constructor.
          *
          * @param Environment $env
@@ -39,6 +79,17 @@ if (!\class_exists(DefaultTheme::class)) {
         function __construct($env)
         {
             parent::__construct(\basename(__DIR__), $env);
+        }
+
+        public function getComponentIds()
+        {
+            $components = parent::getComponentIds();
+            $components[] =self::PURE;
+            $components[] =self::JQUERY;
+            $components[] =self::POPPER;
+            $components[] =self::SLICK;
+            $components[] =self::COLORBOX;
+            return $components;
         }
 
         public function setupExposeHtml(View\ExposeHtml $view)

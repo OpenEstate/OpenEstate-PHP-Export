@@ -31,6 +31,30 @@ if (!\class_exists(Bootstrap4Theme::class)) {
     class Bootstrap4Theme extends Theme\BasicTheme
     {
         /**
+         * ID of the Bootstrap4 framework.
+         *
+         * @var string
+         * @see https://getbootstrap.com/
+         */
+        const BOOTSTRAP = 'bootstrap4';
+
+        /**
+         * ID of the JQuery.js component.
+         *
+         * @var string
+         * @see https://jquery.com/
+         */
+        const JQUERY = 'jquery';
+
+        /**
+         * ID of the Slick.js component.
+         *
+         * @var string
+         * @see http://kenwheeler.github.io/slick/
+         */
+        const SLICK = 'slick';
+
+        /**
          * Bootstrap4Theme constructor.
          *
          * @param Environment $env
@@ -39,6 +63,15 @@ if (!\class_exists(Bootstrap4Theme::class)) {
         function __construct($env)
         {
             parent::__construct(\basename(__DIR__), $env);
+        }
+
+        public function getComponentIds()
+        {
+            $components = parent::getComponentIds();
+            $components[] =self::BOOTSTRAP;
+            $components[] =self::JQUERY;
+            $components[] =self::SLICK;
+            return $components;
         }
 
         public function setupExposeHtml(View\ExposeHtml $view)

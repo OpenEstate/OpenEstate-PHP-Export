@@ -31,6 +31,30 @@ if (!\class_exists(Bootstrap3Theme::class)) {
     class Bootstrap3Theme extends Theme\BasicTheme
     {
         /**
+         * ID of the Bootstrap3 framework.
+         *
+         * @var string
+         * @see https://getbootstrap.com/
+         */
+        const BOOTSTRAP = 'bootstrap3';
+
+        /**
+         * ID of the JQuery.js component.
+         *
+         * @var string
+         * @see https://jquery.com/
+         */
+        const JQUERY = 'jquery';
+
+        /**
+         * ID of the Slick.js component.
+         *
+         * @var string
+         * @see http://kenwheeler.github.io/slick/
+         */
+        const SLICK = 'slick';
+
+        /**
          * Bootstrap3Theme constructor.
          *
          * @param Environment $env
@@ -39,6 +63,15 @@ if (!\class_exists(Bootstrap3Theme::class)) {
         function __construct($env)
         {
             parent::__construct(\basename(__DIR__), $env);
+        }
+
+        public function getComponentIds()
+        {
+            $components = parent::getComponentIds();
+            $components[] =self::BOOTSTRAP;
+            $components[] =self::JQUERY;
+            $components[] =self::SLICK;
+            return $components;
         }
 
         public function setupExposeHtml(View\ExposeHtml $view)

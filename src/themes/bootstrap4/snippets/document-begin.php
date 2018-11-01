@@ -35,12 +35,14 @@ if (!isset($view) || !\is_object($view)) return;
 
 // get export environment
 $env = $view->getEnvironment();
+$theme = $view->getTheme();
 $languageCode = $env->getLanguage();
 
 
 // register JQuery
 // see https://jquery.com/
-$view->addHeaders($env->getAssets()->jquery(), 100);
+if ($theme->isComponentEnabled(Bootstrap4Theme::JQUERY))
+    $view->addHeaders($env->getAssets()->jquery(), 100);
 
 
 // register OpenEstate Icons
@@ -48,26 +50,30 @@ $view->addHeaders($env->getAssets()->jquery(), 100);
 $view->addHeaders($env->getAssets()->openestate_icons(), 110);
 
 
-// register Bootstrap3 framework
+// register Bootstrap4 framework
 // see https://getbootstrap.com/
-$view->addHeader(Html\Stylesheet::newLink(
-    'openestate-bootstrap-css',
-    $view->getThemeUrl('css/bootstrap.min.css', array('v' => '4.1.3'))
-), 120);
-$view->addHeader(Html\Javascript::newLink(
-    'openestate-bootstrap-js',
-    $view->getThemeUrl('js/bootstrap.bundle.min.js', array('v' => '4.1.3')),
-    null,
-    null,
-    true
-), 121);
+if ($theme->isComponentEnabled(Bootstrap4Theme::BOOTSTRAP)) {
+    $view->addHeader(Html\Stylesheet::newLink(
+        'openestate-bootstrap-css',
+        $view->getThemeUrl('css/bootstrap.min.css', array('v' => '4.1.3'))
+    ), 120);
+    $view->addHeader(Html\Javascript::newLink(
+        'openestate-bootstrap-js',
+        $view->getThemeUrl('js/bootstrap.bundle.min.js', array('v' => '4.1.3')),
+        null,
+        null,
+        true
+    ), 121);
+}
 
 
 // register slick for expose view
 // see https://kenwheeler.github.io/slick/
-if ($view instanceof View\ExposeHtml) {
-    $view->addHeaders($env->getAssets()->slick(true), 130);
+if ($theme->isComponentEnabled(Bootstrap4Theme::SLICK)) {
+    if ($view instanceof View\ExposeHtml)
+        $view->addHeaders($env->getAssets()->slick(true), 130);
 }
+
 
 // Don't send any output, if only the body part is generated.
 if ($view->isBodyOnly()) return;
