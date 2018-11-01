@@ -27,30 +27,30 @@ function openestate_install_listing(uid, actionUrl) {
     var bodyId = 'openestate-body-' + uid;
 
     // Enable filter action button.
-    $('#' + bodyId + ' .openestate-action-filter').click(function (event) {
+    jQuery('#' + bodyId + ' .openestate-action-filter').click(function (event) {
         event.preventDefault();
 
-        $('#' + bodyId + ' .openestate-sort-form').hide();
+        jQuery('#' + bodyId + ' .openestate-sort-form').hide();
 
-        $('#' + bodyId + ' .openestate-action-language').removeClass('active');
-        $('#' + bodyId + ' .openestate-action-sort').removeClass('active');
+        jQuery('#' + bodyId + ' .openestate-action-language').removeClass('active');
+        jQuery('#' + bodyId + ' .openestate-action-sort').removeClass('active');
 
-        $('#' + bodyId + ' .openestate-action-filter').toggleClass('active');
-        $('#' + bodyId + ' .openestate-filter-form').slideToggle();
-        $('#' + bodyId + ' .openestate-action-filter').blur();
+        jQuery('#' + bodyId + ' .openestate-action-filter').toggleClass('active');
+        jQuery('#' + bodyId + ' .openestate-filter-form').slideToggle();
+        jQuery('#' + bodyId + ' .openestate-action-filter').blur();
     });
 
     // Submit filter form via AJAX.
-    $('#' + bodyId + ' .openestate-filter-form button').click(function () {
-        $(this).addClass('clicked');
+    jQuery('#' + bodyId + ' .openestate-filter-form button').click(function () {
+        jQuery(this).addClass('clicked');
     });
-    $('#' + bodyId + ' .openestate-filter-form').submit(function (event) {
+    jQuery('#' + bodyId + ' .openestate-filter-form').submit(function (event) {
         event.preventDefault();
         openestate_progress_show(uid);
 
-        $.ajax({
+        jQuery.ajax({
             url: actionUrl,
-            data: openestate_form_data($(this)),
+            data: openestate_form_data(jQuery(this)),
             dataType: 'json',
             cache: false
         })
@@ -69,30 +69,30 @@ function openestate_install_listing(uid, actionUrl) {
     });
 
     // Enable sort action button.
-    $('#' + bodyId + ' .openestate-action-sort').click(function (event) {
+    jQuery('#' + bodyId + ' .openestate-action-sort').click(function (event) {
         event.preventDefault();
 
-        $('#' + bodyId + ' .openestate-filter-form').hide();
+        jQuery('#' + bodyId + ' .openestate-filter-form').hide();
 
-        $('#' + bodyId + ' .openestate-action-filter').removeClass('active');
-        $('#' + bodyId + ' .openestate-action-language').removeClass('active');
+        jQuery('#' + bodyId + ' .openestate-action-filter').removeClass('active');
+        jQuery('#' + bodyId + ' .openestate-action-language').removeClass('active');
 
-        $('#' + bodyId + ' .openestate-action-sort').toggleClass('active');
-        $('#' + bodyId + ' .openestate-sort-form').slideToggle();
-        $('#' + bodyId + ' .openestate-action-sort').blur();
+        jQuery('#' + bodyId + ' .openestate-action-sort').toggleClass('active');
+        jQuery('#' + bodyId + ' .openestate-sort-form').slideToggle();
+        jQuery('#' + bodyId + ' .openestate-action-sort').blur();
     });
 
     // Submit sort form via AJAX.
-    $('#' + bodyId + ' .openestate-sort-form button').click(function () {
-        $(this).addClass('clicked');
+    jQuery('#' + bodyId + ' .openestate-sort-form button').click(function () {
+        jQuery(this).addClass('clicked');
     });
-    $('#' + bodyId + ' .openestate-sort-form').submit(function (event) {
+    jQuery('#' + bodyId + ' .openestate-sort-form').submit(function (event) {
         event.preventDefault();
         openestate_progress_show(uid);
 
-        $.ajax({
+        jQuery.ajax({
             url: actionUrl,
-            data: openestate_form_data($(this)),
+            data: openestate_form_data(jQuery(this)),
             dataType: 'json',
             cache: false
         })
@@ -110,43 +110,43 @@ function openestate_install_listing(uid, actionUrl) {
     });
 
     // Catch events on the language action button.
-    $('#' + bodyId + ' .openestate-action-language').parent().on('shown.bs.dropdown', function () {
-        $('#' + bodyId + ' .openestate-filter-form').slideUp();
-        $('#' + bodyId + ' .openestate-sort-form').slideUp();
+    jQuery('#' + bodyId + ' .openestate-action-language').parent().on('shown.bs.dropdown', function () {
+        jQuery('#' + bodyId + ' .openestate-filter-form').slideUp();
+        jQuery('#' + bodyId + ' .openestate-sort-form').slideUp();
 
-        $('#' + bodyId + ' .openestate-action-filter').removeClass('active');
-        $('#' + bodyId + ' .openestate-action-sort').removeClass('active');
+        jQuery('#' + bodyId + ' .openestate-action-filter').removeClass('active');
+        jQuery('#' + bodyId + ' .openestate-action-sort').removeClass('active');
 
-        $('#' + bodyId + ' .openestate-action-language').toggleClass('active');
+        jQuery('#' + bodyId + ' .openestate-action-language').toggleClass('active');
     });
-    $('#' + bodyId + ' .openestate-action-language').parent().on('hidden.bs.dropdown', function () {
-        $('#' + bodyId + ' .openestate-action-language').removeClass('active');
+    jQuery('#' + bodyId + ' .openestate-action-language').parent().on('hidden.bs.dropdown', function () {
+        jQuery('#' + bodyId + ' .openestate-action-language').removeClass('active');
     });
 
     // Enable popups on mouse over in thumbnail view.
-    $('#' + bodyId + ' .openestate-listing-thumb').each(function (index) {
-        //var image = $(this).find('.openestate-listing-thumb-image');
-        var popup = $(this).find('.openestate-listing-thumb-popup');
-        var objectId = $(this).data('openestate-object');
+    jQuery('#' + bodyId + ' .openestate-listing-thumb').each(function (index) {
+        //var image = jQuery(this).find('.openestate-listing-thumb-image');
+        var popup = jQuery(this).find('.openestate-listing-thumb-popup');
+        var objectId = jQuery(this).data('openestate-object');
 
         var containerId = 'openestate-listing-thumb-' + objectId + '-' + uid;
-        $(this).attr('id', containerId);
+        jQuery(this).attr('id', containerId);
 
-        $(this).popover({
+        jQuery(this).popover({
             trigger: 'hover',
             placement: 'bottom',
             container: '#' + containerId,
             html: true,
             content: popup
         });
-        $(this).on('show.bs.popover', function () {
+        jQuery(this).on('show.bs.popover', function () {
             popup.show();
         });
     });
 
     // Enable AJAX favorite links.
-    $('#' + bodyId + ' div[data-openestate-object]').each(function (index) {
-        var objectContainer = $(this);
+    jQuery('#' + bodyId + ' div[data-openestate-object]').each(function (index) {
+        var objectContainer = jQuery(this);
         var objectId = objectContainer.data('openestate-object');
         if (objectId === undefined)
             return;
@@ -154,7 +154,7 @@ function openestate_install_listing(uid, actionUrl) {
         objectContainer.find('a[data-openestate-fav]').click(function (event) {
             event.preventDefault();
 
-            var link = $(this);
+            var link = jQuery(this);
             if (link.is(':disabled'))
                 return;
 
@@ -162,7 +162,7 @@ function openestate_install_listing(uid, actionUrl) {
             if (actionData === undefined)
                 return;
 
-            $.ajax({
+            jQuery.ajax({
                 url: actionUrl,
                 data: actionData,
                 dataType: 'json',
@@ -205,29 +205,29 @@ function openestate_install_favorite(uid, actionUrl) {
     var bodyId = 'openestate-body-' + uid;
 
     // Enable sort action button.
-    $('#' + bodyId + ' .openestate-action-sort').click(function (event) {
+    jQuery('#' + bodyId + ' .openestate-action-sort').click(function (event) {
         event.preventDefault();
 
-        $('#' + bodyId + ' .openestate-language-form').hide();
+        jQuery('#' + bodyId + ' .openestate-language-form').hide();
 
-        $('#' + bodyId + ' .openestate-action-language').removeClass('active');
+        jQuery('#' + bodyId + ' .openestate-action-language').removeClass('active');
 
-        $('#' + bodyId + ' .openestate-action-sort').toggleClass('active');
-        $('#' + bodyId + ' .openestate-sort-form').slideToggle();
-        $('#' + bodyId + ' .openestate-action-sort').blur();
+        jQuery('#' + bodyId + ' .openestate-action-sort').toggleClass('active');
+        jQuery('#' + bodyId + ' .openestate-sort-form').slideToggle();
+        jQuery('#' + bodyId + ' .openestate-action-sort').blur();
     });
 
     // Submit sort form via AJAX.
-    $('#' + bodyId + ' .openestate-sort-form button').click(function () {
-        $(this).addClass('clicked');
+    jQuery('#' + bodyId + ' .openestate-sort-form button').click(function () {
+        jQuery(this).addClass('clicked');
     });
-    $('#' + bodyId + ' .openestate-sort-form').submit(function (event) {
+    jQuery('#' + bodyId + ' .openestate-sort-form').submit(function (event) {
         event.preventDefault();
         openestate_progress_show(uid);
 
-        $.ajax({
+        jQuery.ajax({
             url: actionUrl,
-            data: openestate_form_data($(this)),
+            data: openestate_form_data(jQuery(this)),
             dataType: 'json',
             cache: false
         })
@@ -245,32 +245,32 @@ function openestate_install_favorite(uid, actionUrl) {
     });
 
     // Catch events on the language action button.
-    $('#' + bodyId + ' .openestate-action-language').parent().on('shown.bs.dropdown', function () {
-        $('#' + bodyId + ' .openestate-sort-form').slideUp();
-        $('#' + bodyId + ' .openestate-action-sort').removeClass('active');
-        $('#' + bodyId + ' .openestate-action-language').toggleClass('active');
+    jQuery('#' + bodyId + ' .openestate-action-language').parent().on('shown.bs.dropdown', function () {
+        jQuery('#' + bodyId + ' .openestate-sort-form').slideUp();
+        jQuery('#' + bodyId + ' .openestate-action-sort').removeClass('active');
+        jQuery('#' + bodyId + ' .openestate-action-language').toggleClass('active');
     });
-    $('#' + bodyId + ' .openestate-action-language').parent().on('hidden.bs.dropdown', function () {
-        $('#' + bodyId + ' .openestate-action-language').removeClass('active');
+    jQuery('#' + bodyId + ' .openestate-action-language').parent().on('hidden.bs.dropdown', function () {
+        jQuery('#' + bodyId + ' .openestate-action-language').removeClass('active');
     });
 
     // Enable popups on mouse over in thumbnail view.
-    $('#' + bodyId + ' .openestate-fav-thumb').each(function (index) {
-        //var image = $(this).find('.openestate-fav-thumb-image');
-        var popup = $(this).find('.openestate-fav-thumb-popup');
-        var objectId = $(this).data('openestate-object');
+    jQuery('#' + bodyId + ' .openestate-fav-thumb').each(function (index) {
+        //var image = jQuery(this).find('.openestate-fav-thumb-image');
+        var popup = jQuery(this).find('.openestate-fav-thumb-popup');
+        var objectId = jQuery(this).data('openestate-object');
 
         var containerId = 'openestate-fav-thumb-' + objectId + '-' + uid;
-        $(this).attr('id', containerId);
+        jQuery(this).attr('id', containerId);
 
-        $(this).popover({
+        jQuery(this).popover({
             trigger: 'hover',
             placement: 'bottom',
             container: '#' + containerId,
             html: true,
             content: popup
         });
-        $(this).on('show.bs.popover', function () {
+        jQuery(this).on('show.bs.popover', function () {
             popup.show();
         });
     });
@@ -292,7 +292,7 @@ function openestate_install_expose(uid, actionUrl) {
     var bodyId = 'openestate-body-' + uid;
 
     // Install slick gallery.
-    var gallery = $('#' + bodyId + ' .openestate-expose-gallery');
+    var gallery = jQuery('#' + bodyId + ' .openestate-expose-gallery');
     gallery.slick({
         accessibility: true,
         swipe: false,
@@ -314,31 +314,31 @@ function openestate_install_expose(uid, actionUrl) {
     gallery.find('a').click(function (event) {
         event.preventDefault();
         gallery.slick('slickPause');
-        var link = $(this);
+        var link = jQuery(this);
         var slide = link.parent();
 
         if (slide.hasClass('slick-current')) {
-            $('#' + bodyId + ' .openestate-gallery-dialog-title').text(link.attr('title'));
-            $('#' + bodyId + ' .openestate-gallery-dialog-image').attr('src', link.attr('href'));
-            $('#' + bodyId + ' .openestate-gallery-dialog').modal('show');
+            jQuery('#' + bodyId + ' .openestate-gallery-dialog-title').text(link.attr('title'));
+            jQuery('#' + bodyId + ' .openestate-gallery-dialog-image').attr('src', link.attr('href'));
+            jQuery('#' + bodyId + ' .openestate-gallery-dialog').modal('show');
         } else {
             gallery.slick('slickGoTo', slide.data('slick-index'));
         }
     });
 
     // Catch events on the language action button.
-    $('#' + bodyId + ' .openestate-action-language').parent().on('shown.bs.dropdown', function () {
-        $('#' + bodyId + ' .openestate-action-language').toggleClass('active');
+    jQuery('#' + bodyId + ' .openestate-action-language').parent().on('shown.bs.dropdown', function () {
+        jQuery('#' + bodyId + ' .openestate-action-language').toggleClass('active');
     });
-    $('#' + bodyId + ' .openestate-action-language').parent().on('hidden.bs.dropdown', function () {
-        $('#' + bodyId + ' .openestate-action-language').removeClass('active');
+    jQuery('#' + bodyId + ' .openestate-action-language').parent().on('hidden.bs.dropdown', function () {
+        jQuery('#' + bodyId + ' .openestate-action-language').removeClass('active');
     });
 
     // Enable AJAX favorite links.
-    $('#' + bodyId + ' a[data-openestate-fav]').click(function (event) {
+    jQuery('#' + bodyId + ' a[data-openestate-fav]').click(function (event) {
         event.preventDefault();
 
-        var link = $(this);
+        var link = jQuery(this);
         if (link.is(':disabled'))
             return;
 
@@ -346,7 +346,7 @@ function openestate_install_expose(uid, actionUrl) {
         if (actionData === undefined)
             return;
 
-        $.ajax({
+        jQuery.ajax({
             url: actionUrl,
             data: actionData,
             dataType: 'json',
@@ -357,11 +357,11 @@ function openestate_install_expose(uid, actionUrl) {
                 //console.log(data);
                 if (link.hasClass('openestate-action-fav-add')) {
                     link.hide();
-                    $('#' + bodyId + ' .openestate-action-fav-remove').show();
+                    jQuery('#' + bodyId + ' .openestate-action-fav-remove').show();
                 }
                 else if (link.hasClass('openestate-action-fav-remove')) {
                     link.hide();
-                    $('#' + bodyId + ' .openestate-action-fav-add').show();
+                    jQuery('#' + bodyId + ' .openestate-action-fav-add').show();
                 }
             })
             .fail(function (data) {
@@ -372,9 +372,9 @@ function openestate_install_expose(uid, actionUrl) {
     });
 
     // Refresh contact captcha image.
-    $('#' + bodyId + ' .openestate-expose-contact-captcha-image a').click(function (event) {
+    jQuery('#' + bodyId + ' .openestate-expose-contact-captcha-image a').click(function (event) {
         event.preventDefault();
-        var img = $('#' + bodyId + ' .openestate-expose-contact-captcha-image img');
+        var img = jQuery('#' + bodyId + ' .openestate-expose-contact-captcha-image img');
         var url = img.attr('src');
         var pos = url.indexOf('?');
         if (pos > -1) url = url.substr(0, pos);
@@ -382,18 +382,18 @@ function openestate_install_expose(uid, actionUrl) {
     });
 
     // Submit contact form.
-    $('#' + bodyId + ' .openestate-expose-contact-form').submit(function (event) {
+    jQuery('#' + bodyId + ' .openestate-expose-contact-form').submit(function (event) {
         event.preventDefault();
-        //console.log(openestate_form_data($(this)));
+        //console.log(openestate_form_data(jQuery(this)));
 
-        $('#' + bodyId + ' .openestate-expose-contact-form').hide();
-        $('#' + bodyId + ' .openestate-expose-contact-error').hide();
-        $('#' + bodyId + ' .openestate-expose-contact-success').hide();
-        $('#' + bodyId + ' .openestate-expose-contact-loading').fadeIn();
+        jQuery('#' + bodyId + ' .openestate-expose-contact-form').hide();
+        jQuery('#' + bodyId + ' .openestate-expose-contact-error').hide();
+        jQuery('#' + bodyId + ' .openestate-expose-contact-success').hide();
+        jQuery('#' + bodyId + ' .openestate-expose-contact-loading').fadeIn();
 
-        $.ajax({
+        jQuery.ajax({
             url: actionUrl,
-            data: openestate_form_data($(this)),
+            data: openestate_form_data(jQuery(this)),
             dataType: 'json',
             cache: false
         })
@@ -401,9 +401,9 @@ function openestate_install_expose(uid, actionUrl) {
                 //console.log('success');
                 //console.log(data);
 
-                $('#' + bodyId + ' .openestate-expose-contact-loading').hide();
-                $('#' + bodyId + ' .openestate-expose-contact-validation').hide();
-                $('#' + bodyId + ' .openestate-expose-contact .form-group').removeClass('has-error');
+                jQuery('#' + bodyId + ' .openestate-expose-contact-loading').hide();
+                jQuery('#' + bodyId + ' .openestate-expose-contact-validation').hide();
+                jQuery('#' + bodyId + ' .openestate-expose-contact .form-group').removeClass('has-error');
 
                 // an error occurred
                 if (data !== undefined && 'error' in data) {
@@ -416,7 +416,7 @@ function openestate_install_expose(uid, actionUrl) {
                             //console.log('> ' + i + ' = ' + data.validation[i]);
 
                             // Highlight invalid field.
-                            var field = $('#' + bodyId + ' .openestate-expose-contact-' + i);
+                            var field = jQuery('#' + bodyId + ' .openestate-expose-contact-' + i);
                             field.addClass('has-error');
 
 
@@ -430,7 +430,7 @@ function openestate_install_expose(uid, actionUrl) {
 
                         // Generate a new captcha, if captcha validation failed.
                         if ('captcha' in data.validation) {
-                            var img = $('#' + bodyId + ' .openestate-expose-contact-captcha-image img');
+                            var img = jQuery('#' + bodyId + ' .openestate-expose-contact-captcha-image img');
                             var url = img.attr('src');
                             var pos = url.indexOf('?');
                             if (pos > -1) url = url.substr(0, pos);
@@ -438,29 +438,29 @@ function openestate_install_expose(uid, actionUrl) {
                         }
                     }
 
-                    $('#' + bodyId + ' .openestate-expose-contact-error-message').text(data.error);
-                    $('#' + bodyId + ' .openestate-expose-contact-error').fadeIn();
-                    $('#' + bodyId + ' .openestate-expose-contact-form').show();
+                    jQuery('#' + bodyId + ' .openestate-expose-contact-error-message').text(data.error);
+                    jQuery('#' + bodyId + ' .openestate-expose-contact-error').fadeIn();
+                    jQuery('#' + bodyId + ' .openestate-expose-contact-form').show();
                 }
 
                 // mail was sent successfully
                 else {
-                    $('#' + bodyId + ' .openestate-expose-contact-success').fadeIn();
+                    jQuery('#' + bodyId + ' .openestate-expose-contact-success').fadeIn();
                 }
 
             })
             .fail(function (data) {
                 //console.log('error');
                 //console.log(data);
-                $('#' + bodyId + ' .openestate-expose-contact-loading').hide();
+                jQuery('#' + bodyId + ' .openestate-expose-contact-loading').hide();
 
                 if (data !== undefined && 'error' in data)
-                    $('#' + bodyId + ' .openestate-expose-contact-error-message').text(data.error);
+                    jQuery('#' + bodyId + ' .openestate-expose-contact-error-message').text(data.error);
                 else
-                    $('#' + bodyId + ' .openestate-expose-contact-error-message').text('');
+                    jQuery('#' + bodyId + ' .openestate-expose-contact-error-message').text('');
 
-                $('#' + bodyId + ' .openestate-expose-contact-error').fadeIn();
-                $('#' + bodyId + ' .openestate-expose-contact-form').show();
+                jQuery('#' + bodyId + ' .openestate-expose-contact-error').fadeIn();
+                jQuery('#' + bodyId + ' .openestate-expose-contact-form').show();
             });
 
     });
@@ -476,8 +476,8 @@ function openestate_install_expose(uid, actionUrl) {
  * unique identifier of the view
  */
 function openestate_progress_hide(uid) {
-    $('#openestate-loading-' + uid).hide();
-    $('#openestate-body-' + uid).fadeIn();
+    jQuery('#openestate-loading-' + uid).hide();
+    jQuery('#openestate-body-' + uid).fadeIn();
 }
 
 /**
@@ -487,8 +487,8 @@ function openestate_progress_hide(uid) {
  * unique identifier of the view
  */
 function openestate_progress_show(uid) {
-    $('#openestate-body-' + uid).hide();
-    $('#openestate-loading-' + uid).fadeIn();
+    jQuery('#openestate-body-' + uid).hide();
+    jQuery('#openestate-loading-' + uid).fadeIn();
 }
 
 /**
@@ -503,7 +503,7 @@ function openestate_progress_show(uid) {
 function openestate_form_data(form) {
     var data = {};
     form.find('input, select, textarea, button.clicked').each(function (index) {
-        var input = $(this);
+        var input = jQuery(this);
 
         var name = input.attr('name');
         if (name === undefined)
@@ -541,10 +541,10 @@ function openestate_form_data(form) {
  */
 function openestate_ajax_links(uid, actionUrl) {
     var bodyId = 'openestate-body-' + uid;
-    $('#' + bodyId + ' a[data-openestate-action]').click(function (event) {
+    jQuery('#' + bodyId + ' a[data-openestate-action]').click(function (event) {
         event.preventDefault();
 
-        var link = $(this);
+        var link = jQuery(this);
         if (link.is(':disabled'))
             return;
 
@@ -553,7 +553,7 @@ function openestate_ajax_links(uid, actionUrl) {
             return;
 
         openestate_progress_show(uid);
-        $.ajax({
+        jQuery.ajax({
             url: actionUrl,
             data: actionData,
             dataType: 'json',
