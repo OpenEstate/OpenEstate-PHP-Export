@@ -486,7 +486,7 @@ include('snippets/body-begin.php');
             }
 
             if (\count($localFiles) > 0 || \count($links) > 0) {
-                echo '<div class="openestate-expose-videos panel panel-default hidden-print">';
+                echo '<div class="openestate-expose-links panel panel-default hidden-print">';
                 echo '<div class="panel-heading">';
                 echo '<h3 class="panel-title">' . html(\ucfirst(_('further links'))) . '</h3>';
                 echo '</div>';

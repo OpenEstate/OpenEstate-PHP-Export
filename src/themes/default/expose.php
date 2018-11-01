@@ -469,7 +469,7 @@ include('snippets/body-begin.php');
             }
 
             if (\count($localFiles) > 0 || \count($links) > 0) {
-                echo '<div class="openestate-expose-videos hidden-print">';
+                echo '<div class="openestate-expose-links hidden-print">';
                 echo '<h3>' . html(\ucfirst(_('further links'))) . '</h3>';
                 echo '<ul>';
                 foreach ($localFiles as $file) {

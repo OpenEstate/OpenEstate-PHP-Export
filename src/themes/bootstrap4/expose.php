@@ -476,7 +476,7 @@ include('snippets/body-begin.php');
             }
 
             if (\count($localFiles) > 0 || \count($links) > 0) {
-                echo '<div class="openestate-expose-videos card mb-3 hidden-print">';
+                echo '<div class="openestate-expose-links card mb-3 hidden-print">';
                 echo '<h4 class="card-header">' . html(\ucfirst(_('further links'))) . '</h4>';
                 echo '<div class="card-body">';
                 echo '<ul>';
