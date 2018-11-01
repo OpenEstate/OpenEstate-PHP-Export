@@ -566,7 +566,7 @@ class Config
      */
     public function newTheme(Environment $env)
     {
-        $themeFile = $env->getThemePath($this->themeName, 'theme.php');
+        $themeFile = Utils::joinPath($this->getThemeFolderPath($this->themeName), 'theme.php');
 
         /** @noinspection PhpIncludeInspection */
         return (\is_file($themeFile) && \is_readable($themeFile)) ?
