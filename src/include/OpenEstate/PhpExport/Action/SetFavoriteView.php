@@ -52,6 +52,9 @@ class SetFavoriteView extends AbstractAction
     function __construct($name = self::NAME)
     {
         parent::__construct($name);
+
+        // add previously configured prefix to parameter names
+        $this->viewParameter = Environment::parameter($this->viewParameter);
     }
 
     public function execute(Environment $env)

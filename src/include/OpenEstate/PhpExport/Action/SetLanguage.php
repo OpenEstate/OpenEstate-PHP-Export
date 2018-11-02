@@ -51,6 +51,9 @@ class SetLanguage extends AbstractAction
     function __construct($name = self::NAME)
     {
         parent::__construct($name);
+
+        // add previously configured prefix to parameter names
+        $this->languageParameter = Environment::parameter($this->languageParameter);
     }
 
     public function execute(Environment $env)

@@ -45,6 +45,9 @@ class ExposeHtml extends AbstractHtmlView
     function __construct(Environment $env)
     {
         parent::__construct($env);
+
+        // add previously configured prefix to parameter names
+        $this->objectIdParameter = Environment::parameter($this->objectIdParameter);
     }
 
     protected function generate()

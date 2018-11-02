@@ -51,12 +51,15 @@ class AddFavorite extends AbstractAction
     function __construct($name = self::NAME)
     {
         parent::__construct($name);
+
+        // add previously configured prefix to parameter names
+        $this->objectIdParameter = Environment::parameter($this->objectIdParameter);
     }
 
     public function execute(Environment $env)
     {
-        $objectId = (isset($_REQUEST[$this->objectIdParameter]))?
-            $_REQUEST[$this->objectIdParameter]: null;
+        $objectId = (isset($_REQUEST[$this->objectIdParameter])) ?
+            $_REQUEST[$this->objectIdParameter] : null;
         if (!\is_int($objectId) && !\is_string($objectId))
             return false;
 
@@ -80,7 +83,7 @@ class AddFavorite extends AbstractAction
     {
         $params = parent::getParameters($env);
         if ($objectId !== null && (\is_string($objectId) || \is_int($objectId)))
-            $params[$this->objectIdParameter] = (string) $objectId;
+            $params[$this->objectIdParameter] = (string)$objectId;
         return $params;
     }
 

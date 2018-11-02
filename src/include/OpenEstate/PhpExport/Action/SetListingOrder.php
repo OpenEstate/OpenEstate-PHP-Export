@@ -58,6 +58,10 @@ class SetListingOrder extends AbstractAction
     function __construct($name = self::NAME)
     {
         parent::__construct($name);
+
+        // add previously configured prefix to parameter names
+        $this->orderParameter = Environment::parameter($this->orderParameter);
+        $this->directionParameter = Environment::parameter($this->directionParameter);
     }
 
     public function execute(Environment $env)

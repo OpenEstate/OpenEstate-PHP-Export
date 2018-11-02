@@ -96,6 +96,10 @@ class Contact extends AbstractAction
     {
         parent::__construct($name);
 
+        // add previously configured prefix to parameter names
+        $this->contactParameter = Environment::parameter($this->contactParameter);
+        $this->objectIdParameter = Environment::parameter($this->objectIdParameter);
+
         // enable captcha verification by default,
         // if the GD extension is available
         $this->captchaVerification = Utils::isGdExtensionAvailable();

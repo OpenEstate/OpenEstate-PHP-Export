@@ -51,6 +51,9 @@ class SetListingPage extends AbstractAction
     function __construct($name = self::NAME)
     {
         parent::__construct($name);
+
+        // add previously configured prefix to parameter names
+        $this->pageParameter = Environment::parameter($this->pageParameter);
     }
 
     public function execute(Environment $env)

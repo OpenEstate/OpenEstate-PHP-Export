@@ -59,6 +59,10 @@ class SetListingFilter extends AbstractAction
     function __construct($name = self::NAME)
     {
         parent::__construct($name);
+
+        // add previously configured prefix to parameter names
+        $this->filterParameter = Environment::parameter($this->filterParameter);
+        $this->clearParameter = Environment::parameter($this->clearParameter);
     }
 
     public function execute(Environment $env)

@@ -27,6 +27,15 @@ namespace OpenEstate\PhpExport;
 class Environment
 {
     /**
+     * Prefix for parameter names.
+     *
+     * This should be set before the environment is created.
+     *
+     * @var string
+     */
+    public static $parameterPrefix = null;
+
+    /**
      * Configuration of the export environment.
      *
      * @var Config
@@ -133,6 +142,9 @@ class Environment
     {
         $this->config = $config;
         $this->config->setupEnvironment($this);
+
+        // add previously configured prefix to parameter names
+        $this->actionParameter = self::parameter($this->actionParameter);
 
         // create theme
         $this->theme = $this->config->newTheme($this);
@@ -924,6 +936,25 @@ class Environment
         $provider = $this->config->newMapProvider();
         $this->config->setupMapProvider($provider);
         return $provider;
+    }
+
+    /**
+     * Constructs a parameter name with the configured a prefix.
+     *
+     * @param string $parameterName
+     * parameter name
+     *
+     * @return string
+     * parameter name with configured prefix
+     */
+    public static function parameter($parameterName)
+    {
+        if (Utils::isBlankString(self::$parameterPrefix))
+            return $parameterName;
+
+        return (\substr(self::$parameterPrefix, -1) == '_') ?
+            self::$parameterPrefix . $parameterName :
+            self::$parameterPrefix . \ucfirst($parameterName);
     }
 
     /**
