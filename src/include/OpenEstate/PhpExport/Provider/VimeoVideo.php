@@ -30,6 +30,13 @@ use function OpenEstate\PhpExport\gettext as _;
 class VimeoVideo extends AbstractLinkProvider
 {
     /**
+     * Provider name.
+     *
+     * @var string
+     */
+    const NAME = 'video@vimeo.com';
+
+    /**
      * Initial width of the embedded video in pixels.
      *
      * @var int

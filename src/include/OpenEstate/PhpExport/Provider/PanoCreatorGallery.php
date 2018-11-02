@@ -30,6 +30,13 @@ use function OpenEstate\PhpExport\gettext as _;
 class PanoCreatorGallery extends AbstractLinkProvider
 {
     /**
+     * Provider name.
+     *
+     * @var string
+     */
+    const NAME = 'gallery@panocreator.com';
+
+    /**
      * Initial width of the embedded gallery in pixels.
      *
      * @var int

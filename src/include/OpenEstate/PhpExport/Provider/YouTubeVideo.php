@@ -30,6 +30,13 @@ use function OpenEstate\PhpExport\gettext as _;
 class YouTubeVideo extends AbstractLinkProvider
 {
     /**
+     * Provider name.
+     *
+     * @var string
+     */
+    const NAME = 'video@youtube.com';
+
+    /**
      * Initial width of the embedded video in pixels.
      *
      * @var int

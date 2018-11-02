@@ -870,7 +870,9 @@ class Environment
      */
     public function newLinkProvider($name)
     {
-        return $this->config->newLinkProvider($name);
+        $provider = $this->config->newLinkProvider($name);
+        $this->config->setupLinkProvider($provider);
+        return $provider;
     }
 
     /**

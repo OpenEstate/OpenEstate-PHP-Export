@@ -29,6 +29,13 @@ use function OpenEstate\PhpExport\gettext as _;
 class OpenStreetMap extends AbstractMapProvider
 {
     /**
+     * Provider name.
+     *
+     * @var string
+     */
+    const NAME = 'OpenStreetMap';
+
+    /**
      * Enable position marker on the map.
      *
      * @var bool

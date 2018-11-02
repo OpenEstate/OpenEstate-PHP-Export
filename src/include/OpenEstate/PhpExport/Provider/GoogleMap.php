@@ -29,6 +29,13 @@ use function OpenEstate\PhpExport\gettext as _;
 class GoogleMap extends AbstractMapProvider
 {
     /**
+     * Provider name.
+     *
+     * @var string
+     */
+    const NAME = 'GoogleMaps';
+
+    /**
      * Initial zoom level for the map.
      *
      * @var int

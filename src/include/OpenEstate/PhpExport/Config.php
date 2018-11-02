@@ -499,19 +499,19 @@ class Config
     public function newLinkProvider($name)
     {
         switch ($name) {
-            case 'gallery@panocreator.com':
+            case Provider\PanoCreatorGallery::NAME:
                 return new Provider\PanoCreatorGallery();
 
-            case 'video@dailymotion.com':
+            case Provider\DailyMotionVideo::NAME:
                 return new Provider\DailyMotionVideo();
 
-            case 'video@veoh.com':
+            case Provider\VeohVideo::NAME:
                 return new Provider\VeohVideo();
 
-            case 'video@vimeo.com':
+            case Provider\VimeoVideo::NAME:
                 return new Provider\VimeoVideo();
 
-            case 'video@youtube.com':
+            case Provider\YouTubeVideo::NAME:
                 return new Provider\YouTubeVideo();
 
             default:
@@ -622,6 +622,16 @@ class Config
         $view->defaultOrder = $view->orders[0]->getName();
         $view->defaultOrderDirection = 'desc';
         $view->objectsPerPage = 10;
+    }
+
+    /**
+     * Configure a link provider.
+     *
+     * @param Provider\AbstractLinkProvider $provider
+     * link provider to configure
+     */
+    public function setupLinkProvider(Provider\AbstractLinkProvider $provider)
+    {
     }
 
     /**

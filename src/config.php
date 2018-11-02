@@ -526,6 +526,17 @@ class MyConfig extends Config
     }
 
     /**
+     * Configure a link provider.
+     *
+     * @param Provider\AbstractLinkProvider $provider
+     * link provider to configure
+     */
+    public function setupLinkProvider(Provider\AbstractLinkProvider $provider)
+    {
+        parent::setupLinkProvider($provider);
+    }
+
+    /**
      * Set configuration for the HTML view with object listing.
      *
      * @param View\ListingHtml $view
