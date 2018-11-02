@@ -50,11 +50,13 @@ $languageSelection = $env->getConfig()->allowLanguageSelection === true
 
 // get listing options
 $objectIds = $view->getObjectIds();
-$favoritesEnabled = $env->getConfig()->favorites;
-$favorites = ($favoritesEnabled) ? $view->getFavorites() : array();
 $currentView = $view->getView();
 $currentPage = $view->getPage();
 $totalPages = $view->getPageCount(\count($objectIds));
+$filteringEnabled = \is_array($view->filters) && \count($view->filters) > 0;
+$orderingEnabled = \is_array($view->orders) && \count($view->orders) > 0;
+$favoritesEnabled = $env->getConfig()->favorites;
+$favorites = ($favoritesEnabled) ? $view->getFavorites() : array();
 
 /**
  * expose view
@@ -146,14 +148,18 @@ include('snippets/body-begin.php');
                     <i class="openestate-icon-listing"></i><?= html(\ucfirst(_('current offers'))) ?>
                 </h3>
                 <div class="openestate-header-actions">
-                    <a class="openestate-action openestate-action-filter" href="#"
-                       title="<?= html(_('Show search options.')) ?>">
-                        <i class="openestate-icon-search"></i>
-                    </a>
-                    <a class="openestate-action openestate-action-sort" href="#"
-                       title="<?= html(_('Show sort options.')) ?>">
-                        <i class="openestate-icon-sort"></i>
-                    </a>
+                    <?php if ($filteringEnabled) { ?>
+                        <a class="openestate-action openestate-action-filter" href="#"
+                           title="<?= html(_('Show search options.')) ?>">
+                            <i class="openestate-icon-search"></i>
+                        </a>
+                    <?php } ?>
+                    <?php if ($orderingEnabled) { ?>
+                        <a class="openestate-action openestate-action-sort" href="#"
+                           title="<?= html(_('Show sort options.')) ?>">
+                            <i class="openestate-icon-sort"></i>
+                        </a>
+                    <?php } ?>
                     <a class="openestate-action openestate-action-details"
                        href="<?= html($env->getListingUrl($setViewAction->getParameters($env, 'detail'))) ?>"
                        data-openestate-action="<?= html(Utils::getJson($setViewAction->getParameters($env, 'detail'))) ?>"
@@ -200,94 +206,98 @@ include('snippets/body-begin.php');
                 </div>
             </div>
 
-            <form action="<?= html($env->getListingUrl()) ?>" method="get"
-                  class="openestate-filter-form form-inline">
-                <input type="hidden" name="<?= html($env->actionParameter) ?>"
-                       value="<?= html($setFilterAction->getName()) ?>">
-                <fieldset>
-                    <legend><?= html(\ucfirst(_('search offers'))) ?></legend>
-                    <?php
-                    $values = $view->getFilterValues();
+            <?php if ($filteringEnabled) { ?>
+                <form action="<?= html($env->getListingUrl()) ?>" method="get"
+                      class="openestate-filter-form form-inline">
+                    <input type="hidden" name="<?= html($env->actionParameter) ?>"
+                           value="<?= html($setFilterAction->getName()) ?>">
+                    <fieldset>
+                        <legend><?= html(\ucfirst(_('search offers'))) ?></legend>
+                        <?php
+                        $values = $view->getFilterValues();
 
-                    /** @var Filter\AbstractFilter $filter */
-                    foreach ($view->filters as $filter) {
-                        $value = (isset($values[$filter->getName()])) ? $values[$filter->getName()] : null;
-                        $widget = $filter->getWidget($env, $value);
-                        $widget->id = $widget->id . '-' . $uid;
-                        $widget->name = $setFilterAction->filterParameter . '[' . $filter->getName() . ']';
+                        /** @var Filter\AbstractFilter $filter */
+                        foreach ($view->filters as $filter) {
+                            $value = (isset($values[$filter->getName()])) ? $values[$filter->getName()] : null;
+                            $widget = $filter->getWidget($env, $value);
+                            $widget->id = $widget->id . '-' . $uid;
+                            $widget->name = $setFilterAction->filterParameter . '[' . $filter->getName() . ']';
 
 
-                        if ($widget instanceof Html\Checkbox) {
-                            $widget->label = null;
-                            $widget->class .= ' form-check-input';
-                            echo '<div class="form-check-inline mb-2 mr-2">';
-                            echo $widget->generate();
-                            echo ' ';
-                            echo '<label for="' . html($widget->id) . '" class="form-check-label">'
-                                . html($filter->getTitle($languageCode))
-                                . '</label>';
-                            echo '</div>';
-                        } else {
-                            $widget->class .= ' form-control mb-2 mr-2';
-                            echo $widget->generate();
+                            if ($widget instanceof Html\Checkbox) {
+                                $widget->label = null;
+                                $widget->class .= ' form-check-input';
+                                echo '<div class="form-check-inline mb-2 mr-2">';
+                                echo $widget->generate();
+                                echo ' ';
+                                echo '<label for="' . html($widget->id) . '" class="form-check-label">'
+                                    . html($filter->getTitle($languageCode))
+                                    . '</label>';
+                                echo '</div>';
+                            } else {
+                                $widget->class .= ' form-control mb-2 mr-2';
+                                echo $widget->generate();
+                            }
                         }
-                    }
-                    ?>
-                    <div class="btn-group" role="group">
-                        <button type="submit"
-                                class="openestate-filter-form-submit btn btn-primary">
-                            <i class="openestate-icon-search"></i><?= html(_('search')) ?>
-                        </button>
-                        <button type="submit"
-                                class="openestate-filter-form-clear btn btn-default"
-                                name="<?= html($setFilterAction->clearParameter) ?>" value="1">
-                            <i class="openestate-icon-cancel"></i><?= html(_('clear')) ?>
-                        </button>
-                    </div>
-                </fieldset>
-            </form>
+                        ?>
+                        <div class="btn-group" role="group">
+                            <button type="submit"
+                                    class="openestate-filter-form-submit btn btn-primary">
+                                <i class="openestate-icon-search"></i><?= html(_('search')) ?>
+                            </button>
+                            <button type="submit"
+                                    class="openestate-filter-form-clear btn btn-default"
+                                    name="<?= html($setFilterAction->clearParameter) ?>" value="1">
+                                <i class="openestate-icon-cancel"></i><?= html(_('clear')) ?>
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            <?php } ?>
 
-            <form action="<?= html($env->getListingUrl()) ?>" method="get"
-                  class="openestate-sort-form form-inline">
-                <input type="hidden" name="<?= html($env->actionParameter) ?>"
-                       value="<?= html($setOrderAction->getName()) ?>">
-                <fieldset>
-                    <legend><?= html(\ucfirst(_('sort offers'))) ?></legend>
-                    <?php
-                    $orderValue = $view->getOrder();
-                    $orderDir = $view->getOrderDirection();
-                    if ($orderDir == 'asc') {
-                        $orderAscClass = 'btn-primary';
-                        $orderDescClass = 'btn-default';
-                    } else {
-                        $orderAscClass = 'btn-default';
-                        $orderDescClass = 'btn-primary';
-                    }
+            <?php if ($orderingEnabled) { ?>
+                <form action="<?= html($env->getListingUrl()) ?>" method="get"
+                      class="openestate-sort-form form-inline">
+                    <input type="hidden" name="<?= html($env->actionParameter) ?>"
+                           value="<?= html($setOrderAction->getName()) ?>">
+                    <fieldset>
+                        <legend><?= html(\ucfirst(_('sort offers'))) ?></legend>
+                        <?php
+                        $orderValue = $view->getOrder();
+                        $orderDir = $view->getOrderDirection();
+                        if ($orderDir == 'asc') {
+                            $orderAscClass = 'btn-primary';
+                            $orderDescClass = 'btn-default';
+                        } else {
+                            $orderAscClass = 'btn-default';
+                            $orderDescClass = 'btn-primary';
+                        }
 
-                    /** @var Order\AbstractOrder $order */
-                    foreach ($view->orders as $order) {
-                        $selected = ($orderValue == $order->getName()) ? 'checked' : '';
-                        echo '<div class="form-check-inline mb-2 mr-2">'
-                            . '<input class="form-check-input" type="radio" name="' . html($setOrderAction->orderParameter) . '" value="' . html($order->getName()) . '" ' . $selected . '> '
-                            . '<label class="form-check-label">'
-                            . html($order->getTitle($languageCode)) .
-                            '</label></div>' . "\n";
-                    }
-                    ?>
-                    <div class="btn-group" role="group">
-                        <button type="submit"
-                                class="openestate-sort-form-asc btn <?= $orderAscClass ?>"
-                                name="<?= html($setOrderAction->directionParameter) ?>" value="asc">
-                            <i class="openestate-icon-sort-asc"></i><?= html(_('ascending')) ?>
-                        </button>
-                        <button type="submit"
-                                class="openestate-sort-form-desc btn <?= $orderDescClass ?>"
-                                name="<?= html($setOrderAction->directionParameter) ?>" value="desc">
-                            <i class="openestate-icon-sort-desc"></i><?= html(_('descending')) ?>
-                        </button>
-                    </div>
-                </fieldset>
-            </form>
+                        /** @var Order\AbstractOrder $order */
+                        foreach ($view->orders as $order) {
+                            $selected = ($orderValue == $order->getName()) ? 'checked' : '';
+                            echo '<div class="form-check-inline mb-2 mr-2">'
+                                . '<input class="form-check-input" type="radio" name="' . html($setOrderAction->orderParameter) . '" value="' . html($order->getName()) . '" ' . $selected . '> '
+                                . '<label class="form-check-label">'
+                                . html($order->getTitle($languageCode)) .
+                                '</label></div>' . "\n";
+                        }
+                        ?>
+                        <div class="btn-group" role="group">
+                            <button type="submit"
+                                    class="openestate-sort-form-asc btn <?= $orderAscClass ?>"
+                                    name="<?= html($setOrderAction->directionParameter) ?>" value="asc">
+                                <i class="openestate-icon-sort-asc"></i><?= html(_('ascending')) ?>
+                            </button>
+                            <button type="submit"
+                                    class="openestate-sort-form-desc btn <?= $orderDescClass ?>"
+                                    name="<?= html($setOrderAction->directionParameter) ?>" value="desc">
+                                <i class="openestate-icon-sort-desc"></i><?= html(_('descending')) ?>
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            <?php } ?>
         </div>
 
         <?php

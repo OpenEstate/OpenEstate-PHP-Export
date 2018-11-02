@@ -53,6 +53,7 @@ $objectIds = $view->getObjectIds();
 $currentView = $view->getView();
 $currentPage = $view->getPage();
 $totalPages = $view->getPageCount(\count($objectIds));
+$orderingEnabled = \is_array($view->orders) && \count($view->orders) > 0;
 
 /**
  * expose view
@@ -129,10 +130,12 @@ include('snippets/body-begin.php');
                     <i class="openestate-icon-fav"></i><?= html(\ucfirst(_('my favored objects'))) ?>
                 </h3>
                 <div class="openestate-header-actions">
-                    <a class="openestate-action openestate-action-sort" href="#"
-                       title="<?= html(_('Show sort options.')) ?>">
-                        <i class="openestate-icon-sort"></i>
-                    </a>
+                    <?php if ($orderingEnabled) { ?>
+                        <a class="openestate-action openestate-action-sort" href="#"
+                           title="<?= html(_('Show sort options.')) ?>">
+                            <i class="openestate-icon-sort"></i>
+                        </a>
+                    <?php } ?>
                     <a class="openestate-action openestate-action-details"
                        href="<?= html($env->getFavoriteUrl($setViewAction->getParameters($env, 'detail'))) ?>"
                        data-openestate-action="<?= html(Utils::getJson($setViewAction->getParameters($env, 'detail'))) ?>"
@@ -175,47 +178,49 @@ include('snippets/body-begin.php');
                 </div>
             </div>
 
-            <form action="<?= html($env->getFavoriteUrl()) ?>" method="get"
-                  class="openestate-sort-form form-inline">
-                <input type="hidden" name="<?= html($env->actionParameter) ?>"
-                       value="<?= html($setOrderAction->getName()) ?>">
-                <fieldset>
-                    <legend><?= html(\ucfirst(_('sort offers'))) ?></legend>
-                    <?php
-                    $orderValue = $view->getOrder();
-                    $orderDir = $view->getOrderDirection();
-                    if ($orderDir == 'asc') {
-                        $orderAscClass = 'btn-primary';
-                        $orderDescClass = 'btn-default';
-                    } else {
-                        $orderAscClass = 'btn-default';
-                        $orderDescClass = 'btn-primary';
-                    }
+            <?php if ($orderingEnabled) { ?>
+                <form action="<?= html($env->getFavoriteUrl()) ?>" method="get"
+                      class="openestate-sort-form form-inline">
+                    <input type="hidden" name="<?= html($env->actionParameter) ?>"
+                           value="<?= html($setOrderAction->getName()) ?>">
+                    <fieldset>
+                        <legend><?= html(\ucfirst(_('sort offers'))) ?></legend>
+                        <?php
+                        $orderValue = $view->getOrder();
+                        $orderDir = $view->getOrderDirection();
+                        if ($orderDir == 'asc') {
+                            $orderAscClass = 'btn-primary';
+                            $orderDescClass = 'btn-default';
+                        } else {
+                            $orderAscClass = 'btn-default';
+                            $orderDescClass = 'btn-primary';
+                        }
 
-                    /** @var Order\AbstractOrder $order */
-                    foreach ($view->orders as $order) {
-                        $selected = ($orderValue == $order->getName()) ? 'checked' : '';
-                        echo '<div class="form-check-inline mb-2 mr-2">'
-                            . '<input class="form-check-input" type="radio" name="' . html($setOrderAction->orderParameter) . '" value="' . html($order->getName()) . '" ' . $selected . '> '
-                            . '<label class="form-check-label">'
-                            . html($order->getTitle($languageCode)) .
-                            '</label></div>' . "\n";
-                    }
-                    ?>
-                    <div class="btn-group" role="group">
-                        <button type="submit"
-                                class="openestate-sort-form-asc btn <?= $orderAscClass ?>"
-                                name="<?= html($setOrderAction->directionParameter) ?>" value="asc">
-                            <i class="openestate-icon-sort-asc"></i><?= html(_('ascending')) ?>
-                        </button>
-                        <button type="submit"
-                                class="openestate-sort-form-desc btn <?= $orderDescClass ?>"
-                                name="<?= html($setOrderAction->directionParameter) ?>" value="desc">
-                            <i class="openestate-icon-sort-desc"></i><?= html(_('descending')) ?>
-                        </button>
-                    </div>
-                </fieldset>
-            </form>
+                        /** @var Order\AbstractOrder $order */
+                        foreach ($view->orders as $order) {
+                            $selected = ($orderValue == $order->getName()) ? 'checked' : '';
+                            echo '<div class="form-check-inline mb-2 mr-2">'
+                                . '<input class="form-check-input" type="radio" name="' . html($setOrderAction->orderParameter) . '" value="' . html($order->getName()) . '" ' . $selected . '> '
+                                . '<label class="form-check-label">'
+                                . html($order->getTitle($languageCode)) .
+                                '</label></div>' . "\n";
+                        }
+                        ?>
+                        <div class="btn-group" role="group">
+                            <button type="submit"
+                                    class="openestate-sort-form-asc btn <?= $orderAscClass ?>"
+                                    name="<?= html($setOrderAction->directionParameter) ?>" value="asc">
+                                <i class="openestate-icon-sort-asc"></i><?= html(_('ascending')) ?>
+                            </button>
+                            <button type="submit"
+                                    class="openestate-sort-form-desc btn <?= $orderDescClass ?>"
+                                    name="<?= html($setOrderAction->directionParameter) ?>" value="desc">
+                                <i class="openestate-icon-sort-desc"></i><?= html(_('descending')) ?>
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            <?php } ?>
         </div>
 
         <?php
