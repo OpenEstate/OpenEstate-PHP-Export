@@ -29,6 +29,13 @@ use OpenEstate\PhpExport\Environment;
 class SetListingPage extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'SetListingPage';
+
+    /**
      * Parameter name for the page number.
      *
      * @var string
@@ -41,7 +48,7 @@ class SetListingPage extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'SetListingPage')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }

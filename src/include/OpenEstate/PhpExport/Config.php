@@ -449,37 +449,37 @@ class Config
     public function newAction($name)
     {
         switch ($name) {
-            case 'AddFavorite':
+            case Action\AddFavorite::NAME:
                 return new Action\AddFavorite();
 
-            case 'Contact':
+            case Action\Contact::NAME:
                 return new Action\Contact();
 
-            case 'RemoveFavorite':
+            case Action\RemoveFavorite::NAME:
                 return new Action\RemoveFavorite();
 
-            case 'SetFavoriteOrder':
+            case Action\SetFavoriteOrder::NAME:
                 return new Action\SetFavoriteOrder();
 
-            case 'SetFavoritePage':
+            case Action\SetFavoritePage::NAME:
                 return new Action\SetFavoritePage();
 
-            case 'SetFavoriteView':
+            case Action\SetFavoriteView::NAME:
                 return new Action\SetFavoriteView();
 
-            case 'SetLanguage':
+            case Action\SetLanguage::NAME:
                 return new Action\SetLanguage();
 
-            case 'SetListingFilter':
+            case Action\SetListingFilter::NAME:
                 return new Action\SetListingFilter();
 
-            case 'SetListingOrder':
+            case Action\SetListingOrder::NAME:
                 return new Action\SetListingOrder();
 
-            case 'SetListingPage':
+            case Action\SetListingPage::NAME:
                 return new Action\SetListingPage();
 
-            case 'SetListingView':
+            case Action\SetListingView::NAME:
                 return new Action\SetListingView();
 
             default:
@@ -571,6 +571,16 @@ class Config
         /** @noinspection PhpIncludeInspection */
         return (\is_file($themeFile) && \is_readable($themeFile)) ?
             require $themeFile : new Theme\BasicTheme($this->themeName, $env);
+    }
+
+    /**
+     * Configure an action.
+     *
+     * @param Action\AbstractAction $action
+     * action to configure
+     */
+    public function setupAction(Action\AbstractAction $action)
+    {
     }
 
     /**

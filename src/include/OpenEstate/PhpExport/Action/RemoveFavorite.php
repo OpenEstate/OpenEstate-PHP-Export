@@ -29,6 +29,13 @@ use OpenEstate\PhpExport\Environment;
 class RemoveFavorite extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'RemoveFavorite';
+
+    /**
      * Parameter name for the object ID.
      *
      * @var string
@@ -41,7 +48,7 @@ class RemoveFavorite extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'RemoveFavorite')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }

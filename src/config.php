@@ -431,6 +431,17 @@ class MyConfig extends Config
     }
 
     /**
+     * Configure an action.
+     *
+     * @param Action\AbstractAction $action
+     * action to configure
+     */
+    public function setupAction(Action\AbstractAction $action)
+    {
+        parent::setupAction($action);
+    }
+
+    /**
      * Configure export environment.
      *
      * @param Environment $env

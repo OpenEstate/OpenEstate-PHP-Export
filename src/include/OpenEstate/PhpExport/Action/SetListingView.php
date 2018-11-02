@@ -30,6 +30,13 @@ use OpenEstate\PhpExport\Utils;
 class SetListingView extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'SetListingView';
+
+    /**
      * Parameter name for the listing view.
      *
      * @var string
@@ -42,7 +49,7 @@ class SetListingView extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'SetListingView')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }

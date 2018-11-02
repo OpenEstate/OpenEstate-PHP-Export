@@ -31,6 +31,13 @@ use function OpenEstate\PhpExport\gettext as _;
 class Contact extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'Contact';
+
+    /**
      * Enable captcha verification.
      *
      * @var bool
@@ -85,7 +92,7 @@ class Contact extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'Contact')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
 

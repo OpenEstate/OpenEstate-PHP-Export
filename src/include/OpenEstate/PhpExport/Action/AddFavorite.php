@@ -29,6 +29,13 @@ use OpenEstate\PhpExport\Environment;
 class AddFavorite extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'AddFavorite';
+
+    /**
      * Parameter name for the object ID.
      *
      * @var string
@@ -41,7 +48,7 @@ class AddFavorite extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'AddFavorite')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }

@@ -810,7 +810,9 @@ class Environment
      */
     public function newAction($name)
     {
-        return $this->config->newAction($name);
+        $action = $this->config->newAction($name);
+        $this->config->setupAction($action);
+        return $action;
     }
 
     /**

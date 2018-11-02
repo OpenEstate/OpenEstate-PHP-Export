@@ -29,6 +29,13 @@ use OpenEstate\PhpExport\Environment;
 class SetFavoriteOrder extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'SetFavoriteOrder';
+
+    /**
      * Parameter name for the ordering method.
      *
      * @var string
@@ -48,7 +55,7 @@ class SetFavoriteOrder extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'SetFavoriteOrder')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }

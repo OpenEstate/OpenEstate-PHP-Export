@@ -30,6 +30,13 @@ use OpenEstate\PhpExport\Utils;
 class SetListingFilter extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'SetListingFilter';
+
+    /**
      * Parameter name for the filter values.
      *
      * @var string
@@ -49,7 +56,7 @@ class SetListingFilter extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'SetListingFilter')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }

@@ -29,6 +29,13 @@ use OpenEstate\PhpExport\Environment;
 class SetLanguage extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'SetLanguage';
+
+    /**
      * Parameter name for the language code.
      *
      * @var string
@@ -41,7 +48,7 @@ class SetLanguage extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'SetLanguage')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }

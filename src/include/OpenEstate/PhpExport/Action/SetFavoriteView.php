@@ -30,6 +30,13 @@ use OpenEstate\PhpExport\Utils;
 class SetFavoriteView extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'SetFavoriteView';
+
+    /**
      * Parameter name for the favorite view.
      *
      * @var string
@@ -42,7 +49,7 @@ class SetFavoriteView extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'SetFavoriteView')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }

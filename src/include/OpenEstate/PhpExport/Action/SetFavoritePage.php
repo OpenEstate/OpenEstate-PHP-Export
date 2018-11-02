@@ -29,6 +29,13 @@ use OpenEstate\PhpExport\Environment;
 class SetFavoritePage extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'SetFavoritePage';
+
+    /**
      * Parameter name for the page number.
      *
      * @var string
@@ -41,7 +48,7 @@ class SetFavoritePage extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'SetFavoritePage')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }

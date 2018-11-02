@@ -29,6 +29,13 @@ use OpenEstate\PhpExport\Environment;
 class SetListingOrder extends AbstractAction
 {
     /**
+     * Action name.
+     *
+     * @var string
+     */
+    const NAME = 'SetListingOrder';
+
+    /**
      * Parameter name for the ordering method.
      *
      * @var string
@@ -48,7 +55,7 @@ class SetListingOrder extends AbstractAction
      * @param string $name
      * internal name
      */
-    function __construct($name = 'SetListingOrder')
+    function __construct($name = self::NAME)
     {
         parent::__construct($name);
     }
