@@ -160,8 +160,8 @@ class FavoriteHtml extends AbstractHtmlView
         $orderName = $this->getOrder();
         $order = null;
         /** @var AbstractOrder $o */
-        foreach ($this->orders as $o) {
-            if ($o->getName() === $orderName) {
+        foreach ($this->env->getConfig()->getOrderObjects() as $o) {
+            if (\strtolower($o->getName()) == \strtolower($orderName)) {
                 $order = $o;
                 break;
             }
@@ -173,7 +173,7 @@ class FavoriteHtml extends AbstractHtmlView
         if ($order !== null) {
             if ($order->readOrRebuild($this->env) === true) {
                 $objectIds = $order->getItems($this->env->getLanguage());
-                if (Utils::isNotEmptyArray($objectIds) && $orderDirection == 'desc')
+                if (Utils::isNotEmptyArray($objectIds) && \strtolower($orderDirection) == 'desc')
                     $objectIds = \array_reverse($objectIds);
             }
         }
@@ -181,7 +181,7 @@ class FavoriteHtml extends AbstractHtmlView
         // get list of available object ID's, if something went wrong
         if (!\is_array($objectIds)) {
             $objectIds = $this->env->getObjectIds();
-            if ($orderDirection === 'desc')
+            if (\strtolower($orderDirection) == 'desc')
                 \rsort($objectIds);
             else
                 \sort($objectIds);

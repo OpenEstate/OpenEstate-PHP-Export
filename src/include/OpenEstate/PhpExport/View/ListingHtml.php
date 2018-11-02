@@ -196,8 +196,8 @@ class ListingHtml extends AbstractHtmlView
         $orderName = $this->getOrder();
         $order = null;
         /** @var AbstractOrder $o */
-        foreach ($this->orders as $o) {
-            if ($o->getName() === $orderName) {
+        foreach ($this->env->getConfig()->getOrderObjects() as $o) {
+            if (\strtolower($o->getName()) == \strtolower($orderName)) {
                 $order = $o;
                 break;
             }
@@ -209,7 +209,7 @@ class ListingHtml extends AbstractHtmlView
         if ($order !== null) {
             if ($order->readOrRebuild($this->env) === true) {
                 $objectIds = $order->getItems($this->env->getLanguage());
-                if (Utils::isNotEmptyArray($objectIds) && $orderDirection == 'desc')
+                if (Utils::isNotEmptyArray($objectIds) && \strtolower($orderDirection) == 'desc')
                     $objectIds = \array_reverse($objectIds);
             }
         }
@@ -217,18 +217,14 @@ class ListingHtml extends AbstractHtmlView
         // get list of available object ID's, if something went wrong
         if (!\is_array($objectIds)) {
             $objectIds = $this->env->getObjectIds();
-            if ($orderDirection === 'desc')
+            if (\strtolower($orderDirection) == 'desc')
                 \rsort($objectIds);
             else
                 \sort($objectIds);
         }
 
-        // reduce list of object ID's to the favorites
-        //if (is_array($favIds)) {
-        //    $objectIds = array_values(array_intersect($objectIds, $favIds));
-        //}
-
         // filter object ID's
+        $availableFilters = $this->env->getConfig()->getFilterObjects();
         $filterValues = $this->getFilterValues();
         if (\is_array($filterValues)) {
             foreach ($filterValues as $filterName => $filterValue) {
@@ -238,8 +234,8 @@ class ListingHtml extends AbstractHtmlView
                 $filter = null;
 
                 /** @var AbstractFilter $f */
-                foreach ($this->filters as $f) {
-                    if ($f->getName() === $filterName) {
+                foreach ($availableFilters as $f) {
+                    if (\strtolower($f->getName()) == \strtolower($filterName)) {
                         $filter = $f;
                         break;
                     }
