@@ -26,7 +26,7 @@ use function OpenEstate\PhpExport\gettext as _;
  * @copyright 2009-2018, OpenEstate.org
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
-class GoogleMap extends AbstractMapProvider
+class GoogleMaps extends AbstractMapProvider
 {
     /**
      * Provider name.
@@ -50,7 +50,7 @@ class GoogleMap extends AbstractMapProvider
     public $showDirectLink;
 
     /**
-     * GoogleMap constructor.
+     * GoogleMaps constructor.
      *
      * @param int $zoom
      * initial zoom level for the map
