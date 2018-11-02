@@ -30,6 +30,13 @@ use OpenEstate\PhpExport\Utils;
 class ExposeHtml extends AbstractHtmlView
 {
     /**
+     * ID of the object to show on this view.
+     *
+     * @var string
+     */
+    private $objectId = null;
+
+    /**
      * Name of the object ID parameter.
      *
      * @var string
@@ -74,6 +81,9 @@ class ExposeHtml extends AbstractHtmlView
      */
     public function getObjectId()
     {
+        if (Utils::isNotBlankString($this->objectId))
+            return $this->objectId;
+
         return (isset($_REQUEST[$this->objectIdParameter]) && \is_string($_REQUEST[$this->objectIdParameter])) ?
             \basename($_REQUEST[$this->objectIdParameter]) : null;
     }
@@ -134,5 +144,15 @@ class ExposeHtml extends AbstractHtmlView
     public function getFavorites()
     {
         return $this->env->getSession()->getFavorites();
+    }
+
+    /**
+     * Set ID of the object to show on this view.
+     *
+     * @param string $objectId
+     */
+    public function setObjectId($objectId)
+    {
+        $this->objectId = $objectId;
     }
 }
