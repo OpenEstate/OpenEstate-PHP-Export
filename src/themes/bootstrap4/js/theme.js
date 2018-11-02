@@ -57,7 +57,7 @@ function openestate_install_listing(uid, actionUrl) {
             .done(function (data) {
                 //console.log('success');
                 //console.log(data);
-                location.reload(true);
+                openestate_update_location();
             })
             .fail(function (data) {
                 //console.log('error');
@@ -99,7 +99,7 @@ function openestate_install_listing(uid, actionUrl) {
             .done(function (data) {
                 //console.log('success');
                 //console.log(data);
-                location.reload(true);
+                openestate_update_location();
             })
             .fail(function (data) {
                 //console.log('error');
@@ -236,7 +236,7 @@ function openestate_install_favorite(uid, actionUrl) {
             .done(function (data) {
                 //console.log('success');
                 //console.log(data);
-                location.reload(true);
+                openestate_update_location();
             })
             .fail(function (data) {
                 //console.log('error');
@@ -564,7 +564,7 @@ function openestate_ajax_links(uid, actionUrl) {
             .done(function (data) {
                 //console.log('success');
                 //console.log(data);
-                location.reload(true);
+                openestate_update_location();
             })
             .fail(function (data) {
                 //console.log('error');
@@ -573,4 +573,31 @@ function openestate_ajax_links(uid, actionUrl) {
                 alert('An error occurred!');
             });
     });
+}
+
+/**
+ * Reload the current page and add an empty update parameter to the URL.
+ */
+function openestate_update_location() {
+    var query = location.search;
+    if (query === null) {
+        location.reload(true);
+        return;
+    }
+
+    if (query.length < 1) {
+        location.search += '?update';
+        return;
+    }
+
+    var vars = query.substring(1).split('&');
+    if (vars.includes('update')) {
+        location.reload(true);
+        return;
+    }
+
+    if (location.search.startsWith('?'))
+        location.search += '&update';
+    else
+        location.search += '?update';
 }
