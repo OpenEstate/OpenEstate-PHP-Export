@@ -402,7 +402,7 @@ include('snippets/body-begin.php');
             ?>
 
             <?php if ($mapProvider !== null) { ?>
-                <div class="openestate-expose-map openestate-expose-map-<?= html($mapProvider->getName()) ?> hidden-print">
+                <div class="openestate-expose-map openestate-expose-map-<?= html($mapProvider->getName()) ?>">
                     <h3><?= html(\ucfirst(_('area map'))) ?></h3>
                     <?= $mapProvider->getBody($objectData) ?>
                 </div>
@@ -427,7 +427,7 @@ include('snippets/body-begin.php');
                     $linkedVideos[] = $link;
             }
             if (\count($localVideos) > 0 || \count($linkedVideos) > 0) {
-                echo '<div class="openestate-expose-videos hidden-print">';
+                echo '<div class="openestate-expose-videos">';
                 echo '<h3>' . html(\ucfirst(_('videos'))) . '</h3>';
                 if (\count($localVideos) > 0) {
                     echo '<div class="openestate-expose-video-local">';
@@ -469,7 +469,7 @@ include('snippets/body-begin.php');
             }
 
             if (\count($localFiles) > 0 || \count($links) > 0) {
-                echo '<div class="openestate-expose-links hidden-print">';
+                echo '<div class="openestate-expose-links">';
                 echo '<h3>' . html(\ucfirst(_('further links'))) . '</h3>';
                 echo '<ul>';
                 foreach ($localFiles as $file) {
@@ -539,7 +539,7 @@ include('snippets/body-begin.php');
                 </ul>
             </div>
 
-            <div class="openestate-expose-contact hidden-print">
+            <div class="openestate-expose-contact">
                 <h3><?= html(\ucfirst(_('get in contact'))) ?></h3>
                 <div class="openestate-expose-contact-loading">
                     <i class="openestate-spinner openestate-icon-spinner"></i><?= html(_('Processing your request. Please wait for a moment.')) ?>

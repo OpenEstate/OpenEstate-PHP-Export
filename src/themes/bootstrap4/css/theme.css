@@ -499,14 +499,18 @@
     padding: 0;
     cursor: pointer;
     color: #808080;
-    border: none;
-    outline: none;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
     z-index: 11;
 }
 
 .openestate-expose-gallery-prev:hover,
-.openestate-expose-gallery-next:hover {
+.openestate-expose-gallery-prev:focus,
+.openestate-expose-gallery-next:hover,
+.openestate-expose-gallery-next:focus {
     color: black;
+    outline: none !important;
 }
 
 .openestate-expose-gallery-prev {
@@ -575,6 +579,18 @@
     .openestate-expose-gallery img {
         height: 325px;
     }
+}
+
+/**
+ * Expose view / Gallery modal dialog
+ */
+
+.openestate-gallery-dialog {
+
+}
+
+.openestate-gallery-dialog .modal-content {
+    text-align: center;
 }
 
 /**
@@ -781,4 +797,94 @@
 
 .openestate-statistics {
     margin: 1em;
+}
+
+/**
+ * Printing
+ */
+
+@media print {
+    .hidden-print {
+        display: none;
+    }
+
+    .openestate-header {
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .openestate-header-bar {
+        padding: 0;
+        border-bottom: 1px solid black;
+    }
+
+    .openestate-header-actions {
+        display: none;
+    }
+
+    .openestate-listing-detail,
+    .openestate-fav-detail {
+        margin-left: 0;
+        margin-right: 0;
+        page-break-inside: avoid;
+    }
+
+    .openestate-listing-detail-title {
+        border-bottom: 1px solid #a0a0a0;
+    }
+
+    .openestate-listing-detail-actions,
+    .openestate-fav-detail-actions {
+        display: none;
+    }
+
+    .openestate-listing-items-thumb,
+    .openestate-fav-items-thumb {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .openestate-listing-thumb-popup,
+    .openestate-fav-thumb-popup {
+        display: none !important;
+    }
+
+    .openestate-listing-pagination {
+        display: none;
+    }
+
+    .openestate-expose-content > div {
+        padding-left: 0;
+        padding-right: 0;
+        page-break-inside: avoid;
+    }
+
+    .openestate-expose-map {
+        display: none;
+    }
+
+    .openestate-expose-videos {
+        display: none;
+    }
+
+    .openestate-expose-links {
+        display: none;
+    }
+
+    .openestate-expose-gallery {
+        display: none;
+    }
+
+    .openestate-expose-gallery-print {
+        display: block;
+    }
+
+    .openestate-expose-contact {
+        display: none;
+    }
+
+    .openestate-debug {
+        display: none;
+    }
 }

@@ -413,7 +413,7 @@ include('snippets/body-begin.php');
             ?>
 
             <?php if ($mapProvider !== null) { ?>
-                <div class="openestate-expose-map openestate-expose-map-<?= html($mapProvider->getName()) ?> panel panel-default hidden-print">
+                <div class="openestate-expose-map openestate-expose-map-<?= html($mapProvider->getName()) ?> panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title"><?= html(\ucfirst(_('area map'))) ?></h3>
                     </div>
@@ -442,7 +442,7 @@ include('snippets/body-begin.php');
                     $linkedVideos[] = $link;
             }
             if (\count($localVideos) > 0 || \count($linkedVideos) > 0) {
-                echo '<div class="openestate-expose-videos panel panel-default hidden-print">';
+                echo '<div class="openestate-expose-videos panel panel-default">';
                 echo '<div class="panel-heading">';
                 echo '<h3 class="panel-title">' . html(\ucfirst(_('videos'))) . '</h3>';
                 echo '</div>';
@@ -486,7 +486,7 @@ include('snippets/body-begin.php');
             }
 
             if (\count($localFiles) > 0 || \count($links) > 0) {
-                echo '<div class="openestate-expose-links panel panel-default hidden-print">';
+                echo '<div class="openestate-expose-links panel panel-default">';
                 echo '<div class="panel-heading">';
                 echo '<h3 class="panel-title">' . html(\ucfirst(_('further links'))) . '</h3>';
                 echo '</div>';
@@ -564,7 +564,7 @@ include('snippets/body-begin.php');
                 </div>
             </div>
 
-            <div class="openestate-expose-contact panel panel-default hidden-print">
+            <div class="openestate-expose-contact panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title"><?= html(\ucfirst(_('get in contact'))) ?></h3>
                 </div>
@@ -680,7 +680,7 @@ include('snippets/body-begin.php');
 
             <?php
             if (Utils::isNotEmptyArray($objectData['images'])) {
-                echo '<div class="openestate-expose-gallery-print panel panel-default visible-print-block">';
+                echo '<div class="openestate-expose-gallery-print panel panel-default">';
                 echo '<div class="panel-heading">';
                 echo '<h3 class="panel-title">' . html(\ucfirst(_('images'))) . '</h3>';
                 echo '</div>';

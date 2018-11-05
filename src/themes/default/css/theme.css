@@ -691,14 +691,18 @@
     padding: 0;
     cursor: pointer;
     color: #808080;
-    border: none;
-    outline: none;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
     z-index: 11;
 }
 
 .openestate-expose-gallery-prev:hover,
-.openestate-expose-gallery-next:hover {
+.openestate-expose-gallery-prev:focus,
+.openestate-expose-gallery-next:hover,
+.openestate-expose-gallery-next:focus {
     color: black;
+    outline: none !important;
 }
 
 .openestate-expose-gallery-prev {
@@ -1071,6 +1075,18 @@
         padding-left: 0;
         padding-right: 0;
         page-break-inside: avoid;
+    }
+
+    .openestate-expose-map {
+        display: none;
+    }
+
+    .openestate-expose-videos {
+        display: none;
+    }
+
+    .openestate-expose-links {
+        display: none;
     }
 
     .openestate-expose-gallery {
