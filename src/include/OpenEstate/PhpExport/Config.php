@@ -691,7 +691,7 @@ class Config
         //$mailer->ConfirmReadingTo = 'max@mustermann.de';
 
         // Set charset of outgoing emails.
-        $mailer->CharSet = $this->charset;
+        $mailer->CharSet = 'UTF-8';
 
         //
         // Enable one of the following mail methods.
