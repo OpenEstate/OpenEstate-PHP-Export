@@ -7,32 +7,33 @@ msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
 "POT-Creation-Date: 2018-09-16 18:18+0200\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2018-11-15 16:13+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
-"Language-Team: \n"
+"Language-Team: Russian <https://i18n.openestate.org/projects/"
+"openestate-php-export/core/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.2.2\n"
 
 #: include/OpenEstate/PhpExport/Filter/SpecialOffer.php:67
 msgid "special offer"
-msgstr ""
+msgstr "Специальное предложение"
 
 #: include/OpenEstate/PhpExport/Filter/Country.php:91
 msgid "country"
-msgstr ""
+msgstr "Страна"
 
 #: include/OpenEstate/PhpExport/Filter/Action.php:63
 msgid "marketing type"
-msgstr ""
+msgstr "Вид сделки"
 
 #: include/OpenEstate/PhpExport/Filter/Age.php:64
 msgid "age"
-msgstr ""
+msgstr "Возраст"
 
 #: include/OpenEstate/PhpExport/Filter/Equipment.php:64
 msgid "equipment"
@@ -41,7 +42,7 @@ msgstr ""
 #: include/OpenEstate/PhpExport/Filter/Rooms.php:95
 #: include/OpenEstate/PhpExport/Order/Rooms.php:60
 msgid "number of rooms"
-msgstr ""
+msgstr "Количество комнат"
 
 #: include/OpenEstate/PhpExport/Filter/Rooms.php:110
 #: include/OpenEstate/PhpExport/Filter/Rooms.php:112
@@ -53,16 +54,16 @@ msgstr[2] ""
 
 #: include/OpenEstate/PhpExport/Filter/Region.php:66
 msgid "region"
-msgstr ""
+msgstr "Регион"
 
 #: include/OpenEstate/PhpExport/Filter/City.php:66
 #: include/OpenEstate/PhpExport/Order/City.php:60
 msgid "place"
-msgstr ""
+msgstr "Место"
 
 #: include/OpenEstate/PhpExport/Filter/Furnished.php:67
 msgid "furnished"
-msgstr ""
+msgstr "Меблированный"
 
 #: include/OpenEstate/PhpExport/Filter/Type.php:67
 msgid "object type"
@@ -71,7 +72,7 @@ msgstr ""
 #: include/OpenEstate/PhpExport/Filter/GroupNr.php:65
 #: include/OpenEstate/PhpExport/Order/GroupNr.php:63
 msgid "group"
-msgstr ""
+msgstr "Группа"
 
 #: include/OpenEstate/PhpExport/Filter/GroupNr.php:81
 msgid "group {0}"
@@ -79,7 +80,7 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Order/Title.php:62
 msgid "title"
-msgstr ""
+msgstr "Заголовок"
 
 #: include/OpenEstate/PhpExport/Order/ObjectNr.php:66
 msgid "object Nr"
@@ -91,15 +92,15 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Order/Area.php:79
 msgid "area"
-msgstr ""
+msgstr "Площадь"
 
 #: include/OpenEstate/PhpExport/Order/Price.php:84
 msgid "price"
-msgstr ""
+msgstr "Цена"
 
 #: include/OpenEstate/PhpExport/Order/LastMod.php:62
 msgid "last modification"
-msgstr ""
+msgstr "Дата последнего изменения"
 
 #: include/OpenEstate/PhpExport/Order/ObjectId.php:65
 msgid "object ID"
@@ -107,11 +108,11 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Utils.php:169
 msgid "from now on"
-msgstr ""
+msgstr "немедленно"
 
 #: include/OpenEstate/PhpExport/Utils.php:916
 msgid "month"
-msgstr ""
+msgstr "Месяц"
 
 #: include/OpenEstate/PhpExport/Utils.php:923
 msgid "{0} per {1}"
@@ -196,7 +197,7 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:187
 msgid "Please check your input in the highlighted fields."
-msgstr ""
+msgstr "Пожалуйста, проверьте данные в выделенных полях."
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:201
 msgid "Name"
