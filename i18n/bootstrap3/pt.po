@@ -7,14 +7,16 @@ msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Bootstrap3 Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
 "POT-Creation-Date: 2018-09-16 18:18+0200\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2018-11-15 16:13+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
-"Language-Team: \n"
+"Language-Team: Portuguese <https://i18n.openestate.org/projects/"
+"openestate-php-export/theme-bootstrap3/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.2.2\n"
 
 #: themes/bootstrap3/expose.php:66 themes/bootstrap3/expose.php:238
 #: themes/bootstrap3/fav.php:249 themes/bootstrap3/listing.php:332
@@ -69,15 +71,15 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:344
 msgid "address"
-msgstr ""
+msgstr "Morada"
 
 #: themes/bootstrap3/expose.php:381 themes/bootstrap3/expose.php:382
 msgid "yes"
-msgstr ""
+msgstr "sim"
 
 #: themes/bootstrap3/expose.php:383 themes/bootstrap3/expose.php:384
 msgid "no"
-msgstr ""
+msgstr "não"
 
 #: themes/bootstrap3/expose.php:419
 msgid "area map"
@@ -85,7 +87,7 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:448
 msgid "videos"
-msgstr ""
+msgstr "vídeos"
 
 #: themes/bootstrap3/expose.php:457
 msgid "Your web browser does not support video playback."
@@ -101,15 +103,15 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:523
 msgid "your contact person"
-msgstr ""
+msgstr "O seu parceiro de negócios"
 
 #: themes/bootstrap3/expose.php:532 themes/bootstrap3/expose.php:537
 msgid "phone"
-msgstr ""
+msgstr "Telefone"
 
 #: themes/bootstrap3/expose.php:543 themes/bootstrap3/expose.php:548
 msgid "mobile"
-msgstr ""
+msgstr "Telemóvel"
 
 #: themes/bootstrap3/expose.php:554 themes/bootstrap3/expose.php:559
 msgid "email"
@@ -159,7 +161,7 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:640
 msgid "refresh"
-msgstr ""
+msgstr "atualizar"
 
 #: themes/bootstrap3/expose.php:662
 msgid "Yes, I accept the terms of use and the data privacy statement."
@@ -167,11 +169,11 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:674
 msgid "send message"
-msgstr ""
+msgstr "enviar e-mail"
 
 #: themes/bootstrap3/expose.php:686
 msgid "images"
-msgstr ""
+msgstr "Imagens"
 
 #: themes/bootstrap3/fav.php:101 themes/bootstrap3/fav.php:130
 msgid "my favored objects"
@@ -195,11 +197,11 @@ msgstr ""
 
 #: themes/bootstrap3/fav.php:209 themes/bootstrap3/listing.php:282
 msgid "ascending"
-msgstr ""
+msgstr "crescente"
 
 #: themes/bootstrap3/fav.php:214 themes/bootstrap3/listing.php:287
 msgid "descending"
-msgstr ""
+msgstr "decrescente"
 
 #: themes/bootstrap3/fav.php:225
 msgid "Your list of favorite objects is empty."
@@ -217,12 +219,12 @@ msgstr ""
 #: themes/bootstrap3/fav.php:313 themes/bootstrap3/fav.php:377
 #: themes/bootstrap3/listing.php:400 themes/bootstrap3/listing.php:474
 msgid "details"
-msgstr ""
+msgstr "detalhes"
 
 #: themes/bootstrap3/fav.php:319 themes/bootstrap3/fav.php:383
 #: themes/bootstrap3/listing.php:406 themes/bootstrap3/listing.php:480
 msgid "download"
-msgstr ""
+msgstr "download"
 
 #: themes/bootstrap3/fav.php:326 themes/bootstrap3/fav.php:390
 #: themes/bootstrap3/listing.php:422 themes/bootstrap3/listing.php:496
@@ -253,7 +255,7 @@ msgstr ""
 
 #: themes/bootstrap3/listing.php:241
 msgid "search"
-msgstr ""
+msgstr "buscar"
 
 #: themes/bootstrap3/listing.php:246
 msgid "clear"
@@ -273,4 +275,4 @@ msgstr ""
 
 #: themes/bootstrap3/listing.php:415 themes/bootstrap3/listing.php:489
 msgid "add to favorites"
-msgstr ""
+msgstr "adic. aos favoritos"
