@@ -7,14 +7,16 @@ msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Bootstrap3 Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
 "POT-Creation-Date: 2018-09-16 18:18+0200\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2018-11-15 16:13+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
-"Language-Team: \n"
+"Language-Team: French <https://i18n.openestate.org/projects/"
+"openestate-php-export/theme-bootstrap3/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.2.2\n"
 
 #: themes/bootstrap3/expose.php:66 themes/bootstrap3/expose.php:238
 #: themes/bootstrap3/fav.php:249 themes/bootstrap3/listing.php:332
@@ -69,15 +71,15 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:344
 msgid "address"
-msgstr ""
+msgstr "adresse"
 
 #: themes/bootstrap3/expose.php:381 themes/bootstrap3/expose.php:382
 msgid "yes"
-msgstr ""
+msgstr "oui"
 
 #: themes/bootstrap3/expose.php:383 themes/bootstrap3/expose.php:384
 msgid "no"
-msgstr ""
+msgstr "non"
 
 #: themes/bootstrap3/expose.php:419
 msgid "area map"
@@ -105,11 +107,11 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:532 themes/bootstrap3/expose.php:537
 msgid "phone"
-msgstr ""
+msgstr "téléphone"
 
 #: themes/bootstrap3/expose.php:543 themes/bootstrap3/expose.php:548
 msgid "mobile"
-msgstr ""
+msgstr "portable"
 
 #: themes/bootstrap3/expose.php:554 themes/bootstrap3/expose.php:559
 msgid "email"
@@ -159,7 +161,7 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:640
 msgid "refresh"
-msgstr ""
+msgstr "mettre à jour"
 
 #: themes/bootstrap3/expose.php:662
 msgid "Yes, I accept the terms of use and the data privacy statement."
@@ -217,7 +219,7 @@ msgstr ""
 #: themes/bootstrap3/fav.php:313 themes/bootstrap3/fav.php:377
 #: themes/bootstrap3/listing.php:400 themes/bootstrap3/listing.php:474
 msgid "details"
-msgstr ""
+msgstr "détails"
 
 #: themes/bootstrap3/fav.php:319 themes/bootstrap3/fav.php:383
 #: themes/bootstrap3/listing.php:406 themes/bootstrap3/listing.php:480
@@ -253,7 +255,7 @@ msgstr ""
 
 #: themes/bootstrap3/listing.php:241
 msgid "search"
-msgstr ""
+msgstr "recherche"
 
 #: themes/bootstrap3/listing.php:246
 msgid "clear"
