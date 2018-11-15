@@ -7,15 +7,16 @@ msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
 "POT-Creation-Date: 2018-09-16 18:18+0200\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2018-11-15 16:13+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
-"Language-Team: \n"
+"Language-Team: Czech <https://i18n.openestate.org/projects/"
+"openestate-php-export/core/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 3.2.2\n"
 
 #: include/OpenEstate/PhpExport/Filter/SpecialOffer.php:67
 msgid "special offer"
@@ -78,7 +79,7 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Order/Title.php:62
 msgid "title"
-msgstr ""
+msgstr "Název (Nadpis)"
 
 #: include/OpenEstate/PhpExport/Order/ObjectNr.php:66
 msgid "object Nr"
