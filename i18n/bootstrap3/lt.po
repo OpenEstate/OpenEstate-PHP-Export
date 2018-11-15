@@ -7,14 +7,18 @@ msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Bootstrap3 Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
 "POT-Creation-Date: 2018-09-16 18:18+0200\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2018-11-15 16:13+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
-"Language-Team: \n"
+"Language-Team: Lithuanian <https://i18n.openestate.org/projects/"
+"openestate-php-export/theme-bootstrap3/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
+"19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
+"1 : 2);\n"
+"X-Generator: Weblate 3.2.2\n"
 
 #: themes/bootstrap3/expose.php:66 themes/bootstrap3/expose.php:238
 #: themes/bootstrap3/fav.php:249 themes/bootstrap3/listing.php:332
@@ -73,11 +77,11 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:381 themes/bootstrap3/expose.php:382
 msgid "yes"
-msgstr ""
+msgstr "taip"
 
 #: themes/bootstrap3/expose.php:383 themes/bootstrap3/expose.php:384
 msgid "no"
-msgstr ""
+msgstr "ne"
 
 #: themes/bootstrap3/expose.php:419
 msgid "area map"
@@ -159,7 +163,7 @@ msgstr ""
 
 #: themes/bootstrap3/expose.php:640
 msgid "refresh"
-msgstr ""
+msgstr "aktualizuoti"
 
 #: themes/bootstrap3/expose.php:662
 msgid "Yes, I accept the terms of use and the data privacy statement."
