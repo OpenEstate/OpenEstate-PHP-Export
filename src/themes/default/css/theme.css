@@ -28,6 +28,10 @@
     box-shadow: none;
 }
 
+.openestate-body select {
+    height: auto;
+}
+
 /**
  * Custom buttons
  */
