@@ -7,19 +7,20 @@ msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
 "POT-Creation-Date: 2018-09-16 18:18+0200\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2018-11-15 16:13+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
-"Language-Team: \n"
+"Language-Team: Dutch <https://i18n.openestate.org/projects/"
+"openestate-php-export/core/nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.2.2\n"
 
 #: include/OpenEstate/PhpExport/Filter/SpecialOffer.php:67
 msgid "special offer"
-msgstr ""
+msgstr "speciale aanbieding"
 
 #: include/OpenEstate/PhpExport/Filter/Country.php:91
 msgid "country"
@@ -60,7 +61,7 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Filter/Furnished.php:67
 msgid "furnished"
-msgstr ""
+msgstr "Gemeubileerd"
 
 #: include/OpenEstate/PhpExport/Filter/Type.php:67
 msgid "object type"
@@ -109,7 +110,7 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Utils.php:916
 msgid "month"
-msgstr ""
+msgstr "maand"
 
 #: include/OpenEstate/PhpExport/Utils.php:923
 msgid "{0} per {1}"
