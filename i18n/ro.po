@@ -7,16 +7,17 @@ msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
 "POT-Creation-Date: 2018-09-16 18:18+0200\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2018-11-15 16:13+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
-"Language-Team: \n"
+"Language-Team: Romanian <https://i18n.openestate.org/projects/"
+"openestate-php-export/core/ro/>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && n"
-"%100<=19) ? 1 : 2);\n"
-"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 3.2.2\n"
 
 #: include/OpenEstate/PhpExport/Filter/SpecialOffer.php:67
 msgid "special offer"
@@ -24,7 +25,7 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Filter/Country.php:91
 msgid "country"
-msgstr ""
+msgstr "Tara"
 
 #: include/OpenEstate/PhpExport/Filter/Action.php:63
 msgid "marketing type"
@@ -53,12 +54,12 @@ msgstr[2] ""
 
 #: include/OpenEstate/PhpExport/Filter/Region.php:66
 msgid "region"
-msgstr ""
+msgstr "Judet/Sector"
 
 #: include/OpenEstate/PhpExport/Filter/City.php:66
 #: include/OpenEstate/PhpExport/Order/City.php:60
 msgid "place"
-msgstr ""
+msgstr "Loc"
 
 #: include/OpenEstate/PhpExport/Filter/Furnished.php:67
 msgid "furnished"
@@ -79,7 +80,7 @@ msgstr ""
 
 #: include/OpenEstate/PhpExport/Order/Title.php:62
 msgid "title"
-msgstr ""
+msgstr "Titlu"
 
 #: include/OpenEstate/PhpExport/Order/ObjectNr.php:66
 msgid "object Nr"
