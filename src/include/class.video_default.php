@@ -33,6 +33,47 @@ class ImmoToolVideo_default extends ImmoToolVideo
     }
 
     /**
+     * Ein externes Video von d.tube einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_d_tube($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
+        $width = ($width > 0) ? $width : 560;
+        $height = ($height > 0) ? $height : 315;
+        /** @noinspection CssInvalidPropertyValue */
+        return '<div class="video_d_tube" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
+            . "\n"
+
+            // IFrame
+            . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
+            . '<iframe src="https://emb.d.tube/#!/' . $linkId . '"'
+            . ' width="' . $width . '"'
+            . ' height="' . $height . '"'
+            . ' align="left"'
+            . ' marginheight="0"'
+            . ' marginwidth="0"'
+            . ' frameborder="0"'
+            . ' scrolling="no"'
+            . ' allowfullscreen>'
+            . '</iframe>'
+            . '</div>'
+            . "\n"
+
+            // Provider-Link
+            . '<div class="video_provider" style="text-align:right;">'
+            . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
+            . ' @ <a href="https://d.tube/" target="_blank">d.tube</a>'
+            . '</div>'
+            . "\n"
+            . '</div>';
+    }
+
+    /**
      * Ein externes Video von dailymotion.com einbinden.
      * @param string $linkId ID des Videos beim Provider.
      * @param string $linkTitle Titel des Videos.

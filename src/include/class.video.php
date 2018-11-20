@@ -46,6 +46,9 @@ class ImmoToolVideo
         if ($provider == 'gallery@panocreator.com')
             return $this->embed_panocreator_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
 
+        if ($provider == 'video@d.tube')
+            return $this->embed_d_tube($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
+
         if ($provider == 'video@dailymotion.com')
             return $this->embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
 
@@ -87,6 +90,20 @@ class ImmoToolVideo
      * @deprecated not supported anymore
      */
     public function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
+        return null;
+    }
+
+    /**
+     * Ein externes Video von d.tube einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_d_tube($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
         return null;
     }

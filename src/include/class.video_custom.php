@@ -33,6 +33,21 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
     }
 
     /**
+     * Ein externes Video von d.tube einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_d_tube($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
+        // Standard-Einbindung von d.tube erzeugen
+        return parent::embed_d_tube($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
+
+    /**
      * Ein externes Video von dailymotion.com einbinden.
      * @param string $linkId ID des Videos beim Provider.
      * @param string $linkTitle Titel des Videos.
