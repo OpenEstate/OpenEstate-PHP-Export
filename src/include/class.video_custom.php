@@ -23,155 +23,165 @@
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-require_once( __DIR__ . '/class.video_default.php' );
+require_once(__DIR__ . '/class.video_default.php');
 
-class ImmoToolVideo_custom extends ImmoToolVideo_default {
+class ImmoToolVideo_custom extends ImmoToolVideo_default
+{
+    function __construct()
+    {
+        parent::__construct(640, 480);
+    }
 
-  function __construct() {
-    parent::__construct(640,480);
-  }
+    /**
+     * Ein externes Video von clipfish.de einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
 
-  /**
-   * Ein externes Video von clipfish.de einbinden.
-   * @param string $linkId ID des Videos beim Provider.
-   * @param string $linkTitle Titel des Videos.
-   * @param string $linkUrl URL zum Direktaufruf des Videos.
-   * @param int $width Breite des eingebundenen Videos in Pixeln.
-   * @param int $height Höhe des eingebundenen Videos in Pixeln.
-   * @return string HTML-Code des eingebundenen Videos.
-   */
-  public function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+        // Standard-Einbindung von clipfish.de erzeugen
+        return parent::embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
 
-    // Standard-Einbindung von clipfish.de erzeugen
-    return parent::embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width, $height);
-  }
+    /**
+     * Ein externes Video von clipshack.com einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
 
-  /**
-   * Ein externes Video von clipshack.com einbinden.
-   * @param string $linkId ID des Videos beim Provider.
-   * @param string $linkTitle Titel des Videos.
-   * @param string $linkUrl URL zum Direktaufruf des Videos.
-   * @param int $width Breite des eingebundenen Videos in Pixeln.
-   * @param int $height Höhe des eingebundenen Videos in Pixeln.
-   * @return string HTML-Code des eingebundenen Videos.
-   */
-  public function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+        // Standard-Einbindung von clipshack.com erzeugen
+        return parent::embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
 
-    // Standard-Einbindung von clipshack.com erzeugen
-    return parent::embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width, $height);
-  }
+    /**
+     * Ein externes Video von dailymotion.com einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
 
-  /**
-   * Ein externes Video von dailymotion.com einbinden.
-   * @param string $linkId ID des Videos beim Provider.
-   * @param string $linkTitle Titel des Videos.
-   * @param string $linkUrl URL zum Direktaufruf des Videos.
-   * @param int $width Breite des eingebundenen Videos in Pixeln.
-   * @param int $height Höhe des eingebundenen Videos in Pixeln.
-   * @return string HTML-Code des eingebundenen Videos.
-   */
-  public function embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+        // Standard-Einbindung von dailymotion.com erzeugen
+        return parent::embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
 
-    // Standard-Einbindung von dailymotion.com erzeugen
-    return parent::embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width, $height);
-  }
+    /**
+     * Ein externes Video von myvideo.de einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
 
-  /**
-   * Ein externes Video von myvideo.de einbinden.
-   * @param string $linkId ID des Videos beim Provider.
-   * @param string $linkTitle Titel des Videos.
-   * @param string $linkUrl URL zum Direktaufruf des Videos.
-   * @param int $width Breite des eingebundenen Videos in Pixeln.
-   * @param int $height Höhe des eingebundenen Videos in Pixeln.
-   * @return string HTML-Code des eingebundenen Videos.
-   */
-  public function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+        // Standard-Einbindung von myvideo.de erzeugen
+        return parent::embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
 
-    // Standard-Einbindung von myvideo.de erzeugen
-    return parent::embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width, $height);
-  }
+    /**
+     * Eine externe Galerie von panocreator.com einbinden.
+     * @param string $linkId ID der Galerie beim Provider.
+     * @param string $linkTitle Galerie der Videos.
+     * @param string $linkUrl URL zum Direktaufruf der Galerie.
+     * @param int $width Breite der eingebundenen Galerie in Pixeln.
+     * @param int $height Höhe der eingebundenen Galerie in Pixeln.
+     * @return string HTML-Code der eingebundenen Galerie.
+     */
+    public function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
 
-  /**
-   * Eine externe Galerie von panocreator.com einbinden.
-   * @param string $linkId ID der Galerie beim Provider.
-   * @param string $linkTitle Galerie der Videos.
-   * @param string $linkUrl URL zum Direktaufruf der Galerie.
-   * @param int $width Breite der eingebundenen Galerie in Pixeln.
-   * @param int $height Höhe der eingebundenen Galerie in Pixeln.
-   * @return string HTML-Code der eingebundenen Galerie.
-   */
-  public function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+        // Standard-Einbindung von panocreator.com erzeugen
+        return parent::embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
 
-    // Standard-Einbindung von panocreator.com erzeugen
-    return parent::embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width, $height);
-  }
+    /**
+     * Ein externes Video von sevenload.com einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
 
-  /**
-   * Ein externes Video von sevenload.com einbinden.
-   * @param string $linkId ID des Videos beim Provider.
-   * @param string $linkTitle Titel des Videos.
-   * @param string $linkUrl URL zum Direktaufruf des Videos.
-   * @param int $width Breite des eingebundenen Videos in Pixeln.
-   * @param int $height Höhe des eingebundenen Videos in Pixeln.
-   * @return string HTML-Code des eingebundenen Videos.
-   */
-  public function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+        // Standard-Einbindung von sevenload.com erzeugen
+        return parent::embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
 
-    // Standard-Einbindung von sevenload.com erzeugen
-    return parent::embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width, $height);
-  }
+    /**
+     * Ein externes Video von veoh.com einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_veoh_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
 
-  /**
-   * Ein externes Video von veoh.com einbinden.
-   * @param string $linkId ID des Videos beim Provider.
-   * @param string $linkTitle Titel des Videos.
-   * @param string $linkUrl URL zum Direktaufruf des Videos.
-   * @param int $width Breite des eingebundenen Videos in Pixeln.
-   * @param int $height Höhe des eingebundenen Videos in Pixeln.
-   * @return string HTML-Code des eingebundenen Videos.
-   */
-  public function embed_veoh_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+        // Standard-Einbindung von veoh.com erzeugen
+        return parent::embed_veoh_com($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
 
-    // Standard-Einbindung von veoh.com erzeugen
-    return parent::embed_veoh_com($linkId, $linkTitle, $linkUrl, $width, $height);
-  }
+    /**
+     * Ein externes Video von vimeo.com einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
 
-  /**
-   * Ein externes Video von vimeo.com einbinden.
-   * @param string $linkId ID des Videos beim Provider.
-   * @param string $linkTitle Titel des Videos.
-   * @param string $linkUrl URL zum Direktaufruf des Videos.
-   * @param int $width Breite des eingebundenen Videos in Pixeln.
-   * @param int $height Höhe des eingebundenen Videos in Pixeln.
-   * @return string HTML-Code des eingebundenen Videos.
-   */
-  public function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+        // Standard-Einbindung von vimeo.com erzeugen
+        return parent::embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
 
-    // Standard-Einbindung von vimeo.com erzeugen
-    return parent::embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width, $height);
-  }
+    /**
+     * Ein externes Video von youtube.com einbinden.
+     * @param string $linkId ID des Videos beim Provider.
+     * @param string $linkTitle Titel des Videos.
+     * @param string $linkUrl URL zum Direktaufruf des Videos.
+     * @param int $width Breite des eingebundenen Videos in Pixeln.
+     * @param int $height Höhe des eingebundenen Videos in Pixeln.
+     * @return string HTML-Code des eingebundenen Videos.
+     */
+    public function embed_youtube_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
 
-  /**
-   * Ein externes Video von youtube.com einbinden.
-   * @param string $linkId ID des Videos beim Provider.
-   * @param string $linkTitle Titel des Videos.
-   * @param string $linkUrl URL zum Direktaufruf des Videos.
-   * @param int $width Breite des eingebundenen Videos in Pixeln.
-   * @param int $height Höhe des eingebundenen Videos in Pixeln.
-   * @return string HTML-Code des eingebundenen Videos.
-   */
-  public function embed_youtube_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0) {
+        // Standard-Einbindung von youtube.com erzeugen
+        return parent::embed_youtube_com($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
 
-    // Standard-Einbindung von youtube.com erzeugen
-    return parent::embed_youtube_com($linkId, $linkTitle, $linkUrl, $width, $height);
-  }
-
-  /**
-   * Name des Video-Handlers.
-   * @return string Name
-   */
-  public function getName() {
-    return 'custom';
-  }
-
+    /**
+     * Name des Video-Handlers.
+     * @return string Name
+     */
+    public function getName()
+    {
+        return 'custom';
+    }
 }

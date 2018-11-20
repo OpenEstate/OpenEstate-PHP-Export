@@ -23,48 +23,52 @@
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-require_once( __DIR__ . '/class.order.php' );
+require_once(__DIR__ . '/class.order.php');
 
-class ImmoToolOrder_title extends ImmoToolOrder {
+class ImmoToolOrder_title extends ImmoToolOrder
+{
+    /**
+     * Name des Filters.
+     */
+    public function getName()
+    {
+        return 'title';
+    }
 
-  /**
-   * Name des Filters.
-   */
-  public function getName() {
-    return 'title';
-  }
+    /**
+     * Titel der Sortierung, abhängig von der Sprache.
+     */
+    public function getTitle(&$translations, $lang)
+    {
+        $title = (isset($translations['labels']['estate.title'])) ?
+            $translations['labels']['estate.title'] : null;
+        return is_string($title) ? $title : $this->getName();
+    }
 
-  /**
-   * Titel der Sortierung, abhängig von der Sprache.
-   */
-  public function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.title'])) ?
-        $translations['labels']['estate.title'] : null;
-    return is_string($title) ? $title : $this->getName();
-  }
+    /**
+     * Liefert true, wenn für jede Sprache eine separate Sortierung erfolgen soll.
+     */
+    public function isLanguageSpecific()
+    {
+        return true;
+    }
 
-  /**
-   * Liefert true, wenn für jede Sprache eine separate Sortierung erfolgen soll.
-   */
-  public function isLanguageSpecific() {
-    return true;
-  }
+    /**
+     * Liefert das Sortierungsfeld eines Objektes.
+     */
+    public function sort_field(&$object, $lang)
+    {
+        $val = (isset($object['title'][$lang])) ?
+            $object['title'][$lang] : null;
+        return is_string($val) ? $val : '';
+    }
 
-  /**
-   * Liefert das Sortierungsfeld eines Objektes.
-   */
-  public function sort_field(&$object, $lang) {
-    $val = (isset($object['title'][$lang])) ?
-        $object['title'][$lang] : null;
-    return is_string($val) ? $val : '';
-  }
-
-  /**
-   * Liefert das Sortierungs-Flag
-   * siehe http://www.php.net/manual/en/function.sort.php
-   */
-  public function sort_flag() {
-    return SORT_STRING;
-  }
-
+    /**
+     * Liefert das Sortierungs-Flag
+     * siehe http://www.php.net/manual/en/function.sort.php
+     */
+    public function sort_flag()
+    {
+        return SORT_STRING;
+    }
 }

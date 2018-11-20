@@ -31,19 +31,18 @@ header('Content-Type: text/css; charset=utf-8');
 // Konfiguration ermitteln
 $setup = new immotool_setup_style();
 if (is_callable(array('immotool_myconfig', 'load_config_style')))
-  immotool_myconfig::load_config_style($setup);
+    immotool_myconfig::load_config_style($setup);
 $showGeneralStyles = $setup->ShowGeneralStyles;
 if (isset($_REQUEST['wrapped']) && $_REQUEST['wrapped'] == '1') {
-  $showGeneralStyles = false;
+    $showGeneralStyles = false;
 }
 ?>
 /**
-* Allgemeines
-*/
+ * Allgemeines
+ */
 
 <?php
-if ($showGeneralStyles === true) {
-  ?>
+if ($showGeneralStyles === true) { ?>
 * {
 color: <?php echo $setup->GeneralTextColor; ?>;
 font-family: <?php echo $setup->GeneralTextFont; ?>;
@@ -81,9 +80,8 @@ font-size: 1.3em;
 h3 {
 font-size: 1.1em;
 }
-  <?php
-}
-?>
+<?php } ?>
+
 #openestate_contentpane {
 }
 
@@ -122,8 +120,8 @@ background-color: <?php echo $setup->DarkBackgroundColor; ?>;
 
 
 /**
-* Allgemein, Fehlermeldungen
-*/
+ * Allgemein, Fehlermeldungen
+ */
 
 #openestate_error {
 border: 1px solid <?php echo $setup->BorderColor; ?>;
@@ -140,8 +138,8 @@ margin-bottom: 5px;
 
 
 /**
-* Allgemein, Sprachauswahl
-*/
+ * Allgemein, Sprachauswahl
+ */
 
 #openestate_languages ul {
 text-align: right;
@@ -177,8 +175,8 @@ padding-top: 4px;
 
 
 /**
-* Immobilienliste, Seitenzähler
-*/
+ * Immobilienliste, Seitenzähler
+ */
 
 #openestate_listing_pagination_top ul,
 #openestate_listing_pagination_bottom ul {
@@ -244,8 +242,8 @@ padding-bottom: 4px;
 
 
 /**
-* Immobilienliste, Formulare zur Eingrenzung
-*/
+ * Immobilienliste, Formulare zur Eingrenzung
+ */
 
 #openestate_listing_menu {
 text-align: left;
@@ -301,8 +299,8 @@ float: right;
 
 
 /**
-* Immobilienliste, Kurzexposé
-*/
+ * Immobilienliste, Kurzexposé
+ */
 
 #openestate_empty_list {
 padding: 2em;
@@ -318,8 +316,8 @@ margin-right: 0.5em;
 
 
 /**
-* Immobilienliste, Kurzexposé, Listenansicht
-*/
+ * Immobilienliste, Kurzexposé, Listenansicht
+ */
 
 .openestate_listing_entry {
 clear: both;
@@ -367,8 +365,8 @@ padding-right: 0.5em !important;
 
 
 /**
-* Immobilienliste, Kurzexposé, Galerieansicht
-*/
+ * Immobilienliste, Kurzexposé, Galerieansicht
+ */
 
 .openestate_listing_image {
 height: auto;
@@ -450,8 +448,8 @@ clear: left;
 
 
 /**
-* Exposéansicht
-*/
+ * Exposéansicht
+ */
 
 #openestate_expose_header {
 margin-left: 1em;
@@ -505,8 +503,8 @@ margin-bottom: 2em;
 
 
 /**
-* Exposéansicht, Menü
-*/
+ * Exposéansicht, Menü
+ */
 
 #openestate_expose_menu_top ul,
 #openestate_expose_menu_bottom ul {
@@ -572,8 +570,9 @@ padding-bottom: 4px;
 
 
 /**
-* Exposéansicht, Detailmenü
-*/
+ * Exposéansicht, Detailmenü
+ */
+
 #openestate_expose_view_menu {
 margin-bottom: 0;
 }
@@ -614,8 +613,8 @@ padding-top: 4px;
 
 
 /**
-* Exposéansicht, Galerie
-*/
+ * Exposéansicht, Galerie
+ */
 
 #openestate_expose_gallery {
 margin-bottom: 1em;
@@ -659,8 +658,8 @@ border: 0.5em solid <?php echo $setup->BorderColor; ?>;
 
 
 /**
-* Exposéansicht, Kontaktformular
-*/
+ * Exposéansicht, Kontaktformular
+ */
 
 #openestate_expose_contact_form table {
 width: 100%;
@@ -763,8 +762,9 @@ padding-top: 0;
 }
 
 /**
-* Exposéansicht, Kontaktperson
-*/
+ * Exposéansicht, Kontaktperson
+ */
+
 #openestate_expose_contact_person ul {
 min-width: 300px;
 list-style-type: none !important;
@@ -786,9 +786,11 @@ font-weight: normal;
 letter-spacing: 0;
 }
 
+
 /**
-* Exposéansicht, Umkreiskarte
-*/
+ * Exposéansicht, Umkreiskarte
+ */
+
 #openestate_map {
 margin-bottom: 1em;
 }

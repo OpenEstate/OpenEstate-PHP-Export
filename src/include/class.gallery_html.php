@@ -23,16 +23,16 @@
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-require_once( __DIR__ . '/class.gallery.php' );
+require_once(__DIR__ . '/class.gallery.php');
 
-class ImmoToolGallery_html extends ImmoToolGallery {
-
-  /**
-   * Name der Galerie.
-   * @return string Name
-   */
-  public function getName() {
-    return 'html';
-  }
-
+class ImmoToolGallery_html extends ImmoToolGallery
+{
+    /**
+     * Name der Galerie.
+     * @return string Name
+     */
+    public function getName()
+    {
+        return 'html';
+    }
 }

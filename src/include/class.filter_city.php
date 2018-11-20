@@ -23,62 +23,65 @@
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-require_once( __DIR__ . '/class.filter.php' );
+require_once(__DIR__ . '/class.filter.php');
 
-class ImmoToolFilter_city extends ImmoToolFilter {
-
-  /**
-   * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
-   */
-  public function filter($object, &$items) {
-    $value = (isset($object['address']['city'])) ?
-        $object['address']['city'] : null;
-    if (!is_string($value))
-      return;
-    $value = trim($value);
-    if (strlen($value) == 0)
-      return;
-    if (!isset($items[$value]) || !is_array($items[$value]))
-      $items[$value] = array();
-    $items[$value][] = $object['id'];
-  }
-
-  /**
-   * Name des Filters.
-   */
-  public function getName() {
-    return 'city';
-  }
-
-  /**
-   * Titel des Filters, abhängig von der Sprache.
-   */
-  public function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.city'])) ?
-        $translations['labels']['estate.city'] : null;
-    return is_string($title) ? $title : $this->getName();
-  }
-
-  /**
-   * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
-   */
-  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
-    if (!$this->readOrRebuild($setup->CacheLifeTime))
-      return null;
-    $widget = '';
-    $options = array_keys($this->items);
-    asort($options);
-    if (is_array($options) && count($options) > 0) {
-      $by = $this->getTitle($translations, $lang);
-      $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
-      $widget .= '<option value="">[ ' . $by . ' ]</option>';
-      foreach ($options as $city) {
-        $selected = ($selectedValue == $city) ? 'selected="selected"' : '';
-        $widget .= '<option value="' . $city . '" ' . $selected . '>' . $city . '</option>';
-      }
-      $widget .= '</select>';
+class ImmoToolFilter_city extends ImmoToolFilter
+{
+    /**
+     * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
+     */
+    public function filter($object, &$items)
+    {
+        $value = (isset($object['address']['city'])) ?
+            $object['address']['city'] : null;
+        if (!is_string($value))
+            return;
+        $value = trim($value);
+        if (strlen($value) == 0)
+            return;
+        if (!isset($items[$value]) || !is_array($items[$value]))
+            $items[$value] = array();
+        $items[$value][] = $object['id'];
     }
-    return $widget;
-  }
 
+    /**
+     * Name des Filters.
+     */
+    public function getName()
+    {
+        return 'city';
+    }
+
+    /**
+     * Titel des Filters, abhängig von der Sprache.
+     */
+    public function getTitle(&$translations, $lang)
+    {
+        $title = (isset($translations['labels']['estate.city'])) ?
+            $translations['labels']['estate.city'] : null;
+        return is_string($title) ? $title : $this->getName();
+    }
+
+    /**
+     * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
+     */
+    public function getWidget($selectedValue, $lang, &$translations, &$setup)
+    {
+        if (!$this->readOrRebuild($setup->CacheLifeTime))
+            return null;
+        $widget = '';
+        $options = array_keys($this->items);
+        asort($options);
+        if (is_array($options) && count($options) > 0) {
+            $by = $this->getTitle($translations, $lang);
+            $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
+            $widget .= '<option value="">[ ' . $by . ' ]</option>';
+            foreach ($options as $city) {
+                $selected = ($selectedValue == $city) ? 'selected="selected"' : '';
+                $widget .= '<option value="' . $city . '" ' . $selected . '>' . $city . '</option>';
+            }
+            $widget .= '</select>';
+        }
+        return $widget;
+    }
 }

@@ -23,42 +23,45 @@
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-require_once( __DIR__ . '/class.order.php' );
+require_once(__DIR__ . '/class.order.php');
 
-class ImmoToolOrder_id extends ImmoToolOrder {
+class ImmoToolOrder_id extends ImmoToolOrder
+{
+    /**
+     * Name des Filters.
+     */
+    public function getName()
+    {
+        return 'id';
+    }
 
-  /**
-   * Name des Filters.
-   */
-  public function getName() {
-    return 'id';
-  }
+    /**
+     * Titel der Sortierung, abhängig von der Sprache.
+     */
+    public function getTitle(&$translations, $lang)
+    {
+        $title = (isset($translations['labels']['estate.id'])) ? $translations['labels']['estate.id'] : null;
+        return is_string($title) ? $title : $this->getName();
+    }
 
-  /**
-   * Titel der Sortierung, abhängig von der Sprache.
-   */
-  public function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.id'])) ? $translations['labels']['estate.id'] : null;
-    return is_string($title) ? $title : $this->getName();
-  }
+    /**
+     * Liefert das Sortierungsfeld eines Objektes.
+     */
+    public function sort_field(&$object, $lang)
+    {
+        $id = (isset($object['id'])) ? $object['id'] : null;
+        if (!is_string($id))
+            return null;
+        $val = explode('-', $id);
+        return $val[count($val) - 1];
+    }
 
-  /**
-   * Liefert das Sortierungsfeld eines Objektes.
-   */
-  public function sort_field(&$object, $lang) {
-    $id = (isset($object['id'])) ? $object['id'] : null;
-    if (!is_string($id))
-      return null;
-    $val = explode('-', $id);
-    return $val[count($val) - 1];
-  }
-
-  /**
-   * Liefert das Sortierungs-Flag
-   * siehe http://www.php.net/manual/en/function.sort.php
-   */
-  public function sort_flag() {
-    return SORT_NUMERIC;
-  }
-
+    /**
+     * Liefert das Sortierungs-Flag
+     * siehe http://www.php.net/manual/en/function.sort.php
+     */
+    public function sort_flag()
+    {
+        return SORT_NUMERIC;
+    }
 }

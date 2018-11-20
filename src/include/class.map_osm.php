@@ -24,76 +24,78 @@
  * @link http://www.openstreetmap.org/
  */
 
-require_once( __DIR__ . '/class.map.php' );
+require_once(__DIR__ . '/class.map.php');
 
-class ImmoToolMap_osm extends ImmoToolMap {
+class ImmoToolMap_osm extends ImmoToolMap
+{
+    /** Positions-Markierung auf der Karte darstellen. */
+    public $showPositionMarker = true;
 
-  /** Positions-Markierung auf der Karte darstellen. */
-  public $showPositionMarker = true;
+    /** Direkt-Link zur Großansicht der Karte darstellen. */
+    public $showDirectLink = true;
 
-  /** Direkt-Link zur Großansicht der Karte darstellen. */
-  public $showDirectLink = true;
+    /**
+     * Body-Daten der Umkreiskarte.
+     * @return string Name
+     */
+    public function getBodyContent(&$object, &$translations, $lang)
+    {
+        $lat = $this->getLatitude($object);
+        $lon = $this->getLongitude($object);
+        if (!is_numeric($lat) || !is_numeric($lon))
+            return null;
+        //$lat += (rand(1,999)/rand(1,999));
+        //$lon -= (rand(1,999)/rand(1,999));
+        // darstellbaren Bereich ermitteln
+        $diff = 0.05;
+        $lat2 = round($lat, 2);
+        $lon2 = round($lon, 2);
+        $bbox = ($lon2 - $diff) . ',' . ($lat2 - $diff) . ',' . ($lon2 + $diff) . ',' . ($lat2 + $diff);
 
-  /**
-   * Body-Daten der Umkreiskarte.
-   * @return string Name
-   */
-  public function getBodyContent(&$object, &$translations, $lang) {
-    $lat = $this->getLatitude($object);
-    $lon = $this->getLongitude($object);
-    if (!is_numeric($lat) || !is_numeric($lon))
-      return null;
-    //$lat += (rand(1,999)/rand(1,999));
-    //$lon -= (rand(1,999)/rand(1,999));
-    // darstellbaren Bereich ermitteln
-    $diff = 0.05;
-    $lat2 = round($lat, 2);
-    $lon2 = round($lon, 2);
-    $bbox = ($lon2 - $diff) . ',' . ($lat2 - $diff) . ',' . ($lon2 + $diff) . ',' . ($lat2 + $diff);
+        // Links erzeugen
+        $iframeSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=' . $bbox . '&amp;layer=mapnik';
+        $directLink = 'https://www.openstreetmap.org/?lat=' . $lat . '&amp;lon=' . $lon . '&amp;zoom=12&amp;layers=M';
+        if ($this->showPositionMarker === true) {
+            $iframeSrc .= '&amp;marker=' . $lat . ',' . $lon;
+            $directLink .= '&amp;mlat=' . $lat . '&amp;mlon=' . $lon;
+        }
 
-    // Links erzeugen
-    $iframeSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=' . $bbox . '&amp;layer=mapnik';
-    $directLink = 'https://www.openstreetmap.org/?lat=' . $lat . '&amp;lon=' . $lon . '&amp;zoom=12&amp;layers=M';
-    if ($this->showPositionMarker === true) {
-      $iframeSrc .= '&amp;marker=' . $lat . ',' . $lon;
-      $directLink .= '&amp;mlat=' . $lat . '&amp;mlon=' . $lon;
+        // Ausgabe erzeugen
+        $output = '<iframe' .
+            ' class="openstreetmap"' .
+            ' width="640"' .
+            ' height="480"' .
+            ' frameborder="0"' .
+            ' scrolling="no"' .
+            ' marginheight="0"' .
+            ' marginwidth="0"' .
+            ' src="' . $iframeSrc . '">' .
+            '</iframe>';
+
+        if ($this->showDirectLink === true) {
+            $output .= '<br/><small><a href="' . $directLink . '" target="_blank">' .
+                $translations['labels']['estate.map.directLink'] .
+                '</a></small>';
+        }
+
+        return '<div id="openestate_map">' . $output . '</div>';
     }
 
-    // Ausgabe erzeugen
-    $output = '<iframe' .
-        ' class="openstreetmap"' .
-        ' width="640"' .
-        ' height="480"' .
-        ' frameborder="0"' .
-        ' scrolling="no"' .
-        ' marginheight="0"' .
-        ' marginwidth="0"' .
-        ' src="' . $iframeSrc . '">' .
-        '</iframe>';
-
-    if ($this->showDirectLink === true) {
-      $output .= '<br/><small><a href="' . $directLink . '" target="_blank">' .
-          $translations['labels']['estate.map.directLink'] .
-          '</a></small>';
+    /**
+     * Header-Daten der Umkreiskarte.
+     * @return string Name
+     */
+    public function getHeaderContent(&$object, &$translations, $lang)
+    {
+        return null;
     }
 
-    return '<div id="openestate_map">' . $output . '</div>';
-  }
-
-  /**
-   * Header-Daten der Umkreiskarte.
-   * @return string Name
-   */
-  public function getHeaderContent(&$object, &$translations, $lang) {
-    return null;
-  }
-
-  /**
-   * Name der Umkreiskarte.
-   * @return string Name
-   */
-  public function getName() {
-    return 'osm';
-  }
-
+    /**
+     * Name der Umkreiskarte.
+     * @return string Name
+     */
+    public function getName()
+    {
+        return 'osm';
+    }
 }

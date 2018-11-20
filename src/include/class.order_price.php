@@ -23,63 +23,66 @@
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-require_once( __DIR__ . '/class.order.php' );
+require_once(__DIR__ . '/class.order.php');
 
-class ImmoToolOrder_price extends ImmoToolOrder {
+class ImmoToolOrder_price extends ImmoToolOrder
+{
+    /**
+     * Name des Filters.
+     */
+    public function getName()
+    {
+        return 'price';
+    }
 
-  /**
-   * Name des Filters.
-   */
-  public function getName() {
-    return 'price';
-  }
+    /**
+     * Titel der Sortierung, abhängig von der Sprache.
+     */
+    public function getTitle(&$translations, $lang)
+    {
+        $title = (isset($translations['labels']['estate.price'])) ?
+            $translations['labels']['estate.price'] : null;
+        return is_string($title) ? $title : $this->getName();
+    }
 
-  /**
-   * Titel der Sortierung, abhängig von der Sprache.
-   */
-  public function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.price'])) ?
-        $translations['labels']['estate.price'] : null;
-    return is_string($title) ? $title : $this->getName();
-  }
+    /**
+     * Liefert das Sortierungsfeld eines Objektes.
+     */
+    public function sort_field(&$object, $lang)
+    {
+        // Preisangaben verstecken
+        if ($object['hidden_price'] === true)
+            return null;
 
-  /**
-   * Liefert das Sortierungsfeld eines Objektes.
-   */
-  public function sort_field(&$object, $lang) {
-    // Preisangaben verstecken
-    if ($object['hidden_price'] === true)
-      return null;
+        // Kauf
+        if ($object['action'] == 'purchase')
+            return (isset($object['attributes']['prices']['purchase_price']['value'])) ?
+                $object['attributes']['prices']['purchase_price']['value'] : null;
 
-    // Kauf
-    if ($object['action'] == 'purchase')
-      return (isset($object['attributes']['prices']['purchase_price']['value'])) ?
-          $object['attributes']['prices']['purchase_price']['value'] : null;
+        // Miete
+        if ($object['action'] == 'rent')
+            return (isset($object['attributes']['prices']['rent_excluding_service_charges']['value'])) ?
+                $object['attributes']['prices']['rent_excluding_service_charges']['value'] : null;
 
-    // Miete
-    if ($object['action'] == 'rent')
-      return (isset($object['attributes']['prices']['rent_excluding_service_charges']['value'])) ?
-          $object['attributes']['prices']['rent_excluding_service_charges']['value'] : null;
+        // Miete auf Zeit
+        if ($object['action'] == 'short_term_rent')
+            return (isset($object['attributes']['prices']['rent_flat_rate']['value'])) ?
+                $object['attributes']['prices']['rent_flat_rate']['value'] : null;
 
-    // Miete auf Zeit
-    if ($object['action'] == 'short_term_rent')
-      return (isset($object['attributes']['prices']['rent_flat_rate']['value'])) ?
-          $object['attributes']['prices']['rent_flat_rate']['value'] : null;
+        // Pacht
+        if ($object['action'] == 'lease' || $object['action'] == 'emphyteusis')
+            return (isset($object['attributes']['prices']['lease']['value'])) ?
+                $object['attributes']['prices']['lease']['value'] : null;
 
-    // Pacht
-    if ($object['action'] == 'lease' || $object['action'] == 'emphyteusis')
-      return (isset($object['attributes']['prices']['lease']['value'])) ?
-          $object['attributes']['prices']['lease']['value'] : null;
+        return null;
+    }
 
-    return null;
-  }
-
-  /**
-   * Liefert das Sortierungs-Flag
-   * siehe http://www.php.net/manual/en/function.sort.php
-   */
-  public function sort_flag() {
-    return SORT_NUMERIC;
-  }
-
+    /**
+     * Liefert das Sortierungs-Flag
+     * siehe http://www.php.net/manual/en/function.sort.php
+     */
+    public function sort_flag()
+    {
+        return SORT_NUMERIC;
+    }
 }

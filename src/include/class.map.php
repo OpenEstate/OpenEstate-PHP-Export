@@ -22,57 +22,61 @@
  * @copyright 2009-2018, OpenEstate.org
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
+class ImmoToolMap
+{
+    /**
+     * Hilfsfunktion zur Überprüfung, ob Geo-Koordinaten bei einer Immobilie hinterlegt wurden.
+     * @return boolean
+     */
+    public function canShowForObject(&$object)
+    {
+        return isset($object['address']['latitude']) && isset($object['address']['longitude']) && is_numeric($object['address']['latitude']) && is_numeric($object['address']['longitude']);
+    }
 
-class ImmoToolMap {
+    /**
+     * Body-Daten der Umkreiskarte.
+     * @return string Name
+     */
+    public function getBodyContent(&$object, &$translations, $lang)
+    {
+        return null;
+    }
 
-  /**
-   * Hilfsfunktion zur Überprüfung, ob Geo-Koordinaten bei einer Immobilie hinterlegt wurden.
-   * @return boolean
-   */
-  public function canShowForObject(&$object) {
-    return isset($object['address']['latitude']) && isset($object['address']['longitude']) && is_numeric($object['address']['latitude']) && is_numeric($object['address']['longitude']);
-  }
+    /**
+     * Header-Daten der Umkreiskarte.
+     * @return string Name
+     */
+    public function getHeaderContent(&$object, &$translations, $lang)
+    {
+        return null;
+    }
 
-  /**
-   * Body-Daten der Umkreiskarte.
-   * @return string Name
-   */
-  public function getBodyContent(&$object, &$translations, $lang) {
-    return null;
-  }
+    /**
+     * Hilfsfunktion zur Ermittlung des Breitengrades einer Immobilie.
+     * @param array $object Immobilie
+     * @return float Wert des Breitengrades oder null, wenn nicht angegeben
+     */
+    public function getLatitude(&$object)
+    {
+        return (isset($object['address']['latitude'])) ? $object['address']['latitude'] : null;
+    }
 
-  /**
-   * Header-Daten der Umkreiskarte.
-   * @return string Name
-   */
-  public function getHeaderContent(&$object, &$translations, $lang) {
-    return null;
-  }
+    /**
+     * Hilfsfunktion zur Ermittlung des Längengrades einer Immobilie.
+     * @param array $object Immobilie
+     * @return float Wert des Längengrades oder null, wenn nicht angegeben
+     */
+    public function getLongitude(&$object)
+    {
+        return (isset($object['address']['longitude'])) ? $object['address']['longitude'] : null;
+    }
 
-  /**
-   * Hilfsfunktion zur Ermittlung des Breitengrades einer Immobilie.
-   * @param array $object Immobilie
-   * @return float Wert des Breitengrades oder null, wenn nicht angegeben
-   */
-  public function getLatitude(&$object) {
-    return (isset($object['address']['latitude'])) ? $object['address']['latitude'] : null;
-  }
-
-  /**
-   * Hilfsfunktion zur Ermittlung des Längengrades einer Immobilie.
-   * @param array $object Immobilie
-   * @return float Wert des Längengrades oder null, wenn nicht angegeben
-   */
-  public function getLongitude(&$object) {
-    return (isset($object['address']['longitude'])) ? $object['address']['longitude'] : null;
-  }
-
-  /**
-   * Name der Umkreiskarte.
-   * @return string Name
-   */
-  public function getName() {
-    return null;
-  }
-
+    /**
+     * Name der Umkreiskarte.
+     * @return string Name
+     */
+    public function getName()
+    {
+        return null;
+    }
 }

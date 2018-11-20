@@ -34,23 +34,22 @@ $files = immotool_functions::list_directory(CACHE_PATH);
 echo '<h2>Remove cache files</h2>';
 echo '<b>from: ' . CACHE_PATH . '</b>';
 if (!is_array($files) || count($files) <= 0) {
-  echo '<br/>Directory is empty!';
-}
-else {
-  echo '<ul>';
-  foreach ($files as $file) {
-    if ($file == 'index.html' || $file == '.htaccess') {
-      continue;
+    echo '<br/>Directory is empty!';
+} else {
+    echo '<ul>';
+    foreach ($files as $file) {
+        if ($file == 'index.html' || $file == '.htaccess') {
+            continue;
+        }
+        $path = CACHE_PATH . '/' . $file;
+        if (!is_file($path)) {
+            continue;
+        }
+        echo '<li>';
+        echo '<b>' . $file . '</b>';
+        echo ' &rarr; ';
+        echo (unlink($path) === true) ? 'OK' : 'ERROR';
+        echo '</li>';
     }
-    $path = CACHE_PATH . '/' . $file;
-    if (!is_file($path)) {
-      continue;
-    }
-    echo '<li>';
-    echo '<b>' . $file . '</b>';
-    echo ' &rarr; ';
-    echo (unlink($path) === true) ? 'OK' : 'ERROR';
-    echo '</li>';
-  }
-  echo '</ul>';
+    echo '</ul>';
 }

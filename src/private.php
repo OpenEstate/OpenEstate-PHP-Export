@@ -29,10 +29,10 @@
  */
 if (!defined('IMMOTOOL_CRYPT_KEY')) {
 
-  //
-  // PLEASE ENTER YOUR PRIVATE CRYPTO KEY HERE !
-  // You can choose any random value.
-  //
+    //
+    // PLEASE ENTER YOUR PRIVATE CRYPTO KEY HERE !
+    // You can choose any random value.
+    //
 
-  //define('IMMOTOOL_CRYPT_KEY', '');
+    //define('IMMOTOOL_CRYPT_KEY', '');
 }

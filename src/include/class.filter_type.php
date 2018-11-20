@@ -23,67 +23,70 @@
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-require_once( __DIR__ . '/class.filter.php' );
+require_once(__DIR__ . '/class.filter.php');
 
-class ImmoToolFilter_type extends ImmoToolFilter {
-
-  /**
-   * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
-   */
-  public function filter($object, &$items) {
-    $types = (isset($object['type_path'])) ? $object['type_path'] : null;
-    if (!is_array($types))
-      $types = array($object['type']);
-    foreach ($types as $type) {
-      if (!isset($items[$type]) || !is_array($items[$type]))
-        $items[$type] = array();
-      $items[$type][] = $object['id'];
+class ImmoToolFilter_type extends ImmoToolFilter
+{
+    /**
+     * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
+     */
+    public function filter($object, &$items)
+    {
+        $types = (isset($object['type_path'])) ? $object['type_path'] : null;
+        if (!is_array($types))
+            $types = array($object['type']);
+        foreach ($types as $type) {
+            if (!isset($items[$type]) || !is_array($items[$type]))
+                $items[$type] = array();
+            $items[$type][] = $object['id'];
+        }
     }
-  }
 
-  /**
-   * Name des Filters.
-   */
-  public function getName() {
-    return 'type';
-  }
-
-  /**
-   * Titel des Filters, abhängig von der Sprache.
-   */
-  public function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.type'])) ?
-        $translations['labels']['estate.type'] : null;
-    return is_string($title) ? $title : $this->getName();
-  }
-
-  /**
-   * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
-   */
-  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
-    $widget = '';
-    if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
-      return $widget;
-    $sortedTypes = array();
-    foreach (array_keys($this->items) as $type) {
-      $txt = isset($translations['openestate']['types'][$type]) ?
-          $translations['openestate']['types'][$type] : null;
-      $sortedTypes[$type] = is_string($txt) ? $txt : $type;
+    /**
+     * Name des Filters.
+     */
+    public function getName()
+    {
+        return 'type';
     }
-    asort($sortedTypes);
-    if (is_array($sortedTypes) && count($sortedTypes) > 0) {
-      $by = $this->getTitle($translations, $lang);
-      $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
-      $widget .= '<option value="">[ ' . $by . ' ]</option>';
-      foreach ($sortedTypes as $type => $txt) {
-        if ($setup->FilterAllEstateTypes === false && strpos($type, 'general_') !== 0)
-          continue;
-        $selected = ($selectedValue == $type) ? 'selected="selected"' : '';
-        $widget .= '<option value="' . $type . '" ' . $selected . '>' . $txt . '</option>';
-      }
-      $widget .= '</select>';
-    }
-    return $widget;
-  }
 
+    /**
+     * Titel des Filters, abhängig von der Sprache.
+     */
+    public function getTitle(&$translations, $lang)
+    {
+        $title = (isset($translations['labels']['estate.type'])) ?
+            $translations['labels']['estate.type'] : null;
+        return is_string($title) ? $title : $this->getName();
+    }
+
+    /**
+     * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
+     */
+    public function getWidget($selectedValue, $lang, &$translations, &$setup)
+    {
+        $widget = '';
+        if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
+            return $widget;
+        $sortedTypes = array();
+        foreach (array_keys($this->items) as $type) {
+            $txt = isset($translations['openestate']['types'][$type]) ?
+                $translations['openestate']['types'][$type] : null;
+            $sortedTypes[$type] = is_string($txt) ? $txt : $type;
+        }
+        asort($sortedTypes);
+        if (is_array($sortedTypes) && count($sortedTypes) > 0) {
+            $by = $this->getTitle($translations, $lang);
+            $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
+            $widget .= '<option value="">[ ' . $by . ' ]</option>';
+            foreach ($sortedTypes as $type => $txt) {
+                if ($setup->FilterAllEstateTypes === false && strpos($type, 'general_') !== 0)
+                    continue;
+                $selected = ($selectedValue == $type) ? 'selected="selected"' : '';
+                $widget .= '<option value="' . $type . '" ' . $selected . '>' . $txt . '</option>';
+            }
+            $widget .= '</select>';
+        }
+        return $widget;
+    }
 }

@@ -24,64 +24,66 @@
  * @link http://maps.google.com/
  */
 
-require_once( __DIR__ . '/class.map.php' );
+require_once(__DIR__ . '/class.map.php');
 
-class ImmoToolMap_google extends ImmoToolMap {
+class ImmoToolMap_google extends ImmoToolMap
+{
+    /** Verwendete Zoom-Stufe */
+    public $zoom = 13;
 
-  /** Verwendete Zoom-Stufe */
-  public $zoom = 13;
+    /** Direkt-Link zur Großansicht der Karte darstellen. */
+    public $showDirectLink = true;
 
-  /** Direkt-Link zur Großansicht der Karte darstellen. */
-  public $showDirectLink = true;
+    /**
+     * Body-Daten der Umkreiskarte.
+     * @return string Name
+     */
+    public function getBodyContent(&$object, &$translations, $lang)
+    {
+        $lat = $this->getLatitude($object);
+        $lon = $this->getLongitude($object);
+        if (!is_numeric($lat) || !is_numeric($lon))
+            return null;
+        //$lat += (rand(1,999)/rand(1,999));
+        //$lon -= (rand(1,999)/rand(1,999));
+        // Links erzeugen
+        $iframeSrc = 'https://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom . '&amp;output=embed';
+        $directLink = 'https://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom;
 
-  /**
-   * Body-Daten der Umkreiskarte.
-   * @return string Name
-   */
-  public function getBodyContent(&$object, &$translations, $lang) {
-    $lat = $this->getLatitude($object);
-    $lon = $this->getLongitude($object);
-    if (!is_numeric($lat) || !is_numeric($lon))
-      return null;
-    //$lat += (rand(1,999)/rand(1,999));
-    //$lon -= (rand(1,999)/rand(1,999));
-    // Links erzeugen
-    $iframeSrc = 'https://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom . '&amp;output=embed';
-    $directLink = 'https://maps.google.com/?ie=UTF8&amp;t=m&amp;ll=' . $lat . ',' . $lon . '&amp;z=' . $this->zoom;
+        // Ausgabe erzeugen
+        $output = '<iframe' .
+            ' class="openstreetmap"' .
+            ' width="640"' .
+            ' height="480"' .
+            ' frameborder="0"' .
+            ' scrolling="no"' .
+            ' marginheight="0"' .
+            ' marginwidth="0"' .
+            ' src="' . $iframeSrc . '">' .
+            '</iframe>';
 
-    // Ausgabe erzeugen
-    $output = '<iframe' .
-        ' class="openstreetmap"' .
-        ' width="640"' .
-        ' height="480"' .
-        ' frameborder="0"' .
-        ' scrolling="no"' .
-        ' marginheight="0"' .
-        ' marginwidth="0"' .
-        ' src="' . $iframeSrc . '">' .
-        '</iframe>';
+        if ($this->showDirectLink === true) {
+            $output .= '<br /><small><a href="' . $directLink . '" target="_blank">' . $translations['labels']['estate.map.directLink'] . '</a></small>';
+        }
 
-    if ($this->showDirectLink === true) {
-      $output .= '<br /><small><a href="' . $directLink . '" target="_blank">' . $translations['labels']['estate.map.directLink'] . '</a></small>';
+        return '<div id="openestate_map">' . $output . '</div>';
     }
 
-    return '<div id="openestate_map">' . $output . '</div>';
-  }
+    /**
+     * Header-Daten der Umkreiskarte.
+     * @return string Name
+     */
+    public function getHeaderContent(&$object, &$translations, $lang)
+    {
+        return null;
+    }
 
-  /**
-   * Header-Daten der Umkreiskarte.
-   * @return string Name
-   */
-  public function getHeaderContent(&$object, &$translations, $lang) {
-    return null;
-  }
-
-  /**
-   * Name der Umkreiskarte.
-   * @return string Name
-   */
-  public function getName() {
-    return 'google';
-  }
-
+    /**
+     * Name der Umkreiskarte.
+     * @return string Name
+     */
+    public function getName()
+    {
+        return 'google';
+    }
 }

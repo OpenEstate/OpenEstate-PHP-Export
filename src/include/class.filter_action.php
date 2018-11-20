@@ -23,63 +23,66 @@
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-require_once( __DIR__ . '/class.filter.php' );
+require_once(__DIR__ . '/class.filter.php');
 
-class ImmoToolFilter_action extends ImmoToolFilter {
-
-  /**
-   * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
-   */
-  public function filter($object, &$items) {
-    $value = (isset($object['action'])) ?
-        $object['action'] : null;
-    if (!is_string($value))
-      return;
-    if (!isset($items[$value]) || !is_array($items[$value]))
-      $items[$value] = array();
-    $items[$value][] = $object['id'];
-  }
-
-  /**
-   * Name des Filters.
-   */
-  public function getName() {
-    return 'action';
-  }
-
-  /**
-   * Titel des Filters, abhängig von der Sprache.
-   */
-  public function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['estate.action'])) ?
-        $translations['labels']['estate.action'] : null;
-    return is_string($title) ? $title : $this->getName();
-  }
-
-  /**
-   * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
-   */
-  public function getWidget($selectedValue, $lang, &$translations, &$setup) {
-    $widget = '';
-    if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
-      return $widget;
-    $sortedActions = array();
-    foreach (array_keys($this->items) as $action) {
-      $sortedActions[$action] = isset($translations['openestate']['actions'][$action]) ?
-          $translations['openestate']['actions'][$action] : $action;
+class ImmoToolFilter_action extends ImmoToolFilter
+{
+    /**
+     * Überprüfung, ob ein Objekt von dem Filter erfasst wird.
+     */
+    public function filter($object, &$items)
+    {
+        $value = (isset($object['action'])) ?
+            $object['action'] : null;
+        if (!is_string($value))
+            return;
+        if (!isset($items[$value]) || !is_array($items[$value]))
+            $items[$value] = array();
+        $items[$value][] = $object['id'];
     }
-    asort($sortedActions);
-    if (is_array($sortedActions) && count($sortedActions) > 0) {
-      $by = $this->getTitle($translations, $lang);
-      $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
-      $widget .= '<option value="">[ ' . $by . ' ]</option>';
-      foreach ($sortedActions as $action => $txt) {
-        $selected = ($selectedValue == $action) ? 'selected="selected"' : '';
-        $widget .= '<option value="' . $action . '" ' . $selected . '>' . $txt . '</option>';
-      }
-      $widget .= '</select>';
-    }
-    return $widget;
-  }
 
+    /**
+     * Name des Filters.
+     */
+    public function getName()
+    {
+        return 'action';
+    }
+
+    /**
+     * Titel des Filters, abhängig von der Sprache.
+     */
+    public function getTitle(&$translations, $lang)
+    {
+        $title = (isset($translations['labels']['estate.action'])) ?
+            $translations['labels']['estate.action'] : null;
+        return is_string($title) ? $title : $this->getName();
+    }
+
+    /**
+     * HTML-Code zur Auswahl des Filterkriteriums erzeugen.
+     */
+    public function getWidget($selectedValue, $lang, &$translations, &$setup)
+    {
+        $widget = '';
+        if (!$this->readOrRebuild($setup->CacheLifeTime) || !is_array($this->items))
+            return $widget;
+        $sortedActions = array();
+        foreach (array_keys($this->items) as $action) {
+            $sortedActions[$action] = isset($translations['openestate']['actions'][$action]) ?
+                $translations['openestate']['actions'][$action] : $action;
+        }
+        asort($sortedActions);
+        if (is_array($sortedActions) && count($sortedActions) > 0) {
+            $by = $this->getTitle($translations, $lang);
+            $widget .= '<select id="filter_' . $this->getName() . '" name="' . IMMOTOOL_PARAM_INDEX_FILTER . '[' . $this->getName() . ']">';
+            $widget .= '<option value="">[ ' . $by . ' ]</option>';
+            foreach ($sortedActions as $action => $txt) {
+                $selected = ($selectedValue == $action) ? 'selected="selected"' : '';
+                $widget .= '<option value="' . $action . '" ' . $selected . '>' . $txt . '</option>';
+            }
+            $widget .= '</select>';
+        }
+        return $widget;
+    }
 }

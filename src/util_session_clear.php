@@ -32,12 +32,11 @@ $files = immotool_functions::cleanup_sessions(true);
 //  gelöschte Einträge aus dem Session-Verzeichnis auflisten
 echo '<h2>Removed session files</h2>';
 if (!is_array($files) || count($files) <= 0) {
-  echo '<p>Nothing was removed</p>';
-}
-else {
-  echo '<ul>';
-  foreach ($files as $file) {
-    echo '<li>' . $file . '</li>';
-  }
-  echo '</ul>';
+    echo '<p>Nothing was removed</p>';
+} else {
+    echo '<ul>';
+    foreach ($files as $file) {
+        echo '<li>' . $file . '</li>';
+    }
+    echo '</ul>';
 }

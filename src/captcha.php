@@ -25,13 +25,13 @@
 
 // Initialisierung
 if (!extension_loaded('gd')) {
-  if (!headers_sent()) {
-    // 500-Fehlercode zurückliefern,
-    // wenn das GD-PHP-Modul nicht verfügbar ist
-    header('HTTP/1.0 500 Internal Server Error');
-  }
-  echo 'It seems like GD is not installed!';
-  return;
+    if (!headers_sent()) {
+        // 500-Fehlercode zurückliefern,
+        // wenn das GD-PHP-Modul nicht verfügbar ist
+        header('HTTP/1.0 500 Internal Server Error');
+    }
+    echo 'It seems like GD is not installed!';
+    return;
 }
 
 ob_start();
@@ -56,14 +56,14 @@ immotool_functions::init_session();
 $fonts = array();
 $files = immotool_functions::list_directory(CAPTCHA_FONT_PATH);
 if (is_array($files)) {
-  foreach ($files as $file) {
-    if (substr(strtolower($file), -4) === '.ttf') {
-      $fonts[] = $file;
+    foreach ($files as $file) {
+        if (substr(strtolower($file), -4) === '.ttf') {
+            $fonts[] = $file;
+        }
     }
-  }
 }
 if (count($fonts) < 1) {
-  die('No font was found in path \'' . CAPTCHA_FONT_PATH . '\'!');
+    die('No font was found in path \'' . CAPTCHA_FONT_PATH . '\'!');
 }
 $font = CAPTCHA_FONT_PATH . '/' . $fonts[array_rand($fonts)];
 
@@ -74,10 +74,10 @@ $left = 0;
 $signs = CAPTCHA_SYMBOLS;
 $string = '';
 for ($i = 1; $i <= CAPTCHA_LENGTH; $i++) {
-  $sign = $signs{rand(0, strlen($signs) - 1)};
-  $string .= $sign;
-  imagettftext($image, 25, rand(-10, 10), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 200, 200, 200), $font, $sign);
-  imagettftext($image, 16, rand(-15, 15), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 69, 103, 137), $font, $sign);
+    $sign = $signs{rand(0, strlen($signs) - 1)};
+    $string .= $sign;
+    imagettftext($image, 25, rand(-10, 10), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 200, 200, 200), $font, $sign);
+    imagettftext($image, 16, rand(-15, 15), $left + (($i == 1 ? 5 : 15) * $i), 25, imagecolorallocate($image, 69, 103, 137), $font, $sign);
 }
 immotool_functions::put_session_value(CAPTCHA_VARIABLE, $string);
 immotool_functions::shutdown($setup);
