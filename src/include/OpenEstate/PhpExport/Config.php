@@ -505,6 +505,9 @@ class Config
             case Provider\DailyMotionVideo::NAME:
                 return new Provider\DailyMotionVideo();
 
+            case Provider\DTubeVideo::NAME:
+                return new Provider\DTubeVideo();
+
             case Provider\VeohVideo::NAME:
                 return new Provider\VeohVideo();
 
