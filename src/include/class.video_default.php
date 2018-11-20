@@ -33,84 +33,6 @@ class ImmoToolVideo_default extends ImmoToolVideo
     }
 
     /**
-     * Ein externes Video von clipfish.de einbinden.
-     * @param string $linkId ID des Videos beim Provider.
-     * @param string $linkTitle Titel des Videos.
-     * @param string $linkUrl URL zum Direktaufruf des Videos.
-     * @param int $width Breite des eingebundenen Videos in Pixeln.
-     * @param int $height Höhe des eingebundenen Videos in Pixeln.
-     * @return string HTML-Code des eingebundenen Videos.
-     */
-    public function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
-    {
-        $width = ($width > 0) ? $width : 464;
-        $height = ($height > 0) ? $height : 384;
-        return '<div class="video_clipfish_de" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
-            . "\n"
-
-            // IFrame
-            . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-            . '<iframe src="http://www.clipfish.de/embed_video/?vid=' . $linkId . '&amp;as=0&amp;butcolor=990000"'
-            . ' name="Clipfish Embedded Video"'
-            . ' width="' . $width . '"'
-            . ' height="' . $height . '"'
-            . ' align="left"'
-            . ' marginheight="0"'
-            . ' marginwidth="0"'
-            . ' frameborder="0"'
-            . ' scrolling="no">'
-            . '</iframe>'
-            . '</div>'
-            . "\n"
-
-            // Provider-Link
-            . '<div class="video_provider" style="text-align:right;">'
-            . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-            . ' @ <a href="http://www.clipfish.de/" target="_blank">clipfish.de</a>'
-            . '</div>'
-            . "\n"
-            . '</div>';
-    }
-
-    /**
-     * Ein externes Video von clipshack.com einbinden.
-     * @param string $linkId ID des Videos beim Provider.
-     * @param string $linkTitle Titel des Videos.
-     * @param string $linkUrl URL zum Direktaufruf des Videos.
-     * @param int $width Breite des eingebundenen Videos in Pixeln.
-     * @param int $height Höhe des eingebundenen Videos in Pixeln.
-     * @return string HTML-Code des eingebundenen Videos.
-     */
-    public function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
-    {
-        $width = ($width > 0) ? $width : 400;
-        $height = ($height > 0) ? $height : 320;
-        return '<div class="video_clipshack_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
-            . "\n"
-
-            // Flash
-            . '<div class="video_container" style="width:"' . $width . 'px; height:' . $height . 'px;">'
-            . '<embed src="http://clipshack.com/mediaplayer.swf"'
-            . ' width="' . $width . '"'
-            . ' height="' . $height . '"'
-            . ' type="application/x-shockwave-flash"'
-            . ' allowscriptaccess="always"'
-            . ' allowfullscreen="true"'
-            . ' flashvars="config=http://clipshack.com/playerconfig.aspx?key=' . $linkId . '&amp;embed=true">'
-            . '</embed>'
-            . '</div>'
-            . "\n"
-
-            // Provider-Link
-            . '<div class="video_provider" style="text-align:right;">'
-            . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-            . ' @ <a href="http://clipshack.com/" target="_blank">clipshack.com</a>'
-            . '</div>'
-            . "\n"
-            . '</div>';
-    }
-
-    /**
      * Ein externes Video von dailymotion.com einbinden.
      * @param string $linkId ID des Videos beim Provider.
      * @param string $linkTitle Titel des Videos.
@@ -150,45 +72,6 @@ class ImmoToolVideo_default extends ImmoToolVideo
     }
 
     /**
-     * Ein externes Video von myvideo.de einbinden.
-     * @param string $linkId ID des Videos beim Provider.
-     * @param string $linkTitle Titel des Videos.
-     * @param string $linkUrl URL zum Direktaufruf des Videos.
-     * @param int $width Breite des eingebundenen Videos in Pixeln.
-     * @param int $height Höhe des eingebundenen Videos in Pixeln.
-     * @return string HTML-Code des eingebundenen Videos.
-     */
-    public function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
-    {
-        $width = ($width > 0) ? $width : 611;
-        $height = ($height > 0) ? $height : 383;
-        return '<div class="video_myvideo_de" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
-            . "\n"
-
-            // IFrame
-            . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-            . '<iframe src="https://www.myvideo.de/embed/' . $linkId . '"'
-            . ' width="' . $width . '"'
-            . ' height="' . $height . '"'
-            . ' align="left"'
-            . ' marginheight="0"'
-            . ' marginwidth="0"'
-            . ' frameborder="0"'
-            . ' scrolling="no">'
-            . '</iframe>'
-            . '</div>'
-            . "\n"
-
-            // Provider-Link
-            . '<div class="video_provider" style="text-align:right;">'
-            . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-            . ' @ <a href="https://www.myvideo.de/" target="_blank">myvideo.de</a>'
-            . '</div>'
-            . "\n"
-            . '</div>';
-    }
-
-    /**
      * Eine externe Galerie von panocreator.com einbinden.
      * @param string $linkId ID der Galerie beim Provider.
      * @param string $linkTitle Galerie der Videos.
@@ -222,44 +105,6 @@ class ImmoToolVideo_default extends ImmoToolVideo
             . '<div class="gallery_provider" style="text-align:right;">'
             . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
             . ' @ <a href="http://www.panocreator.com/" target="_blank">panocreator.com</a>'
-            . '</div>'
-            . "\n"
-            . '</div>';
-    }
-
-    /**
-     * Ein externes Video von sevenload.com einbinden.
-     * @param string $linkId ID des Videos beim Provider.
-     * @param string $linkTitle Titel des Videos.
-     * @param string $linkUrl URL zum Direktaufruf des Videos.
-     * @param int $width Breite des eingebundenen Videos in Pixeln.
-     * @param int $height Höhe des eingebundenen Videos in Pixeln.
-     * @return string HTML-Code des eingebundenen Videos.
-     */
-    public function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
-    {
-        $width = ($width > 0) ? $width : 500;
-        $height = ($height > 0) ? $height : 408;
-        return '<div class="video_sevenload_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
-            . "\n"
-
-            // Flash
-            . '<div class="video_container" style="width:' . $width . 'px; height:' . $height . 'px;">'
-            . '<object data="http://sevenload.com/pl/' . $linkId . '/' . $width . 'x' . $height . '/swf"'
-            . ' type="application/x-shockwave-flash"'
-            . ' width="' . $width . '"'
-            . ' height="' . $height . '">'
-            . '<param name="allowFullscreen" value="true" />'
-            . '<param name="allowScriptAccess" value="always" />'
-            . '<param name="movie" value="http://sevenload.com/pl/' . $linkId . '/500x408/swf" />'
-            . '</object>'
-            . '</div>'
-            . "\n"
-
-            // Provider-Link
-            . '<div class="video_provider" style="text-align:right;">'
-            . '<a href="' . htmlspecialchars($linkUrl) . '" target="_blank">' . htmlspecialchars($linkTitle) . '</a>'
-            . ' @ <a href="http://sevenload.com/" target="_blank">sevenload.com</a>'
             . '</div>'
             . "\n"
             . '</div>';

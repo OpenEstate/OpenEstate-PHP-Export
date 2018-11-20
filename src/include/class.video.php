@@ -46,20 +46,8 @@ class ImmoToolVideo
         if ($provider == 'gallery@panocreator.com')
             return $this->embed_panocreator_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
 
-        if ($provider == 'video@clipfish.de')
-            return $this->embed_clipfish_de($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
-
-        if ($provider == 'video@clipshack.com')
-            return $this->embed_clipshack_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
-
         if ($provider == 'video@dailymotion.com')
             return $this->embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
-
-        if ($provider == 'video@myvideo.de')
-            return $this->embed_myvideo_de($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
-
-        if ($provider == 'video@sevenload.com')
-            return $this->embed_sevenload_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
 
         if ($provider == 'video@veoh.com')
             return $this->embed_veoh_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
@@ -81,6 +69,7 @@ class ImmoToolVideo
      * @param int $width Breite des eingebundenen Videos in Pixeln.
      * @param int $height Höhe des eingebundenen Videos in Pixeln.
      * @return string HTML-Code des eingebundenen Videos.
+     * @deprecated not supported anymore
      */
     public function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
@@ -95,6 +84,7 @@ class ImmoToolVideo
      * @param int $width Breite des eingebundenen Videos in Pixeln.
      * @param int $height Höhe des eingebundenen Videos in Pixeln.
      * @return string HTML-Code des eingebundenen Videos.
+     * @deprecated not supported anymore
      */
     public function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
@@ -123,6 +113,7 @@ class ImmoToolVideo
      * @param int $width Breite des eingebundenen Videos in Pixeln.
      * @param int $height Höhe des eingebundenen Videos in Pixeln.
      * @return string HTML-Code des eingebundenen Videos.
+     * @deprecated not supported anymore
      */
     public function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
@@ -151,6 +142,7 @@ class ImmoToolVideo
      * @param int $width Breite des eingebundenen Videos in Pixeln.
      * @param int $height Höhe des eingebundenen Videos in Pixeln.
      * @return string HTML-Code des eingebundenen Videos.
+     * @deprecated not supported anymore
      */
     public function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {

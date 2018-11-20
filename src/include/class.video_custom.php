@@ -33,38 +33,6 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
     }
 
     /**
-     * Ein externes Video von clipfish.de einbinden.
-     * @param string $linkId ID des Videos beim Provider.
-     * @param string $linkTitle Titel des Videos.
-     * @param string $linkUrl URL zum Direktaufruf des Videos.
-     * @param int $width Breite des eingebundenen Videos in Pixeln.
-     * @param int $height Höhe des eingebundenen Videos in Pixeln.
-     * @return string HTML-Code des eingebundenen Videos.
-     */
-    public function embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
-    {
-
-        // Standard-Einbindung von clipfish.de erzeugen
-        return parent::embed_clipfish_de($linkId, $linkTitle, $linkUrl, $width, $height);
-    }
-
-    /**
-     * Ein externes Video von clipshack.com einbinden.
-     * @param string $linkId ID des Videos beim Provider.
-     * @param string $linkTitle Titel des Videos.
-     * @param string $linkUrl URL zum Direktaufruf des Videos.
-     * @param int $width Breite des eingebundenen Videos in Pixeln.
-     * @param int $height Höhe des eingebundenen Videos in Pixeln.
-     * @return string HTML-Code des eingebundenen Videos.
-     */
-    public function embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
-    {
-
-        // Standard-Einbindung von clipshack.com erzeugen
-        return parent::embed_clipshack_com($linkId, $linkTitle, $linkUrl, $width, $height);
-    }
-
-    /**
      * Ein externes Video von dailymotion.com einbinden.
      * @param string $linkId ID des Videos beim Provider.
      * @param string $linkTitle Titel des Videos.
@@ -81,22 +49,6 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
     }
 
     /**
-     * Ein externes Video von myvideo.de einbinden.
-     * @param string $linkId ID des Videos beim Provider.
-     * @param string $linkTitle Titel des Videos.
-     * @param string $linkUrl URL zum Direktaufruf des Videos.
-     * @param int $width Breite des eingebundenen Videos in Pixeln.
-     * @param int $height Höhe des eingebundenen Videos in Pixeln.
-     * @return string HTML-Code des eingebundenen Videos.
-     */
-    public function embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
-    {
-
-        // Standard-Einbindung von myvideo.de erzeugen
-        return parent::embed_myvideo_de($linkId, $linkTitle, $linkUrl, $width, $height);
-    }
-
-    /**
      * Eine externe Galerie von panocreator.com einbinden.
      * @param string $linkId ID der Galerie beim Provider.
      * @param string $linkTitle Galerie der Videos.
@@ -110,22 +62,6 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
 
         // Standard-Einbindung von panocreator.com erzeugen
         return parent::embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width, $height);
-    }
-
-    /**
-     * Ein externes Video von sevenload.com einbinden.
-     * @param string $linkId ID des Videos beim Provider.
-     * @param string $linkTitle Titel des Videos.
-     * @param string $linkUrl URL zum Direktaufruf des Videos.
-     * @param int $width Breite des eingebundenen Videos in Pixeln.
-     * @param int $height Höhe des eingebundenen Videos in Pixeln.
-     * @return string HTML-Code des eingebundenen Videos.
-     */
-    public function embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
-    {
-
-        // Standard-Einbindung von sevenload.com erzeugen
-        return parent::embed_sevenload_com($linkId, $linkTitle, $linkUrl, $width, $height);
     }
 
     /**
