@@ -78,6 +78,21 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
     }
 
     /**
+     * Eine externe Galerie von round.me einbinden.
+     * @param string $linkId ID der Galerie beim Provider.
+     * @param string $linkTitle Galerie der Videos.
+     * @param string $linkUrl URL zum Direktaufruf der Galerie.
+     * @param int $width Breite der eingebundenen Galerie in Pixeln.
+     * @param int $height Höhe der eingebundenen Galerie in Pixeln.
+     * @return string HTML-Code der eingebundenen Galerie.
+     */
+    public function embed_round_me($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
+        // Standard-Einbindung von round.me erzeugen
+        return parent::embed_round_me($linkId, $linkTitle, $linkUrl, $width, $height);
+    }
+
+    /**
      * Ein externes Video von veoh.com einbinden.
      * @param string $linkId ID des Videos beim Provider.
      * @param string $linkTitle Titel des Videos.

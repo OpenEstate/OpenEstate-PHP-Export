@@ -46,6 +46,9 @@ class ImmoToolVideo
         if ($provider == 'gallery@panocreator.com')
             return $this->embed_panocreator_com($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
 
+        if ($provider == 'gallery@round.me')
+            return $this->embed_round_me($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
+
         if ($provider == 'video@d.tube')
             return $this->embed_d_tube($linkId, $linkTitle, $linkUrl, $this->width, $this->height);
 
@@ -147,6 +150,20 @@ class ImmoToolVideo
      * @return string HTML-Code der eingebundenen Galerie.
      */
     public function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
+    {
+        return null;
+    }
+
+    /**
+     * Eine externe Galerie von round.me einbinden.
+     * @param string $linkId ID der Galerie beim Provider.
+     * @param string $linkTitle Galerie der Videos.
+     * @param string $linkUrl URL zum Direktaufruf der Galerie.
+     * @param int $width Breite der eingebundenen Galerie in Pixeln.
+     * @param int $height Höhe der eingebundenen Galerie in Pixeln.
+     * @return string HTML-Code der eingebundenen Galerie.
+     */
+    public function embed_round_me($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
         return null;
     }
