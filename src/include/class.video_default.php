@@ -45,6 +45,7 @@ class ImmoToolVideo_default extends ImmoToolVideo
     {
         $width = ($width > 0) ? $width : 480;
         $height = ($height > 0) ? $height : 270;
+        /** @noinspection CssInvalidPropertyValue */
         return '<div class="video_dailymotion_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
             . "\n"
 
@@ -57,7 +58,8 @@ class ImmoToolVideo_default extends ImmoToolVideo
             . ' marginheight="0"'
             . ' marginwidth="0"'
             . ' frameborder="0"'
-            . ' scrolling="no">'
+            . ' scrolling="no"'
+            . ' allowfullscreen>'
             . '</iframe>'
             . '</div>'
             . "\n"
@@ -123,6 +125,7 @@ class ImmoToolVideo_default extends ImmoToolVideo
     {
         $width = ($width > 0) ? $width : 410;
         $height = ($height > 0) ? $height : 341;
+        /** @noinspection CssInvalidPropertyValue */
         return '<div class="video_veoh_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
             . "\n"
 
@@ -166,8 +169,10 @@ class ImmoToolVideo_default extends ImmoToolVideo
      */
     public function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
-        $width = ($width > 0) ? $width : 533;
-        $height = ($height > 0) ? $height : 300;
+        $width = ($width > 0) ? $width : 560;
+        $height = ($height > 0) ? $height : 315;
+        /** @noinspection CssInvalidPropertyValue */
+        /** @noinspection HtmlUnknownAttribute */
         return '<div class="video_vimeo_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
             . "\n"
 
@@ -180,7 +185,8 @@ class ImmoToolVideo_default extends ImmoToolVideo
             . ' marginheight="0"'
             . ' marginwidth="0"'
             . ' frameborder="0"'
-            . ' scrolling="no">'
+            . ' scrolling="no"'
+            . ' webkitallowfullscreen mozallowfullscreen allowfullscreen>'
             . '</iframe>'
             . '</div>'
             . "\n"
@@ -207,6 +213,7 @@ class ImmoToolVideo_default extends ImmoToolVideo
     {
         $width = ($width > 0) ? $width : 560;
         $height = ($height > 0) ? $height : 315;
+        /** @noinspection CssInvalidPropertyValue */
         return '<div class="video_youtube_com" style="width:' . $width . 'px; margin-bottom:0.5em; margin-top:0.5em;">'
             . "\n"
 
@@ -219,7 +226,8 @@ class ImmoToolVideo_default extends ImmoToolVideo
             . ' marginheight="0"'
             . ' marginwidth="0"'
             . ' frameborder="0"'
-            . ' scrolling="no">'
+            . ' scrolling="no"'
+            . ' allowfullscreen>'
             . '</iframe>'
             . '</div>'
             . "\n"

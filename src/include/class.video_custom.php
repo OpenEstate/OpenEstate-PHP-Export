@@ -43,7 +43,6 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
      */
     public function embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
-
         // Standard-Einbindung von dailymotion.com erzeugen
         return parent::embed_dailymotion_com($linkId, $linkTitle, $linkUrl, $width, $height);
     }
@@ -59,7 +58,6 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
      */
     public function embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
-
         // Standard-Einbindung von panocreator.com erzeugen
         return parent::embed_panocreator_com($linkId, $linkTitle, $linkUrl, $width, $height);
     }
@@ -75,7 +73,6 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
      */
     public function embed_veoh_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
-
         // Standard-Einbindung von veoh.com erzeugen
         return parent::embed_veoh_com($linkId, $linkTitle, $linkUrl, $width, $height);
     }
@@ -91,7 +88,6 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
      */
     public function embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
-
         // Standard-Einbindung von vimeo.com erzeugen
         return parent::embed_vimeo_com($linkId, $linkTitle, $linkUrl, $width, $height);
     }
@@ -107,7 +103,6 @@ class ImmoToolVideo_custom extends ImmoToolVideo_default
      */
     public function embed_youtube_com($linkId, $linkTitle, $linkUrl, $width = 0, $height = 0)
     {
-
         // Standard-Einbindung von youtube.com erzeugen
         return parent::embed_youtube_com($linkId, $linkTitle, $linkUrl, $width, $height);
     }
