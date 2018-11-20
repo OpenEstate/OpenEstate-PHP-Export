@@ -499,14 +499,17 @@ class Config
     public function newLinkProvider($name)
     {
         switch ($name) {
-            case Provider\PanoCreatorGallery::NAME:
-                return new Provider\PanoCreatorGallery();
-
             case Provider\DailyMotionVideo::NAME:
                 return new Provider\DailyMotionVideo();
 
             case Provider\DTubeVideo::NAME:
                 return new Provider\DTubeVideo();
+
+            case Provider\PanoCreatorGallery::NAME:
+                return new Provider\PanoCreatorGallery();
+
+            case Provider\RoundMeGallery::NAME:
+                return new Provider\RoundMeGallery();
 
             case Provider\VeohVideo::NAME:
                 return new Provider\VeohVideo();
