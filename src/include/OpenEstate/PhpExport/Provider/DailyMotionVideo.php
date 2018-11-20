@@ -74,7 +74,8 @@ class DailyMotionVideo extends AbstractLinkProvider
 
         $html = '<iframe class="openestate-video-object openestate-video-object-dailymotion" '
             . 'src="' . \htmlspecialchars($frameUrl) . '" '
-            . 'width="' . $width . '" height="' . $height . '"></iframe>';
+            . 'width="' . $width . '" height="' . $height . '" '
+            . 'frameborder="0" allowfullscreen></iframe>';
 
         if (Utils::isNotBlankString($linkUrl)) {
             if (Utils::isBlankString($linkTitle))

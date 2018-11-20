@@ -69,12 +69,13 @@ class VimeoVideo extends AbstractLinkProvider
     public function getBody($linkId, $linkUrl = null, $linkTitle = null)
     {
         $frameUrl = 'https://player.vimeo.com/video/' . $linkId . '?title=0&byline=0&portrait=0';
-        $width = (\is_int($this->width)) ? $this->width : 533;
-        $height = (\is_int($this->height)) ? $this->height : 300;
+        $width = (\is_int($this->width)) ? $this->width : 560;
+        $height = (\is_int($this->height)) ? $this->height : 315;
 
         $html = '<iframe class="openestate-video-object openestate-video-object-vimeo" '
             . 'src="' . \htmlspecialchars($frameUrl) . '" '
-            . 'width="' . $width . '" height="' . $height . '"></iframe>';
+            . 'width="' . $width . '" height="' . $height . '" '
+            . 'frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 
         if (Utils::isNotBlankString($linkUrl)) {
             if (Utils::isBlankString($linkTitle))
