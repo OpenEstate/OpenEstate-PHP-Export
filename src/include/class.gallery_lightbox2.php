@@ -85,7 +85,7 @@ class ImmoToolGallery_lightbox2 extends ImmoToolGallery
             $title = '';
         else
             $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-        return '<li><a href="' . $file . '" data-lightbox="gallery" data-title="' . $title . '" title="' . $title . '"><img src="' . $thumb . '" title="' . $title . '" alt="" border="0"/></a></li>';
+        return '<li><a href="' . $file . '" data-lightbox="gallery" data-title="' . $title . '" title="' . $title . '"><img src="' . $thumb . '" alt="' . $title . '" title="' . $title . '" border="0"/></a></li>';
     }
 
     /**
@@ -182,7 +182,7 @@ lightbox.option({
             $title = '';
         else
             $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-        $html = '<a href="' . $file . '" data-lightbox="title" data-title="' . $title . '" title="' . $title . '"><img src="' . $thumb . '" alt="" title="' . $title . '" border="0"/></a>';
+        $html = '<a href="' . $file . '" data-lightbox="title" data-title="' . $title . '" title="' . $title . '"><img src="' . $thumb . '" alt="' . $title . '" title="' . $title . '" border="0"/></a>';
 
         // Weitere Galeriebilder versteckt anzeigen,
         // um bei Klick auf das Titelbild eine Galerie-Navigation zu ermöglichen.

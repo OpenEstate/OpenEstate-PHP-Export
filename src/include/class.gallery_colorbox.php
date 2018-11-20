@@ -79,7 +79,7 @@ class ImmoToolGallery_colorbox extends ImmoToolGallery
             $title = '';
         else
             $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-        return '<li><a href="' . $file . '" rel="gallery" title="' . $title . '"><img src="' . $thumb . '" title="' . $title . '" alt="" border="0"/></a></li>';
+        return '<li><a href="' . $file . '" rel="gallery" title="' . $title . '"><img src="' . $thumb . '" alt="' . $title . '" title="' . $title . '" border="0"/></a></li>';
     }
 
     /**
@@ -179,7 +179,7 @@ jQuery(document).ready(function(){
             $title = '';
         else
             $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-        $html = '<a href="' . $file . '" rel="title" title="' . $title . '"><img src="' . $thumb . '" alt="" title="' . $title . '" border="0"/></a>';
+        $html = '<a href="' . $file . '" rel="title" title="' . $title . '"><img src="' . $thumb . '" alt="' . $title . '" title="' . $title . '" border="0"/></a>';
 
         // Weitere Galeriebilder versteckt anzeigen,
         // um bei Klick auf das Titelbild eine Galerie-Navigation zu ermöglichen.

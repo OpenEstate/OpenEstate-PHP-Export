@@ -124,7 +124,7 @@ class ImmoToolGallery
             $title = '';
         else
             $title = htmlentities($title, ENT_QUOTES, 'UTF-8');
-        return '<a href="' . $link . '" title="' . $title . '"><img src="' . $thumb . '" alt="" title="' . $title . '" border="0"/></a>';
+        return '<a href="' . $link . '" title="' . $title . '"><img src="' . $thumb . '" alt="' . $title . '" title="' . $title . '" border="0"/></a>';
     }
 
     /**

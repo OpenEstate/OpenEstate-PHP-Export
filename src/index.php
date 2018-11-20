@@ -188,13 +188,16 @@ foreach ($result as $resultId) {
             'data/' . $object['id'] . '/' . $object['images'][0]['name'] : null;
         if ($img == null || !is_file(immotool_functions::get_path($img))) {
             immotool_functions::replace_var('IMAGE', null, $listingEntry);
+            immotool_functions::replace_var('IMAGE_TITLE', null, $listingEntry);
         } else {
+            $imgTitle = (isset($object['images'][0]['title'][$lang])) ? $object['images'][0]['title'][$lang] : '';
             $imgScaleScript = 'img.php?id=' . $object['id'] . '&amp;img=' . $object['images'][0]['name'];
             if ($mode == 'gallery')
                 $imgScaleScript .= '&amp;x=' . $setup->GalleryImageSize[0] . '&amp;y=' . $setup->GalleryImageSize[1];
             else
                 $imgScaleScript .= '&amp;x=' . $setup->ListingImageSize[0] . '&amp;y=' . $setup->ListingImageSize[1];
             immotool_functions::replace_var('IMAGE', $imgScaleScript, $listingEntry);
+            immotool_functions::replace_var('IMAGE_TITLE', htmlspecialchars($imgTitle), $listingEntry);
         }
     } // Titelbild direkt ausliefern
     else {
@@ -204,10 +207,14 @@ foreach ($result as $resultId) {
         else if (isset($object['images'][0]['thumb']))
             $img = 'data/' . $object['id'] . '/' . $object['images'][0]['thumb'];
 
-        if ($img != null && is_file(immotool_functions::get_path($img)))
+        if ($img != null && is_file(immotool_functions::get_path($img))) {
             immotool_functions::replace_var('IMAGE', $img, $listingEntry);
-        else
+            immotool_functions::replace_var('IMAGE_TITLE', null, $listingEntry);
+        } else {
+            $imgTitle = (isset($object['images'][0]['title'][$lang])) ? $object['images'][0]['title'][$lang] : '';
             immotool_functions::replace_var('IMAGE', null, $listingEntry);
+            immotool_functions::replace_var('IMAGE_TITLE', htmlspecialchars($imgTitle), $listingEntry);
+        }
     }
 
     // Die ersten X Attribute jeder Gruppe darstellen
