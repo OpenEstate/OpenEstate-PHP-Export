@@ -94,6 +94,8 @@ class Config
     /**
      * Enable minimization of generated HTML code.
      *
+     * This is an experimental feature, that might lead to problems in certain situations.
+     *
      * @var bool
      */
     public $minimizeHtml = false;

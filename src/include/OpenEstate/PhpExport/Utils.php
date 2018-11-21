@@ -31,6 +31,59 @@ use function htmlspecialchars as html;
 class Utils
 {
     /**
+     * Construct an absolute URL from a base URL and a relative part.
+     *
+     * @param $relativePart
+     * relative part of the URL
+     *
+     * @param $baseUrl
+     * base URL
+     *
+     * @return string
+     * absolute URL
+     *
+     * @see http://www.gambit.ph/converting-relative-urls-to-absolute-urls-in-php/ Converting Relative URLs to Absolute URLs in PHP
+     */
+    public static function createAbsoluteUrl($relativePart, $baseUrl)
+    {
+        // parse base URL
+        $scheme = \parse_url($baseUrl, PHP_URL_SCHEME);
+        if (strpos($relativePart, "//") === 0) {
+            return $scheme . ':' . $relativePart;
+        }
+
+        // return if already absolute URL
+        if (\parse_url($relativePart, PHP_URL_SCHEME) != '') {
+            return $relativePart;
+        }
+
+        // queries and anchors
+        if ($relativePart[0] == '#' || $relativePart[0] == '?') {
+            return $baseUrl . $relativePart;
+        }
+
+        // remove non-directory element from path
+        $path = \parse_url($baseUrl, PHP_URL_PATH);
+        $path = \preg_replace('#/[^/]*$#', '', $path);
+
+        // destroy path if relative url points to root
+        if ($relativePart[0] === '/') {
+            $path = '';
+        }
+
+        // dirty absolute URL
+        $host = \parse_url($baseUrl, PHP_URL_HOST);
+        $abs = $host . $path . '/' . $relativePart;
+
+        // replace '//' or  '/./' or '/foo/../' with '/'
+        $abs = \preg_replace('/(\/\.?\/)/', '/', $abs);
+        $abs = \preg_replace('/\/(?!\.\.)[^\/]+\/\.\.\//', '/', $abs);
+
+        // absolute URL is ready!
+        return $scheme . '://' . $abs;
+    }
+
+    /**
      * Create a translator for a certain language.
      *
      * @param Environment $env
@@ -157,6 +210,30 @@ class Utils
     }
 
     /**
+     * Convert a relative URL to an absolute URL.
+     *
+     * @param $url
+     * relative URL
+     *
+     * @return string
+     * absolute URL
+     */
+    public static function getAbsoluteUrl($url)
+    {
+        // URL is already absolute
+        $scheme = \parse_url($url, PHP_URL_SCHEME);
+        if ($scheme !== false && self::isNotBlankString($scheme)) {
+            return $url;
+        }
+
+        // create base URL
+        $baseUrl = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
+        $baseUrl .= $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'];
+        //die('getAbsoluteUrl / ' . $url . ' / ' . $baseUrl . ' = ' . self::createAbsoluteUrl($url, $baseUrl));
+        return self::createAbsoluteUrl($url, $baseUrl);
+    }
+
+    /**
      * Get the value for an attribute.
      *
      * @param string $group
@@ -168,29 +245,21 @@ class Utils
      * @param array $value
      * attribute value
      *
-     * @param array $i18n
-     * data translations
-     *
      * @param string $lang
      * language code
      *
      * @return string
      * readable output of the attribute value
      */
-    public static function getAttributeValue($group, $attribute, array $value, array &$i18n, $lang)
+    public static function getAttributeValue($group, $attribute, array $value, $lang)
     {
         if (!\is_array($value) || !isset($value['value']))
             return null;
 
         $txt = null;
 
-        // ggf. individuellen Attribut-Wert aus der myconfig.php ermitteln
-        //if (is_callable(array('immotool_myconfig', 'write_attribute_value'))) {
-        //    $txt = immotool_myconfig::write_attribute_value($group, $attribute, $value, $i18n, $lang);
-        //}
-
         // ggf. den Text "ab sofort" ausgeben,
-        // wenn der Verfügbarkeits-Beginn in der Vergangenheit liegt
+        // wenn Beginn der Verfügbarkeit in der Vergangenheit liegt
         if ($txt === null && $group == 'administration' && $attribute == 'availability_begin_date') {
             $stamp = (isset($value['value'])) ? $value['value'] : null;
             if (\is_numeric($stamp) && $stamp <= time())
@@ -1006,24 +1075,24 @@ class Utils
         // write object type
         if ($field == 'type')
             return (isset($i18n['openestate']['types'][$object['type']])) ?
-                \htmlspecialchars($i18n['openestate']['types'][$object['type']]) :
-                \htmlspecialchars($object['type']);
+                html($i18n['openestate']['types'][$object['type']]) :
+                html($object['type']);
 
         // write object action
         if ($field == 'action')
             return (isset($i18n['openestate']['actions'][$object['action']])) ?
-                \htmlspecialchars($i18n['openestate']['actions'][$object['action']]) :
-                \htmlspecialchars($object['action']);
+                html($i18n['openestate']['actions'][$object['action']]) :
+                html($object['action']);
 
         // write object address
         if ($field == 'address')
-            return \htmlspecialchars($object['address']['postal'] . ' ' . $object['address']['city']);
+            return html($object['address']['postal'] . ' ' . $object['address']['city']);
 
         // write object country
         if ($field == 'country')
             return (isset($object['address']['country_name'][$lang])) ?
-                \htmlspecialchars($object['address']['country_name'][$lang]) :
-                \htmlspecialchars($object['address']['country']);
+                html($object['address']['country_name'][$lang]) :
+                html($object['address']['country']);
 
         // write rent flat rate
         if ($field == 'rent_flat_rate') {
@@ -1037,10 +1106,10 @@ class Utils
 
             $title = (isset($i18n['openestate']['attributes']['prices']['rent_flat_rate'])) ?
                 $i18n['openestate']['attributes']['prices']['rent_flat_rate'] : 'rent flat rate';
-            $text = self::getAttributeValue('prices', 'rent_flat_rate', $value, $i18n, $lang);
+            $text = self::getAttributeValue('prices', 'rent_flat_rate', $value, $lang);
 
-            return '<span class="openestate-attribute-label">' . \htmlspecialchars($title) . ':</span>'
-                . '<span class="openestate-attribute-value">' . \htmlspecialchars(_('{0} per {1}', $text, $interval)) . '</span>';
+            return '<span class="openestate-attribute-label">' . html($title) . ':</span>'
+                . '<span class="openestate-attribute-value">' . html(_('{0} per {1}', $text, $interval)) . '</span>';
         }
 
         // write primary area
@@ -1104,15 +1173,15 @@ class Utils
 
             if (!\is_array($value)) return null;
 
-            $text = self::getAttributeValue($attribute[0], $attribute[1], $value, $i18n, $lang);
+            $text = self::getAttributeValue($attribute[0], $attribute[1], $value, $lang);
             if ($valueOnly === true)
                 return $text;
 
             $title = (isset($i18n['openestate']['attributes'][$attribute[0]][$attribute[1]])) ?
                 $i18n['openestate']['attributes'][$attribute[0]][$attribute[1]] : $attribute[1];
 
-            return '<span class="openestate-attribute-label">' . \htmlspecialchars($title) . ':</span>'
-                . '<span class="openestate-attribute-value">' . \htmlspecialchars($text) . '</span>';
+            return '<span class="openestate-attribute-label">' . html($title) . ':</span>'
+                . '<span class="openestate-attribute-value">' . html($text) . '</span>';
         }
 
         return null;

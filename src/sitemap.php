@@ -86,15 +86,7 @@ try {
         if (!\is_array($objectData))
             continue;
 
-        $objectUrl = $exposeView->getUrl($env, $objectId);
-        if (substr($objectUrl, 0, 2) === './') {
-            $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
-            $objectUrl = $protocol . $_SERVER['SERVER_NAME'] . \dirname($_SERVER['PHP_SELF']) . \substr($objectUrl, 1);
-        } else if (substr($objectUrl, 0, 1) === '/') {
-            $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
-            $objectUrl = $protocol . $_SERVER['SERVER_NAME'] . $objectUrl;
-        }
-
+        $objectUrl = Utils::getAbsoluteUrl($exposeView->getUrl($env, $objectId));
         $objectStamp = $env->getObjectStamp($objectId);
 
         $sitemap .= '  <url>' . "\n";
