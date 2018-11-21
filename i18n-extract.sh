@@ -29,6 +29,7 @@ cd "$DIR/src"
 rm -f "../i18n/template.pot"
 touch "../i18n/template.pot"
 find . \
+    -type f \
     -name "*.php" \
     -not -path "./data/*" \
     -not -path "./include/TrueBV/*" \
@@ -52,6 +53,7 @@ for i in $(ls -d themes/*/); do
     rm -f "../i18n/$themeName/template.pot"
     touch "../i18n/$themeName/template.pot"
     find "./$themePath/" \
+        -type f \
         -name "*.php" \
         -exec "$XGETTEXT" --package-name="OpenEstate-PHP-Export ($themeName theme)" ${XGETTEXT_PARAMS} -o "../i18n/$themeName/template.pot" {} \;
 done
