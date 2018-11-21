@@ -77,7 +77,7 @@ try {
     }
     echo '</ul>';
     echo '<p>' . $success . ' files removed</p>';
-    if ($error>0) {
+    if ($error > 0) {
         echo '<p>' . $error . ' files not removed</p>';
     }
 
@@ -92,9 +92,7 @@ try {
 
     //Utils::logError($e);
     Utils::logWarning($e);
-    echo '<h1>An internal error occurred!</h1>';
-    echo '<p>' . $e->getMessage() . '</p>';
-    echo '<pre>' . $e . '</pre>';
+    Utils::printErrorException($e);
 
 } finally {
 

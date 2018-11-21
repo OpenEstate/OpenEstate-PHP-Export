@@ -19,6 +19,7 @@ namespace OpenEstate\PhpExport;
 
 use \TrueBV\Punycode;
 use function gettext as _;
+use function htmlspecialchars as html;
 
 /**
  * Static helper methods.
@@ -894,6 +895,30 @@ class Utils
     public static function logWarning($msg)
     {
         self::log($msg, \E_USER_WARNING);
+    }
+
+    /**
+     * Print an error exception.
+     *
+     * @param \Exception $exception
+     * exception to print
+     */
+    public static function printErrorException($exception)
+    {
+        self::printErrorMessage($exception->getMessage());
+        echo '<pre>' . html($exception) . '</pre>';
+    }
+
+    /**
+     * Print an error message.
+     *
+     * @param string $message
+     * error message to print
+     */
+    public static function printErrorMessage($message)
+    {
+        echo '<h1>An internal error occurred!</h1>';
+        echo '<p>' . html($message) . '</p>';
     }
 
     /**

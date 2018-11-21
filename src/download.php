@@ -99,9 +99,7 @@ try {
 
     //Utils::logError($e);
     Utils::logWarning($e);
-    echo '<h1>An internal error occurred!</h1>';
-    echo '<p>' . $e->getMessage() . '</p>';
-    echo '<pre>' . $e . '</pre>';
+    Utils::printErrorException($e);
 
 } finally {
 

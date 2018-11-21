@@ -129,9 +129,7 @@ try {
 
     //Utils::logError($e);
     Utils::logWarning($e);
-    echo '<h1>An internal error occurred!</h1>';
-    echo '<p>' . $e->getMessage() . '</p>';
-    echo '<pre>' . $e . '</pre>';
+    Utils::printErrorException($e);
 
 } finally {
 
@@ -149,8 +147,7 @@ try {
         if (!\headers_sent())
             \http_response_code(500);
 
-        echo '<h1>An internal error occurred!</h1>';
-        echo '<p>No content was created!</p>';
+        Utils::printErrorMessage('No content was created!');
         return;
     }
 
