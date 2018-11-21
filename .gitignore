@@ -5,7 +5,9 @@
 .idea/usage.statistics.xml
 .idea/workspace.xml
 
+i18n/**/*.po~
+
 phpdoc/
 phpdoc-cache/
 
-i18n/**/*.po~
+temp
