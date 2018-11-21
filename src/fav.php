@@ -26,7 +26,7 @@ namespace OpenEstate\PhpExport;
  */
 
 // initialization
-$startupTime = \microtime();
+$startupTime = \microtime(true);
 require(__DIR__ . '/include/init.php');
 require(__DIR__ . '/config.php');
 
@@ -81,7 +81,7 @@ try {
 
     // add statistics
     if ($env !== null && $env->isStatistics()) {
-        $buildTime = \microtime() - $startupTime;
+        $buildTime = \microtime(true) - $startupTime;
         $output = \str_replace(
             '</body>',
             '<pre class="openestate-statistics">' . Utils::writeStatistics($buildTime) . '</pre></body>',
