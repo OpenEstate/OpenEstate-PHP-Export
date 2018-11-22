@@ -208,13 +208,13 @@ class Contact extends AbstractAction
                 $env->getTranslator();
 
             $labels = array(
-                'name' => $t->gettext('Name'),
-                'phone' => $t->gettext('Phone'),
-                'email' => $t->gettext('Email'),
-                'language' => $t->gettext('Language'),
-                'time' => $t->gettext('Time'),
-                'ip' => $t->gettext('IP address'),
-                'browser' => $t->gettext('Web Browser')
+                'name' => \ucfirst($t->gettext('name')),
+                'phone' => \ucfirst($t->gettext('phone')),
+                'email' => \ucfirst($t->gettext('email')),
+                'language' => \ucfirst($t->gettext('language')),
+                'time' => \ucfirst($t->gettext('time')),
+                'ip' => \ucfirst($t->gettext('IP address')),
+                'browser' => \ucfirst($t->gettext('web browser'))
             );
             $maxLabelLength = 0;
             foreach ($labels as $label) {

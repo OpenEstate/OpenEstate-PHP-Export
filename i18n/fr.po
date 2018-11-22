@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-09-16 18:18+0200\n"
+"POT-Creation-Date: 2018-11-23 00:42+0100\n"
 "PO-Revision-Date: 2018-11-19 18:34+0000\n"
 "Last-Translator: Sylvain Talvan <sylvain@talvans.com>\n"
-"Language-Team: French <https://i18n.openestate.org/projects/"
-"openestate-php-export/core/fr/>\n"
+"Language-Team: French <https://i18n.openestate.org/projects/openestate-php-"
+"export/core/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,227 +18,238 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.2.2\n"
 
-#: include/OpenEstate/PhpExport/Filter/SpecialOffer.php:67
+#: feed_atom.php:106 include/OpenEstate/PhpExport/View/AbstractHtmlView.php:98
+#: include/OpenEstate/PhpExport/View/AbstractHtmlView.php:110 feed_rss.php:105
+msgid "current offers"
+msgstr ""
+
+#: feed_atom.php:107 feed_rss.php:107
+msgid "current offers by {0}"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/SpecialOffer.php:66
 msgid "special offer"
 msgstr "Offre spéciale"
 
-#: include/OpenEstate/PhpExport/Filter/Country.php:91
+#: include/OpenEstate/PhpExport/Filter/Country.php:90
 msgid "country"
 msgstr "pays"
 
-#: include/OpenEstate/PhpExport/Filter/Action.php:63
+#: include/OpenEstate/PhpExport/Filter/Action.php:62
 msgid "marketing type"
 msgstr "méthode de commercialisation"
 
-#: include/OpenEstate/PhpExport/Filter/Age.php:64
+#: include/OpenEstate/PhpExport/Filter/Age.php:63
 msgid "age"
 msgstr "âge"
 
-#: include/OpenEstate/PhpExport/Filter/Equipment.php:64
+#: include/OpenEstate/PhpExport/Filter/Equipment.php:63
 msgid "equipment"
 msgstr "équipement"
 
-#: include/OpenEstate/PhpExport/Filter/Rooms.php:95
-#: include/OpenEstate/PhpExport/Order/Rooms.php:60
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:94
+#: include/OpenEstate/PhpExport/Order/Rooms.php:59
 msgid "number of rooms"
 msgstr "nombre de pièces"
 
-#: include/OpenEstate/PhpExport/Filter/Rooms.php:110
-#: include/OpenEstate/PhpExport/Filter/Rooms.php:112
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:109
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:111
 msgid "{0} room"
 msgid_plural "{0} rooms"
 msgstr[0] "{0} pièce"
 msgstr[1] "{0} pièces"
 
-#: include/OpenEstate/PhpExport/Filter/Region.php:66
+#: include/OpenEstate/PhpExport/Filter/Region.php:65
 msgid "region"
 msgstr "région"
 
-#: include/OpenEstate/PhpExport/Filter/City.php:66
-#: include/OpenEstate/PhpExport/Order/City.php:60
+#: include/OpenEstate/PhpExport/Filter/City.php:65
+#: include/OpenEstate/PhpExport/Order/City.php:59
 msgid "place"
 msgstr "lieu"
 
-#: include/OpenEstate/PhpExport/Filter/Furnished.php:67
+#: include/OpenEstate/PhpExport/Filter/Furnished.php:66
 msgid "furnished"
 msgstr "meublé"
 
-#: include/OpenEstate/PhpExport/Filter/Type.php:67
+#: include/OpenEstate/PhpExport/Filter/Type.php:66
 msgid "object type"
 msgstr "type de bien"
 
-#: include/OpenEstate/PhpExport/Filter/GroupNr.php:65
-#: include/OpenEstate/PhpExport/Order/GroupNr.php:63
+#: include/OpenEstate/PhpExport/Filter/GroupNr.php:64
+#: include/OpenEstate/PhpExport/Order/GroupNr.php:62
 msgid "group"
 msgstr "groupe"
 
-#: include/OpenEstate/PhpExport/Filter/GroupNr.php:81
+#: include/OpenEstate/PhpExport/Filter/GroupNr.php:80
 msgid "group {0}"
 msgstr "groupe {0}"
 
-#: include/OpenEstate/PhpExport/Order/Title.php:62
+#: include/OpenEstate/PhpExport/Order/Title.php:61
 msgid "title"
 msgstr "titre"
 
-#: include/OpenEstate/PhpExport/Order/ObjectNr.php:66
-msgid "object Nr"
-msgstr "Objet Nr"
+#: include/OpenEstate/PhpExport/Order/ObjectNr.php:65
+msgid "object nr"
+msgstr "objet nr"
 
-#: include/OpenEstate/PhpExport/Order/Postal.php:60
+#: include/OpenEstate/PhpExport/Order/Postal.php:59
 msgid "postal code"
 msgstr "Code postal"
 
-#: include/OpenEstate/PhpExport/Order/Area.php:79
+#: include/OpenEstate/PhpExport/Order/Area.php:78
 msgid "area"
 msgstr "surface"
 
-#: include/OpenEstate/PhpExport/Order/Price.php:84
+#: include/OpenEstate/PhpExport/Order/Price.php:83
 msgid "price"
 msgstr "Prix"
 
-#: include/OpenEstate/PhpExport/Order/LastMod.php:62
+#: include/OpenEstate/PhpExport/Order/LastMod.php:61
 msgid "last modification"
 msgstr "date de modification"
 
-#: include/OpenEstate/PhpExport/Order/ObjectId.php:65
+#: include/OpenEstate/PhpExport/Order/ObjectId.php:64
 msgid "object ID"
-msgstr "ID de l'Objet"
+msgstr "ID de l'objet"
 
-#: include/OpenEstate/PhpExport/Utils.php:169
+#: include/OpenEstate/PhpExport/Utils.php:266
 msgid "from now on"
 msgstr "﻿à partir de maintenant"
 
-#: include/OpenEstate/PhpExport/Utils.php:916
+#: include/OpenEstate/PhpExport/Utils.php:1105
 msgid "month"
 msgstr "mois"
 
-#: include/OpenEstate/PhpExport/Utils.php:923
+#: include/OpenEstate/PhpExport/Utils.php:1112
 msgid "{0} per {1}"
 msgstr "{0} par {1}"
 
-#: include/OpenEstate/PhpExport/Provider/VimeoVideo.php:75
-#: include/OpenEstate/PhpExport/Provider/DailyMotionVideo.php:75
-#: include/OpenEstate/PhpExport/Provider/YouTubeVideo.php:75
-#: include/OpenEstate/PhpExport/Provider/PanoCreatorGallery.php:75
-#: include/OpenEstate/PhpExport/Provider/VeohVideo.php:85
-#: include/OpenEstate/PhpExport/Provider/OpenStreetMap.php:97
-#: include/OpenEstate/PhpExport/Provider/GoogleMap.php:87
+#: include/OpenEstate/PhpExport/Provider/VimeoVideo.php:82
+#: include/OpenEstate/PhpExport/Provider/DailyMotionVideo.php:82
+#: include/OpenEstate/PhpExport/Provider/YouTubeVideo.php:82
+#: include/OpenEstate/PhpExport/Provider/PanoCreatorGallery.php:81
+#: include/OpenEstate/PhpExport/Provider/GoogleMaps.php:91
+#: include/OpenEstate/PhpExport/Provider/VeohVideo.php:91
+#: include/OpenEstate/PhpExport/Provider/OpenStreetMap.php:103
+#: include/OpenEstate/PhpExport/Provider/RoundMeGallery.php:81
+#: include/OpenEstate/PhpExport/Provider/DTubeVideo.php:82
 msgid "Show in a separate window."
 msgstr "Afficher dans une fenêtre séparée."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:115
+#: include/OpenEstate/PhpExport/Action/Contact.php:125
 msgid "No object was provided for the contact request."
 msgstr "aucune propriété n'a été envoyée à la demande de contact."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:117
+#: include/OpenEstate/PhpExport/Action/Contact.php:127
 msgid "No contact data was provided for the contact request."
 msgstr "Aucune information de contact n'a été envoyée à la demande de contact."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:122
+#: include/OpenEstate/PhpExport/Action/Contact.php:132
 msgid "The requested object was not found."
 msgstr "L'objet demandé n'a pas été trouvé."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:131
+#: include/OpenEstate/PhpExport/Action/Contact.php:141
 msgid "Can't find a recipient address."
 msgstr "L'adresse du destinataire n'a pas été trouvée."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:145
+#: include/OpenEstate/PhpExport/Action/Contact.php:155
 msgid "Please enter your name."
 msgstr "Veuillez entrer votre nom."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:147
+#: include/OpenEstate/PhpExport/Action/Contact.php:157
 msgid "Your name should contain at least {0} and maximal {1} characters."
 msgstr "Votre nom doit comporter entre minimum {0} et {1} caractères maximum."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:149
-#: include/OpenEstate/PhpExport/Action/Contact.php:157
-#: include/OpenEstate/PhpExport/Action/Contact.php:171
+#: include/OpenEstate/PhpExport/Action/Contact.php:159
+#: include/OpenEstate/PhpExport/Action/Contact.php:167
+#: include/OpenEstate/PhpExport/Action/Contact.php:181
 msgid "HTML code is not allowed."
 msgstr "Le code HTML n'est pas autorisé."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:153
+#: include/OpenEstate/PhpExport/Action/Contact.php:163
 msgid "Please enter your phone number."
 msgstr "Veuillez entrer votre numéro de téléphone."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:155
+#: include/OpenEstate/PhpExport/Action/Contact.php:165
 msgid ""
 "Your phone number should contain at least {0} and maximal {1} characters."
 msgstr ""
 "Votre numéro de téléphone doit comporter au minimum {0} et au maximum {1} "
 "caractères."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:161
+#: include/OpenEstate/PhpExport/Action/Contact.php:171
 msgid "Please enter your email address."
 msgstr "Veuillez entrer votre adresse e-mail."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:163
+#: include/OpenEstate/PhpExport/Action/Contact.php:173
 msgid "Your email address is invalid."
 msgstr "Votre adresse e-mail est invalide."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:167
+#: include/OpenEstate/PhpExport/Action/Contact.php:177
 msgid "Please enter your message."
 msgstr "Veuillez entrer votre message."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:169
+#: include/OpenEstate/PhpExport/Action/Contact.php:179
 msgid "Your message should contain at least {0} characters."
 msgstr "Votre message doit contenir au moins {0} caractères."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:175
+#: include/OpenEstate/PhpExport/Action/Contact.php:185
 msgid "Please accept the terms of use."
 msgstr "Veuillez confirmer les conditions d'utilisation."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:180
+#: include/OpenEstate/PhpExport/Action/Contact.php:190
 msgid "Please enter the verification code."
 msgstr "Veuillez entrer le code de vérification."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:182
+#: include/OpenEstate/PhpExport/Action/Contact.php:192
 msgid "Your verification code is invalid."
 msgstr "Votre code de vérification est invalide."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:187
+#: include/OpenEstate/PhpExport/Action/Contact.php:197
 msgid "Please check your input in the highlighted fields."
 msgstr "Svp vérifier votre entrée dans les champs en surbrillance."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:201
-msgid "Name"
-msgstr "Nom"
+#: include/OpenEstate/PhpExport/Action/Contact.php:211
+msgid "name"
+msgstr "nom"
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:202
-msgid "Phone"
-msgstr "Téléphone"
+#: include/OpenEstate/PhpExport/Action/Contact.php:212
+msgid "phone"
+msgstr "téléphone"
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:203
-msgid "Email"
-msgstr "E-Mail"
+#: include/OpenEstate/PhpExport/Action/Contact.php:213
+msgid "email"
+msgstr "e-mail"
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:204
-msgid "Language"
-msgstr "Langue"
+#: include/OpenEstate/PhpExport/Action/Contact.php:214
+msgid "language"
+msgstr "langue"
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:205
-msgid "Time"
-msgstr "Heure"
+#: include/OpenEstate/PhpExport/Action/Contact.php:215
+msgid "time"
+msgstr "heure"
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:206
+#: include/OpenEstate/PhpExport/Action/Contact.php:216
 msgid "IP address"
 msgstr "adresse IP"
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:207
-msgid "Web Browser"
-msgstr "Navigateur Web"
+#: include/OpenEstate/PhpExport/Action/Contact.php:217
+msgid "web browser"
+msgstr "navigateur web"
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:223
+#: include/OpenEstate/PhpExport/Action/Contact.php:233
 msgid "Contact request for object {0}"
 msgstr "Demande de contact pour l'objet {0}"
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:224
+#: include/OpenEstate/PhpExport/Action/Contact.php:234
 msgid "A contact request was sent for object {0}."
 msgstr "Une demande de contact a été soumise pour l'objet {0}."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:241
+#: include/OpenEstate/PhpExport/Action/Contact.php:251
 msgid "Email was not sent."
 msgstr "L'e-mail n'a pas été envoyé."
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:247
+#: include/OpenEstate/PhpExport/Action/Contact.php:257
 msgid "The email transfer failed."
 msgstr "l'envoi de l'e-mail a échoué."

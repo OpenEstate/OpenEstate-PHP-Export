@@ -62,7 +62,7 @@ class ObjectNr extends AbstractOrder
 
     public function getTitle($lang)
     {
-        return _('object Nr');
+        return _('object nr');
     }
 
 }
