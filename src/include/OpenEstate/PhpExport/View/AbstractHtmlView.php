@@ -78,6 +78,7 @@ abstract class AbstractHtmlView extends AbstractView
     function __construct(Environment $env)
     {
         parent::__construct($env);
+        $this->addHeader(Meta::newAuthor($env->getConfig()->companyName), -1);
         $this->addHeader(Meta::newGenerator('OpenEstate-PHP-Export ' . VERSION), -1);
 
         // include custom.css, if it is available and contains some content
