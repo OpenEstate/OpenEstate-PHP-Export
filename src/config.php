@@ -39,6 +39,9 @@ class MyConfig extends Config
     {
         parent::__construct($basePath, $baseUrl);
 
+        // Set name of the company.
+        //$this->companyName = 'example real estate agency';
+
         // Set name of the theme used to render pages.
         //$this->themeName = 'default';
 
@@ -60,6 +63,30 @@ class MyConfig extends Config
 
         // Enable or disable management of favored real estates.
         //$this->favorites = true;
+
+        // Enable atom feed.
+        //$this->atomFeed = true;
+
+        // Maximal number of objects shown in the atom feed.
+        //$this->atomFeedLimit = 25;
+
+        // Show the first image of an object in the atom feed.
+        //$this->atomFeedWithImage = true;
+
+        // Enable rss feed.
+        //$this->rssFeed = true;
+
+        // Maximal number of objects shown in the rss feed.
+        //$this->rssFeedLimit = 25;
+
+        // Show the first image of an object in the rss feed.
+        //$this->rssFeedWithImage = true;
+
+        // Enable trovit feed.
+        //$this->trovitFeed = true;
+
+        // Maximal number of objects shown in the trovit feed.
+        //$this->trovitFeedLimit = 0;
 
         // Enable or disable debugging.
         //$this->debug = false;
@@ -216,6 +243,23 @@ class MyConfig extends Config
     public function getFavoriteUrl($parameters = null)
     {
         return parent::getFavoriteUrl($parameters);
+    }
+
+    /**
+     * Get URL for a real estate feed.
+     *
+     * @param string $type
+     * type of feed (atom / rss / trovit)
+     *
+     * @param string $lang
+     * language code
+     *
+     * @return string
+     * URL
+     */
+    public function getFeedUrl($type, $lang)
+    {
+        return parent::getFeedUrl($type, $lang);
     }
 
     /**

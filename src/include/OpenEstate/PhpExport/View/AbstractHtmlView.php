@@ -23,6 +23,7 @@ use OpenEstate\PhpExport\Html\Stylesheet;
 use OpenEstate\PhpExport\Utils;
 use OpenEstate\PhpExport\Html\AbstractHeadElement;
 use const OpenEstate\PhpExport\VERSION;
+use function OpenEstate\PhpExport\gettext as _;
 
 /**
  * An abstract HTML document.
@@ -85,8 +86,31 @@ abstract class AbstractHtmlView extends AbstractView
             $this->addHeader(Stylesheet::newLink(
                 'openestate-custom-css',
                 $env->getCustomCssUrl(array('v' => \filemtime($customCss)))
-            ), 99999);
+            ), 99998);
 
+        // register rss feed by default
+        if ($env->getConfig()->rssFeed === true) {
+            $feedUrl = $env->getConfig()->getFeedUrl('rss', $env->getLanguage());
+            if (\is_string($feedUrl)) {
+                $this->addHeader(\OpenEstate\PhpExport\Html\Link::newRssFeed(
+                    'openestate-feed-rss',
+                    $feedUrl,
+                    \ucfirst(_('current offers'))
+                ), 99999);
+            }
+        }
+
+        // register atom feed by default
+        if ($env->getConfig()->atomFeed === true) {
+            $feedUrl = $env->getConfig()->getFeedUrl('atom', $env->getLanguage());
+            if (\is_string($feedUrl)) {
+                $this->addHeader(\OpenEstate\PhpExport\Html\Link::newAtomFeed(
+                    'openestate-feed-atom',
+                    $feedUrl,
+                    \ucfirst(_('current offers'))
+                ), 99999);
+            }
+        }
     }
 
     /**
@@ -171,7 +195,8 @@ abstract class AbstractHtmlView extends AbstractView
      * @return array
      * registered header elements
      */
-    public function getHeaders() {
+    public function getHeaders()
+    {
         $headers = \array_merge(array(), $this->headerElements);
 
         // Sort header elements according to their priority.

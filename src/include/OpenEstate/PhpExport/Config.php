@@ -27,6 +27,13 @@ namespace OpenEstate\PhpExport;
 class Config
 {
     /**
+     * Name of the company.
+     *
+     * @var string
+     */
+    public $companyName = 'example real estate agency';
+
+    /**
      * Name of the theme used to render pages.
      *
      * @var string
@@ -76,6 +83,68 @@ class Config
      * @var bool
      */
     public $favorites = true;
+
+    /**
+     * Enable atom feed.
+     *
+     * @var bool
+     */
+    public $atomFeed = true;
+
+    /**
+     * Maximal number of objects shown in the atom feed.
+     *
+     * Set the value to 0 to show all objects in the feed.
+     *
+     * @var int
+     */
+    public $atomFeedLimit = 25;
+
+    /**
+     * Show the first image of an object in the atom feed.
+     *
+     * @var bool
+     */
+    public $atomFeedWithImage = true;
+
+    /**
+     * Enable rss feed.
+     *
+     * @var bool
+     */
+    public $rssFeed = true;
+
+    /**
+     * Maximal number of objects shown in the rss feed.
+     *
+     * Set the value to 0 to show all objects in the feed.
+     *
+     * @var int
+     */
+    public $rssFeedLimit = 25;
+
+    /**
+     * Show the first image of an object in the rss feed.
+     *
+     * @var bool
+     */
+    public $rssFeedWithImage = true;
+
+    /**
+     * Enable trovit feed.
+     *
+     * @var bool
+     */
+    public $trovitFeed = true;
+
+    /**
+     * Maximal number of objects shown in the trovit feed.
+     *
+     * Set the value to 0 to show all objects in the feed.
+     *
+     * @var int
+     */
+    public $trovitFeedLimit = 0;
 
     /**
      * Enable debug output.
@@ -299,6 +368,32 @@ class Config
     {
         return Utils::joinPath($this->baseUrl, 'fav.php')
             . Utils::getUrlParameters($parameters);
+    }
+
+    /**
+     * Get URL for a real estate feed.
+     *
+     * @param string $type
+     * type of feed (atom / rss / trovit)
+     *
+     * @param string $lang
+     * language code
+     *
+     * @return string
+     * URL
+     */
+    public function getFeedUrl($type, $lang)
+    {
+        switch ($type) {
+            case 'atom':
+                return Utils::joinPath($this->baseUrl, 'feed_atom.php') . '?lang=' . $lang;
+            case 'rss':
+                return Utils::joinPath($this->baseUrl, 'feed_rss.php') . '?lang=' . $lang;
+            case 'trovit':
+                return Utils::joinPath($this->baseUrl, 'feed_trovit.php') . '?lang=' . $lang;
+            default:
+                return null;
+        }
     }
 
     /**
