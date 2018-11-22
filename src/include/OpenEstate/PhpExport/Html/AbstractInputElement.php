@@ -17,6 +17,8 @@
 
 namespace OpenEstate\PhpExport\Html;
 
+use function htmlspecialchars as html;
+
 /**
  * An abstract HTML input element.
  *
@@ -65,10 +67,13 @@ abstract class AbstractInputElement extends AbstractBodyElement
      *
      * @param string|null $class
      * class attribute
+     *
+     * @param string|null $title
+     * title attribute
      */
-    function __construct($name, $id = null, $class = null)
+    function __construct($name, $id = null, $class = null, $title = null)
     {
-        parent::__construct($id, $class);
+        parent::__construct($id, $class, $title);
         $this->name = $name;
     }
 
@@ -78,5 +83,24 @@ abstract class AbstractInputElement extends AbstractBodyElement
     public function __destruct()
     {
         parent::__destruct();
+    }
+
+    protected function getAttributes()
+    {
+        $attributes = parent::getAttributes();
+
+        if (\is_string($this->name))
+            $attributes[] = 'name="' . html($this->name) . '"';
+
+        if (\is_string($this->onChange))
+            $attributes[] = 'onchange="' . html($this->onChange) . '"';
+
+        if (\is_string($this->onFocus))
+            $attributes[] = 'onfocus="' . html($this->onFocus) . '"';
+
+        if (\is_string($this->onBlur))
+            $attributes[] = 'onblur="' . html($this->onBlur) . '"';
+
+        return $attributes;
     }
 }

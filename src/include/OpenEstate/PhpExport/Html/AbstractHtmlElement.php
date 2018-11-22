@@ -17,6 +17,8 @@
 
 namespace OpenEstate\PhpExport\Html;
 
+use function htmlspecialchars as html;
+
 /**
  * An abstract HTML element.
  *
@@ -27,18 +29,28 @@ namespace OpenEstate\PhpExport\Html;
 abstract class AbstractHtmlElement
 {
     /**
-     * ID attribute of the HTML element.
+     * Specifies a unique id for an element.
      *
      * @var string
+     * @see http://www.w3schools.com/tags/att_global_id.asp Details about the "id" attribute.
      */
     public $id;
 
     /**
-     * Class attribute of the HTML element.
+     * Specifies one or more class names for an element (refers to a class in a style sheet).
      *
      * @var string
+     * @see http://www.w3schools.com/tags/att_global_class.asp Details about the "class" attribute.
      */
     public $class;
+
+    /**
+     * Specifies extra information about an element.
+     *
+     * @var string
+     * @see http://www.w3schools.com/tags/att_global_title.asp Details about the "title" attribute.
+     */
+    public $title;
 
     /**
      * AbstractHtmlElement constructor.
@@ -48,11 +60,15 @@ abstract class AbstractHtmlElement
      *
      * @param string|null $class
      * class attribute
+     *
+     * @param string|null $title
+     * title attribute
      */
-    function __construct($id = null, $class = null)
+    function __construct($id = null, $class = null, $title = null)
     {
         $this->id = $id;
         $this->class = $class;
+        $this->title = $title;
     }
 
     /**
@@ -69,6 +85,39 @@ abstract class AbstractHtmlElement
      * generated HTML code
      */
     abstract public function generate();
+
+    /**
+     * Generate attributes of the HTML element.
+     *
+     * @return string
+     * generated attributes in HTML syntax
+     */
+    protected function generateAttributes()
+    {
+        return \implode(' ', $this->getAttributes());
+    }
+
+    /**
+     * Get attributes of the HTML element.
+     *
+     * @return array
+     * array of attributes in HTML syntax
+     */
+    protected function getAttributes()
+    {
+        $attributes = array();
+
+        if (\is_string($this->id))
+            $attributes[] = 'id="' . html($this->id) . '"';
+
+        if (\is_string($this->class))
+            $attributes[] = 'class="' . html($this->class) . '"';
+
+        if (\is_string($this->title))
+            $attributes[] = 'title="' . html($this->title) . '"';
+
+        return $attributes;
+    }
 
     /**
      * Determine, if the element is placed within the HTML body.

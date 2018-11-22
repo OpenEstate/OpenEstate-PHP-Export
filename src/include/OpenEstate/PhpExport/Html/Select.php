@@ -17,6 +17,8 @@
 
 namespace OpenEstate\PhpExport\Html;
 
+use function htmlspecialchars as html;
+
 /**
  * A HTML element for select boxes.
  *
@@ -80,54 +82,25 @@ class Select extends AbstractInputElement
      * @param string|null $class
      * class attribute
      *
+     * @param string|null $title
+     * title attribute
+     *
      * @param string|null $value
      * value of the input field
      *
      * @param array|null $options
      * selection options
      */
-    function __construct($name, $id = null, $class = null, $value = null, $options = null)
+    function __construct($name, $id = null, $class = null, $title = null, $value = null, $options = null)
     {
-        parent::__construct($name, $id, $class);
+        parent::__construct($name, $id, $class, $title);
         $this->value = $value;
         $this->options = $options;
     }
 
     public function generate()
     {
-        $element = '<select';
-
-        if (\is_string($this->id))
-            $element .= ' id="' . \htmlspecialchars($this->id) . '"';
-
-        if (\is_string($this->class))
-            $element .= ' class="' . \htmlspecialchars($this->class) . '"';
-
-        if (\is_string($this->name))
-            $element .= ' name="' . \htmlspecialchars($this->name) . '"';
-
-        if (\is_string($this->size))
-            $element .= ' size="' . \htmlspecialchars($this->size) . '"';
-
-        if ($this->autofocus === true)
-            $element .= ' autofocus';
-
-        if ($this->disabled === true)
-            $element .= ' disabled';
-
-        if ($this->multiple === true)
-            $element .= ' multiple';
-
-        if (\is_string($this->onChange))
-            $element .= ' onchange="' . \htmlspecialchars($this->onChange) . '"';
-
-        if (\is_string($this->onFocus))
-            $element .= ' onfocus="' . \htmlspecialchars($this->onFocus) . '"';
-
-        if (\is_string($this->onBlur))
-            $element .= ' onblur="' . \htmlspecialchars($this->onBlur) . '"';
-
-        $element .= '>';
+        $element = '<select ' . $this->generateAttributes() . '>';
 
         if (\is_array($this->options)) {
             foreach ($this->options as $key => $value) {
@@ -137,11 +110,30 @@ class Select extends AbstractInputElement
                 else
                     $selected = ($this->value === $key) ? ' selected' : '';
 
-                $element .= '<option value="' . \htmlspecialchars($key) . '"' . $selected . '>' . \htmlspecialchars($value) . '</option>';
+                $element .= '<option value="' . html($key) . '"' . $selected . '>' . html($value) . '</option>';
             }
         }
 
         return $element . '</select>';
+    }
+
+    protected function getAttributes()
+    {
+        $attributes = parent::getAttributes();
+
+        if (\is_string($this->size))
+            $attributes[] = 'size="' . html($this->size) . '"';
+
+        if ($this->autofocus === true)
+            $attributes[] = 'autofocus';
+
+        if ($this->disabled === true)
+            $attributes[] = 'disabled';
+
+        if ($this->multiple === true)
+            $attributes[] = 'multiple';
+
+        return $attributes;
     }
 
     /**
@@ -165,12 +157,15 @@ class Select extends AbstractInputElement
      * @param int|null $size
      * size of the select field
      *
+     * @param string|null $title
+     * title attribute
+     *
      * @return Select
      * created select element
      */
-    public static function newMultiSelect($name, $id = null, $class = null, $value = null, $options = null, $size = 4)
+    public static function newMultiSelect($name, $id = null, $class = null, $value = null, $options = null, $size = 4, $title = null)
     {
-        $select = new Select($name, $id, $class, $value, $options);
+        $select = new Select($name, $id, $class, $title, $value, $options);
         $select->size = (\is_int($size)) ? $size : 4;
         $select->multiple = true;
         return $select;
@@ -194,11 +189,14 @@ class Select extends AbstractInputElement
      * @param array|null $options
      * selection options
      *
+     * @param string|null $title
+     * title attribute
+     *
      * @return Select
      * created select element
      */
-    public static function newSingleSelect($name, $id = null, $class = null, $value = null, $options = null)
+    public static function newSingleSelect($name, $id = null, $class = null, $value = null, $options = null, $title = null)
     {
-        return new Select($name, $id, $class, $value, $options);
+        return new Select($name, $id, $class, $title, $value, $options);
     }
 }

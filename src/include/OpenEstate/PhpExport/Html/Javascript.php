@@ -17,6 +17,8 @@
 
 namespace OpenEstate\PhpExport\Html;
 
+use function htmlspecialchars as html;
+
 /**
  * A HTML element for Javascript.
  *
@@ -82,50 +84,57 @@ class Javascript extends AbstractHeadElement
      *
      * @param string|null $class
      * class attribute
+     *
+     * @param string|null $title
+     * title attribute
      */
-    function __construct($id = null, $class = null)
+    function __construct($id = null, $class = null, $title = null)
     {
-        parent::__construct($id, $class);
+        parent::__construct($id, $class, $title);
     }
 
     public function generate()
     {
-        $element = '<script';
-
-        if (\is_string($this->id))
-            $element .= ' id="' . \htmlspecialchars($this->id) . '"';
+        $element = '<script ' . $this->generateAttributes() . '>';
 
         // The attribute type="text/javascript" is not required for HTML5.
         // $element .= ' type="text/javascript"';
 
+        if (\is_string($this->content)) {
+            $element .= "\n"
+                //. "//<![CDATA[\n"
+                . \trim($this->content) . "\n";
+            //. "//]]>\n";
+        }
+
+        return $element . '</script>';
+    }
+
+    protected function getAttributes()
+    {
+        $attributes = parent::getAttributes();
+
+        // The attribute type="text/javascript" is not required for HTML5.
+        //$attributes[] = 'type="text/javascript"';
+
         if (\is_string($this->src)) {
             if (\is_string($this->src))
-                $element .= ' src="' . \htmlspecialchars($this->src) . '"';
+                $attributes[] = 'src="' . html($this->src) . '"';
 
             if (\is_string($this->charset))
-                $element .= ' charset="' . \htmlspecialchars($this->charset) . '"';
+                $attributes[] = 'charset="' . html($this->charset) . '"';
 
             if (\is_string($this->onload))
-                $element .= ' onload="' . \htmlspecialchars($this->onload) . '"';
+                $attributes[] = 'onload="' . html($this->onload) . '"';
 
             if ($this->async === true)
-                $element .= ' async';
+                $attributes[] = 'async';
 
             if ($this->defer === true)
-                $element .= ' defer';
-
-            return $element . "></script>";
+                $attributes[] = 'defer';
         }
 
-        if (\is_string($this->content)) {
-            return $element . ">\n"
-                //. "//<![CDATA[\n"
-                . \trim($this->content) . "\n"
-                //. "//]]>\n";
-                . "</script>";
-        }
-
-        return $element . '></script>';
+        return $attributes;
     }
 
     /**

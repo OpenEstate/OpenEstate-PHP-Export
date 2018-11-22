@@ -34,10 +34,13 @@ abstract class AbstractBodyElement extends AbstractHtmlElement
      *
      * @param string|null $class
      * class attribute
+     *
+     * @param string|null $title
+     * title attribute
      */
-    function __construct($id = null, $class = null)
+    function __construct($id = null, $class = null, $title = null)
     {
-        parent::__construct($id, $class);
+        parent::__construct($id, $class, $title);
     }
 
     /**

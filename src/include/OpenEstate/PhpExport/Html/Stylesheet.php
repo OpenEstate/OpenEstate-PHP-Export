@@ -17,8 +17,10 @@
 
 namespace OpenEstate\PhpExport\Html;
 
+use function htmlspecialchars as html;
+
 /**
- * A HTML element Stylesheets.
+ * A HTML element for stylesheets.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2018, OpenEstate.org
@@ -36,7 +38,7 @@ class Stylesheet extends AbstractHeadElement
     public $content = null;
 
     /**
-     * URL of the Stylesheet file to include.
+     * URL of the stylesheet file to include.
      *
      * @var string
      * @see http://www.w3schools.com/tags/att_link_href.asp Details about the "href" attribute.
@@ -44,7 +46,7 @@ class Stylesheet extends AbstractHeadElement
     public $href = null;
 
     /**
-     * Media type of the Stylesheet.
+     * Media type of the stylesheet.
      *
      * @var string
      * @see http://www.w3schools.com/tags/att_style_media.asp Details about the "media" attribute in "style" elements.
@@ -60,65 +62,63 @@ class Stylesheet extends AbstractHeadElement
      *
      * @param string|null $class
      * class attribute
+     *
+     * @param string|null $title
+     * title attribute
      */
-    function __construct($id = null, $class = null)
+    function __construct($id = null, $class = null, $title = null)
     {
-        parent::__construct($id, $class);
+        parent::__construct($id, $class, $title);
     }
 
     public function generate()
     {
         if (\is_string($this->href)) {
-            $element = '<link';
-
-            if (\is_string($this->id))
-                $element .= ' id="' . \htmlspecialchars($this->id) . '"';
-
-            $element .= ' rel="stylesheet"';
-            $element .= ' type="text/css"';
-            $element .= ' href="' . \htmlspecialchars($this->href) . '"';
-
-            if (\is_string($this->media))
-                $element .= ' media="' . \htmlspecialchars($this->media) . '"';
-
-            return $element . " />";
+            return '<link ' . $this->generateAttributes() . '/>';
         }
 
-        $element = '<style';
-
-        if (\is_string($this->id))
-            $element .= ' id="' . \htmlspecialchars($this->id) . '"';
-
-        $element .= ' type="text/css"';
-
-        if (\is_string($this->media))
-            $element .= ' media="' . \htmlspecialchars($this->media) . '"';
+        $element = '<style ' . $this->generateAttributes() . '>';
 
         if (\is_string($this->content)) {
-            return $element . ">\n"
+            $element .= "\n"
                 //. "//<![CDATA[\n"
-                . \trim($this->content) . "\n"
-                //. "//]]>\n";
-                . "</style>";
+                . \trim($this->content) . "\n";
+            //. "//]]>\n";
         }
 
-        return $element . '></style>';
+        return $element . '</style>';
+    }
+
+    protected function getAttributes()
+    {
+        $attributes = parent::getAttributes();
+        $attributes[] = 'type="text/css"';
+
+        if (\is_string($this->href)) {
+            $attributes[] = 'rel="stylesheet"';
+            $attributes[] = 'href="' . html($this->href) . '"';
+        }
+
+        if (\is_string($this->media))
+            $attributes[] = 'media="' . html($this->media) . '"';
+
+        return $attributes;
     }
 
     /**
-     * Create an embedded Stylesheet.
+     * Create an embedded stylesheet.
      *
      * @param string $id
      * id attribute
      *
      * @param string $content
-     * Stylesheet code
+     * stylesheet code
      *
      * @param string|null $media
      * media types
      *
      * @return Stylesheet
-     * created Stylesheet element
+     * created stylesheet element
      */
     public static function newContent($id, $content, $media = null)
     {
@@ -129,19 +129,19 @@ class Stylesheet extends AbstractHeadElement
     }
 
     /**
-     * Create an external Stylesheet.
+     * Create an external stylesheet.
      *
      * @param string $id
      * id attribute
      *
      * @param string $href
-     * URL of the external Stylesheet
+     * URL of the external stylesheet
      *
      * @param string|null $media
      * media types
      *
      * @return Stylesheet
-     * created Stylesheet element
+     * created stylesheet element
      */
     public static function newLink($id, $href, $media = null)
     {

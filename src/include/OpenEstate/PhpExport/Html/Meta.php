@@ -17,6 +17,8 @@
 
 namespace OpenEstate\PhpExport\Html;
 
+use function htmlspecialchars as html;
+
 /**
  * A HTML element for meta tags.
  *
@@ -67,32 +69,37 @@ class Meta extends AbstractHeadElement
      *
      * @param string|null $class
      * class attribute
+     *
+     * @param string|null $title
+     * title attribute
      */
-    function __construct($id = null, $class = null)
+    function __construct($id = null, $class = null, $title = null)
     {
-        parent::__construct($id, $class);
+        parent::__construct($id, $class, $title);
     }
 
     public function generate()
     {
-        $element = '<meta';
+        return '<meta ' . $this->generateAttributes() . '>';
+    }
 
-        if (\is_string($this->id))
-            $element .= ' id="' . \htmlspecialchars($this->id) . '"';
+    protected function getAttributes()
+    {
+        $attributes = parent::getAttributes();
 
         if (\is_string($this->name))
-            $element .= ' name="' . \htmlspecialchars($this->name) . '"';
+            $attributes[] = 'name="' . html($this->name) . '"';
 
         if (\is_string($this->content))
-            $element .= ' content="' . \htmlspecialchars($this->content) . '"';
+            $attributes[] = 'content="' . html($this->content) . '"';
 
         if (\is_string($this->httpEquiv))
-            $element .= ' http-equiv="' . \htmlspecialchars($this->httpEquiv) . '"';
+            $attributes[] = 'http-equiv="' . html($this->httpEquiv) . '"';
 
         if (\is_string($this->charset))
-            $element .= ' charset="' . \htmlspecialchars($this->charset) . '"';
+            $attributes[] = 'charset="' . html($this->charset) . '"';
 
-        return $element . '>';
+        return $attributes;
     }
 
     /**
@@ -245,7 +252,7 @@ class Meta extends AbstractHeadElement
      */
     public static function newRefresh($url, $delay = 0)
     {
-        return Meta::newHttpEquiv('meta-refresh', 'refresh', (\is_int($delay))? $delay: 0 . ',url=' . $url);
+        return Meta::newHttpEquiv('meta-refresh', 'refresh', (\is_int($delay)) ? $delay : 0 . ',url=' . $url);
     }
 
     /**

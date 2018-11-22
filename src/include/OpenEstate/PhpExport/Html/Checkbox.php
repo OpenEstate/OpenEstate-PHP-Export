@@ -17,6 +17,8 @@
 
 namespace OpenEstate\PhpExport\Html;
 
+use function htmlspecialchars as html;
+
 /**
  * A HTML element for checkboxes.
  *
@@ -80,6 +82,9 @@ class Checkbox extends AbstractInputElement
      * @param string|null $class
      * class attribute
      *
+     * @param string|null $title
+     * title attribute
+     *
      * @param string|null $value
      * value of the input field
      *
@@ -89,66 +94,52 @@ class Checkbox extends AbstractInputElement
      * @param string|null $label
      * label, that is shown together with the checkbox
      */
-    function __construct($name, $id = null, $class = null, $value = '1', $checked = false, $label = null)
+    function __construct($name, $id = null, $class = null, $title = null, $value = '1', $checked = false, $label = null)
     {
-        parent::__construct($name, $id, $class);
+        parent::__construct($name, $id, $class, $title);
         $this->value = $value;
-        $this->checked = (\is_bool($checked))? $checked: false;
+        $this->checked = (\is_bool($checked)) ? $checked : false;
         $this->label = $label;
     }
 
     public function generate()
     {
-        $element = '<input';
-        $element .= ' type="checkbox"';
-
-        if (\is_string($this->id))
-            $element .= ' id="' . \htmlspecialchars($this->id) . '"';
-
-
-        if (\is_string($this->class))
-            $element .= ' class="' . \htmlspecialchars($this->class) . '"';
-
-        if (\is_string($this->name))
-            $element .= ' name="' . \htmlspecialchars($this->name) . '"';
-
-        if (\is_string($this->value))
-            $element .= ' value="' . \htmlspecialchars($this->value) . '"';
-
-        if ($this->autofocus === true)
-            $element .= ' autofocus';
-
-        if ($this->disabled === true)
-            $element .= ' disabled';
-
-        if ($this->checked === true)
-            $element .= ' checked';
-
-        if ($this->defaultChecked === true)
-            $element .= ' defaultChecked';
-
-        if (\is_string($this->onChange))
-            $element .= ' onchange="' . \htmlspecialchars($this->onChange) . '"';
-
-        if (\is_string($this->onFocus))
-            $element .= ' onfocus="' . \htmlspecialchars($this->onFocus) . '"';
-
-        if (\is_string($this->onBlur))
-            $element .= ' onblur="' . \htmlspecialchars($this->onBlur) . '"';
-
-        $element .= '>';
+        $element = '<input ' . $this->generateAttributes() . '>';
 
         if (\is_string($this->label)) {
             $element .= '<label';
 
             if (\is_string($this->id))
-                $element .= ' for="' . \htmlspecialchars($this->id) . '"';
+                $element .= ' for="' . html($this->id) . '"';
 
-            $element .= '>' . \htmlspecialchars(\trim($this->label));
+            $element .= '>' . html(\trim($this->label));
             $element .= '</label>';
         }
 
         return $element;
+    }
+
+    protected function getAttributes()
+    {
+        $attributes = parent::getAttributes();
+        $attributes[] = 'type="checkbox"';
+
+        if (\is_string($this->value))
+            $attributes[] = 'value="' . html($this->value) . '"';
+
+        if ($this->autofocus === true)
+            $attributes[] = 'autofocus';
+
+        if ($this->disabled === true)
+            $attributes[] = 'disabled';
+
+        if ($this->checked === true)
+            $attributes[] = 'checked';
+
+        if ($this->defaultChecked === true)
+            $attributes[] = 'defaultChecked';
+
+        return $attributes;
     }
 
     /**
@@ -172,12 +163,15 @@ class Checkbox extends AbstractInputElement
      * @param string|null $label
      * label, that is shown together with the checkbox
      *
+     * @param string|null $title
+     * title attribute
+     *
      * @return Checkbox
      * created checkbox element
      */
-    public static function newBox($name, $id, $class, $value, $checked = false, $label = null)
+    public static function newBox($name, $id, $class, $value, $checked = false, $label = null, $title = null)
     {
-        return new Checkbox($name, $id, $class, $value, $checked, $label);
+        return new Checkbox($name, $id, $class, $title, $value, $checked, $label);
     }
 
 }
