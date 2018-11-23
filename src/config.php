@@ -64,7 +64,7 @@ class MyConfig extends Config
         // Enable or disable management of favored real estates.
         //$this->favorites = true;
 
-        // Enable atom feed.
+        // Enable or disable atom feed.
         //$this->atomFeed = true;
 
         // Maximal number of objects shown in the atom feed.
@@ -73,7 +73,7 @@ class MyConfig extends Config
         // Show the first image of an object in the atom feed.
         //$this->atomFeedWithImage = true;
 
-        // Enable rss feed.
+        // Enable or disable rss feed.
         //$this->rssFeed = true;
 
         // Maximal number of objects shown in the rss feed.
@@ -82,11 +82,14 @@ class MyConfig extends Config
         // Show the first image of an object in the rss feed.
         //$this->rssFeedWithImage = true;
 
-        // Enable trovit feed.
+        // Enable or disable trovit feed.
         //$this->trovitFeed = true;
 
         // Maximal number of objects shown in the trovit feed.
         //$this->trovitFeedLimit = 0;
+
+        // Enable or disable xml sitemap.
+        //$this->sitemap = true;
 
         // Enable or disable debugging.
         //$this->debug = false;

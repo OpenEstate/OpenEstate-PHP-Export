@@ -39,7 +39,15 @@ $cacheFileResource = null;
 try {
 
     // load environment
-    $env = new Environment(new MyConfig(__DIR__), false);
+    $config = new MyConfig(__DIR__);
+    if ($config->sitemap !== true) {
+        if (!\headers_sent())
+            \http_response_code(403);
+
+        echo 'The xml sitemap is disabled by configuration!';
+        return;
+    }
+    $env = new Environment($config, false);
 
     // get requested language
     $lang = (isset($_REQUEST['lang']) && Utils::isNotBlankString($_REQUEST['lang'])) ?

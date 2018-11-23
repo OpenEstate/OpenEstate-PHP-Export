@@ -147,6 +147,13 @@ class Config
     public $trovitFeedLimit = 0;
 
     /**
+     * Enable xml sitemap.
+     *
+     * @var bool
+     */
+    public $sitemap = true;
+
+    /**
      * Enable debug output.
      *
      * @var bool
