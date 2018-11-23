@@ -60,7 +60,7 @@ class Assets
      *
      * @var string
      */
-    const SLICK_VERSION = '1.8.0';
+    const SLICK_VERSION = '1.8.1';
 
     /**
      * Internal name of the slick JavaScript.

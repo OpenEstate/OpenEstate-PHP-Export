@@ -65,7 +65,7 @@ The following third party components are provided by *OpenEstate-PHP-Export*:
     (license: [MIT](https://github.com/true/php-punycode/blob/master/LICENSE))
 -   [jQuery](https://jquery.com/) v3.3.1
     (license: [MIT](https://jquery.org/license/))
--   [slick](https://kenwheeler.github.io/slick/) v1.8.0
+-   [slick](https://kenwheeler.github.io/slick/) v1.8.1
     (license: [MIT](https://github.com/kenwheeler/slick/blob/master/LICENSE))
 -   components used by the [*default* theme](src/themes/default)
     -   [Pure.CSS](https://purecss.io/) v1.0.0
