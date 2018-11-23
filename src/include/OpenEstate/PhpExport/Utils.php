@@ -18,7 +18,6 @@
 namespace OpenEstate\PhpExport;
 
 use \TrueBV\Punycode;
-use function gettext as _;
 use function htmlspecialchars as html;
 
 /**
@@ -263,7 +262,7 @@ class Utils
         if ($txt === null && $group == 'administration' && $attribute == 'availability_begin_date') {
             $stamp = (isset($value['value'])) ? $value['value'] : null;
             if (\is_numeric($stamp) && $stamp <= time())
-                return _('from now on');
+                return gettext('from now on');
         }
 
         // ggf. Attribut-Wert zur angeforderten Sprache ermitteln
@@ -1099,17 +1098,17 @@ class Utils
             $value = (isset($object['attributes']['prices']['rent_flat_rate'])) ?
                 $object['attributes']['prices']['rent_flat_rate'] : null;
             $interval = (isset($object['attributes']['prices']['rent_flat_rate_per'][$lang])) ?
-                $object['attributes']['prices']['rent_flat_rate'][$lang] : null;
+                $object['attributes']['prices']['rent_flat_rate_per'][$lang] : null;
 
             if (self::isBlankString($interval))
-                $interval = _('month');
+                $interval = gettext('month');
 
             $title = (isset($i18n['openestate']['attributes']['prices']['rent_flat_rate'])) ?
                 $i18n['openestate']['attributes']['prices']['rent_flat_rate'] : 'rent flat rate';
             $text = self::getAttributeValue('prices', 'rent_flat_rate', $value, $lang);
 
             return '<span class="openestate-attribute-label">' . html($title) . ':</span>'
-                . '<span class="openestate-attribute-value">' . html(_('{0} per {1}', $text, $interval)) . '</span>';
+                . '<span class="openestate-attribute-value">' . html(gettext('{0} per {1}', $text, $interval)) . '</span>';
         }
 
         // write primary area
