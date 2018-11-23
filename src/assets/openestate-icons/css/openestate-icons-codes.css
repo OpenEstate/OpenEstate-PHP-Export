@@ -4,12 +4,12 @@
 .openestate-icon-search:before { content: '\e803'; } /* '' */
 .openestate-icon-list-thumb:before { content: '\e804'; } /* '' */
 .openestate-icon-language:before { content: '\e805'; } /* '' */
-.openestate-icon-expose:before { content: '\e806'; } /* '' */
+.openestate-icon-listing:before { content: '\e806'; } /* '' */
 .openestate-icon-yes:before { content: '\e807'; } /* '' */
 .openestate-icon-no:before { content: '\e808'; } /* '' */
 .openestate-icon-download:before { content: '\e80b'; } /* '' */
 .openestate-icon-fav-add:before { content: '\e80c'; } /* '' */
-.openestate-icon-listing:before { content: '\e80d'; } /* '' */
+.openestate-icon-expose:before { content: '\e80d'; } /* '' */
 .openestate-icon-fav-remove:before { content: '\e80e'; } /* '' */
 .openestate-icon-spinner:before { content: '\e839'; } /* '' */
 .openestate-icon-left:before { content: '\f0a8'; } /* '' */

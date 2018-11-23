@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'openestate-icons';
-  src: url('../font/openestate-icons.eot?25597277');
-  src: url('../font/openestate-icons.eot?25597277#iefix') format('embedded-opentype'),
-       url('../font/openestate-icons.woff2?25597277') format('woff2'),
-       url('../font/openestate-icons.woff?25597277') format('woff'),
-       url('../font/openestate-icons.ttf?25597277') format('truetype'),
-       url('../font/openestate-icons.svg?25597277#openestate-icons') format('svg');
+  src: url('../font/openestate-icons.eot?79083394');
+  src: url('../font/openestate-icons.eot?79083394#iefix') format('embedded-opentype'),
+       url('../font/openestate-icons.woff2?79083394') format('woff2'),
+       url('../font/openestate-icons.woff?79083394') format('woff'),
+       url('../font/openestate-icons.ttf?79083394') format('truetype'),
+       url('../font/openestate-icons.svg?79083394#openestate-icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'openestate-icons';
-    src: url('../font/openestate-icons.svg?25597277#openestate-icons') format('svg');
+    src: url('../font/openestate-icons.svg?79083394#openestate-icons') format('svg');
   }
 }
 */
@@ -60,12 +60,12 @@
 .openestate-icon-search:before { content: '\e803'; } /* '' */
 .openestate-icon-list-thumb:before { content: '\e804'; } /* '' */
 .openestate-icon-language:before { content: '\e805'; } /* '' */
-.openestate-icon-expose:before { content: '\e806'; } /* '' */
+.openestate-icon-listing:before { content: '\e806'; } /* '' */
 .openestate-icon-yes:before { content: '\e807'; } /* '' */
 .openestate-icon-no:before { content: '\e808'; } /* '' */
 .openestate-icon-download:before { content: '\e80b'; } /* '' */
 .openestate-icon-fav-add:before { content: '\e80c'; } /* '' */
-.openestate-icon-listing:before { content: '\e80d'; } /* '' */
+.openestate-icon-expose:before { content: '\e80d'; } /* '' */
 .openestate-icon-fav-remove:before { content: '\e80e'; } /* '' */
 .openestate-icon-spinner:before { content: '\e839'; } /* '' */
 .openestate-icon-left:before { content: '\f0a8'; } /* '' */

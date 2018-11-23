@@ -74,7 +74,7 @@
     },
     {
       "uid": "d7271d490b71df4311e32cdacae8b331",
-      "css": "expose",
+      "css": "listing",
       "code": 59398,
       "src": "fontawesome"
     },
@@ -122,7 +122,7 @@
     },
     {
       "uid": "9755f76110ae4d12ac5f9466c9152031",
-      "css": "listing",
+      "css": "expose",
       "code": 59405,
       "src": "fontawesome"
     },
