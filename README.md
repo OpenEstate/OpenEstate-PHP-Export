@@ -59,7 +59,7 @@ The following third party components are provided by *OpenEstate-PHP-Export*:
     (license: [LGPL 2.1](https://github.com/PHPMailer/PHPMailer/blob/master/LICENSE))
 -   [Gettext](https://github.com/oscarotero/Gettext) v4.6.1
     (license: [MIT](https://github.com/oscarotero/Gettext/blob/master/LICENSE))
--   [Gettext CLDR data](https://github.com/mlocati/cldr-to-gettext-plural-rules) v2.4.0
+-   [Gettext CLDR data](https://github.com/mlocati/cldr-to-gettext-plural-rules) v2.5.0
     (license: [MIT](https://github.com/mlocati/cldr-to-gettext-plural-rules/blob/master/LICENSE))
 -   [Punycode](https://github.com/true/php-punycode) v2.1.1
     (license: [MIT](https://github.com/true/php-punycode/blob/master/LICENSE))
