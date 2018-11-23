@@ -55,7 +55,7 @@ Third party components
 
 The following third party components are provided by *OpenEstate-PHP-Export*:
 
--   [PHPMailer](https://github.com/PHPMailer/PHPMailer) v6.0.5 
+-   [PHPMailer](https://github.com/PHPMailer/PHPMailer) v6.0.6
     (license: [LGPL 2.1](https://github.com/PHPMailer/PHPMailer/blob/master/LICENSE))
 -   [Gettext](https://github.com/oscarotero/Gettext) v4.6.1
     (license: [MIT](https://github.com/oscarotero/Gettext/blob/master/LICENSE))
