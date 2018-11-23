@@ -94,7 +94,7 @@ if ($theme->isComponentEnabled(DefaultTheme::POPPER)) {
     if ($view instanceof View\ListingHtml || $view instanceof View\FavoriteHtml) {
         $view->addHeader(Html\Javascript::newLink(
             'openestate-popper-js',
-            $view->getThemeUrl('js/popper/popper.min.js', array('v' => '1.14.4')),
+            $view->getThemeUrl('js/popper/popper.min.js', array('v' => '1.14.5')),
             null,
             null,
             true

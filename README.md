@@ -72,7 +72,7 @@ The following third party components are provided by *OpenEstate-PHP-Export*:
         (license: [BSD](https://github.com/pure-css/pure/blob/master/LICENSE))
     -   [Colorbox](http://www.jacklmoore.com/colorbox/) v1.6.4
         (license: [MIT](https://github.com/jackmoore/colorbox/blob/master/LICENSE.md))
-    -   [Popper.js](https://popper.js.org/) v1.14.4
+    -   [Popper.js](https://popper.js.org/) v1.14.5
         (license: [MIT](https://github.com/FezVrasta/popper.js/blob/master/LICENSE.md))
 -   components used by the [*bootstrap3* theme](src/themes/bootstrap3)
     -   [Bootstrap](https://getbootstrap.com/) v3.3.7
