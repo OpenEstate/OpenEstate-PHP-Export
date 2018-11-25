@@ -201,8 +201,6 @@ class Contact extends AbstractAction
 
         // create mailer
         try {
-            $mailTo = 'andy@openindex.de';
-
             $t = ($this->mailLanguage !== null && $this->mailLanguage !== $env->getLanguage()) ?
                 Utils::createTranslator($env, $this->mailLanguage) :
                 $env->getTranslator();
