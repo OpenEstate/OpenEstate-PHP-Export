@@ -1,6 +1,6 @@
 
+.openestate-icon-cancel:before { content: '\e800'; } /* '' */
 .openestate-icon-attention:before { content: '\e801'; } /* '' */
-.openestate-icon-cancel:before { content: '\e802'; } /* '' */
 .openestate-icon-search:before { content: '\e803'; } /* '' */
 .openestate-icon-list-thumb:before { content: '\e804'; } /* '' */
 .openestate-icon-language:before { content: '\e805'; } /* '' */
