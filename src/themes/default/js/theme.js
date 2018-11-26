@@ -332,6 +332,13 @@ function openestate_install_expose(uid, actionUrl) {
         autoplaySpeed: 3000
     });
 
+    // Install colorbox for the full image view.
+    jQuery('.openestate-colorbox-image').colorbox({
+        rel: 'openestate-colorbox-image',
+        maxWidth: '98%',
+        top: '0'
+    });
+
     // Handle clicks on slick gallery images.
     gallery.find('a').click(function (event) {
         event.preventDefault();
@@ -340,13 +347,11 @@ function openestate_install_expose(uid, actionUrl) {
         var slide = link.parent();
 
         if (slide.hasClass('slick-current')) {
-            jQuery.colorbox({
-                href: link.attr('href'),
-                maxWidth: '98%',
-                top: '0',
-                title: link.attr('title')
-            });
+            // If the current image on the slick gallery was clicked,
+            // show open colorbox with the corresponding image.
+            jQuery('.openestate-colorbox-image[href="' + link.attr('href') + '"]').click();
         } else {
+            // Make the clicked image current.
             gallery.slick('slickGoTo', slide.data('slick-index'));
         }
     });

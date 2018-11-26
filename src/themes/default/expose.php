@@ -317,6 +317,22 @@ include('snippets/body-begin.php');
                     . '</a></div>';
             }
             echo '</div>';
+
+            // Write images for colorbox views separately to make them not interfere with slick.js.
+            echo '<div style="display:none;">';
+            foreach ($objectData['images'] as $image) {
+                $imageUrl = $env->getDataUrl($objectId . '/' . $image['name']);
+                $imageThumbUrl = ($env->getConfig()->dynamicImageScaling) ?
+                    $env->getImageUrl(array('id' => $objectId, 'img' => $image['name'], 'y' => 325)) :
+                    $env->getDataUrl($objectId . '/' . $image['thumb']);
+                $imageTitle = (isset($image['title'][$languageCode])) ?
+                    $image['title'][$languageCode] : '';
+
+                echo '<a href="' . html($imageUrl) . '" title="' . html($imageTitle) . '" class="openestate-colorbox-image">'
+                    . '<img src="' . html($imageThumbUrl) . '" alt="' . html($imageTitle) . '">'
+                    . '</a>';
+            }
+            echo '</div>';
         }
         ?>
 
