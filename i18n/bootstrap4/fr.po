@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Bootstrap4 Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-11-23 00:35+0100\n"
+"POT-Creation-Date: 2018-11-26 01:15+0100\n"
 "PO-Revision-Date: 2018-11-20 01:46+0000\n"
 "Last-Translator: Sylvain Talvan <sylvain@talvans.com>\n"
 "Language-Team: French <https://i18n.openestate.org/projects/openestate-php-"
@@ -121,7 +121,7 @@ msgstr ""
 msgid "get in contact"
 msgstr ""
 
-#: themes/bootstrap4/expose.php:557 themes/bootstrap4/expose.php:713
+#: themes/bootstrap4/expose.php:557 themes/bootstrap4/expose.php:767
 #: themes/bootstrap4/fav.php:446 themes/bootstrap4/listing.php:557
 msgid "Processing your request. Please wait for a moment."
 msgstr ""
@@ -164,14 +164,27 @@ msgid "refresh"
 msgstr ""
 
 #: themes/bootstrap4/expose.php:645
-msgid "Yes, I accept the terms of use and the data privacy statement."
+msgid "Yes, I accept the general terms and conditions."
 msgstr ""
 
-#: themes/bootstrap4/expose.php:657
-msgid "send message"
+#: themes/bootstrap4/expose.php:650 themes/bootstrap4/expose.php:673
+#: themes/bootstrap4/expose.php:696
+msgid "read full text"
 msgstr ""
 
 #: themes/bootstrap4/expose.php:668
+msgid "Yes, I accept the cancellation policy."
+msgstr ""
+
+#: themes/bootstrap4/expose.php:691
+msgid "Yes, I accept the data privacy statement."
+msgstr ""
+
+#: themes/bootstrap4/expose.php:711
+msgid "send message"
+msgstr ""
+
+#: themes/bootstrap4/expose.php:722
 msgid "images"
 msgstr ""
 

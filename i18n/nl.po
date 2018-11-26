@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-11-23 00:42+0100\n"
+"POT-Creation-Date: 2018-11-26 01:15+0100\n"
 "PO-Revision-Date: 2018-11-15 16:13+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
 "Language-Team: Dutch <https://i18n.openestate.org/projects/openestate-php-"
@@ -18,8 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.2.2\n"
 
-#: feed_atom.php:106 include/OpenEstate/PhpExport/View/AbstractHtmlView.php:98
-#: include/OpenEstate/PhpExport/View/AbstractHtmlView.php:110 feed_rss.php:105
+#: feed_atom.php:106 include/OpenEstate/PhpExport/View/AbstractHtmlView.php:99
+#: include/OpenEstate/PhpExport/View/AbstractHtmlView.php:111 feed_rss.php:105
 msgid "current offers"
 msgstr ""
 
@@ -113,15 +113,15 @@ msgstr ""
 msgid "object ID"
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Utils.php:266
+#: include/OpenEstate/PhpExport/Utils.php:265
 msgid "from now on"
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Utils.php:1105
+#: include/OpenEstate/PhpExport/Utils.php:1104
 msgid "month"
 msgstr "maand"
 
-#: include/OpenEstate/PhpExport/Utils.php:1112
+#: include/OpenEstate/PhpExport/Utils.php:1111
 msgid "{0} per {1}"
 msgstr ""
 
@@ -137,117 +137,125 @@ msgstr ""
 msgid "Show in a separate window."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:125
+#: include/OpenEstate/PhpExport/Action/Contact.php:139
 msgid "No object was provided for the contact request."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:127
+#: include/OpenEstate/PhpExport/Action/Contact.php:141
 msgid "No contact data was provided for the contact request."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:132
+#: include/OpenEstate/PhpExport/Action/Contact.php:146
 msgid "The requested object was not found."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:141
+#: include/OpenEstate/PhpExport/Action/Contact.php:155
 msgid "Can't find a recipient address."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:155
+#: include/OpenEstate/PhpExport/Action/Contact.php:169
 msgid "Please enter your name."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:157
+#: include/OpenEstate/PhpExport/Action/Contact.php:171
 msgid "Your name should contain at least {0} and maximal {1} characters."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:159
-#: include/OpenEstate/PhpExport/Action/Contact.php:167
+#: include/OpenEstate/PhpExport/Action/Contact.php:173
 #: include/OpenEstate/PhpExport/Action/Contact.php:181
+#: include/OpenEstate/PhpExport/Action/Contact.php:195
 msgid "HTML code is not allowed."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:163
+#: include/OpenEstate/PhpExport/Action/Contact.php:177
 msgid "Please enter your phone number."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:165
+#: include/OpenEstate/PhpExport/Action/Contact.php:179
 msgid ""
 "Your phone number should contain at least {0} and maximal {1} characters."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:171
+#: include/OpenEstate/PhpExport/Action/Contact.php:185
 msgid "Please enter your email address."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:173
+#: include/OpenEstate/PhpExport/Action/Contact.php:187
 msgid "Your email address is invalid."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:177
+#: include/OpenEstate/PhpExport/Action/Contact.php:191
 msgid "Please enter your message."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:179
+#: include/OpenEstate/PhpExport/Action/Contact.php:193
 msgid "Your message should contain at least {0} characters."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:185
-msgid "Please accept the terms of use."
+#: include/OpenEstate/PhpExport/Action/Contact.php:199
+msgid "Please accept the general terms and conditions."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:190
-msgid "Please enter the verification code."
+#: include/OpenEstate/PhpExport/Action/Contact.php:203
+msgid "Please accept the privacy policy."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:192
-msgid "Your verification code is invalid."
-msgstr ""
-
-#: include/OpenEstate/PhpExport/Action/Contact.php:197
-msgid "Please check your input in the highlighted fields."
-msgstr ""
-
-#: include/OpenEstate/PhpExport/Action/Contact.php:211
-msgid "name"
+#: include/OpenEstate/PhpExport/Action/Contact.php:207
+msgid "Please accept the cancellation policy."
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:212
-msgid "phone"
-msgstr ""
-
-#: include/OpenEstate/PhpExport/Action/Contact.php:213
-msgid "email"
+msgid "Please enter the verification code."
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:214
-msgid "language"
+msgid "Your verification code is invalid."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:215
-msgid "time"
+#: include/OpenEstate/PhpExport/Action/Contact.php:219
+msgid "Please check your input in the highlighted fields."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:216
-msgid "IP address"
+#: include/OpenEstate/PhpExport/Action/Contact.php:231
+msgid "name"
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:217
-msgid "web browser"
+#: include/OpenEstate/PhpExport/Action/Contact.php:232
+msgid "phone"
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:233
-msgid "Contact request for object {0}"
+msgid "email"
 msgstr ""
 
 #: include/OpenEstate/PhpExport/Action/Contact.php:234
+msgid "language"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:235
+msgid "time"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:236
+msgid "IP address"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:237
+msgid "web browser"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:253
+msgid "Contact request for object {0}"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:254
 msgid "A contact request was sent for object {0}."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:251
+#: include/OpenEstate/PhpExport/Action/Contact.php:271
 msgid "Email was not sent."
 msgstr ""
 
-#: include/OpenEstate/PhpExport/Action/Contact.php:257
+#: include/OpenEstate/PhpExport/Action/Contact.php:277
 msgid "The email transfer failed."
 msgstr ""

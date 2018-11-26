@@ -1,19 +1,20 @@
-# OpenEstate-PHP-Export - Default Theme.
-# Copyright (C) 2009-2018 OpenEstate.org
-# This file is distributed under the same license as the OpenEstate-PHP-Export package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the OpenEstate-PHP-Export (default theme) package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export (default theme) 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-11-23 00:42+0100\n"
+"POT-Creation-Date: 2018-11-26 01:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: themes/default/expose.php:65 themes/default/expose.php:237
@@ -119,7 +120,7 @@ msgstr ""
 msgid "get in contact"
 msgstr ""
 
-#: themes/default/expose.php:545 themes/default/expose.php:685
+#: themes/default/expose.php:545 themes/default/expose.php:739
 #: themes/default/fav.php:444 themes/default/listing.php:551
 msgid "Processing your request. Please wait for a moment."
 msgstr ""
@@ -162,14 +163,27 @@ msgid "refresh"
 msgstr ""
 
 #: themes/default/expose.php:636
-msgid "Yes, I accept the terms of use and the data privacy statement."
+msgid "Yes, I accept the general terms and conditions."
 msgstr ""
 
-#: themes/default/expose.php:648
+#: themes/default/expose.php:641 themes/default/expose.php:664
+#: themes/default/expose.php:687
+msgid "read full text"
+msgstr ""
+
+#: themes/default/expose.php:659
+msgid "Yes, I accept the cancellation policy."
+msgstr ""
+
+#: themes/default/expose.php:682
+msgid "Yes, I accept the data privacy statement."
+msgstr ""
+
+#: themes/default/expose.php:702
 msgid "send message"
 msgstr ""
 
-#: themes/default/expose.php:658
+#: themes/default/expose.php:712
 msgid "images"
 msgstr ""
 

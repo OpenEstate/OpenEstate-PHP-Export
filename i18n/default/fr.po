@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Default Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-11-23 00:35+0100\n"
+"POT-Creation-Date: 2018-11-26 01:15+0100\n"
 "PO-Revision-Date: 2018-11-20 01:46+0000\n"
 "Last-Translator: Sylvain Talvan <sylvain@talvans.com>\n"
 "Language-Team: French <https://i18n.openestate.org/projects/openestate-php-"
@@ -121,7 +121,7 @@ msgstr ""
 msgid "get in contact"
 msgstr ""
 
-#: themes/default/expose.php:545 themes/default/expose.php:685
+#: themes/default/expose.php:545 themes/default/expose.php:739
 #: themes/default/fav.php:444 themes/default/listing.php:551
 msgid "Processing your request. Please wait for a moment."
 msgstr ""
@@ -164,14 +164,27 @@ msgid "refresh"
 msgstr ""
 
 #: themes/default/expose.php:636
-msgid "Yes, I accept the terms of use and the data privacy statement."
+msgid "Yes, I accept the general terms and conditions."
 msgstr ""
 
-#: themes/default/expose.php:648
+#: themes/default/expose.php:641 themes/default/expose.php:664
+#: themes/default/expose.php:687
+msgid "read full text"
+msgstr ""
+
+#: themes/default/expose.php:659
+msgid "Yes, I accept the cancellation policy."
+msgstr ""
+
+#: themes/default/expose.php:682
+msgid "Yes, I accept the data privacy statement."
+msgstr ""
+
+#: themes/default/expose.php:702
 msgid "send message"
 msgstr ""
 
-#: themes/default/expose.php:658
+#: themes/default/expose.php:712
 msgid "images"
 msgstr ""
 
