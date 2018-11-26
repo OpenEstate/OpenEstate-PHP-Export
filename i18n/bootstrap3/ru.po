@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export Bootstrap3 Theme\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-11-26 01:15+0100\n"
+"POT-Creation-Date: 2018-11-26 01:29+0100\n"
 "PO-Revision-Date: 2018-11-15 16:13+0000\n"
 "Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
 "Language-Team: Russian <https://i18n.openestate.org/projects/openestate-php-"
@@ -122,7 +122,7 @@ msgstr ""
 msgid "get in contact"
 msgstr ""
 
-#: themes/bootstrap3/expose.php:573 themes/bootstrap3/expose.php:781
+#: themes/bootstrap3/expose.php:573 themes/bootstrap3/expose.php:783
 #: themes/bootstrap3/fav.php:445 themes/bootstrap3/listing.php:557
 msgid "Processing your request. Please wait for a moment."
 msgstr ""

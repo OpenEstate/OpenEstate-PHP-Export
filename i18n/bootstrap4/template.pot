@@ -1,14 +1,13 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the OpenEstate-PHP-Export (bootstrap4 theme) package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# OpenEstate-PHP-Export - Bootstrap4 Theme.
+# Copyright (C) 2009-2018 OpenEstate.org
+# This file is distributed under the same license as the OpenEstate-PHP-Export package.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenEstate-PHP-Export (bootstrap4 theme) 2.0-dev\n"
 "Report-Msgid-Bugs-To: i18n@openestate.org\n"
-"POT-Creation-Date: 2018-11-26 01:15+0100\n"
+"POT-Creation-Date: 2018-11-26 01:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
