@@ -589,6 +589,11 @@
 
 }
 
+.openestate-gallery-dialog .modal-header a,
+.openestate-gallery-dialog .modal-header a:hover {
+    text-decoration: none;
+}
+
 .openestate-gallery-dialog .modal-content {
     text-align: center;
 }

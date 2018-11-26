@@ -748,9 +748,17 @@ include('snippets/body-begin.php');
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title openestate-gallery-dialog-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <div style="font-size:1.2em;">
+                            <a id="openestate-gallery-dialog-previous" href="#">
+                                <i class="openestate-icon-left"></i>
+                            </a>
+                            <a id="openestate-gallery-dialog-next" href="#">
+                                <i class="openestate-icon-right"></i>
+                            </a>
+                            <a href="#" data-dismiss="modal">
+                                <i class="openestate-icon-cancel"></i>
+                            </a>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <img src="#" class="img-fluid rounded openestate-gallery-dialog-image" alt="">
