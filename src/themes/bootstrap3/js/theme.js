@@ -291,6 +291,55 @@ function openestate_install_favorite(uid, actionUrl) {
 function openestate_install_expose(uid, actionUrl) {
     var bodyId = 'openestate-body-' + uid;
 
+    // Detect available images.
+    var minImageId = null;
+    var maxImageId = null;
+    jQuery('#' + bodyId + ' .openestate-expose-gallery > div').each(function (index) {
+        if (minImageId === null || minImageId > index)
+            minImageId = index;
+        if (maxImageId === null || maxImageId < index)
+            maxImageId = index;
+    });
+
+    // Select image for full view.
+    var currentImageId = null;
+    var setCurrentImage = function (id) {
+        if (id === null)
+            return;
+
+        currentImageId = id;
+        var link = jQuery('#' + bodyId + ' .slick-slide[data-slick-index="' + id + '"] > a');
+        jQuery('#' + bodyId + ' .openestate-gallery-dialog-title').text(link.attr('title'));
+        jQuery('#' + bodyId + ' .openestate-gallery-dialog-image').attr('src', link.attr('href'));
+    };
+
+    if (minImageId === null || maxImageId === null || minImageId === maxImageId) {
+        jQuery('#openestate-gallery-dialog-previous').hide();
+        jQuery('#openestate-gallery-dialog-next').hide();
+    } else {
+        // Switch to previous image in full view.
+        jQuery('#openestate-gallery-dialog-previous').click(function (event) {
+            event.preventDefault();
+            if (currentImageId === null)
+                return;
+            if (currentImageId > minImageId)
+                setCurrentImage(currentImageId - 1);
+            else
+                setCurrentImage(maxImageId);
+        });
+
+        // Switch to next image in full view.
+        jQuery('#openestate-gallery-dialog-next').click(function (event) {
+            event.preventDefault();
+            if (currentImageId === null)
+                return;
+            if (currentImageId < maxImageId)
+                setCurrentImage(currentImageId + 1);
+            else
+                setCurrentImage(minImageId);
+        });
+    }
+
     // Install slick gallery.
     var gallery = jQuery('#' + bodyId + ' .openestate-expose-gallery');
     gallery.slick({
@@ -316,10 +365,10 @@ function openestate_install_expose(uid, actionUrl) {
         gallery.slick('slickPause');
         var link = jQuery(this);
         var slide = link.parent();
+        var index = slide.data('slick-index');
 
         if (slide.hasClass('slick-current')) {
-            jQuery('#' + bodyId + ' .openestate-gallery-dialog-title').text(link.attr('title'));
-            jQuery('#' + bodyId + ' .openestate-gallery-dialog-image').attr('src', link.attr('href'));
+            setCurrentImage(index);
             jQuery('#' + bodyId + ' .openestate-gallery-dialog').modal('show');
         } else {
             gallery.slick('slickGoTo', slide.data('slick-index'));
