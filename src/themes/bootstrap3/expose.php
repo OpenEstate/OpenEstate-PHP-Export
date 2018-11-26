@@ -654,11 +654,65 @@ include('snippets/body-begin.php');
 
                         <?php if ($contactAction->termsVerification === true) { ?>
                             <div class="form-group openestate-expose-contact-terms">
-                                <label for="contactTerms-<?= $uid ?>" class="pure-checkbox">
+                                <label for="contactTerms-<?= $uid ?>">
                                     <input id="contactTerms-<?= $uid ?>"
                                            name="<?= html($contactAction->getVar('terms')) ?>"
                                            type="checkbox" class="openestate-expose-contact-field" value="1">
-                                    <?= html(_('Yes, I accept the terms of use and the data privacy statement.')) ?>
+                                    <?= html(_('Yes, I accept the general terms and conditions.')) ?>
+                                    <?php
+                                    $termsUrl = $env->getConfig()->getTermsUrl($languageCode);
+                                    if (Utils::isNotBlankString($termsUrl)) {
+                                        echo '(<a href="' . html($termsUrl) . '" target="_blank">'
+                                            . html(_('read full text'))
+                                            . '</a>)';
+                                    }
+                                    ?>
+                                </label>
+                                <p class="openestate-expose-contact-validation help-block">
+                                    <i class="openestate-icon-attention"></i>
+                                    <span class="openestate-expose-contact-validation-message"></span>
+                                </p>
+                            </div>
+                        <?php } ?>
+
+                        <?php if ($contactAction->cancellationPolicyVerification === true) { ?>
+                            <div class="form-group openestate-expose-contact-cancellation">
+                                <label for="contactCancellation-<?= $uid ?>">
+                                    <input id="contactCancellation-<?= $uid ?>"
+                                           name="<?= html($contactAction->getVar('cancellation')) ?>"
+                                           type="checkbox" class="openestate-expose-contact-field" value="1">
+                                    <?= html(_('Yes, I accept the cancellation policy.')) ?>
+                                    <?php
+                                    $cancellationUrl = $env->getConfig()->getCancellationPolicyUrl($languageCode);
+                                    if (Utils::isNotBlankString($cancellationUrl)) {
+                                        echo '(<a href="' . html($cancellationUrl) . '" target="_blank">'
+                                            . html(_('read full text'))
+                                            . '</a>)';
+                                    }
+                                    ?>
+                                </label>
+                                <p class="openestate-expose-contact-validation help-block">
+                                    <i class="openestate-icon-attention"></i>
+                                    <span class="openestate-expose-contact-validation-message"></span>
+                                </p>
+                            </div>
+                        <?php } ?>
+
+                        <?php if ($contactAction->privacyPolicyVerification === true) { ?>
+                            <div class="form-group openestate-expose-contact-privacy">
+                                <label for="contactPrivacy-<?= $uid ?>">
+                                    <input id="contactPrivacy-<?= $uid ?>"
+                                           name="<?= html($contactAction->getVar('privacy')) ?>"
+                                           type="checkbox" class="openestate-expose-contact-field" value="1">
+                                    <?= html(_('Yes, I accept the data privacy statement.')) ?>
+                                    <?php
+                                    $privacyUrl = $env->getConfig()->getPrivacyPolicyUrl($languageCode);
+                                    if (Utils::isNotBlankString($privacyUrl)) {
+                                        echo '(<a href="' . html($privacyUrl) . '" target="_blank">'
+                                            . html(_('read full text'))
+                                            . '</a>)';
+                                    }
+                                    ?>
                                 </label>
                                 <p class="openestate-expose-contact-validation help-block">
                                     <i class="openestate-icon-attention"></i>
@@ -711,7 +765,9 @@ include('snippets/body-begin.php');
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <h4 class="modal-title openestate-gallery-dialog-title">Modal title</h4>
                     </div>
                     <div class="modal-body">

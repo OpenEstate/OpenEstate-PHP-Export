@@ -274,6 +274,20 @@ class Config
     }
 
     /**
+     * Get URL for the cancellation policy.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @return string|null
+     * cancellation policy url
+     */
+    public function getCancellationPolicyUrl($lang)
+    {
+        return null;
+    }
+
+    /**
      * Get URL for the captcha script.
      *
      * @param array|null $parameters
@@ -464,6 +478,34 @@ class Config
     public function getOrderObjects()
     {
         return Utils::getDefaultOrderObjects($this->basePath);
+    }
+
+    /**
+     * Get URL for the privacy policy.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @return string|null
+     * privacy policy url
+     */
+    public function getPrivacyPolicyUrl($lang)
+    {
+        return null;
+    }
+
+    /**
+     * Get URL for the terms of use.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @return string|null
+     * terms url
+     */
+    public function getTermsUrl($lang)
+    {
+        return null;
     }
 
     /**

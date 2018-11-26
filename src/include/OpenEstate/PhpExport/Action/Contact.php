@@ -59,6 +59,20 @@ class Contact extends AbstractAction
     public $termsVerification = true;
 
     /**
+     * Enable privacy policy verification.
+     *
+     * @var bool
+     */
+    public $privacyPolicyVerification = true;
+
+    /**
+     * Enable cancellation policy verification.
+     *
+     * @var bool
+     */
+    public $cancellationPolicyVerification = true;
+
+    /**
      * Parameter name for contact values.
      *
      * @var string
@@ -180,9 +194,17 @@ class Contact extends AbstractAction
         else if ($contact['message'] !== \strip_tags($contact['message']))
             $validation['message'] = _('HTML code is not allowed.');
 
-        // validate terms
+        // validate terms of use
         if ($this->termsVerification === true && (!isset($contact['terms']) || $contact['terms'] !== '1'))
-            $validation['terms'] = _('Please accept the terms of use.');
+            $validation['terms'] = _('Please accept the general terms and conditions.');
+
+        // validate privacy policy
+        if ($this->privacyPolicyVerification === true && (!isset($contact['privacy']) || $contact['privacy'] !== '1'))
+            $validation['privacy'] = _('Please accept the privacy policy.');
+
+        // validate cancellation policy
+        if ($this->cancellationPolicyVerification === true && (!isset($contact['cancellation']) || $contact['cancellation'] !== '1'))
+            $validation['cancellation'] = _('Please accept the cancellation policy.');
 
         // validate captcha
         if ($this->captchaVerification === true) {

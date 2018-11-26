@@ -149,6 +149,20 @@ class MyConfig extends Config
     }
 
     /**
+     * Get URL for the cancellation policy.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @return string|null
+     * cancellation policy url
+     */
+    public function getCancellationPolicyUrl($lang)
+    {
+        return parent::getCancellationPolicyUrl($lang);
+    }
+
+    /**
      * Get URL for the captcha script.
      *
      * @param array|null $parameters
@@ -324,6 +338,34 @@ class MyConfig extends Config
     public function getOrderObjects()
     {
         return parent::getOrderObjects();
+    }
+
+    /**
+     * Get URL for the privacy policy.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @return string|null
+     * privacy policy url
+     */
+    public function getPrivacyPolicyUrl($lang)
+    {
+        return parent::getPrivacyPolicyUrl($lang);
+    }
+
+    /**
+     * Get URL for the terms of use.
+     *
+     * @param string $lang
+     * language code
+     *
+     * @return string|null
+     * terms url
+     */
+    public function getTermsUrl($lang)
+    {
+        return parent::getTermsUrl($lang);
     }
 
     /**
