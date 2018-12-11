@@ -15,264 +15,204 @@
  * limitations under the License.
  */
 
+namespace OpenEstate\PhpExport;
+
+use function htmlspecialchars as html;
+use function OpenEstate\PhpExport\gettext as _;
+
 /**
- * Website-Export, Darstellung des Atom-Feeds.
+ * Generate an Atom feed with published real estates.
  *
  * @author Andreas Rudolph & Walter Wagner
  * @copyright 2009-2018, OpenEstate.org
  * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-// Initialisierung
-$startup = microtime();
-require_once(__DIR__ . '/config.php');
-require_once(__DIR__ . '/private.php');
-require_once(__DIR__ . '/include/functions.php');
-require_once(__DIR__ . '/data/language.php');
-$debugMode = isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1';
+// feed settings
+define('FEED_DATE_FORMAT', 'Y-m-d\TH:i:s\Z');
 
-// Konfiguration ermitteln
-$setup = new immotool_setup_feeds();
-if (is_callable(array('immotool_myconfig', 'load_config_feeds'))) {
-    immotool_myconfig::load_config_feeds($setup);
-}
-immotool_functions::init($setup);
-if (!$setup->PublishAtomFeed) {
-    if (!headers_sent()) {
-        // 500-Fehlercode zurückliefern,
-        // wenn der Feed in der Konfiguration deaktiviert wurde
-        header('HTTP/1.0 500 Internal Server Error');
-    }
-    echo 'Atom feed is disabled!';
-    exit;
-}
+// initialization
+require(__DIR__ . '/include/init.php');
+require(__DIR__ . '/config.php');
 
-// Übersetzungen ermitteln
-$translations = null;
-$lang = (isset($_REQUEST[IMMOTOOL_PARAM_LANG])) ? $_REQUEST[IMMOTOOL_PARAM_LANG] : $setup->DefaultLanguage;
-$lang = immotool_functions::init_language($lang, $setup->DefaultLanguage, $translations);
-if (!is_array($translations)) {
-    if (!headers_sent()) {
-        // 500-Fehlercode zurückliefern,
-        // wenn die Übersetzungstexte nicht geladen werden konnten
-        header('HTTP/1.0 500 Internal Server Error');
-    }
-    echo 'Can\'t load translations!';
-    exit;
-}
+// start output buffering
+if (!\ob_start())
+    Utils::logError('Can\'t start output buffering!');
 
-// Header senden
-if ($debugMode) {
-    header('Content-Type: text/html; charset=utf-8');
-} else {
-    header('Content-Type: text/xml; charset=utf-8');
-}
+// generate output
+$env = null;
+try {
 
-// Cache-Datei des Feeds
-$feedFile = immotool_functions::get_path('cache/feed.atom_' . $lang . '.xml');
-if (!$debugMode && is_file($feedFile)) {
-    if (!immotool_functions::check_file_age($feedFile, $setup->CacheLifeTime)) {
-        // abgelaufene Cache-Datei entfernen
-        unlink($feedFile);
-    } else {
-        // Feed aus Cache-Datei erzeugen
-        $feed = immotool_functions::read_file($feedFile);
-        echo $feed;
+    // load environment
+    //echo 'loading environment ' . \OpenEstate\PhpExport\VERSION . '<hr>';
+    $config = new MyConfig(__DIR__);
+    if ($config->atomFeed !== true) {
+        if (!\headers_sent())
+            \http_response_code(403);
+
+        echo 'The atom feed is disabled by configuration!';
         return;
     }
-}
+    $env = new Environment($config, false);
 
-// URL des Feed-Skriptes ermitteln
-$baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https://' : 'http://';
-$baseUrl .= $_SERVER['SERVER_NAME'];
-$baseUrl .= substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/')) . '/';
-$feedUrl = $baseUrl . 'feed_atom.php';
-$feedUrl .= '?' . IMMOTOOL_PARAM_LANG . '=' . $lang;
-
-// Timestamp
-$feedStamp = gmdate('Y-m-d\TH:i:s\Z');
-
-// Titel ermitteln
-$feedTitle = htmlspecialchars($translations['labels']['title']);
-
-// Feed erzeugen
-$feed = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-$feed .= '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">' . "\n";
-$feed .= '  <id>' . $feedUrl . '</id>' . "\n";
-$feed .= '  <link rel="self" type="application/atom+xml" href="' . $feedUrl . '" />' . "\n";
-$feed .= '  <title>' . $feedTitle . '</title>' . "\n";
-//$feed .= '  <subtitle>'.$feedTitle.'</subtitle>' . "\n";
-$feed .= '  <generator uri="http://www.openestate.org" version="' . IMMOTOOL_SCRIPT_VERSION . '">OpenEstate-ImmoTool, PHP-Export</generator>' . "\n";
-$feed .= '  <rights>' . $feedTitle . '</rights>' . "\n";
-$feed .= '  <updated>' . $feedStamp . '</updated>' . "\n";
-$feed .= '  <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
-$feed .= '  <dc:date>' . $feedStamp . '</dc:date>' . "\n";
-$feed .= '  <dc:language>' . $lang . '</dc:language>' . "\n";
-$feed .= '  <dc:rights>' . $feedTitle . '</dc:rights>' . "\n";
-
-if ($debugMode) {
-    echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-    echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">';
-    echo '  <head>';
-    echo '    <title>Atom-Feed Debugger</title>';
-    echo '    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />';
-    echo '    <meta http-equiv="pragma" content="no-cache" />';
-    echo '    <meta http-equiv="cache-control" content="no-cache" />';
-    echo '    <meta http-equiv="expires" content="0" />';
-    echo '    <meta http-equiv="imagetoolbar" content="no" />';
-    echo '    <meta name="MSSmartTagsPreventParsing" content="true" />';
-    echo '    <meta name="generator" content="OpenEstate-ImmoTool" />';
-    echo '    <meta name="robots" content="noindex,follow" />';
-    echo '    <link rel="stylesheet" href="style.php" />';
-    echo '  </head>';
-    echo '  <body>';
-    echo '  <h2>Atom-Feed Debugger</h2>';
-}
-
-// ID's der darzustellenden Immobilien gemäß Sortierung ermitteln
-$ids = array();
-$orderBy = @$setup->OrderBy;
-$orderDir = @$setup->OrderDir;
-$orderObj = (is_string($orderBy)) ?
-    immotool_functions::get_order($orderBy) : null;
-
-// gewählte Sortierung durchführen
-if ($orderObj != null && $orderObj->readOrRebuild($setup->CacheLifeTime)) {
-    $items = $orderObj->getItems($lang);
-    if (!is_array($items)) {
-        if (!headers_sent()) {
-            // 500-Fehlercode zurückliefern,
-            // wenn die Sortierung nicht durchgeführt werden konnte
-            header('HTTP/1.0 500 Internal Server Error');
+    // get requested language
+    if (isset($_REQUEST['lang'])) {
+        $lang = $_REQUEST['lang'];
+        if (!$env->isSupportedLanguage($lang)) {
+            throw new \Exception('The requested language is not supported!');
         }
-        echo 'Ordering by \'' . $orderBy . '\' failed!';
-        exit;
-    }
-    if ($orderDir == 'desc') {
-        $ids = array_reverse($items);
+        if ($lang !== $env->getLanguage()) {
+            $env->setLanguage($lang);
+        }
+
     } else {
-        $ids = $items;
+        $lang = $env->getLanguage();
     }
-} // absteigende Sortierung, nach Datum der letzten Änderung
-else {
-    $items = array();
-    foreach (immotool_functions::list_available_objects() as $id) {
-        $stamp = immotool_functions::get_object_stamp($id);
-        if ($stamp == null)
-            $stamp = 0;
 
-        if (!isset($items[$stamp]))
-            $items[$stamp] = array();
-        $items[$stamp][] = $id;
-    }
-    $stamps = array_keys($items);
-    rsort($stamps, SORT_NUMERIC);
-    foreach ($stamps as $stamp) {
-        foreach ($items[$stamp] as $id) {
-            $ids[] = $id;
+    // send content type header
+    if (!\headers_sent())
+        \header('Content-Type: text/xml; charset=utf-8');
+
+    // lookup for the feed in cache directory
+    $cacheFile = Utils::joinPath($config->getCacheFolderPath(), 'feed.atom_' . $lang . '.xml');
+    if ($env->isProductionMode() && \is_file($cacheFile)) {
+        if (Utils::isFileOlderThen($cacheFile, $config->cacheLifeTime)) {
+            // remove outdated cache file
+            \unlink($cacheFile);
+        } else {
+            // send feed from the previously cached file
+            $feed = Utils::readFile($cacheFile);
+            if ($feed === null) {
+                throw new \Exception('Can\t read feed from cache file!');
+            }
+            echo $feed;
+
+            return;
         }
     }
-}
 
-// Immobilien in den Feed schreiben
-$counter = 0;
-foreach ($ids as $id) {
-    $object = immotool_functions::get_object($id);
-    if ($debugMode)
-        echo '<h3 style="margin-top:1em;margin-bottom:0;"><a href="expose.php?' . IMMOTOOL_PARAM_EXPOSE_ID . '=' . $id . '">property #' . $id . '</a></h3>';
-    if (!is_array($object)) {
-        if ($debugMode)
-            echo '&gt; NOT FOUND<br/>';
-        continue;
-    }
-    $objectStamp = immotool_functions::get_object_stamp($id);
-    $objectTexts = immotool_functions::get_text($id);
-    if (!is_array($objectTexts))
-        $objectTexts = array();
+    // get feed url
+    $feedUrl = Utils::getAbsoluteUrl(Utils::joinPath($config->baseUrl, \basename(__FILE__)) . '?lang=' . $lang);
 
-    // Exposé-URL ermitteln
-    $objectUrl = immotool_functions::get_expose_url($id, $lang, $setup->ExposeUrlTemplate, true);
+    // get current timestamp
+    $feedStamp = \gmdate(FEED_DATE_FORMAT);
 
-    // Titel ermitteln
-    $objectTitle = $object['title'][$lang];
-    if (isset($object['nr']))
-        $objectTitle = trim($object['nr'] . ' » ' . $objectTitle);
-    else
-        $objectTitle = trim('#' . $id . ' » ' . $objectTitle);
+    // create feed
+    echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    /** @noinspection XmlUnusedNamespaceDeclaration */
+    echo '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">' . "\n";
+    echo '  <id>' . html($feedUrl) . '</id>' . "\n";
+    echo '  <link rel="self" type="application/atom+xml" href="' . html($feedUrl) . '" />' . "\n";
+    echo '  <title>' . html(\ucfirst(_('current offers'))) . '</title>' . "\n";
+    echo '  <subtitle>' . html(\ucfirst(_('current offers by {0}', $env->getConfig()->companyName))) . '</subtitle>' . "\n";
+    echo '  <generator uri="https://openestate.org" version="' . VERSION . '">OpenEstate-PHP-Export</generator>' . "\n";
+    echo '  <rights>' . html($env->getConfig()->companyName) . '</rights>' . "\n";
+    echo '  <updated>' . html($feedStamp) . '</updated>' . "\n";
+    echo '  <dc:creator>' . html($env->getConfig()->companyName) . '</dc:creator>' . "\n";
+    echo '  <dc:date>' . html($feedStamp) . '</dc:date>' . "\n";
+    echo '  <dc:language>' . html($lang) . '</dc:language>' . "\n";
+    echo '  <dc:rights>' . html($env->getConfig()->companyName) . '</dc:rights>' . "\n";
 
-    // Zusammenfassung ermitteln
-    $objectSummary = null;
-    if (is_null($objectSummary) && isset($objectTexts['short_description']))
-        $objectSummary = immotool_functions::write_attribute_value('descriptions', 'short_description', $objectTexts['short_description'], $translations, $lang);
-    if (is_null($objectSummary) && isset($objectTexts['detailled_description']))
-        $objectSummary = immotool_functions::write_attribute_value('descriptions', 'detailled_description', $objectTexts['detailled_description'], $translations, $lang);
-    if (is_null($objectSummary) && isset($object['title'][$lang]))
-        $objectSummary = $object['title'][$lang];
-    if (is_null($objectSummary))
+    // load objects ordered by last modification (descending)
+    $count = 0;
+    $order = new Order\LastMod();
+    $order->readOrRebuild($env);
+    $objectIds = \array_reverse($order->getItems($lang));
+    $objectView = $env->newExposeHtml();
+    foreach ($objectIds as $objectId) {
+        // load object data
+        $objectData = $env->getObject($objectId);
+        if (!\is_array($objectData)) {
+            continue;
+        }
+        $objectTexts = $env->getObjectText($objectId);
+        if (!\is_array($objectTexts)) {
+            continue;
+        }
+
+        $objectStamp = \gmdate(FEED_DATE_FORMAT, $env->getObjectStamp($objectId));
+        $objectUrl = Utils::getAbsoluteUrl($objectView->getUrl($env, $objectId));
+
+        $objectTitle = $objectData['title'][$lang];
+        if (isset($objectData['nr']) && Utils::isNotBlankString($objectData['nr']))
+            $objectTitle = \trim($objectData['nr'] . ' » ' . $objectTitle);
+        else
+            $objectTitle = \trim('#' . $objectId . ' » ' . $objectTitle);
+
         $objectSummary = '';
+        if (isset($objectTexts['short_description'][$lang]) && Utils::isNotBlankString($objectTexts['short_description'][$lang]))
+            $objectSummary = $objectTexts['short_description'][$lang];
+        else if (isset($objectTexts['detailled_description']) && Utils::isNotBlankString($objectTexts['detailled_description'][$lang]))
+            $objectSummary = $objectTexts['detailled_description'][$lang];
+        else if (isset($objectData['title'][$lang]) && Utils::isNotBlankString($objectData['title'][$lang]))
+            $objectSummary = $objectData['title'][$lang];
 
-    // ggf. Bild in Zusammenfassung einfügen
-    if ($setup->AtomFeedWithImage === true && isset($object['images'][0]['thumb']) && is_string($object['images'][0]['thumb'])) {
-        $titleImg = 'data/' . $object['id'] . '/' . $object['images'][0]['thumb'];
-        if (is_file(immotool_functions::get_path($titleImg))) {
-            $objectSummary = '<img src="' . $baseUrl . $titleImg . '" alt="" align="left" /> ' . $objectSummary;
+        if ($config->atomFeedWithImage === true && isset($objectData['images'][0]['thumb']) && Utils::isNotBlankString($objectData['images'][0]['thumb'])) {
+            $objectImgPath = $env->getDataPath($objectId, $objectData['images'][0]['thumb']);
+            if (\is_file($objectImgPath)) {
+                $objectImgUrl = Utils::getAbsoluteUrl($env->getDataUrl($objectId)) . '/' . $objectData['images'][0]['thumb'];
+                $objectSummary = '<img src="' . html($objectImgUrl) . '" alt="" align="left" /> ' . $objectSummary;
+            }
         }
+
+        echo '  <entry>' . "\n";
+        echo '    <id>' . html($objectUrl) . '</id>' . "\n";
+        echo '    <link href="' . html($objectUrl) . '" />' . "\n";
+        echo '    <title>' . html($objectTitle) . '</title>' . "\n";
+        echo '    <author>' . "\n";
+        echo '      <name>' . html($env->getConfig()->companyName) . '</name>' . "\n";
+        echo '    </author>' . "\n";
+        //echo '    <summary type="text">' . html(\trim(\strip_tags($objectSummary))) . '</summary>' . "\n";
+        //echo '    <content type="html">' . html($objectSummary) . '</content>' . "\n";
+        echo '    <content type="html"><![CDATA[' . $objectSummary . ']]></content>' . "\n";
+        echo '    <updated>' . $objectStamp . '</updated>' . "\n";
+        echo '    <dc:creator>' . html($objectStamp) . '</dc:creator>' . "\n";
+        echo '  </entry>' . "\n";
+
+        $count++;
+        if (\is_int($config->atomFeedLimit) && $config->atomFeedLimit > 0 && $count >= $config->atomFeedLimit)
+            break;
     }
 
-    // Immobilie in den Feed eintragen
-    $feed .= '  <entry>' . "\n";
-    $feed .= '    <id>' . $objectUrl . '</id>' . "\n";
-    $feed .= '    <link href="' . $objectUrl . '" />' . "\n";
-    $feed .= '    <title>' . htmlspecialchars($objectTitle) . '</title>' . "\n";
-    $feed .= '    <author>' . "\n";
-    $feed .= '      <name>' . $feedTitle . '</name>' . "\n";
-    $feed .= '    </author>' . "\n";
-    //$feed .= '    <summary type="text">' . trim( strip_tags($objectSummary) ) . '</summary>' . "\n";
-    //$feed .= '    <content type="html">' . htmlspecialchars( $objectSummary ) . '</content>' . "\n";
-    $feed .= '    <content type="html"><![CDATA[' . $objectSummary . ']]></content>' . "\n";
-    if (!is_null($objectStamp))
-        $feed .= '    <updated>' . gmdate('Y-m-d\TH:i:s\Z', $objectStamp) . '</updated>' . "\n";
-    else
-        $feed .= '    <updated>' . $feedStamp . '</updated>' . "\n";
-    $feed .= '    <dc:creator>' . $feedTitle . '</dc:creator>' . "\n";
-    $feed .= '  </entry>' . "\n";
+    echo '</feed>';
 
-    if ($debugMode)
-        echo '&gt; OK<br/>';
+    // write feed into cache file
+    if ($env->isProductionMode()) {
+        // process buffered output
+        $feed = \ob_get_clean();
 
-    // ggf. abbrechen, wenn das Maximum für Feed-Einträge erreicht ist
-    $counter++;
-    if (is_numeric($setup->AtomFeedLimit) && $setup->AtomFeedLimit > 0 && $setup->AtomFeedLimit <= $counter) {
-        if ($debugMode)
-            echo '&gt; STOP, reached limit of ' . $setup->AtomFeedLimit . ' entries<br/>';
-        break;
-    }
-}
-$feed .= '</feed>';
-
-// Debug-Ausgabe des Feeds
-if ($debugMode) {
-    echo '<h2>Generated XML</h2>';
-    echo '<textarea style="width:95%; height:30em; margin-bottom:1em;" readonly="readonly">' . htmlspecialchars($feed) . '</textarea>';
-    echo '</body></html>';
-} // normale Ausgabe des Feeds
-else {
-
-    // Feed cachen
-    $fh = @fopen($feedFile, 'w');
-    if (!$fh) {
-        if (!headers_sent()) {
-            // 500-Fehlercode zurückliefern,
-            // wenn die Feed-Datei nicht geschrieben werden kann
-            header('HTTP/1.0 500 Internal Server Error');
+        // write feed into local cache
+        $fh = \fopen($cacheFile, 'w');
+        if ($fh !== false) {
+            \fwrite($fh, $feed);
+            \fclose($fh);
         }
-        echo 'Can\'t write feed to: ' . $feedFile;
-        return;
-    }
-    fwrite($fh, $feed);
-    fclose($fh);
 
-    // Feed ausgeben
-    echo $feed;
+        // write generated feed
+        \ob_start();
+        echo $feed;
+    }
+
+} catch (\Exception $e) {
+
+    // ignore previously buffered output
+    \ob_end_clean();
+    \ob_start();
+
+    if (!\headers_sent())
+        \http_response_code(500);
+
+    //Utils::logError($e);
+    Utils::logWarning($e);
+    Utils::printErrorException($e);
+
+} finally {
+
+    // shutdown environment
+    if ($env !== null)
+        $env->shutdown();
+
+    // send buffered output
+    \ob_end_flush();
+
 }
-immotool_functions::shutdown($setup);

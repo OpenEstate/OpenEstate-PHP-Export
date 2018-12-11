@@ -1,0 +1,895 @@
+/*
+ * Copyright 2009-2018 OpenEstate.org.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Body
+ */
+.openestate-body {
+    /*background-color: white;*/
+    /*font-size: 14px;*/
+}
+
+.openestate-body a,
+.openestate-body a:hover {
+    box-shadow: none;
+}
+
+/**
+ * Loading indicator
+ */
+
+.openestate-loading {
+    display: none;
+    margin: 2em auto;
+    width: 99%;
+    max-width: 750px;
+    text-align: center;
+}
+
+.openestate-loading .openestate-spinner {
+    font-size: 2em;
+}
+
+/**
+ * Header
+ */
+
+.openestate-header {
+    background-color: #e0e0e0;
+    -webkit-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    z-index: 100;
+    position: relative;
+}
+
+.openestate-header-bar {
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 5px;
+    /*overflow: hidden;*/
+}
+
+.openestate-header-title {
+    margin: 0;
+    padding: 0;
+}
+
+.openestate-header-actions {
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: row;
+    margin-right: 3px;
+}
+
+.openestate-header-actions a.openestate-action {
+    display: block;
+    color: #707070;
+    /*transition: color 0.3s;*/
+    /*transition: font-size 0.5s;*/
+    transition: transform .3s ease-in-out;
+    text-decoration: none;
+}
+
+.openestate-header-actions a.openestate-action.active,
+.openestate-header-actions a.openestate-action:hover {
+    /*background-color: rgba(255, 255, 255, 0.5);*/
+    color: #101010;
+    -webkit-transform: scale(1.5);
+    -moz-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    transform: scale(1.5);
+}
+
+.openestate-header-actions > .openestate-action-separator {
+    border-left: 2px solid #a0a0a0;
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.openestate-action-language-dropdown a.active {
+    font-weight: bold;
+}
+
+/**
+ * Filter form
+ */
+.openestate-filter-form {
+    display: none;
+    background-color: #f0f0f0;
+    padding: 8px;
+}
+
+.openestate-filter-form > fieldset > legend {
+    display: none;
+}
+
+.openestate-filter-form .form-check-inline {
+    display: block;
+}
+
+@media (min-width: 576px) {
+    .openestate-filter-form .form-check-inline {
+        display: inline-flex;
+    }
+}
+
+/**
+ * Order form
+ */
+.openestate-sort-form {
+    display: none;
+    background-color: #f0f0f0;
+    padding: 8px;
+}
+
+.openestate-sort-form > fieldset > legend {
+    display: none;
+}
+
+.openestate-sort-form .form-check-inline {
+    display: block;
+}
+
+@media (min-width: 576px) {
+    .openestate-sort-form .form-check-inline {
+        display: inline-flex;
+    }
+}
+
+/**
+ * Object listing
+ */
+
+.openestate-listing-items-detail,
+.openestate-fav-items-detail {
+    padding-top: 0.5em;
+}
+
+.openestate-listing-items .openestate-attribute-label,
+.openestate-fav-items .openestate-attribute-label {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.openestate-listing-items .openestate-attribute-value,
+.openestate-fav-items .openestate-attribute-value {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.openestate-listing-empty,
+.openestate-fav-empty {
+    margin: 1.5em auto;
+    width: 99%;
+    max-width: 750px;
+    text-align: center;
+}
+
+/**
+ * Object listing / Detailed view
+ */
+
+.openestate-listing-detail,
+.openestate-fav-detail {
+    margin: 1em 0.5em 0 0.5em;
+    transition: border-color .3s ease-in-out;
+}
+
+.openestate-listing-detail:hover,
+.openestate-fav-detail:hover {
+    border-color: #333333;
+    transition: background-color .3s ease-in-out;
+}
+
+.openestate-listing-detail:hover .openestate-listing-detail-content,
+.openestate-fav-detail:hover .openestate-fav-detail-content {
+    background-color: white;
+}
+
+.openestate-listing-detail-title,
+.openestate-fav-detail-title {
+}
+
+.openestate-listing-detail-title a,
+.openestate-fav-detail-title a {
+}
+
+.openestate-listing-detail-title a:hover,
+.openestate-fav-detail-title a:hover {
+}
+
+.openestate-listing-detail-content,
+.openestate-fav-detail-content {
+    padding: 15px;
+    transition: all .3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /*background-color: #f0f0f0;*/
+}
+
+.openestate-listing-detail-content ul,
+.openestate-fav-detail-content ul {
+    margin: 0;
+    padding-left: 15px;
+    padding-right: 5px;
+}
+
+.openestate-listing-detail-image,
+.openestate-fav-detail-image {
+    margin-bottom: 1em;
+}
+
+.openestate-listing-detail-image img,
+.openestate-fav-detail-image img {
+    width: 100%;
+}
+
+.openestate-listing-detail-actions,
+.openestate-fav-detail-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 500px) {
+    .openestate-listing-detail,
+    .openestate-fav-detail {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    .openestate-listing-detail-content,
+    .openestate-fav-detail-content {
+        flex-direction: row;
+    }
+
+    .openestate-listing-detail-content ul,
+    .openestate-fav-detail-content ul {
+        padding-left: 40px;
+    }
+
+    .openestate-listing-detail-image,
+    .openestate-fav-detail-image {
+        margin-bottom: 0;
+    }
+
+    .openestate-listing-detail-image img,
+    .openestate-fav-detail-image img {
+        max-height: 100px;
+        width: auto;
+        transition: all .3s ease-in-out;
+    }
+
+    .openestate-listing-detail-image img:hover,
+    .openestate-fav-detail-image img:hover {
+        -webkit-transform: scale(1.2);
+        -moz-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        -o-transform: scale(1.2);
+        transform: scale(1.2);
+    }
+
+    .openestate-listing-detail-actions,
+    .openestate-fav-detail-actions {
+        flex-direction: row;
+    }
+
+    .openestate-listing-detail-actions a,
+    .openestate-fav-detail-actions a {
+        padding-right: 0.5em;
+    }
+}
+
+/**
+ * Object listing / Thumbnail view
+ */
+
+.openestate-listing-items-thumb,
+.openestate-fav-items-thumb {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.5em;
+    margin-top: 0.5em;
+}
+
+.openestate-listing-thumb,
+.openestate-fav-thumb {
+    width: 31%;
+    min-width: 250px;
+    max-width: 425px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.openestate-listing-thumb-image a,
+.openestate-fav-thumb-image a {
+    display: block;
+}
+
+.openestate-listing-thumb-image img,
+.openestate-fav-thumb-image img {
+    width: 100%;
+}
+
+.openestate-listing-thumb:hover .openestate-listing-thumb-image img,
+.openestate-fav-thumb:hover .openestate-fav-thumb-image img {
+    border-color: black;
+}
+
+.openestate-listing-thumb-popup,
+.openestate-fav-thumb-popup {
+    display: none;
+}
+
+.openestate-listing-thumb .bs-popover-top,
+.openestate-fav-thumb .bs-popover-top {
+    margin-top: 50px;
+}
+
+.openestate-listing-thumb .bs-popover-bottom,
+.openestate-fav-thumb .bs-popover-bottom {
+    margin-top: -50px;
+}
+
+.openestate-listing-thumb .bs-popover-left,
+.openestate-fav-thumb .bs-popover-left {
+    margin-left: 50px;
+}
+
+.openestate-listing-thumb .bs-popover-right,
+.openestate-fav-thumb .bs-popover-right {
+    margin-left: -50px;
+}
+
+.openestate-listing-thumb .popover-body,
+.openestate-fav-thumb .popover-body {
+    padding: 0;
+}
+
+.openestate-listing-thumb .popover-body ul,
+.openestate-fav-thumb .popover-body ul {
+    margin: 0;
+    padding: 10px 15px 10px 25px;
+}
+
+.openestate-listing-thumb-title,
+.openestate-fav-thumb-title {
+    margin: 0 !important;
+    padding: 5px 10px 5px 10px !important;
+    background-color: #e0e0e0;
+    font-size: 1.1em;
+}
+
+.openestate-listing-thumb-title a,
+.openestate-fav-thumb-title a {
+    text-decoration: none;
+    color: #333333;
+    display: block;
+    transition: all .3s ease-in-out;
+}
+
+.openestate-listing-thumb-title a:hover,
+.openestate-fav-thumb-title a:hover {
+    color: black;
+}
+
+.openestate-listing-thumb-actions,
+.openestate-fav-thumb-actions {
+    margin: 0;
+    padding: 0;
+    background-color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e0e0e0;
+}
+
+.openestate-listing-thumb-actions a,
+.openestate-fav-thumb-actions a {
+    text-decoration: none;
+    color: #333333;
+    transition: all .3s ease-in-out;
+    padding: 5px 10px 5px 10px;
+}
+
+.openestate-listing-thumb-actions a:hover,
+.openestate-fav-thumb-actions a:hover {
+    color: black;
+    background-color: white;
+}
+
+/**
+ * Object listing / Pagination
+ */
+
+.openestate-listing-pagination,
+.openestate-fav-pagination {
+    margin-top: 2em;
+}
+
+.openestate-listing-pagination li,
+.openestate-fav-pagination li {
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+}
+
+.openestate-listing-pagination a,
+.openestate-fav-pagination a {
+    font-size: 1.5em;
+}
+
+/**
+ * Expose view
+ */
+
+.openestate-expose-empty {
+    margin: 1.5em auto;
+    width: 99%;
+    max-width: 750px;
+    text-align: center;
+}
+
+.openestate-expose-empty i {
+    font-size: 1.5em;
+}
+
+.openestate-expose-content {
+    padding: 1em;
+}
+
+/*.openestate-expose-content > div {
+    padding: 15px;
+}*/
+
+/**
+ * Expose view / Gallery
+ */
+
+.openestate-expose-gallery {
+    border-bottom: 1px solid #505050;
+    overflow: hidden;
+    /*margin: auto;*/
+    /*padding: 20px;*/
+    /*width: 80%;*/
+}
+
+.openestate-expose-gallery .slick-slide {
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -webkit-transition: opacity .5s ease-in-out;
+}
+
+.openestate-expose-gallery .slick-current {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    border-right: 1px solid #505050;
+    border-left: 1px solid #505050;
+}
+
+.openestate-expose-gallery-prev,
+.openestate-expose-gallery-next {
+    font-size: 1.5em;
+    width: 50px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: block;
+    padding: 0;
+    cursor: pointer;
+    color: #808080;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    z-index: 11;
+}
+
+.openestate-expose-gallery-prev:hover,
+.openestate-expose-gallery-prev:focus,
+.openestate-expose-gallery-next:hover,
+.openestate-expose-gallery-next:focus {
+    color: black;
+    outline: none !important;
+}
+
+.openestate-expose-gallery-prev {
+    left: 0;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.8) !important;
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 255, 255, 0.8)), color-stop(25%, rgba(255, 255, 255, 0.8)), color-stop(100%, rgba(255, 255, 255, 0))) !important;
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1);
+}
+
+.openestate-expose-gallery-next {
+    right: 0;
+    text-align: right;
+    background: rgba(255, 255, 255, 0) !important;
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(75%, rgba(255, 255, 255, 0.8)), color-stop(100%, rgba(255, 255, 255, 0.8))) !important;
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1);
+}
+
+.openestate-expose-gallery img {
+    height: 100px;
+    width: auto;
+    box-shadow: none !important;
+}
+
+@media (min-width: 300px) {
+    .openestate-expose-gallery img {
+        height: 150px;
+    }
+}
+
+@media (min-width: 400px) {
+    .openestate-expose-gallery img {
+        height: 200px;
+    }
+}
+
+@media (min-width: 450px) {
+    .openestate-expose-gallery img {
+        height: 250px;
+    }
+}
+
+@media (min-width: 500px) {
+    .openestate-expose-gallery img {
+        height: 300px;
+    }
+
+    .openestate-expose-gallery-prev,
+    .openestate-expose-gallery-next {
+        font-size: 2em;
+        width: 100px;
+    }
+}
+
+@media (min-width: 600px) {
+    .openestate-expose-gallery img {
+        height: 325px;
+    }
+}
+
+/**
+ * Expose view / Gallery modal dialog
+ */
+
+.openestate-gallery-dialog {
+
+}
+
+.openestate-gallery-dialog .modal-header a,
+.openestate-gallery-dialog .modal-header a:hover {
+    text-decoration: none;
+}
+
+.openestate-gallery-dialog .modal-content {
+    text-align: center;
+}
+
+/**
+ * Expose view / Gallery for printing
+ */
+
+.openestate-expose-gallery-print {
+    display: none;
+}
+
+.openestate-expose-gallery-print > div {
+    text-align: center;
+}
+
+.openestate-expose-gallery-print > div > div {
+    margin: 0 0.5em 1em 0.5em;
+    display: inline-block;
+
+}
+
+.openestate-expose-gallery-print img {
+    max-width: 98%;
+    border: 1px solid #a0a0a0;
+    border-radius: 6px;
+}
+
+/**
+ * Expose view / videos
+ */
+
+.openestate-expose-video-local {
+    margin-bottom: 10px;
+}
+
+.openestate-expose-video-local video {
+    max-width: 100%;
+    margin-bottom: 0;
+    height: auto;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+}
+
+.openestate-expose-video-embed {
+    margin-bottom: 10px;
+}
+
+.openestate-expose-video-embed .openestate-video-object {
+    max-width: 100%;
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+}
+
+.openestate-expose-video-embed .openestate-video-subtitle {
+    text-align: left;
+    font-size: 0.9em;
+}
+
+/**
+ * Expose view / map
+ */
+
+.openestate-expose-map {
+}
+
+.openestate-expose-map .openestate-map-object {
+    width: 100%;
+    height: 25em;
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+}
+
+.openestate-expose-map .openestate-map-subtitle {
+    text-align: left;
+    font-size: 0.9em;
+}
+
+/**
+ * Expose view / links
+ */
+
+.openestate-expose-links {
+}
+
+.openestate-expose-links ul {
+    margin-bottom: 5px;
+    padding-left: 15px;
+}
+
+/**
+ * Expose view / contact person
+ */
+
+.openestate-expose-person {
+}
+
+.openestate-expose-person ul {
+    margin-bottom: 5px;
+    padding-left: 15px;
+}
+
+.openestate-expose-person-name {
+    font-weight: bold;
+}
+
+.openestate-expose-person-label {
+    display: inline-block;
+}
+
+.openestate-expose-person-value {
+    display: block;
+    font-weight: bold;
+}
+
+@media (min-width: 500px) {
+    .openestate-expose-person-label {
+        margin-right: 5px;
+        min-width: 65px;
+    }
+
+    .openestate-expose-person-value {
+        display: inline-block;
+    }
+}
+
+/**
+ * Expose view / contact form
+ */
+
+.openestate-expose-contact {
+}
+
+.openestate-expose-contact .panel-body {
+    padding-bottom: 0;
+}
+
+.openestate-expose-contact-loading,
+.openestate-expose-contact-success,
+.openestate-expose-contact-error {
+    display: none;
+}
+
+.openestate-expose-contact-loading i,
+.openestate-expose-contact-success i,
+.openestate-expose-contact-error i {
+    font-size: 1.5em;
+}
+
+.openestate-expose-contact .invalid-feedback {
+    margin-bottom: 0;
+    display: none;
+}
+
+.openestate-expose-contact textarea {
+    min-height: 8em;
+}
+
+.openestate-expose-contact-captcha-image {
+    line-height: 0.9em;
+    font-size: 0.9em;
+}
+
+.openestate-expose-contact-terms {
+    margin-top: 2em;
+}
+
+.openestate-expose-contact-submit {
+    text-align: center;
+}
+
+
+/**
+ * Copyright information
+ */
+
+.openestate-copyright {
+    margin-top: 3em;
+    padding-top: 2em;
+    border-top: 1px solid #c0c0c0;
+    font-size: 0.9em;
+    display: flex;
+    flex-direction: column;
+}
+
+.openestate-copyright > * {
+    margin: auto;
+}
+
+.openestate-copyright a {
+    text-decoration: none;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+}
+
+.openestate-copyright a:hover {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+/**
+ * Statistics.
+ */
+
+.openestate-statistics {
+    margin: 1em;
+}
+
+/**
+ * Printing
+ */
+
+@media print {
+    .hidden-print {
+        display: none;
+    }
+
+    .openestate-header {
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .openestate-header-bar {
+        padding: 0;
+        border-bottom: 1px solid black;
+    }
+
+    .openestate-header-actions {
+        display: none;
+    }
+
+    .openestate-listing-detail,
+    .openestate-fav-detail {
+        margin-left: 0;
+        margin-right: 0;
+        page-break-inside: avoid;
+    }
+
+    .openestate-listing-detail-title {
+        border-bottom: 1px solid #a0a0a0;
+    }
+
+    .openestate-listing-detail-actions,
+    .openestate-fav-detail-actions {
+        display: none;
+    }
+
+    .openestate-listing-items-thumb,
+    .openestate-fav-items-thumb {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .openestate-listing-thumb-popup,
+    .openestate-fav-thumb-popup {
+        display: none !important;
+    }
+
+    .openestate-listing-pagination {
+        display: none;
+    }
+
+    .openestate-expose-content > div {
+        padding-left: 0;
+        padding-right: 0;
+        page-break-inside: avoid;
+    }
+
+    .openestate-expose-map {
+        display: none;
+    }
+
+    .openestate-expose-videos {
+        display: none;
+    }
+
+    .openestate-expose-links {
+        display: none;
+    }
+
+    .openestate-expose-gallery {
+        display: none;
+    }
+
+    .openestate-expose-gallery-print {
+        display: block;
+    }
+
+    .openestate-expose-contact {
+        display: none;
+    }
+
+    .openestate-debug {
+        display: none;
+    }
+}

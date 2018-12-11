@@ -1,0 +1,261 @@
+# OpenEstate-PHP-Export - Core.
+# Copyright (C) 2009-2018 OpenEstate.org
+# This file is distributed under the same license as the OpenEstate-PHP-Export package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenEstate-PHP-Export 2.0-dev\n"
+"Report-Msgid-Bugs-To: i18n@openestate.org\n"
+"POT-Creation-Date: 2018-11-26 01:15+0100\n"
+"PO-Revision-Date: 2018-11-15 16:13+0000\n"
+"Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
+"Language-Team: Turkish <https://i18n.openestate.org/projects/openestate-php-"
+"export/core/tr/>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.2.2\n"
+
+#: feed_atom.php:106 include/OpenEstate/PhpExport/View/AbstractHtmlView.php:99
+#: include/OpenEstate/PhpExport/View/AbstractHtmlView.php:111 feed_rss.php:105
+msgid "current offers"
+msgstr ""
+
+#: feed_atom.php:107 feed_rss.php:107
+msgid "current offers by {0}"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/SpecialOffer.php:66
+msgid "special offer"
+msgstr "Özel teklif"
+
+#: include/OpenEstate/PhpExport/Filter/Country.php:90
+msgid "country"
+msgstr "Ülke"
+
+#: include/OpenEstate/PhpExport/Filter/Action.php:62
+msgid "marketing type"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Age.php:63
+msgid "age"
+msgstr "Yasi"
+
+#: include/OpenEstate/PhpExport/Filter/Equipment.php:63
+msgid "equipment"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:94
+#: include/OpenEstate/PhpExport/Order/Rooms.php:59
+msgid "number of rooms"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:109
+#: include/OpenEstate/PhpExport/Filter/Rooms.php:111
+msgid "{0} room"
+msgid_plural "{0} rooms"
+msgstr[0] ""
+msgstr[1] ""
+
+#: include/OpenEstate/PhpExport/Filter/Region.php:65
+msgid "region"
+msgstr "bölge"
+
+#: include/OpenEstate/PhpExport/Filter/City.php:65
+#: include/OpenEstate/PhpExport/Order/City.php:59
+msgid "place"
+msgstr "yer"
+
+#: include/OpenEstate/PhpExport/Filter/Furnished.php:66
+msgid "furnished"
+msgstr "Möbleli"
+
+#: include/OpenEstate/PhpExport/Filter/Type.php:66
+msgid "object type"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/GroupNr.php:64
+#: include/OpenEstate/PhpExport/Order/GroupNr.php:62
+msgid "group"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Filter/GroupNr.php:80
+msgid "group {0}"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/Title.php:61
+msgid "title"
+msgstr "Başlık"
+
+#: include/OpenEstate/PhpExport/Order/ObjectNr.php:65
+msgid "object nr"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/Postal.php:59
+msgid "postal code"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/Area.php:78
+msgid "area"
+msgstr "Bölge"
+
+#: include/OpenEstate/PhpExport/Order/Price.php:83
+msgid "price"
+msgstr "Fiyat"
+
+#: include/OpenEstate/PhpExport/Order/LastMod.php:61
+msgid "last modification"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Order/ObjectId.php:64
+msgid "object ID"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Utils.php:265
+msgid "from now on"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Utils.php:1104
+msgid "month"
+msgstr "Aylık"
+
+#: include/OpenEstate/PhpExport/Utils.php:1111
+msgid "{0} per {1}"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Provider/VimeoVideo.php:82
+#: include/OpenEstate/PhpExport/Provider/DailyMotionVideo.php:82
+#: include/OpenEstate/PhpExport/Provider/YouTubeVideo.php:82
+#: include/OpenEstate/PhpExport/Provider/PanoCreatorGallery.php:81
+#: include/OpenEstate/PhpExport/Provider/GoogleMaps.php:91
+#: include/OpenEstate/PhpExport/Provider/VeohVideo.php:91
+#: include/OpenEstate/PhpExport/Provider/OpenStreetMap.php:103
+#: include/OpenEstate/PhpExport/Provider/RoundMeGallery.php:81
+#: include/OpenEstate/PhpExport/Provider/DTubeVideo.php:82
+msgid "Show in a separate window."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:139
+msgid "No object was provided for the contact request."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:141
+msgid "No contact data was provided for the contact request."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:146
+msgid "The requested object was not found."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:155
+msgid "Can't find a recipient address."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:169
+msgid "Please enter your name."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:171
+msgid "Your name should contain at least {0} and maximal {1} characters."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:173
+#: include/OpenEstate/PhpExport/Action/Contact.php:181
+#: include/OpenEstate/PhpExport/Action/Contact.php:195
+msgid "HTML code is not allowed."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:177
+msgid "Please enter your phone number."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:179
+msgid ""
+"Your phone number should contain at least {0} and maximal {1} characters."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:185
+msgid "Please enter your email address."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:187
+msgid "Your email address is invalid."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:191
+msgid "Please enter your message."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:193
+msgid "Your message should contain at least {0} characters."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:199
+msgid "Please accept the general terms and conditions."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:203
+msgid "Please accept the privacy policy."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:207
+msgid "Please accept the cancellation policy."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:212
+msgid "Please enter the verification code."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:214
+msgid "Your verification code is invalid."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:219
+msgid "Please check your input in the highlighted fields."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:231
+msgid "name"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:232
+msgid "phone"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:233
+msgid "email"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:234
+msgid "language"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:235
+msgid "time"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:236
+msgid "IP address"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:237
+msgid "web browser"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:253
+msgid "Contact request for object {0}"
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:254
+msgid "A contact request was sent for object {0}."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:271
+msgid "Email was not sent."
+msgstr ""
+
+#: include/OpenEstate/PhpExport/Action/Contact.php:277
+msgid "The email transfer failed."
+msgstr ""

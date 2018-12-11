@@ -1,0 +1,77 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Custom" />
+    <inspection_tool class="AngularCliAddDependency" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="BladeControlDirectives" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CoffeeScriptArgumentsOutsideFunction" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CoffeeScriptFunctionSignatures" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="CoffeeScriptInfiniteLoop" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CoffeeScriptLiteralNotFunction" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="CoffeeScriptModulesDependencies" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="CoffeeScriptSillyAssignment" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CoffeeScriptSwitchStatementWithNoDefaultBranch" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CoffeeScriptUnusedLocalSymbols" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ComposeUnknownKeys" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="ComposeUnknownValues" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="CucumberExamplesColon" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="CucumberMissedExamples" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="CucumberTableInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CucumberUndefinedStep" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DockerFileAddOrCopySemantic" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DockerFileArgumentCount" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="DockerFileAssignments" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="DuplicateKeyInSection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DuplicateSectionInFile" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ES6ConvertVarToLetConst" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="EmptyEventHandler" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="FileHeaderInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="GherkinBrokenTableInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="GherkinMisplacedBackground" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="HamlNestedTagContent" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="MissingSinceTagDocInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="MysqlParsingInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhingDomInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="SqlAddNotNullColumnInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlAmbiguousColumnInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlAutoIncrementDuplicateInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlCheckUsingColumnsInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlConstantConditionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlDeprecateTypeInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlDerivedTableAliasInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlDialectInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlDropIndexedColumnInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlIdentifierInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlInsertValuesInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlNoDataSourceInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlNullComparisonInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlPostgresqlSelectFromProcedureInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlResolveInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlShouldBeInGroupByInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlSideEffectsInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlSignatureInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlStorageInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlTypeInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlUnusedVariableInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SuspiciousInstanceOfGuard" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SuspiciousTypeOfGuard" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptAbstractClassConstructorCanBeMadeProtected" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptAccessibilityCheck" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptCheckImport" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptConfig" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptFieldCanBeMadeReadonly" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptMissingAugmentationImport" enabled="false" level="INFORMATION" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptPreferShortImport" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptSuspiciousConstructorParameterAssignment" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptUMDGlobal" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptUnresolvedFunction" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptUnresolvedVariable" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptValidateJSTypes" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptValidateTypes" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="TypescriptExplicitMemberType" enabled="false" level="INFORMATION" enabled_by_default="false" />
+    <inspection_tool class="UnresolvedReference" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="XsltDeclarations" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="XsltTemplateInvocation" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="XsltUnusedDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="XsltVariableShadowing" enabled="false" level="WARNING" enabled_by_default="false" />
+  </profile>
+</component>

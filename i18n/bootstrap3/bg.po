@@ -1,0 +1,291 @@
+# OpenEstate-PHP-Export - Bootstrap3 Theme.
+# Copyright (C) 2009-2018 OpenEstate.org
+# This file is distributed under the same license as the OpenEstate-PHP-Export package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenEstate-PHP-Export Bootstrap3 Theme\n"
+"Report-Msgid-Bugs-To: i18n@openestate.org\n"
+"POT-Creation-Date: 2018-11-26 01:29+0100\n"
+"PO-Revision-Date: 2018-11-15 16:13+0000\n"
+"Last-Translator: Andreas Rudolph <andy@openindex.de>\n"
+"Language-Team: Bulgarian <https://i18n.openestate.org/projects/openestate-"
+"php-export/theme-bootstrap3/bg/>\n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.2.2\n"
+
+#: themes/bootstrap3/expose.php:65 themes/bootstrap3/expose.php:237
+#: themes/bootstrap3/fav.php:253 themes/bootstrap3/listing.php:341
+msgid "real estate {0}"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:221
+msgid "The offer was not found. Maybe it is not published anymore."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:227 themes/bootstrap3/fav.php:232
+msgid "Visit our current offers."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:243 themes/bootstrap3/fav.php:322
+#: themes/bootstrap3/fav.php:386 themes/bootstrap3/listing.php:414
+#: themes/bootstrap3/listing.php:488
+msgid "Download information about this object as PDF file."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:251 themes/bootstrap3/listing.php:422
+#: themes/bootstrap3/listing.php:496
+msgid "Add this object to your list of favorites."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:258 themes/bootstrap3/fav.php:329
+#: themes/bootstrap3/fav.php:393 themes/bootstrap3/listing.php:429
+#: themes/bootstrap3/listing.php:503
+msgid "Remove this object from your list of favorites."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:268 themes/bootstrap3/fav.php:154
+msgid "Show current offers."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:274 themes/bootstrap3/listing.php:181
+msgid "Show list of favorite objects."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:281 themes/bootstrap3/fav.php:160
+#: themes/bootstrap3/listing.php:188
+msgid "Select your preferred language."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:330
+msgid "identifier"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:336
+msgid "offer"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:343
+msgid "address"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:380 themes/bootstrap3/expose.php:381
+msgid "yes"
+msgstr "да"
+
+#: themes/bootstrap3/expose.php:382 themes/bootstrap3/expose.php:383
+msgid "no"
+msgstr "не"
+
+#: themes/bootstrap3/expose.php:418
+msgid "area map"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:447
+msgid "videos"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:456
+msgid "Your web browser does not support video playback."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:491
+msgid "further links"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:503
+msgid "attachment"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:522
+msgid "your contact person"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:531 themes/bootstrap3/expose.php:536
+msgid "phone"
+msgstr "Телефон"
+
+#: themes/bootstrap3/expose.php:542 themes/bootstrap3/expose.php:547
+msgid "mobile"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:553 themes/bootstrap3/expose.php:558
+msgid "email"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:569
+msgid "get in contact"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:573 themes/bootstrap3/expose.php:783
+#: themes/bootstrap3/fav.php:445 themes/bootstrap3/listing.php:557
+msgid "Processing your request. Please wait for a moment."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:576
+msgid ""
+"Your message was successfully sent. We will report back as soon as possible."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:579
+msgid "Sorry, but we can't process your message due to an error."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:589
+msgid "your name"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:599
+msgid "your email address"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:609
+msgid "your phone number"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:621
+msgid "your message"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:624
+msgid "I am interested in your offer \"{0}\". Please get in contact with me."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:633 themes/bootstrap3/expose.php:638
+msgid "verification code"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:639
+msgid "refresh"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:661
+msgid "Yes, I accept the general terms and conditions."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:666 themes/bootstrap3/expose.php:689
+#: themes/bootstrap3/expose.php:712
+msgid "read full text"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:684
+msgid "Yes, I accept the cancellation policy."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:707
+msgid "Yes, I accept the data privacy statement."
+msgstr ""
+
+#: themes/bootstrap3/expose.php:727
+msgid "send message"
+msgstr ""
+
+#: themes/bootstrap3/expose.php:739
+msgid "images"
+msgstr "Снимки"
+
+#: themes/bootstrap3/fav.php:101 themes/bootstrap3/fav.php:130
+msgid "my favored objects"
+msgstr ""
+
+#: themes/bootstrap3/fav.php:135 themes/bootstrap3/listing.php:159
+msgid "Show sort options."
+msgstr ""
+
+#: themes/bootstrap3/fav.php:142 themes/bootstrap3/listing.php:166
+msgid "Show objects in detailed view."
+msgstr ""
+
+#: themes/bootstrap3/fav.php:148 themes/bootstrap3/listing.php:172
+msgid "Show objects in gallery view."
+msgstr ""
+
+#: themes/bootstrap3/fav.php:187 themes/bootstrap3/listing.php:265
+msgid "sort offers"
+msgstr ""
+
+#: themes/bootstrap3/fav.php:212 themes/bootstrap3/listing.php:290
+msgid "ascending"
+msgstr "възходящ ред"
+
+#: themes/bootstrap3/fav.php:217 themes/bootstrap3/listing.php:295
+msgid "descending"
+msgstr "низходящ ред"
+
+#: themes/bootstrap3/fav.php:229
+msgid "Your list of favorite objects is empty."
+msgstr ""
+
+#: themes/bootstrap3/fav.php:278 themes/bootstrap3/fav.php:288
+#: themes/bootstrap3/fav.php:316 themes/bootstrap3/fav.php:343
+#: themes/bootstrap3/fav.php:354 themes/bootstrap3/fav.php:380
+#: themes/bootstrap3/listing.php:370 themes/bootstrap3/listing.php:380
+#: themes/bootstrap3/listing.php:408 themes/bootstrap3/listing.php:445
+#: themes/bootstrap3/listing.php:456 themes/bootstrap3/listing.php:482
+msgid "Show details about this object."
+msgstr ""
+
+#: themes/bootstrap3/fav.php:317 themes/bootstrap3/fav.php:381
+#: themes/bootstrap3/listing.php:409 themes/bootstrap3/listing.php:483
+msgid "details"
+msgstr ""
+
+#: themes/bootstrap3/fav.php:323 themes/bootstrap3/fav.php:387
+#: themes/bootstrap3/listing.php:415 themes/bootstrap3/listing.php:489
+msgid "download"
+msgstr ""
+
+#: themes/bootstrap3/fav.php:330 themes/bootstrap3/fav.php:394
+#: themes/bootstrap3/listing.php:431 themes/bootstrap3/listing.php:505
+msgid "remove from favorites"
+msgstr ""
+
+#: themes/bootstrap3/fav.php:411 themes/bootstrap3/fav.php:415
+#: themes/bootstrap3/listing.php:523 themes/bootstrap3/listing.php:527
+msgid "Show previous page."
+msgstr ""
+
+#: themes/bootstrap3/fav.php:425 themes/bootstrap3/fav.php:430
+#: themes/bootstrap3/listing.php:537 themes/bootstrap3/listing.php:542
+msgid "Show next page."
+msgstr ""
+
+#: themes/bootstrap3/listing.php:119 themes/bootstrap3/listing.php:148
+msgid "current offers"
+msgstr ""
+
+#: themes/bootstrap3/listing.php:153
+msgid "Show search options."
+msgstr ""
+
+#: themes/bootstrap3/listing.php:215
+msgid "search offers"
+msgstr ""
+
+#: themes/bootstrap3/listing.php:247
+msgid "search"
+msgstr ""
+
+#: themes/bootstrap3/listing.php:252
+msgid "clear"
+msgstr ""
+
+#: themes/bootstrap3/listing.php:310
+msgid "There are currently no objects published."
+msgstr ""
+
+#: themes/bootstrap3/listing.php:313
+msgid "No objects were found according to your filter settings."
+msgstr ""
+
+#: themes/bootstrap3/listing.php:318
+msgid "Show all offers."
+msgstr ""
+
+#: themes/bootstrap3/listing.php:424 themes/bootstrap3/listing.php:498
+msgid "add to favorites"
+msgstr ""

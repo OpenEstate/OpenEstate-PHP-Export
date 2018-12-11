@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Source" pattern="(file:src/*.php||file:src/*.html||file:src/*.js||file:src/*.css)&amp;&amp;!file:*.min.*" />
+</component>

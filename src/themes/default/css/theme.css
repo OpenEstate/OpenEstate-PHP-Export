@@ -1,0 +1,1111 @@
+/*
+ * Copyright 2009-2018 OpenEstate.org.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Body
+ */
+
+.openestate-body {
+    /*background-color: white;*/
+    /*font-size: 16px;*/
+}
+
+.openestate-body a,
+.openestate-body a:hover {
+    box-shadow: none;
+}
+
+.openestate-body select {
+    height: auto;
+}
+
+/**
+ * Custom buttons
+ */
+
+.openestate-button {
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.openestate-button-success,
+.openestate-button-error,
+.openestate-button-warning,
+.openestate-button-secondary {
+    color: white;
+}
+
+.openestate-button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.openestate-button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.openestate-button-warning {
+    background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.openestate-button-secondary {
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+/**
+ * Loading indicator
+ */
+
+.openestate-loading {
+    background-color: #f5f5f5;
+    border: 1px solid #c0c0c0;
+    border-radius: 6px;
+    display: none;
+    margin: 2em auto;
+    padding: 1em;
+    width: 99%;
+    max-width: 750px;
+    text-align: center;
+    -webkit-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+.openestate-loading .openestate-spinner {
+    font-size: 1.5em;
+}
+
+/**
+ * Header
+ */
+
+.openestate-header {
+    background-color: #e0e0e0;
+    -webkit-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    z-index: 100;
+    position: relative;
+}
+
+.openestate-header-bar {
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.openestate-header-title {
+    margin: 0;
+    padding: 0;
+}
+
+.openestate-header-actions {
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: row;
+}
+
+.openestate-header-actions > a {
+    display: block;
+    color: #707070;
+    /*transition: color 0.3s;*/
+    /*transition: font-size 0.5s;*/
+    transition: transform .3s ease-in-out;
+    text-decoration: none;
+}
+
+.openestate-header-actions > a.active,
+.openestate-header-actions > a:hover {
+    /*background-color: rgba(255, 255, 255, 0.5);*/
+    color: #101010;
+    -webkit-transform: scale(1.5);
+    -moz-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    transform: scale(1.5);
+}
+
+.openestate-header-actions > .openestate-action-separator {
+    border-left: 2px solid #a0a0a0;
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+/**
+ * Filter form
+ */
+
+.openestate-filter-form {
+    display: none;
+    background-color: #f0f0f0;
+}
+
+.openestate-filter-form > fieldset {
+}
+
+.openestate-filter-form > fieldset > legend {
+    display: none;
+}
+
+.openestate-filter-form > fieldset > div {
+    display: block;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.openestate-filter-form > fieldset > div > * {
+    width: 100%;
+}
+
+@media (min-width: 500px) {
+    .openestate-filter-form > fieldset > div {
+        display: inline-block;
+        margin-top: 5px;
+        margin-right: 0;
+    }
+
+    .openestate-filter-form > fieldset > div.pure-button-group {
+        vertical-align: middle;
+    }
+
+    .openestate-filter-form > fieldset > div > * {
+        width: auto;
+    }
+}
+
+/**
+ * Order form
+ */
+.openestate-sort-form {
+    display: none;
+    background-color: #f0f0f0;
+}
+
+.openestate-sort-form > fieldset {
+}
+
+.openestate-sort-form > fieldset > legend {
+    display: none;
+}
+
+.openestate-sort-form > fieldset > div {
+    display: block;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.openestate-sort-form > fieldset > div > * {
+    width: 100%;
+}
+
+@media (min-width: 500px) {
+    .openestate-sort-form > fieldset > div {
+        display: inline-block;
+        margin-right: 0;
+    }
+
+    .openestate-sort-form > fieldset > div.pure-button-group {
+        vertical-align: middle;
+    }
+
+    .openestate-sort-form > fieldset > div > * {
+        width: auto;
+    }
+}
+
+/**
+ * Language selection
+ */
+
+.openestate-language-form {
+    display: none;
+    background-color: #f0f0f0;
+}
+
+.openestate-language-form a {
+    display: block;
+    margin-right: 10px;
+    text-decoration: none;
+    color: #666666;
+    text-align: right;
+}
+
+.openestate-language-form a:hover,
+.openestate-language-form a.active {
+    color: black;
+}
+
+/**
+ * Object listing
+ */
+
+.openestate-listing-items,
+.openestate-fav-items {
+}
+
+.openestate-listing-items .openestate-attribute-label,
+.openestate-fav-items .openestate-attribute-label {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.openestate-listing-items .openestate-attribute-value,
+.openestate-fav-items .openestate-attribute-value {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.openestate-listing-empty,
+.openestate-fav-empty {
+    background-color: #f5f5f5;
+    border: 1px solid #c0c0c0;
+    border-radius: 6px;
+    margin: 2em auto;
+    padding: 1em;
+    width: 99%;
+    max-width: 750px;
+    text-align: center;
+    -webkit-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+/**
+ * Object listing / Detailed view
+ */
+
+.openestate-listing-detail,
+.openestate-fav-detail {
+    margin: 1.5em 0.25em 1em 0.25em;
+    padding: 0;
+    border: 1px solid #a0a0a0;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+}
+
+.openestate-listing-detail:hover,
+.openestate-fav-detail:hover {
+    border-color: black;
+}
+
+.openestate-listing-detail:hover .openestate-listing-detail-content,
+.openestate-fav-detail:hover .openestate-fav-detail-content {
+    background-color: white;
+}
+
+.openestate-listing-detail-title,
+.openestate-fav-detail-title {
+    margin: 0 !important;
+    padding: 8px 15px 8px 15px !important;
+    background-color: #e0e0e0;
+    font-size: 1.0em;
+}
+
+.openestate-listing-detail-title a,
+.openestate-fav-detail-title a {
+    text-decoration: none;
+    color: #333333;
+    display: block;
+    transition: all .3s ease-in-out;
+}
+
+.openestate-listing-detail-title a:hover,
+.openestate-fav-detail-title a:hover {
+    color: black;
+}
+
+.openestate-listing-detail-content,
+.openestate-fav-detail-content {
+    padding: 15px;
+    transition: all .3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+}
+
+.openestate-listing-detail-content ul,
+.openestate-fav-detail-content ul {
+    margin: 0;
+    padding-left: 15px;
+    padding-right: 5px;
+}
+
+.openestate-listing-detail-image,
+.openestate-fav-detail-image {
+    margin-bottom: 0.5em;
+}
+
+.openestate-listing-detail-image img,
+.openestate-fav-detail-image img {
+    border: 1px solid #a0a0a0;
+    border-radius: 6px;
+    width: 100%;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+.openestate-listing-detail-actions,
+.openestate-fav-detail-actions {
+    margin: 0;
+    padding: 0;
+    background-color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e0e0e0;
+}
+
+.openestate-listing-detail-actions a,
+.openestate-fav-detail-actions a {
+    text-decoration: none;
+    color: #333333;
+    transition: all .3s ease-in-out;
+    padding: 8px 15px 8px 15px;
+}
+
+.openestate-listing-detail-actions a:hover,
+.openestate-fav-detail-actions a:hover {
+    color: black;
+    background-color: white;
+}
+
+@media (min-width: 500px) {
+    .openestate-listing-detail,
+    .openestate-fav-detail {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    .openestate-listing-detail-title,
+    .openestate-fav-detail-title {
+        font-size: 1.1em;
+    }
+
+    .openestate-listing-detail-content,
+    .openestate-fav-detail-content {
+        flex-direction: row;
+    }
+
+    .openestate-listing-detail-content ul,
+    .openestate-fav-detail-content ul {
+        padding-left: 40px;
+    }
+
+    .openestate-listing-detail-image,
+    .openestate-fav-detail-image {
+        margin-bottom: 0;
+    }
+
+    .openestate-listing-detail-image img,
+    .openestate-fav-detail-image img {
+        max-height: 100px;
+        width: auto;
+        transition: all .3s ease-in-out;
+    }
+
+    .openestate-listing-detail-image img:hover,
+    .openestate-fav-detail-image img:hover {
+        -webkit-transform: scale(1.3);
+        -moz-transform: scale(1.3);
+        -ms-transform: scale(1.3);
+        -o-transform: scale(1.3);
+        transform: scale(1.3);
+    }
+
+    .openestate-listing-detail-actions,
+    .openestate-fav-detail-actions {
+        flex-direction: row;
+    }
+
+    .openestate-listing-detail-actions a,
+    .openestate-fav-detail-actions a {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .openestate-listing-detail-actions a:first-child,
+    .openestate-fav-detail-actions a:first-child {
+        padding-left: 15px;
+        padding-right: 5px;
+    }
+}
+
+/**
+ * Object listing / Thumbnail view
+ */
+
+.openestate-listing-items-thumb,
+.openestate-fav-items-thumb {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.5em;
+    margin-top: 0.5em;
+}
+
+.openestate-listing-thumb,
+.openestate-fav-thumb {
+    width: 31%;
+    min-width: 250px;
+    max-width: 425px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.openestate-listing-thumb-image a,
+.openestate-fav-thumb-image a {
+    display: block;
+}
+
+.openestate-listing-thumb-image img,
+.openestate-fav-thumb-image img {
+    width: 100%;
+    border: 1px solid #a0a0a0;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+.openestate-listing-thumb:hover .openestate-listing-thumb-image img,
+.openestate-fav-thumb:hover .openestate-fav-thumb-image img {
+    border-color: black;
+}
+
+.openestate-listing-thumb-popup,
+.openestate-fav-thumb-popup {
+    display: none;
+    background-color: white;
+    font-size: 0.9em;
+    max-width: 500px;
+    border: 1px solid #a0a0a0;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+    z-index: 10;
+}
+
+.openestate-listing-thumb-popup ul,
+.openestate-fav-thumb-popup ul {
+    margin: 0;
+    padding: 10px 15px 10px 25px;
+}
+
+.openestate-listing-thumb-title,
+.openestate-fav-thumb-title {
+    margin: 0 !important;
+    padding: 5px 10px 5px 10px !important;
+    background-color: #e0e0e0;
+    font-size: 1em;
+}
+
+.openestate-listing-thumb-title a,
+.openestate-fav-thumb-title a {
+    text-decoration: none;
+    color: #333333;
+    display: block;
+    transition: all .3s ease-in-out;
+}
+
+.openestate-listing-thumb-title a:hover,
+.openestate-fav-thumb-title a:hover {
+    color: black;
+}
+
+.openestate-listing-thumb-actions,
+.openestate-fav-thumb-actions {
+    margin: 0;
+    padding: 0;
+    background-color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e0e0e0;
+}
+
+.openestate-listing-thumb-actions a,
+.openestate-fav-thumb-actions a {
+    text-decoration: none;
+    color: #333333;
+    transition: all .3s ease-in-out;
+    padding: 5px 10px 5px 10px;
+}
+
+.openestate-listing-thumb-actions a:hover,
+.openestate-fav-thumb-actions a:hover {
+    color: black;
+    background-color: white;
+}
+
+/**
+ * Object listing / Pagination
+ */
+
+.openestate-listing-pagination,
+.openestate-fav-pagination {
+    margin-top: 2em;
+    text-align: center;
+}
+
+.openestate-listing-pagination a,
+.openestate-fav-pagination a {
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+    padding: 0.15em;
+    font-size: 1.75em;
+}
+
+/**
+ * Expose view
+ */
+
+.openestate-expose-empty {
+    background-color: #f5f5f5;
+    border: 1px solid #c0c0c0;
+    border-radius: 6px;
+    margin: 2em auto;
+    padding: 1em;
+    width: 99%;
+    max-width: 750px;
+    text-align: center;
+    -webkit-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+.openestate-expose-empty i {
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+.openestate-expose-content {
+}
+
+.openestate-expose-content h2, h3, h4 {
+    margin-top: 0;
+}
+
+.openestate-expose-content h4 {
+    margin-bottom: 5px;
+}
+
+.openestate-expose-content p {
+    margin-top: 0;
+}
+
+.openestate-expose-content > div {
+    padding: 15px;
+}
+
+.openestate-expose-content > div:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+.openestate-expose-content > div:nth-child(odd) {
+    background-color: white;
+}
+
+.openestate-expose-text p {
+    text-align: justify;
+    hyphens: auto;
+}
+
+@media (min-width: 700px) {
+    .openestate-expose-attributes .openestate-attribute-label {
+        width: 200px;
+        vertical-align: top;
+    }
+
+    .openestate-expose-attributes .openestate-attribute-value {
+        vertical-align: bottom;
+        display: inline-block;
+    }
+}
+
+@media (min-width: 800px) {
+    .openestate-expose-attributes .openestate-attribute-label {
+        width: 250px;
+        vertical-align: top;
+    }
+
+    .openestate-expose-attributes .openestate-attribute-value {
+        vertical-align: bottom;
+    }
+}
+
+/**
+ * Expose view / Gallery
+ */
+
+.openestate-expose-gallery {
+    border-bottom: 1px solid #505050;
+    overflow: hidden;
+    /*margin: auto;*/
+    /*padding: 20px;*/
+    /*width: 80%;*/
+}
+
+.openestate-expose-gallery .slick-slide {
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -webkit-transition: opacity .5s ease-in-out;
+}
+
+.openestate-expose-gallery .slick-current {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    border-right: 1px solid #505050;
+    border-left: 1px solid #505050;
+}
+
+.openestate-expose-gallery-prev,
+.openestate-expose-gallery-next {
+    font-size: 1.5em;
+    width: 50px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: block;
+    padding: 0;
+    cursor: pointer;
+    color: #808080;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    z-index: 11;
+}
+
+.openestate-expose-gallery-prev:hover,
+.openestate-expose-gallery-prev:focus,
+.openestate-expose-gallery-next:hover,
+.openestate-expose-gallery-next:focus {
+    color: black;
+    outline: none !important;
+}
+
+.openestate-expose-gallery-prev {
+    left: 0;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.8) !important;
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 255, 255, 0.8)), color-stop(25%, rgba(255, 255, 255, 0.8)), color-stop(100%, rgba(255, 255, 255, 0))) !important;
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1);
+}
+
+.openestate-expose-gallery-next {
+    right: 0;
+    text-align: right;
+    background: rgba(255, 255, 255, 0) !important;
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(75%, rgba(255, 255, 255, 0.8)), color-stop(100%, rgba(255, 255, 255, 0.8))) !important;
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1);
+}
+
+.openestate-expose-gallery img {
+    height: 100px;
+    width: auto;
+    box-shadow: none !important;
+}
+
+@media (min-width: 300px) {
+    .openestate-expose-gallery img {
+        height: 150px;
+    }
+}
+
+@media (min-width: 400px) {
+    .openestate-expose-gallery img {
+        height: 200px;
+    }
+}
+
+@media (min-width: 450px) {
+    .openestate-expose-gallery img {
+        height: 250px;
+    }
+}
+
+@media (min-width: 500px) {
+    .openestate-expose-gallery img {
+        height: 300px;
+    }
+
+    .openestate-expose-gallery-prev,
+    .openestate-expose-gallery-next {
+        font-size: 2em;
+        width: 100px;
+    }
+}
+
+@media (min-width: 600px) {
+    .openestate-expose-gallery img {
+        height: 325px;
+    }
+}
+
+/**
+ * Expose view / Gallery for printing
+ */
+
+.openestate-expose-gallery-print {
+    display: none;
+}
+
+.openestate-expose-gallery-print > div {
+    text-align: center;
+}
+
+.openestate-expose-gallery-print > div > div {
+    margin: 0 0.5em 1em 0.5em;
+    display: inline-block;
+
+}
+
+.openestate-expose-gallery-print img {
+    max-width: 98%;
+    border: 1px solid #a0a0a0;
+    border-radius: 6px;
+}
+
+/**
+ * Expose view / videos
+ */
+
+.openestate-expose-video-local {
+    margin-bottom: 10px;
+}
+
+.openestate-expose-video-local video {
+    max-width: 100%;
+    margin-bottom: 0;
+    height: auto;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+}
+
+.openestate-expose-video-embed {
+    margin-bottom: 10px;
+}
+
+.openestate-expose-video-embed .openestate-video-object {
+    max-width: 100%;
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+}
+
+.openestate-expose-video-embed .openestate-video-subtitle {
+    text-align: left;
+    font-size: 0.8em;
+}
+
+/**
+ * Expose view / map
+ */
+
+.openestate-expose-map {
+}
+
+.openestate-expose-map .openestate-map-object {
+    width: 100%;
+    height: 25em;
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+}
+
+.openestate-expose-map .openestate-map-subtitle {
+    text-align: left;
+    font-size: 0.8em;
+}
+
+/**
+ * Expose view / links
+ */
+
+.openestate-expose-links {
+}
+
+.openestate-expose-links ul {
+    margin-bottom: 5px;
+    padding-left: 15px;
+}
+
+/**
+ * Expose view / contact person
+ */
+
+.openestate-expose-person {
+}
+
+.openestate-expose-person ul {
+    margin-bottom: 5px;
+    padding-left: 15px;
+}
+
+.openestate-expose-person-name {
+    font-weight: bold;
+}
+
+.openestate-expose-person-label {
+    display: inline-block;
+}
+
+.openestate-expose-person-value {
+    display: block;
+    font-weight: bold;
+}
+
+@media (min-width: 500px) {
+    .openestate-expose-person-label {
+        margin-right: 5px;
+        min-width: 65px;
+    }
+
+    .openestate-expose-person-value {
+        display: inline-block;
+    }
+}
+
+/**
+ * Expose view / contact form
+ */
+
+.openestate-expose-contact {
+}
+
+.openestate-expose-contact > * {
+    margin-bottom: 1em;
+}
+
+.openestate-expose-contact-loading {
+    display: none;
+    font-weight: bold;
+}
+
+.openestate-expose-contact-success {
+    display: none;
+    color: green;
+    font-weight: bold;
+}
+
+.openestate-expose-contact-error {
+    display: none;
+    color: red;
+    font-weight: bold;
+}
+
+.openestate-expose-contact-loading i,
+.openestate-expose-contact-success i,
+.openestate-expose-contact-error i {
+    font-size: 1.5em;
+}
+
+.openestate-expose-contact-field-invalid {
+    border-color: red !important;
+}
+
+.openestate-expose-contact textarea {
+    min-height: 8em;
+}
+
+.openestate-expose-contact-captcha {
+    display: flex;
+    align-items: flex-start;
+}
+
+.openestate-expose-contact-captcha-image {
+    flex-shrink: 0;
+    line-height: 0.8em;
+    font-size: 0.8em;
+}
+
+.openestate-expose-contact-captcha-field {
+    /*flex-shrink: 1;*/
+    width: 100%;
+}
+
+.openestate-expose-contact-terms {
+    margin-top: 1em;
+}
+
+.openestate-expose-contact-submit {
+    text-align: center;
+    margin-top: 1em;
+}
+
+.openestate-expose-contact-validation {
+    color: red;
+    display: none;
+}
+
+.openestate-expose-contact-spacer {
+}
+
+@media (min-width: 768px) {
+    .openestate-expose-contact-spacer {
+        padding-right: 0.75em;
+    }
+}
+
+/**
+ * Copyright information
+ */
+
+.openestate-copyright {
+    margin-top: 3em;
+    padding-top: 2em;
+    border-top: 1px solid #c0c0c0;
+    font-size: 0.8em;
+    display: flex;
+    flex-direction: column;
+}
+
+.openestate-copyright > * {
+    margin: auto;
+}
+
+.openestate-copyright a {
+    text-decoration: none;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+}
+
+.openestate-copyright a:hover {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+/**
+ * Statistics.
+ */
+
+.openestate-statistics {
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid #c0c0c0;
+}
+
+/**
+ * Printing
+ */
+
+@media print {
+    .hidden-print {
+        display: none;
+    }
+
+    .openestate-header {
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .openestate-header-bar {
+        padding: 0;
+        border-bottom: 1px solid black;
+    }
+
+    .openestate-header-actions {
+        display: none;
+    }
+
+    .openestate-listing-detail,
+    .openestate-fav-detail {
+        margin-left: 0;
+        margin-right: 0;
+        page-break-inside: avoid;
+    }
+
+    .openestate-listing-detail-title {
+        border-bottom: 1px solid #a0a0a0;
+    }
+
+    .openestate-listing-detail-actions,
+    .openestate-fav-detail-actions {
+        display: none;
+    }
+
+    .openestate-listing-items-thumb,
+    .openestate-fav-items-thumb {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .openestate-listing-thumb-popup,
+    .openestate-fav-thumb-popup {
+        display: none !important;
+    }
+
+    .openestate-listing-pagination {
+        display: none;
+    }
+
+    .openestate-expose-content > div {
+        padding-left: 0;
+        padding-right: 0;
+        page-break-inside: avoid;
+    }
+
+    .openestate-expose-map {
+        display: none;
+    }
+
+    .openestate-expose-videos {
+        display: none;
+    }
+
+    .openestate-expose-links {
+        display: none;
+    }
+
+    .openestate-expose-gallery {
+        display: none;
+    }
+
+    .openestate-expose-gallery-print {
+        display: block;
+    }
+
+    .openestate-expose-contact {
+        display: none;
+    }
+
+    .openestate-debug {
+        display: none;
+    }
+}
