@@ -2,14 +2,14 @@ Changelog for OpenEstate-PHP-Export
 ===================================
 
 
-2.0.0 (not released yet)
-------------------------
+2.0 (not released yet)
+----------------------
 
 -   completely reworked the script environment
 
 
-1.7.0 (not released yet)
-------------------------
+1.7.0 (11 Dec 2018)
+-------------------
 
 -   increased minimal requirements to *PHP* 5.6
 -   fixed *PHP* warnings about class definitions
@@ -18,7 +18,7 @@ Changelog for OpenEstate-PHP-Export
 -   removed outdated video providers (*clipfish.de*, *clipshack.com*, *myvideo.de*, *sevenload.com*)
 -   put title of real estate images into the `alt` attribute of `<img>` elements
 -   replaced *Net_IDNA* with *php-punycode*
--   updated to *PHPMailer* 6.0.5
+-   updated to *PHPMailer* 6.0.6
 -   updated to *jQuery* 3.3.1
 -   updated to *Colorbox* 1.6.4
 -   updated to *Lightbox* 2.10.0
