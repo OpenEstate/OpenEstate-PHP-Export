@@ -31,7 +31,7 @@ Features
 -   open source modules are available for
     [*WordPress*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-WordPress),
     [*CMS made simple*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-CMSms),
-    [*WebsiteBaker* / *BlackCat CMS* / *LEPTON CMS*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-WebsiteBaker) &
+    [*WBCE*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-WBCE) &
     [*Joomla*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-Joomla)
 
 
@@ -70,7 +70,7 @@ The following third party components are provided by *OpenEstate-PHP-Export*:
 -   components used by the [*default* theme](src/themes/default)
     -   [Pure.CSS](https://purecss.io/) v1.0.0
         (license: [BSD](https://github.com/pure-css/pure/blob/master/LICENSE))
-    -   [Colorbox](http://www.jacklmoore.com/colorbox/) v1.6.4
+    -   [Colorbox](https://www.jacklmoore.com/colorbox/) v1.6.4
         (license: [MIT](https://github.com/jackmoore/colorbox/blob/master/LICENSE.md))
     -   [Popper.js](https://popper.js.org/) v1.14.5
         (license: [MIT](https://github.com/FezVrasta/popper.js/blob/master/LICENSE.md))
@@ -85,7 +85,7 @@ The following third party components are provided by *OpenEstate-PHP-Export*:
     -   [Font Awesome](https://fontawesome.com/)
         (license: [SIL](https://fontawesome.com/license/free))
     -   [Fontelico](https://github.com/fontello/fontelico.font)
-        (license: [SIL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL))
+        (license: [SIL](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL))
 
 
 Limitations
