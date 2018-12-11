@@ -10,6 +10,15 @@ as an experiment, how to publish real estates from
 effort as possible for the user.
 
 
+Warning
+-------
+
+This version of OpenEstate-PHP-Export is outdated and not developed any further.
+You should update your installation of OpenEstate-ImmoTool to the latest version
+and use [OpenEstate-PHP-Export 1.7.x](https://github.com/OpenEstate/OpenEstate-PHP-Export/tree/master-1.7)
+or [OpenEstate-PHP-Export 2.x](https://github.com/OpenEstate/OpenEstate-PHP-Export/tree/master).
+
+
 Features
 --------
 
@@ -56,11 +65,10 @@ License
 [GNU General Public License 3](http://www.gnu.org/licenses/gpl-3.0-standalone.html)
 
 
-Todo
-----
+Further information
+-------------------
 
--   increase minimal PHP version to 5.2 or 5.3
--   fix PHP notice / deprecation issues
--   complete API documentation in english language
--   make API documentation publicly available (via
-    [phpDocumentor](http://www.phpdoc.org/) or [apigen](http://apigen.org/))
+-   [*OpenEstate-PHP-Export* at GitHub](https://github.com/OpenEstate/OpenEstate-PHP-Export)
+-   [Releases of *OpenEstate-PHP-Export*](https://github.com/OpenEstate/OpenEstate-PHP-Export/releases)
+-   [Changelog of *OpenEstate-PHP-Export*](https://github.com/OpenEstate/OpenEstate-PHP-Export/blob/develop-1.7/CHANGELOG.md)
+-   [API documentation of *OpenEstate-PHP-Export*](https://media.openestate.org/apidocs/OpenEstate-PHP-Export/)
