@@ -1,137 +1,29 @@
 <?php
 /*
- * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright 2009-2018 OpenEstate.org.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as
- * published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * Website-Export, Übersetzungen, Deutsch / Deutsch.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright 2009-2018, OpenEstate.org
+ * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-if (!defined('IN_WEBSITE')) {
-  exit;
-}
-
-$GLOBALS['immotool_translations']['de'] = array(
-  'labels' => array(
-    'title' => 'Mustermann Immobilien GmbH',
-    'title.index' => 'Zusammenfassung',
-    'title.fav' => 'Vormerkliste',
-    'tab.index' => 'Zusammenfassung',
-    'tab.fav' => 'Vormerkliste',
-    'estate' => 'Exposé',
-    'estate.id' => 'Objekt-ID',
-    'estate.nr' => 'Objekt-Nr',
-    'estate.type' => 'Immobilienart',
-    'estate.action' => 'Vermarktungsart',
-    'estate.group' => 'Gruppen-Nr',
-    'estate.area' => 'Fläche',
-    'estate.country' => 'Land',
-    'estate.city' => 'Ort',
-    'estate.postal' => 'PLZ',
-    'estate.price' => 'Preis',
-    'estate.rooms' => 'Zimmerzahl',
-    'estate.title' => 'Titel',
-    'estate.address' => 'Adresse',
-    'estate.region' => 'Region',
-    'estate.details' => 'Details',
-    'estate.details.title' => 'Details zur Immobilie',
-    'estate.texts' => 'Beschreibung',
-    'estate.texts.title' => 'Beschreibungen zur Immobilie',
-    'estate.texts.empty' => 'Es wurden keine Beschreibungstexte in der gewählten Sprache hinterlegt.',
-    'estate.gallery' => 'Galerie',
-    'estate.gallery.title' => 'Fotos zur Immobilie',
-    'estate.map' => 'Karte',
-    'estate.map.title' => 'Karte',
-    'estate.map.directLink' => 'Größere Kartenansicht',
-    'estate.contact' => 'Kontakt',
-    'estate.contact.title' => 'Kontakt',
-    'estate.contact.person' => 'Ihr Ansprechpartner',
-    'estate.contact.person.name' => 'Name',
-    'estate.contact.person.address' => 'Adresse',
-    'estate.contact.person.phone' => 'Telefon',
-    'estate.contact.person.mobile' => 'Mobiltelefon',
-    'estate.contact.person.fax' => 'Fax',
-    'estate.contact.form' => 'Mitteilung per E-Mail senden',
-    'estate.contact.form.name' => 'Name',
-    'estate.contact.form.firstname' => 'Vorname',
-    'estate.contact.form.email' => 'E-Mail',
-    'estate.contact.form.phone' => 'Telefon',
-    'estate.contact.form.street' => 'Straße',
-    'estate.contact.form.streetnr' => 'Nr',
-    'estate.contact.form.postal' => 'PLZ',
-    'estate.contact.form.city' => 'Ort',
-    'estate.contact.form.message' => 'Mitteilung',
-    'estate.contact.form.captcha' => 'Bestätigung',
-    'estate.contact.form.captcha.refresh' => 'Aktualisieren',
-    'estate.contact.form.terms' => 'Ja, ich akzeptiere den folgenden Rechtshinweis.',
-    'estate.contact.form.submit' => 'Mitteilung abschicken',
-    'estate.contact.form.submitted' => 'Die E-Mail wurde erfolgreich versendet!',
-    'estate.contact.form.submitted.message' => 'Vielen Dank für Ihre Anfrage. Wir werden umgehend mit Ihnen Kontakt aufnehmen.',
-    'estate.terms' => 'AGB',
-    'estate.terms.title' => 'Allgemeine Geschäftsbedingungen',
-    'estate.terms.empty' => 'Es wurden keine allgemeinen Geschäftsbedingungen hinterlegt. Bitte erfragen Sie diese beim Anbieter der Immobilie.',
-    'estate.media' => 'Medien',
-    'estate.media.title' => 'Medien zur Immobilie',
-    'estate.media.downloads' => 'Downloads',
-    'estate.media.links' => 'Links',
-    'estate.media.videos' => 'Videos',
-    'estate.media.empty' => 'Es wurden keine Medien hinterlegt.',
-    'lastModification' => 'letzte Änderung',
-    'order.asc' => 'aufsteigend',
-    'order.desc' => 'absteigend',
-    'link.expose.view' => 'Details',
-    'link.expose.pdf' => 'Herunterladen',
-    'link.expose.fav' => 'Vormerken',
-    'link.expose.unfav' => 'Vormerkung entfernen',
-    'link.expose.contact' => 'Kontakt aufnehmen',
-    'link.expose.videos' => 'Videos',
-    'view.gallery' => 'Galerie-Ansicht',
-    'view.table' => 'Tabellen-Ansicht',
-    'action.search' => 'Suche ausführen',
-    'action.reset' => 'Eingaben zurücksetzen',
-    'action.clearFavs' => 'Vormerkungen entfernen',
-    'action.clearFavs.question' => 'Sollen die Vormerkungen wirklich entfernt werden?',
-    'fromNowOn' => 'ab sofort',
-    'openestate.equipment' => 'Art der Ausstattung',
-    'openestate.equipment.basic' => 'einfach',
-    'openestate.equipment.exclusive' => 'gehoben',
-    'openestate.equipment.luxury' => 'Luxus',
-    'openestate.equipment.standard' => 'normal',
-    'openestate.furnished' => 'möbliert',
-    'openestate.count_rooms' => 'Zimmerzahl',
-    'openestate.age' => 'Alter',
-    'openestate.age.new_building' => 'Neubau',
-    'openestate.age.old_building' => 'Altbau',
-    'openestate.special_offer' => 'Sonderangebot',
-  ),
-  'errors' => array(
-    'warning' => 'Achtung!',
-    'anErrorOccured' => 'Ein Fehler ist aufgetreten!',
-    'noEstatesFound' => 'Es wurden keine Immobilien gefunden!',
-    'cantLoadEstate' => 'Das angeforderte Inserat wurde nicht gefunden!',
-    'cantSendMail' => 'Ein Fehler beim Mailversand ist aufgetreten!',
-    'cantSendMail.invalidInput' => 'Die Eingaben im Kontaktformular sind unvollständig. Bitte korrigieren Sie die hervorgehobenen Felder.',
-    'cantSendMail.invalidRequest' => 'Die Kontaktanfrage ist ungültig. Bitte senden Sie das Formular ggf. erneut ab.',
-    'cantSendMail.templateNotFound' => 'Es wurde keine Mailvorlage gefunden!',
-    'cantSendMail.mailWasNotSend' => 'Ein technisches Problem trat beim Mailversand auf. Sollte das Problem dauerhaft auftreten, verwenden Sie bitte einen anderen Weg zur Kontaktaufnahme.',
-  ),
+return array(
   'openestate' => array(
     'actions' => array(
       'rent' => 'Miete',

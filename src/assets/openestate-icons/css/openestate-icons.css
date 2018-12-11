@@ -1,0 +1,80 @@
+@font-face {
+  font-family: 'openestate-icons';
+  src: url('../font/openestate-icons.eot?31045327');
+  src: url('../font/openestate-icons.eot?31045327#iefix') format('embedded-opentype'),
+       url('../font/openestate-icons.woff2?31045327') format('woff2'),
+       url('../font/openestate-icons.woff?31045327') format('woff'),
+       url('../font/openestate-icons.ttf?31045327') format('truetype'),
+       url('../font/openestate-icons.svg?31045327#openestate-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'openestate-icons';
+    src: url('../font/openestate-icons.svg?31045327#openestate-icons') format('svg');
+  }
+}
+*/
+ 
+ [class^="openestate-icon-"]:before, [class*=" openestate-icon-"]:before {
+  font-family: "openestate-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+ 
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.openestate-icon-cancel:before { content: '\e800'; } /* '' */
+.openestate-icon-attention:before { content: '\e801'; } /* '' */
+.openestate-icon-search:before { content: '\e803'; } /* '' */
+.openestate-icon-list-thumb:before { content: '\e804'; } /* '' */
+.openestate-icon-language:before { content: '\e805'; } /* '' */
+.openestate-icon-listing:before { content: '\e806'; } /* '' */
+.openestate-icon-yes:before { content: '\e807'; } /* '' */
+.openestate-icon-no:before { content: '\e808'; } /* '' */
+.openestate-icon-download:before { content: '\e80b'; } /* '' */
+.openestate-icon-fav-add:before { content: '\e80c'; } /* '' */
+.openestate-icon-expose:before { content: '\e80d'; } /* '' */
+.openestate-icon-fav-remove:before { content: '\e80e'; } /* '' */
+.openestate-icon-spinner:before { content: '\e839'; } /* '' */
+.openestate-icon-left:before { content: '\f0a8'; } /* '' */
+.openestate-icon-right:before { content: '\f0a9'; } /* '' */
+.openestate-icon-list-detail:before { content: '\f0ca'; } /* '' */
+.openestate-icon-sort:before { content: '\f0dc'; } /* '' */
+.openestate-icon-success:before { content: '\f118'; } /* '' */
+.openestate-icon-problem:before { content: '\f11a'; } /* '' */
+.openestate-icon-sort-asc:before { content: '\f162'; } /* '' */
+.openestate-icon-sort-desc:before { content: '\f163'; } /* '' */
+.openestate-icon-send:before { content: '\f1d9'; } /* '' */
+.openestate-icon-fav:before { content: '\f21e'; } /* '' */

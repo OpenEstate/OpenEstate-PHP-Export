@@ -1,15 +1,44 @@
 <component name="ProjectDictionaryState">
   <dictionary name="global">
     <words>
+      <w>autofocus</w>
+      <w>bbox</w>
+      <w>changefreq</w>
       <w>colorbox</w>
-      <w>iconv</w>
+      <w>dailymotion</w>
+      <w>detailled</w>
+      <w>dgettext</w>
+      <w>dngettext</w>
+      <w>dropdown</w>
+      <w>emphyteusis</w>
+      <w>fullname</w>
+      <w>gettext</w>
+      <w>htmlspecialchars</w>
+      <w>iframe</w>
       <w>immo</w>
       <w>immotool</w>
-      <w>joomla</w>
-      <w>lightbox</w>
-      <w>mbstring</w>
-      <w>myconfig</w>
+      <w>lastmod</w>
+      <w>mimetype</w>
+      <w>mustermann</w>
+      <w>ngettext</w>
+      <w>nofollow</w>
+      <w>noindex</w>
+      <w>onblur</w>
+      <w>onfocus</w>
+      <w>onload</w>
+      <w>openestate</w>
+      <w>pano</w>
+      <w>panocreator</w>
+      <w>qmail</w>
+      <w>revalidate</w>
+      <w>sitemap</w>
+      <w>smtp</w>
+      <w>trovit</w>
+      <w>urlset</w>
+      <w>veoh</w>
+      <w>vimeo</w>
       <w>webspace</w>
+      <w>xmlns</w>
     </words>
   </dictionary>
 </component>
