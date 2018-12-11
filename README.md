@@ -1,9 +1,9 @@
-OpenEstate-PHP-Export 2.0-dev
-=============================
+OpenEstate-PHP-Export 2.0-SNAPSHOT
+==================================
 
 *OpenEstate-PHP-Export* is developed as a part of the freeware real estate
-software [*OpenEstate-ImmoTool*](https://openestate.org/). When a user exports 
-his properties to his website in PHP format, these scripts are transferred to 
+software [*OpenEstate-ImmoTool*](https://openestate.org/). When a user exports
+his properties to his website in PHP format, these scripts are transferred to
 the webspace including real estate data in the [`data`](src/data) folder.
 
 
@@ -12,21 +12,21 @@ Features
 
 -   listing view of multiple real estates
     (see [`index.php`](src/index.php))
--   detailled view of a single real estate 
+-   detailled view of a single real estate
     (see [`expose.php`](src/expose.php))
--   visitors may manage their favored real estates 
+-   visitors may manage their favored real estates
     (see [`fav.php`](src/fav.php))
 -   real estate listings may be filtered by different criteria
     (see [`\OpenEstate\PhpExport\Filter`](src/include/OpenEstate/PhpExport/Filter))
--   real estate listings may be ordered by different criteria 
+-   real estate listings may be ordered by different criteria
     (see [`\OpenEstate\PhpExport\Order`](src/include/OpenEstate/PhpExport/Order))
 -   a basic contact form is available
     (see [`\OpenEstate\PhpExport\Action\Contact`](src/include/OpenEstate/PhpExport/Action/Contact.php))
--   generated output is fully customizable with [themes](src/themes) 
+-   generated output is fully customizable with [themes](src/themes)
 -   a lot of configuration options are available
-    (see [`\OpenEstate\PhpExport\Config`](src/include/OpenEstate/PhpExport/Config.php) 
+    (see [`\OpenEstate\PhpExport\Config`](src/include/OpenEstate/PhpExport/Config.php)
     and [`config.php`](src/config.php))
--   available in multiple languages (English by default, see 
+-   available in multiple languages (English by default, see
     [current translation progress](https://i18n.openestate.org/projects/openestate-php-export/#languages))
 -   open source modules are available for
     [*WordPress*](https://github.com/OpenEstate/OpenEstate-PHP-Wrapper-WordPress),
@@ -42,11 +42,11 @@ Requirements
     -   [*OpenEstate-ImmoTool*](https://openestate.org/) 1.0-beta
 -   webspace side
     -   PHP 5.6 or newer
-    -   [PHP *GD* extension](https://secure.php.net/manual/en/book.image.php) 
+    -   [PHP *GD* extension](https://secure.php.net/manual/en/book.image.php)
         (optional, but recommended)
-    -   [PHP *mbstring* extension](https://secure.php.net/manual/en/book.mbstring.php) 
+    -   [PHP *mbstring* extension](https://secure.php.net/manual/en/book.mbstring.php)
         (optional)
-    -   [PHP *iconv* extension](https://secure.php.net/manual/en/book.iconv.php) 
+    -   [PHP *iconv* extension](https://secure.php.net/manual/en/book.iconv.php)
         (optional)
 
 
@@ -83,7 +83,7 @@ The following third party components are provided by *OpenEstate-PHP-Export*:
         bundled with [Popper.js](https://popper.js.org/)
 -   aggregated icons (generated with [*fontello.com*](http://fontello.com/))
     -   [Font Awesome](https://fontawesome.com/)
-        (license: [SIL](https://fontawesome.com/license/free)) 
+        (license: [SIL](https://fontawesome.com/license/free))
     -   [Fontelico](https://github.com/fontello/fontelico.font)
         (license: [SIL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL))
 
