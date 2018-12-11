@@ -15,6 +15,8 @@
 # limitations under the License.
 #
 
+PROJECT="OpenEstate-PHP-Export"
+VERSION="2.0-beta1"
 PHPDOC="phpDocumentor.phar"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -25,6 +27,6 @@ rm -Rf "$DIR/phpdoc-cache"
   --target="$DIR/phpdoc" \
   --directory="$DIR/src/include" \
   --cache-folder="$DIR/phpdoc-cache" \
-  --title="OpenEstate-PHP-Export"
+  --title="$PROJECT $VERSION API"
 
 rm -Rf "$DIR/phpdoc-cache"
