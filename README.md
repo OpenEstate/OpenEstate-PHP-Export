@@ -1,5 +1,5 @@
-OpenEstate-PHP-Export 1.5.x
-===========================
+OpenEstate-PHP-Export 1.5-SNAPSHOT
+==================================
 
 OpenEstate-PHP-Export was developed as a part of the freeware real estate
 software [OpenEstate-ImmoTool](http://openestate.org/). When a user exports his
