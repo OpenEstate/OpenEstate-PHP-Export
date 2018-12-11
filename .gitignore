@@ -1,1 +1,15 @@
-/nbproject/private/
+src/cache/*
+!src/cache/index.html
+
+src/data/*
+!src/data/index.html
+
+src/sessions/*
+!src/sessions/index.html
+
+#.idea/dictionaries/*
+!.idea/dictionaries/global.xml
+
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/workspace.xml

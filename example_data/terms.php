@@ -29,6 +29,6 @@ if (!defined('IN_WEBSITE')) {
 }
 
 $GLOBALS['immotool_terms'] = array(
-  'en' => 'The general terms and conditions of the real estate agency.',
-  'de' => 'Die allgemeinen Geschäftsbedigungen der Immobilienagentur.',
+  'de' => null,
+  'en' => null,
 );

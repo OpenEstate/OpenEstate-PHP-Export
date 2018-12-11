@@ -1,68 +1,67 @@
 <?php
 /*
- * PHP-Export scripts of OpenEstate-ImmoTool
- * Copyright (C) 2009-2017 OpenEstate.org
+ * Copyright 2009-2018 OpenEstate.org.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as
- * published by the Free Software Foundation.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * Website-Export, Sortierung nach Zeitpunkt der letzten Änderung.
  *
  * @author Andreas Rudolph & Walter Wagner
- * @copyright 2009-2014, OpenEstate.org
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright 2009-2018, OpenEstate.org
+ * @license https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  */
 
-if (!defined('IN_WEBSITE'))
-  exit;
+require_once(__DIR__ . '/class.order.php');
 
-require_once( IMMOTOOL_BASE_PATH . 'include/class.order.php' );
+class ImmoToolOrder_lastmod extends ImmoToolOrder
+{
+    /**
+     * Name des Filters.
+     */
+    public function getName()
+    {
+        return 'lastmod';
+    }
 
-class ImmoToolOrder_lastmod extends ImmoToolOrder {
+    /**
+     * Titel der Sortierung, abhängig von der Sprache.
+     */
+    public function getTitle(&$translations, $lang)
+    {
+        $title = (isset($translations['labels']['lastModification'])) ?
+            $translations['labels']['lastModification'] : null;
+        return is_string($title) ? $title : $this->getName();
+    }
 
-  /**
-   * Name des Filters.
-   */
-  function getName() {
-    return 'lastmod';
-  }
+    /**
+     * Liefert das Sortierungsfeld eines Objektes.
+     */
+    public function sort_field(&$object, $lang)
+    {
+        $id = (isset($object['id'])) ? $object['id'] : null;
+        if (!is_string($id))
+            return null;
+        return immotool_functions::get_object_stamp($id);
+    }
 
-  /**
-   * Titel der Sortierung, abhängig von der Sprache.
-   */
-  function getTitle(&$translations, $lang) {
-    $title = (isset($translations['labels']['lastModification'])) ?
-        $translations['labels']['lastModification'] : null;
-    return is_string($title) ? $title : $this->getName();
-  }
-
-  /**
-   * Liefert das Sortierungsfeld eines Objektes.
-   */
-  function sort_field(&$object, $lang) {
-    $id = (isset($object['id'])) ? $object['id'] : null;
-    if (!is_string($id))
-      return null;
-    return immotool_functions::get_object_stamp($id);
-  }
-
-  /**
-   * Liefert das Sortierungs-Flag
-   * siehe http://www.php.net/manual/en/function.sort.php
-   */
-  function sort_flag() {
-    return SORT_NUMERIC;
-  }
-
+    /**
+     * Liefert das Sortierungs-Flag
+     * siehe http://www.php.net/manual/en/function.sort.php
+     */
+    public function sort_flag()
+    {
+        return SORT_NUMERIC;
+    }
 }

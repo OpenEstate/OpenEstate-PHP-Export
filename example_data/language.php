@@ -30,6 +30,6 @@ if (!defined('IN_WEBSITE')) {
 
 $GLOBALS['immotool_translations'] = array();
 $GLOBALS['immotool_languages'] = array(
-  'en' => 'English',
   'de' => 'Deutsch',
+  'en' => 'English',
 );
