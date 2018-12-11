@@ -12,7 +12,7 @@ Changelog for OpenEstate-PHP-Export
 -   removed outdated video providers (*clipfish.de*, *clipshack.com*, *myvideo.de*, *sevenload.com*)
 -   put title of real estate images into the `alt` attribute of `<img>` elements
 -   replaced *Net_IDNA* with *php-punycode*
--   updated to *PHPMailer* 6.0.5
+-   updated to *PHPMailer* 6.0.6
 -   updated to *jQuery* 3.3.1
 -   updated to *Colorbox* 1.6.4
 -   updated to *Lightbox* 2.10.0
