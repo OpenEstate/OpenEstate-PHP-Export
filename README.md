@@ -101,3 +101,12 @@ License
 This library is licensed under the terms of
 [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
 Take a look at the provided [`LICENSE.txt`](LICENSE.txt) for the license text.
+
+
+Further information
+-------------------
+
+-   [*OpenEstate-PHP-Export* at GitHub](https://github.com/OpenEstate/OpenEstate-PHP-Export)
+-   [Releases of *OpenEstate-PHP-Export*](https://github.com/OpenEstate/OpenEstate-PHP-Export/releases)
+-   [Changelog of *OpenEstate-PHP-Export*](https://github.com/OpenEstate/OpenEstate-PHP-Export/blob/develop/CHANGELOG.md)
+-   [API documentation of *OpenEstate-PHP-Export*](https://media.openestate.org/apidocs/OpenEstate-PHP-Export/)
