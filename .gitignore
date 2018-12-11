@@ -13,3 +13,8 @@ src/sessions/*
 .idea/tasks.xml
 .idea/usage.statistics.xml
 .idea/workspace.xml
+
+phpdoc/
+phpdoc-cache/
+
+temp
