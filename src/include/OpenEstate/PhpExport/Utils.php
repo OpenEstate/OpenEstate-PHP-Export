@@ -203,9 +203,15 @@ class Utils
             }
         }
 
-        return (\strlen($value) > ($length - 3)) ?
-            \substr($value, 0, $length - 3) . '...' :
-            $value;
+        if (\extension_loaded('mbstring')) {
+            return (\mb_strlen($value) > ($length - 3)) ?
+                \mb_substr($value, 0, $length - 3) . '...' :
+                $value;
+        } else {
+            return (\strlen($value) > ($length - 3)) ?
+                \substr($value, 0, $length - 3) . '...' :
+                $value;
+        }
     }
 
     /**
