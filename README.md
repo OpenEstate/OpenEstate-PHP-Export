@@ -39,7 +39,7 @@ Requirements
 ------------
 
 -   client side (real estate agency / website owner)
-    -   [*OpenEstate-ImmoTool*](https://openestate.org/) 1.0-beta
+    -   [*OpenEstate-ImmoTool*](https://openestate.org/) 1.0.0 or later
 -   webspace side
     -   PHP 5.6 or newer
     -   [PHP *GD* extension](https://secure.php.net/manual/en/book.image.php)
