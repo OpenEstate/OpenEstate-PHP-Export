@@ -1,5 +1,5 @@
-OpenEstate-PHP-Export 2.0-beta2
-===============================
+OpenEstate-PHP-Export 2.0-SNAPSHOT
+==================================
 
 *OpenEstate-PHP-Export* is developed as a part of the freeware real estate
 software [*OpenEstate-ImmoTool*](https://openestate.org/). When a user exports
@@ -108,5 +108,5 @@ Further information
 
 -   [*OpenEstate-PHP-Export* at GitHub](https://github.com/OpenEstate/OpenEstate-PHP-Export)
 -   [Releases of *OpenEstate-PHP-Export*](https://github.com/OpenEstate/OpenEstate-PHP-Export/releases)
--   [Changelog of *OpenEstate-PHP-Export*](https://github.com/OpenEstate/OpenEstate-PHP-Export/blob/master/CHANGELOG.md)
+-   [Changelog of *OpenEstate-PHP-Export*](https://github.com/OpenEstate/OpenEstate-PHP-Export/blob/develop/CHANGELOG.md)
 -   [API documentation of *OpenEstate-PHP-Export*](https://media.openestate.org/apidocs/OpenEstate-PHP-Export/)
