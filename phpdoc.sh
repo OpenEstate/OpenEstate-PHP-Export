@@ -16,7 +16,7 @@
 #
 
 PROJECT="OpenEstate-PHP-Export"
-VERSION="2.0-SNAPSHOT"
+VERSION="2.0.0-SNAPSHOT"
 PHPDOC="phpDocumentor.phar"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 

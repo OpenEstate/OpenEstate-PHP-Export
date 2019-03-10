@@ -37,7 +37,7 @@ if (defined('OpenEstate\PhpExport\VERSION')) return;
  *
  * @var string
  */
-define('OpenEstate\PhpExport\VERSION', '2.0-SNAPSHOT');
+define('OpenEstate\PhpExport\VERSION', '2.0.0-SNAPSHOT');
 
 // Load classes automatically.
 spl_autoload_register(function ($class) {
