@@ -1,5 +1,5 @@
 # OpenEstate-PHP-Export - Bootstrap4 Theme.
-# Copyright (C) 2009-2018 OpenEstate.org
+# Copyright 2009-2019 OpenEstate.org
 # This file is distributed under the same license as the OpenEstate-PHP-Export package.
 #
 msgid ""
