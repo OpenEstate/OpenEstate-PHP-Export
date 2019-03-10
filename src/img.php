@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2009-2018 OpenEstate.org.
+ * Copyright 2009-2019 OpenEstate.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,9 @@ require(__DIR__ . '/config.php');
 // start output buffering
 if (!\ob_start())
     Utils::logError('Can\'t start output buffering!');
+
+// the time an image might get cached by the browser
+define('CACHE_TIME', 60 * 60 * 24 * 14);
 
 // generate output
 $env = null;
@@ -70,6 +73,9 @@ try {
     if (!\is_file($imgObjectPath))
         throw new \Exception('Your requested image was not found!');
 
+    // process last modification time
+    Utils::lastModified(\filemtime($imgObjectPath));
+
     // get path to the image in cache folder
     $imgCachePath = $env->getCachePath('img.' . \md5($objectId . '-' . $imgName . '-' . $x . '-' . $y . '-' . $bg) . '.jpg');
     if (\is_file($imgCachePath) && Utils::isFileOlderThen($imgCachePath, $env->getConfig()->cacheLifeTime))
@@ -97,8 +103,9 @@ try {
             throw new \Exception('Can\'t read cached image file!');
 
         if (!\headers_sent()) {
-            \header('Cache-Control: max-age=3600, public');
+            \header('Cache-Control: max-age=' . CACHE_TIME . ', public');
             \header('Content-type: image/jpeg');
+            \header('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', \time() + CACHE_TIME));
         }
 
         echo $image;
@@ -162,8 +169,9 @@ try {
 
         // return scaled image
         if (!\headers_sent()) {
-            \header('Cache-Control: max-age=3600, public');
+            \header('Cache-Control: max-age=' . CACHE_TIME . ', public');
             \header('Content-type: image/jpeg');
+            \header('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', \time() + CACHE_TIME));
         }
 
         \imagejpeg($scaledImage, null, 85);
@@ -179,8 +187,9 @@ try {
         throw new \Exception('Can\'t read object image file!');
 
     if (!\headers_sent()) {
-        \header('Cache-Control: max-age=3600, public');
+        \header('Cache-Control: max-age=' . CACHE_TIME . ', public');
         \header('Content-type: ' . $mimeType);
+        \header('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', \time() + CACHE_TIME));
     }
 
     echo $image;

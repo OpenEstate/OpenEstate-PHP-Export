@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2009-2018 OpenEstate.org.
+ * Copyright 2009-2019 OpenEstate.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ if (defined('OpenEstate\PhpExport\VERSION')) return;
  *
  * @var string
  */
-define('OpenEstate\PhpExport\VERSION', '2.0-beta1');
+define('OpenEstate\PhpExport\VERSION', '2.0-beta2');
 
 // Load classes automatically.
 spl_autoload_register(function ($class) {
