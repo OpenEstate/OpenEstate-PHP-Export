@@ -901,7 +901,7 @@ class Utils
      * @author Ansas Meyer
      * @see https://ansas-meyer.de/programmierung/php/http-response-header-last-modified-und-etag-mit-php-fuer-caching-setzen/
      */
-    function lastModified($timestamp, $identifier = "", $strict = false)
+    public static function lastModified($timestamp, $identifier = "", $strict = false)
     {
         // check: are we still allowed to send headers?
         if (\headers_sent()) {
