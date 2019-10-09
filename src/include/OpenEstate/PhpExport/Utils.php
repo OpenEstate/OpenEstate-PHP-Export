@@ -894,11 +894,11 @@ class Utils
      * date the status header 304 (not modified) will be set and the program will be
      * terminated.
      *
-     * @author Ansas Meyer
      * @param int $timestamp late modification timestamp
      * @param string $identifier additional identifier (optional, default: "")
      * @param bool $strict use strict mode (optional, default: false)
      * @return bool true if headers could be set, otherwise false
+     * @author Ansas Meyer
      * @see https://ansas-meyer.de/programmierung/php/http-response-header-last-modified-und-etag-mit-php-fuer-caching-setzen/
      */
     function lastModified($timestamp, $identifier = "", $strict = false)
