@@ -1184,8 +1184,13 @@ class Utils
                 $i18n['openestate']['attributes']['prices']['rent_flat_rate'] : 'rent flat rate';
             $text = self::getAttributeValue('prices', 'rent_flat_rate', $value, $lang);
 
-            return '<span class="openestate-attribute-label">' . html($title) . ':</span>'
-                . '<span class="openestate-attribute-value">' . html(gettext('{0} per {1}', $text, $interval)) . '</span>';
+            if (isset($object['hidden_price']) && $object['hidden_price'] === true) {
+                return '<span class="openestate-attribute-label">' . html($title) . ':</span>'
+                    . '<span class="openestate-attribute-value">' . html($text) . '</span>';
+            } else {
+                return '<span class="openestate-attribute-label">' . html($title) . ':</span>'
+                    . '<span class="openestate-attribute-value">' . html(gettext('{0} per {1}', $text, $interval)) . '</span>';
+            }
         }
 
         // write primary area
